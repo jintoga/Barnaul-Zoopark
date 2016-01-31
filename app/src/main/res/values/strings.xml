@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Барнаульский зоопарк</string>
+
+    <string name="our_animals">Наши питомцы</string>
+    <string name="news">Новости</string>
+    <string name="photo_gallery">Фотогалерея</string>
+    <string name="navigation">Навигация</string>
+    <string name="zoopark_map">Карта зоопарка</string>
+    <string name="cage_location">Местоположение клетки</string>
+    <string name="information">Информация</string>
+    <string name="schedule">Расписание зоопарка</string>
+    <string name="price">Цена билетов</string>
+    <string name="about_zoopark">О зоопарке</string>
+</resources>
