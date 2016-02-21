@@ -49,7 +49,6 @@
             android:layout_height="wrap_content"
             android:text="Nguyen Quoc Dat"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/normal"
             android:textStyle="bold" />
     </LinearLayout>
 </FrameLayout>

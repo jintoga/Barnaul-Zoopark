@@ -12,6 +12,7 @@
             android:title="@string/our_animals" />
 
         <item
+            android:id="@+id/photoGallery"
             android:checked="false"
             android:icon="@drawable/ic_collections_black_24px"
             android:title="@string/photo_gallery" />

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/toolbar_banner"
+    android:layout_height="match_parent"
+    tools:layout_height="300dp">
+
+    <com.marvinlabs.widget.slideshow.SlideShowView
+        android:id="@+id/slideShowView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:selector="@drawable/item_background_holo_light">
+
+       <!-- <ImageView
+            android:id="@+id/imageViewBannerDefault"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/toolbar_banner" />-->
+    </com.marvinlabs.widget.slideshow.SlideShowView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/rounded_corner_selector"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageButton
+            android:id="@+id/imageButtonSlideShowTrigger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_play_arrow_24dp"
+            android:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/imageButtonStopSlideShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:background="@null"
+            android:src="@drawable/ic_stop_24dp"
+            android:tint="@color/white" />
+    </LinearLayout>
+</FrameLayout>
