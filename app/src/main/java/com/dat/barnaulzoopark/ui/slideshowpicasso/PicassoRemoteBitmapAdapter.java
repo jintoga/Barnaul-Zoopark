@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.SlideShowPicasso;
+package com.dat.barnaulzoopark.ui.slideshowpicasso;
 
 import android.content.Context;
 

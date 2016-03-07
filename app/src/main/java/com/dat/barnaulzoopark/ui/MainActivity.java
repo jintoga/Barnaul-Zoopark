@@ -1,22 +1,25 @@
-package com.dat.barnaulzoopark;
+package com.dat.barnaulzoopark.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.dat.barnaulzoopark.Gallery.GalleryFragment;
-import com.dat.barnaulzoopark.SlideShowPicasso.GenericPicassoBitmapAdapter;
-import com.dat.barnaulzoopark.SlideShowPicasso.PicassoRemoteBitmapAdapter;
+import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.gallery.GalleryFragment;
+import com.dat.barnaulzoopark.ui.slideshowpicasso.GenericPicassoBitmapAdapter;
+import com.dat.barnaulzoopark.ui.slideshowpicasso.PicassoRemoteBitmapAdapter;
+import com.github.clans.fab.FloatingActionMenu;
 import com.marvinlabs.widget.slideshow.SlideShowAdapter;
 import com.marvinlabs.widget.slideshow.SlideShowView;
 import com.marvinlabs.widget.slideshow.TransitionFactory;
@@ -26,41 +29,47 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
-    @InjectView(R.id.my_toolbar)
+    @Bind(R.id.my_toolbar)
     protected Toolbar toolbar;
-    @InjectView(R.id.navigation_view)
+    @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
-    @InjectView(R.id.drawer)
+    @Bind(R.id.drawer)
     protected DrawerLayout drawerLayout;
 
-    /*@InjectView(R.id.imageViewBannerDefault)
+    /*@Bind(R.id.imageViewBannerDefault)
     protected ImageView imageViewBannerDefault;*/
 
-    @InjectView(R.id.slideShowView)
+    @Bind(R.id.slideShowView)
     protected SlideShowView slideShowView;
     private SlideShowAdapter slideShowAdapter;
 
-    @InjectView(R.id.imageButtonSlideShowTrigger)
+    @Bind(R.id.imageButtonSlideShowTrigger)
     protected ImageButton imageButtonSlideShowTrigger;
 
-    @InjectView(R.id.imageButtonStopSlideShow)
+    @Bind(R.id.imageButtonStopSlideShow)
     protected ImageButton imageButtonStopSlideShow;
 
 
-    @InjectView(R.id.app_bar_layout)
+    @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
+
+    @Bind(R.id.nestedScrollView)
+    protected NestedScrollView nestedScrollView;
+
+    @Bind(R.id.fabMenu)
+    protected FloatingActionMenu fabMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         setupNavDrawer();
 
@@ -95,13 +104,13 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawer closes com.dat.barnaulzoopark.ui.as we dont want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawer open com.dat.barnaulzoopark.ui.as we dont want anything to happen so we leave this blank
 
                 super.onDrawerOpened(drawerView);
             }
@@ -128,12 +137,33 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 }
             }
         });
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (Math.abs(scrollY) > mScrollOffset) {
+                   /* Log.d("oldScrollY", oldScrollY + "");
+                    Log.d("scrollY", scrollY + "");*/
+                    if (scrollY > oldScrollY) {
+                        //onScrollCallback.onScroll(true);
+                        //Log.d("Hide", "hiding");
+                        fabMenu.hideMenu(true);
+                    } else {
+                        //onScrollCallback.onScroll(false);
+                        //Log.d("Show", "showing");
+                        fabMenu.showMenu(true);
+                    }
+                }
+            }
+        });
     }
+
+    private int mScrollOffset = 4;
 
     @Override
     protected void onResume() {
         super.onResume();
-        startSlideShow();
+        //startSlideShow();
     }
 
     private void startSlideShow() {
@@ -190,4 +220,5 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
         }
     }
+
 }

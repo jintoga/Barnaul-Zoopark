@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.SlideShowPicasso;
+package com.dat.barnaulzoopark.ui.slideshowpicasso;
 
 import android.content.Context;
 
@@ -17,7 +17,7 @@ public class PicassoResourceBitmapAdapter extends GenericPicassoBitmapAdapter<In
     }
 
     @Override
-    protected RequestCreator createRequestCreator(Picasso picasso, Integer resourceId ) {
+    protected RequestCreator createRequestCreator(Picasso picasso, Integer resourceId) {
         return picasso.load(resourceId).noFade().skipMemoryCache();
     }
 
