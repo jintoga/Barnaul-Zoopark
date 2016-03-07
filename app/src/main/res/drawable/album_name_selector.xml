@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:centerColor="@color/black_transparent_35"
-        android:endColor="@color/black_transparent_35"
-        android:startColor="@color/black_transparent_35" />
+        android:centerColor="@color/primary_transparent_70"
+        android:endColor="@color/primary_transparent_70"
+        android:startColor="@color/primary_transparent_70" />
     <corners
-        android:bottomLeftRadius="0dp"
-        android:bottomRightRadius="0dp"
-        android:topLeftRadius="0dp"
-        android:topRightRadius="16dp" />
+        android:bottomLeftRadius="2dp"
+        android:bottomRightRadius="2dp"
+        android:topLeftRadius="2dp"
+        android:topRightRadius="2dp" />
 </shape>

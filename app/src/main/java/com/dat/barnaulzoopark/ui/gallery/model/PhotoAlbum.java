@@ -1,17 +1,17 @@
-package com.dat.barnaulzoopark.Gallery.Model;
+package com.dat.barnaulzoopark.ui.gallery.model;
 
 /**
  * Created by DAT on 07-Feb-16.
  */
-public class GalleryAlbum {
+public class PhotoAlbum {
     private String name;
     private String date;
     private String[] urls;
 
-    public GalleryAlbum() {
+    public PhotoAlbum() {
     }
 
-    public GalleryAlbum(String name, String date, String[] urls) {
+    public PhotoAlbum(String name, String date, String[] urls) {
         this.name = name;
         this.date = date;
         this.urls = urls;
