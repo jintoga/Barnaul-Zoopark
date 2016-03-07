@@ -1,14 +1,19 @@
 <resources>
-<!-- Default screen margins, per the Android Design guidelines. -->
-<dimen name="activity_horizontal_margin">16dp</dimen>
-<dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
-<dimen name="normal_14">14sp</dimen>
-<dimen name="normal_12">12sp</dimen>
-<dimen name="normal_10">10.7sp</dimen>
+    <dimen name="normal_24">24sp</dimen>
+    <dimen name="normal_22">22sp</dimen>
+    <dimen name="normal_20">20sp</dimen>
+    <dimen name="normal_18">18sp</dimen>
+    <dimen name="normal_16">16sp</dimen>
+    <dimen name="normal_14">14sp</dimen>
+    <dimen name="normal_12">12sp</dimen>
+    <dimen name="normal_10">10.7sp</dimen>
 
-<dimen name="big_item">300dp</dimen>
-<dimen name="norm_item">200dp</dimen>
-<dimen name="small_item">180dp</dimen>
+    <dimen name="big_item">300dp</dimen>
+    <dimen name="norm_item">200dp</dimen>
+    <dimen name="small_item">180dp</dimen>
 
 </resources>

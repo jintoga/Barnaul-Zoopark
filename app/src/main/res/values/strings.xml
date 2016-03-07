@@ -11,5 +11,7 @@
     <string name="schedule">Расписание зоопарка</string>
     <string name="price">Цена билетов</string>
     <string name="about_zoopark">О зоопарке</string>
-
+    <string name="register_with_email">Регистрация с Email</string>
+    <string name="login_with">Вход через</string>
+    <string name="forget_password"><u>Забыли пароль?</u></string>
 </resources>
