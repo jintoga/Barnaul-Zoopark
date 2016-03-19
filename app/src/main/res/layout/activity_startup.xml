@@ -23,6 +23,7 @@
             android:src="@drawable/logo_banner" />
 
         <LinearLayout
+            android:id="@+id/skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
@@ -51,9 +52,10 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.2" />
+        android:layout_weight="0.3" />
 
     <LinearLayout
+        android:id="@+id/signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -75,10 +77,10 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:layout_height="32dp" />
 
     <LinearLayout
+        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -105,6 +107,7 @@
         android:layout_weight="0.6" />
 
     <LinearLayout
+        android:id="@+id/loginFb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fb_transparent_70"
@@ -131,6 +134,7 @@
 
 
     <LinearLayout
+        android:id="@+id/loginVk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/vk_transparent_85"
