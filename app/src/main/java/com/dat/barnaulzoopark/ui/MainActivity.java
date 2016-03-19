@@ -35,7 +35,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
-    @Bind(R.id.my_toolbar)
+    @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;

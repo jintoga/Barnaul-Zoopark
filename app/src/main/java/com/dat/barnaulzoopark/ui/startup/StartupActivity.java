@@ -1,63 +1,69 @@
 package com.dat.barnaulzoopark.ui.startup;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.startup.login.LoginFragment;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+public class StartupActivity extends AppCompatActivity implements ICallback {
 
-public class StartupActivity extends AppCompatActivity {
-
-    @Bind(R.id.skip)
-    protected View skip;
-    @Bind(R.id.signup)
-    protected View signUp;
-    @Bind(R.id.login)
-    protected View login;
-    @Bind(R.id.loginFb)
-    protected View loginFb;
-    @Bind(R.id.loginVk)
-    protected View loginVk;
+    public static final int SKIP_POS = 0;
+    public static final int LOGIN_POS = 1;
+    public static final int SIGNUP_POS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
-        ButterKnife.bind(this);
+        init();
     }
 
-    @OnClick(R.id.skip)
-    protected void skip() {
-        Log.d("skip", "skip");
+    private void init() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content, new StartupFragment());
+        fragmentTransaction.commit();
     }
 
-    @OnClick(R.id.signup)
-    protected void signUp() {
-        Log.d("signUp", "signUp");
+    @Override
+    public void selected(int position) {
+        changeFragment(position);
     }
 
-    @OnClick(R.id.login)
-    protected void login() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-
-
+    @Override
+    public void back() {
+        onBackPressed();
     }
 
-    @OnClick(R.id.loginFb)
-    protected void loginFb() {
-        Log.d("loginFb", "loginFb");
+    private void changeFragment(int position) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = null;
+        switch (position) {
+            case SKIP_POS:
+                break;
+            case LOGIN_POS:
+                fragment = new LoginFragment();
+                break;
+            case SIGNUP_POS:
+                break;
+            default:
+                break;
+        }
+        if (fragment != null) {
+            fragmentTransaction.replace(R.id.content, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
     }
 
-    @OnClick(R.id.loginVk)
-    protected void loginVk() {
-        Log.d("loginVk", "loginVk");
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
-
 }
