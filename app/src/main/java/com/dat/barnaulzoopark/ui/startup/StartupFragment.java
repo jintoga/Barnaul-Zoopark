@@ -49,7 +49,7 @@ public class StartupFragment extends Fragment {
 
     @OnClick(R.id.signup)
     protected void signUp() {
-        Log.d("signUp", "signUp");
+        callback.selected(StartupActivity.SIGNUP_POS);
     }
 
     @OnClick(R.id.login)

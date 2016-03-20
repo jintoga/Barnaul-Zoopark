@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.startup.login;
+package com.dat.barnaulzoopark.ui.startup.signup;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
 /**
  * Created by DAT on 20-Mar-16.
  */
-public class LoginFragment extends Fragment {
+public class SignupFragment extends Fragment {
 
     @Bind(R.id.email)
     protected View email;
@@ -31,7 +31,7 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_login, container, false);
+        view = inflater.inflate(R.layout.fragment_signup, container, false);
         ButterKnife.bind(this, view);
         email.requestFocus();
         return view;

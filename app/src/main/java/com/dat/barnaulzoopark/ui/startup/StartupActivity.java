@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.startup.login.LoginFragment;
+import com.dat.barnaulzoopark.ui.startup.signup.SignupFragment;
 
 public class StartupActivity extends AppCompatActivity implements ICallback {
 
@@ -47,6 +48,7 @@ public class StartupActivity extends AppCompatActivity implements ICallback {
                 fragment = new LoginFragment();
                 break;
             case SIGNUP_POS:
+                fragment = new SignupFragment();
                 break;
             default:
                 break;
