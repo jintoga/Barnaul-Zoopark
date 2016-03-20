@@ -25,18 +25,18 @@ public class DummyGenerator {
         album2.setDate("2014 г.");
         album2.setName("День рождения зоопарка");
         album2.setUrls(new String[]{
-                "http://zoo22.ru/images/stories/fotoalbom_2013/1.png",
-                "http://zoo22.ru/images/stories/fotoalbom_2013/5.png",
-                "http://zoo22.ru/images/stories/fotoalbom_2013/14.png"
+                "http://www.zoo22.ru/upload/iblock/f5f/f5ff2baf4217f4c415a238c98008e68f.png",
+                "http://www.zoo22.ru/upload/iblock/d01/d01e2fbf7c72c0d8e0d07814156ae9fd.png",
+                "http://www.zoo22.ru/upload/iblock/d54/d545cc7012a53682658dfed57da70251.png"
         });
 
         PhotoAlbum album3 = new PhotoAlbum();
         album3.setDate("2015 г.");
         album3.setName("Благоустройство зоопарка");
         album3.setUrls(new String[]{
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/19._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
 
         PhotoAlbum album4 = new PhotoAlbum();
@@ -51,16 +51,16 @@ public class DummyGenerator {
         album5.setDate("2015 г.");
         album5.setName("Благоустройство зоопарка");
         album5.setUrls(new String[]{
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/19._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
         PhotoAlbum album6 = new PhotoAlbum();
         album6.setDate("2015 г.");
         album6.setName("Благоустройство зоопарка");
         album6.setUrls(new String[]{
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
 
         PhotoAlbum album7 = new PhotoAlbum();
@@ -74,8 +74,8 @@ public class DummyGenerator {
         album8.setDate("2015 г.");
         album8.setName("Благоустройство зоопарка");
         album8.setUrls(new String[]{
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
 
         PhotoAlbum album9 = new PhotoAlbum();
@@ -84,8 +84,9 @@ public class DummyGenerator {
         album9.setUrls(new String[]{
                 "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
                 "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
         PhotoAlbum album10 = new PhotoAlbum();
         album10.setDate("2015 г.");
@@ -93,8 +94,8 @@ public class DummyGenerator {
         album10.setUrls(new String[]{
                 "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
                 "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
 
         PhotoAlbum album11 = new PhotoAlbum();
@@ -103,8 +104,9 @@ public class DummyGenerator {
         album11.setUrls(new String[]{
                 "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
                 "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
 
         PhotoAlbum album12 = new PhotoAlbum();
@@ -113,8 +115,9 @@ public class DummyGenerator {
         album12.setUrls(new String[]{
                 "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
                 "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/1._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg",
-                "http://zoo22.ru/images/stories/d_r_zooparka_2015/13._%D1%84%D0%BE%D1%82%D0%BE_%D0%92.%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BE%D0%B2.jpg"
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
         dummyData.add(album1);
         dummyData.add(album2);

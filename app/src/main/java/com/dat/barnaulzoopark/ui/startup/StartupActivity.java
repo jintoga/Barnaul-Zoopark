@@ -1,11 +1,13 @@
 package com.dat.barnaulzoopark.ui.startup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.startup.login.LoginFragment;
 import com.dat.barnaulzoopark.ui.startup.signup.SignupFragment;
 
@@ -43,6 +45,7 @@ public class StartupActivity extends AppCompatActivity implements ICallback {
         Fragment fragment = null;
         switch (position) {
             case SKIP_POS:
+                goToMain();
                 break;
             case LOGIN_POS:
                 fragment = new LoginFragment();
@@ -58,6 +61,12 @@ public class StartupActivity extends AppCompatActivity implements ICallback {
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
+    }
+
+    private void goToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

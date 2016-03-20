@@ -78,8 +78,7 @@
             android:layout_gravity="center"
             android:text="@string/welcome_back"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_20"
-            android:textStyle="italic" />
+            android:textSize="@dimen/normal_18" />
 
         <Space
             android:layout_width="match_parent"
@@ -141,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/login"
+                android:text="@string/sign_in"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_24" />
         </LinearLayout>

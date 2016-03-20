@@ -16,9 +16,10 @@
     <string name="sign_up">Регистрация</string>
     <string name="login">Вход</string>
     <string name="create_acc">Создать</string>
+    <string name="sign_in">Войти</string>
     <string name="forget_password"><u>Забыли пароль?</u></string>
     <string name="enter_email">Введите E-mail</string>
     <string name="enter_password">Введите пароль</string>
     <string name="welcome_back">С возвращением!</string>
-    <string name="create_to_support">Создать новый аккаунт, чтобы с нами помочь нашим любимым животным и также получить новости о зоопарке и прикольные подарки</string>
+    <string name="create_to_support">Создать новый аккаунт, чтобы с нами помочь нашим любимым животным и также получить новости о зоопарке и прикольные подарки!</string>
 </resources>
