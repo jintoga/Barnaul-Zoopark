@@ -20,5 +20,6 @@
         <item name="colorControlNormal">@color/gray_transparent_70</item>
         <item name="colorControlActivated">@color/white</item>
         <item name="colorControlHighlight">@color/white</item>
+        <item name="android:typeface">monospace</item>
     </style>
 </resources>

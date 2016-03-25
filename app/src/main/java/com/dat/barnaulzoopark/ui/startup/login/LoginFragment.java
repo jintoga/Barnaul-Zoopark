@@ -1,12 +1,14 @@
 package com.dat.barnaulzoopark.ui.startup.login;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.PasswordView;
@@ -22,7 +24,7 @@ import butterknife.OnClick;
 public class LoginFragment extends Fragment {
 
     @Bind(R.id.email)
-    protected View email;
+    protected EditText email;
     @Bind(R.id.password)
     protected PasswordView password;
     private View view;
@@ -34,6 +36,7 @@ public class LoginFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         email.requestFocus();
+        email.setTypeface(Typeface.MONOSPACE);
         return view;
     }
 

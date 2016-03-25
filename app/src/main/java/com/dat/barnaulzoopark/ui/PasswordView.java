@@ -34,6 +34,7 @@ public class PasswordView extends FrameLayout {
     private void init() {
         inflate(getContext(), R.layout.password_view, this);
         password = (EditText) findViewById(R.id.editTextPassword);
+        password.setTypeface(Typeface.MONOSPACE);
         reveal = (ImageButton) findViewById(R.id.imageButtonShowPassword);
         reveal.setOnClickListener(new OnClickListener() {
             @Override

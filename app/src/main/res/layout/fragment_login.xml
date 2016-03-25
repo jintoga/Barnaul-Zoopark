@@ -54,8 +54,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/forget_password"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/normal_14"
-                    android:textStyle="italic" />
+                    android:textSize="@dimen/normal_14" />
             </LinearLayout>
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
@@ -78,7 +77,8 @@
             android:layout_gravity="center"
             android:text="@string/welcome_back"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_18" />
+            android:textSize="@dimen/normal_18"
+            android:textStyle="italic" />
 
         <Space
             android:layout_width="match_parent"
@@ -99,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
+            android:background="@drawable/custom_edittext_selector"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
             android:lines="1"
