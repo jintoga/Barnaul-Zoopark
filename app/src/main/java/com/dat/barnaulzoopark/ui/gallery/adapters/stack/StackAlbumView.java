@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dat.barnaulzoopark.R;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -18,11 +19,11 @@ import butterknife.ButterKnife;
 public class StackAlbumView extends LinearLayout {
 
     @Bind(R.id.image1)
-    protected ImageView image1;
+    protected RoundedImageView image1;
     @Bind(R.id.image2)
-    protected ImageView image2;
+    protected RoundedImageView image2;
     @Bind(R.id.image3)
-    protected ImageView image3;
+    protected RoundedImageView image3;
     @Bind(R.id.card1)
     protected CardView card1;
     @Bind(R.id.card2)
