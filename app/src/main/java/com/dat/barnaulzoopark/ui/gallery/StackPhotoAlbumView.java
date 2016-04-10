@@ -1,9 +1,8 @@
-package com.dat.barnaulzoopark.ui.gallery.adapters.stack;
+package com.dat.barnaulzoopark.ui.gallery;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dat.barnaulzoopark.R;
@@ -16,7 +15,7 @@ import butterknife.ButterKnife;
 /**
  * Created by DAT on 22-Feb-16.
  */
-public class StackAlbumView extends LinearLayout {
+public class StackPhotoAlbumView extends LinearLayout {
 
     @Bind(R.id.image1)
     protected RoundedImageView image1;
@@ -33,7 +32,7 @@ public class StackAlbumView extends LinearLayout {
 
     private Context context;
 
-    public StackAlbumView(Context context, AttributeSet attrs) {
+    public StackPhotoAlbumView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         init();

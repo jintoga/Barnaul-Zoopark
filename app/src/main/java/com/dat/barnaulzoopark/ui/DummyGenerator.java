@@ -3,14 +3,15 @@ package com.dat.barnaulzoopark.ui;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by DAT on 23-Feb-16.
  */
 public class DummyGenerator {
-    public static ArrayList<PhotoAlbum> getDummyData() {
+    public static List<PhotoAlbum> getDummyData() {
 
-        ArrayList<PhotoAlbum> dummyData = new ArrayList<>();
+        List<PhotoAlbum> dummyData = new ArrayList<>();
         PhotoAlbum album1 = new PhotoAlbum();
         album1.setDate("2013 г.");
         album1.setName("День рождения зоопарка");

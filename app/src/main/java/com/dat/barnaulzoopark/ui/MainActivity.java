@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.gallery.GalleryFragment;
+import com.dat.barnaulzoopark.ui.gallery.PhotoAlbumsFragment;
 import com.dat.barnaulzoopark.ui.slideshowpicasso.GenericPicassoBitmapAdapter;
 import com.dat.barnaulzoopark.ui.slideshowpicasso.PicassoRemoteBitmapAdapter;
 import com.github.clans.fab.FloatingActionMenu;
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
             case R.id.photoGallery:
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.container, new GalleryFragment());
+                fragmentTransaction.replace(R.id.container, new PhotoAlbumsFragment());
                 fragmentTransaction.commit();
                 return true;
             default:

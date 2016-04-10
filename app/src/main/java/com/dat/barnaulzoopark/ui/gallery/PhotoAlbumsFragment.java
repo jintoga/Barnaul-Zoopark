@@ -9,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dat.barnaulzoopark.ui.DummyGenerator;
-import com.dat.barnaulzoopark.ui.gallery.adapters.stack.StackAlbumAdapter;
-import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.DummyGenerator;
+import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,11 +21,11 @@ import butterknife.ButterKnife;
 /**
  * Created by DAT on 07-Feb-16.
  */
-public class GalleryFragment extends Fragment {
+public class PhotoAlbumsFragment extends Fragment {
 
     @Bind(R.id.photoAlbums)
     protected RecyclerView photoAlbums;
-    StackAlbumAdapter adapter;
+    PhotoAlbumsAdapter adapter;
     View view;
 
 
@@ -48,8 +47,8 @@ public class GalleryFragment extends Fragment {
         photoAlbums.setHasFixedSize(true);
         photoAlbums.setLayoutManager(gridlayoutManager);
 
-        ArrayList<PhotoAlbum> data = DummyGenerator.getDummyData();
-        adapter = new StackAlbumAdapter(data, getContext());
+        List<PhotoAlbum> data = DummyGenerator.getDummyData();
+        adapter = new PhotoAlbumsAdapter(data, getContext());
         photoAlbums.setAdapter(adapter);
 
 
