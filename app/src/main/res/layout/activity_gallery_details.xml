@@ -17,7 +17,7 @@
         app:titleTextColor="@color/white" />
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/fragmentPhotoGallery"
         android:name="com.dat.barnaulzoopark.ui.gallery.gallerydetails.PhotoGalleryFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

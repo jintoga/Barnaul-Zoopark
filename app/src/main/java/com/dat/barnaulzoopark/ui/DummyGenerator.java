@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui;
 
+import com.dat.barnaulzoopark.ui.gallery.model.Photo;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 
 import java.util.ArrayList;
@@ -9,9 +10,11 @@ import java.util.List;
  * Created by DAT on 23-Feb-16.
  */
 public class DummyGenerator {
+
+    static List<PhotoAlbum> dummyData = new ArrayList<>();
+
     public static List<PhotoAlbum> getDummyData() {
 
-        List<PhotoAlbum> dummyData = new ArrayList<>();
         PhotoAlbum album1 = new PhotoAlbum();
         album1.setDate("2013 г.");
         album1.setName("День рождения зоопарка");
@@ -133,7 +136,27 @@ public class DummyGenerator {
         dummyData.add(album11);
         dummyData.add(album12);
 
+        int i = 0;
+        for (PhotoAlbum album : dummyData) {
+            album.setId(String.valueOf(i++));
+        }
         return dummyData;
+    }
+
+    public static List<Photo> getPhotoAlbumById(String albumId) {
+        List<Photo> data = new ArrayList<>();
+        for (PhotoAlbum album : dummyData) {
+            if (albumId.equals(album.getId())) {
+                for (int i = 0; i < album.getUrls().length; i++) {
+                    Photo photo = new Photo();
+                    photo.setDate(album.getDate());
+                    photo.setId(String.valueOf(i));
+                    photo.setUrl(album.getUrls()[i]);
+                    data.add(photo);
+                }
+            }
+        }
+        return data;
     }
 
 }

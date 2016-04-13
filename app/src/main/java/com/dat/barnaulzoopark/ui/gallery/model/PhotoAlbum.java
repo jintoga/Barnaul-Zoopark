@@ -1,11 +1,9 @@
 package com.dat.barnaulzoopark.ui.gallery.model;
 
-import com.dat.barnaulzoopark.ui.gallery.SerializableItem;
-
 /**
  * Created by DAT on 07-Feb-16.
  */
-public class PhotoAlbum implements SerializableItem {
+public class PhotoAlbum {
 
     private String id;
     private String name;
@@ -21,12 +19,10 @@ public class PhotoAlbum implements SerializableItem {
         this.urls = urls;
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public void setId(String id) {
         this.id = id;
     }

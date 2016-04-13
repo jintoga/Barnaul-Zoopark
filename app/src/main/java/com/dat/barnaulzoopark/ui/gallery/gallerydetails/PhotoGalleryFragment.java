@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
+import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.DummyGenerator;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.dat.barnaulzoopark.R;
 
 /**
  * Created by DAT on 10-Apr-16.
@@ -27,10 +30,11 @@ public class PhotoGalleryFragment extends Fragment {
     @Bind(R.id.loading)
     protected ProgressBar loading;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gallery_details, container, false);
         ButterKnife.bind(this, view);
 
@@ -43,5 +47,13 @@ public class PhotoGalleryFragment extends Fragment {
         gallery.setAdapter(adapter);
 
         return view;
+    }
+
+
+    public void loadData(String albumId) {
+        if (albumId != null) {
+            adapter.setData(DummyGenerator.getPhotoAlbumById(albumId));
+            adapter.notifyDataSetChanged();
+        }
     }
 }
