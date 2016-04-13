@@ -5,5 +5,6 @@ package com.dat.barnaulzoopark.ui.startup;
  */
 public interface ICallback {
     void selected(int position);
+
     void back();
 }

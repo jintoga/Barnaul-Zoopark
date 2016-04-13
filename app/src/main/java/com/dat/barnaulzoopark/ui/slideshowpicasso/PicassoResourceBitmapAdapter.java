@@ -1,10 +1,8 @@
 package com.dat.barnaulzoopark.ui.slideshowpicasso;
 
 import android.content.Context;
-
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-
 import java.util.Collection;
 
 /**
@@ -20,6 +18,4 @@ public class PicassoResourceBitmapAdapter extends GenericPicassoBitmapAdapter<In
     protected RequestCreator createRequestCreator(Picasso picasso, Integer resourceId) {
         return picasso.load(resourceId).noFade().skipMemoryCache();
     }
-
-
 }

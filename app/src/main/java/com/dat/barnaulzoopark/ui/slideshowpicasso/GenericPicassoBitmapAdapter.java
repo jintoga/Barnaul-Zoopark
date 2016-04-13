@@ -4,12 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
-
 import com.marvinlabs.widget.slideshow.adapter.BitmapAdapter;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Target;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,7 +31,7 @@ public abstract class GenericPicassoBitmapAdapter<T> extends BitmapAdapter {
      * Constructor
      *
      * @param context The context in which the adapter is created (activity)
-     * @param items   The URLs of the images to load
+     * @param items The URLs of the images to load
      */
     public GenericPicassoBitmapAdapter(Context context, Collection<T> items, int width, int height) {
         super(context);
@@ -67,8 +65,7 @@ public abstract class GenericPicassoBitmapAdapter<T> extends BitmapAdapter {
     //==
 
     /**
-     * Stop all running download tasks. This method should be called when your activity gets
-     * stopped (in {#onStop})
+     * Stop all running download tasks. This method should be called when your activity gets stopped (in {#onStop})
      */
     public void shutdown() {
         activeTargets.clear();
@@ -104,17 +101,15 @@ public abstract class GenericPicassoBitmapAdapter<T> extends BitmapAdapter {
         }
     }
 
-
     /**
-     * Create the Picasso request. Subclasses can customize it by simply overriding this method. By
-     * default, we could use noFade() and skipMemoryCache()
+     * Create the Picasso request. Subclasses can customize it by simply overriding this method. By default, we could
+     * use noFade() and skipMemoryCache()
      *
      * @param picasso The picasso instance to use
-     * @param item    The item for which to load the image
+     * @param item The item for which to load the image
      * @return The request creator object from Picasso
      */
     protected abstract RequestCreator createRequestCreator(Picasso picasso, T item);
-
 
     /**
      * A target for Picasso to load the bitmap into
@@ -140,5 +135,4 @@ public abstract class GenericPicassoBitmapAdapter<T> extends BitmapAdapter {
         public void onPrepareLoad(Drawable drawable) {
         }
     }
-
 }

@@ -5,15 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.gallery.gallerydetails.PhotoGalleryActivity;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
-
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by DAT on 22-Feb-16.
@@ -36,7 +33,6 @@ public class PhotoAlbumsAdapter extends RecyclerView.Adapter<PhotoAlbumsAdapter.
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
-
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
@@ -64,12 +60,9 @@ public class PhotoAlbumsAdapter extends RecyclerView.Adapter<PhotoAlbumsAdapter.
         @Bind(R.id.stackAlbumView)
         protected StackPhotoAlbumView stackPhotoAlbumView;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
-
-
 }

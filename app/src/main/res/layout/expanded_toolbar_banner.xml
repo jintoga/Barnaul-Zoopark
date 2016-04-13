@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/toolbar_banner"
     android:layout_height="match_parent"
+    android:background="@drawable/toolbar_banner"
     tools:layout_height="300dp">
 
     <com.marvinlabs.widget.slideshow.SlideShowView
@@ -14,13 +14,13 @@
         android:layout_gravity="center"
         app:selector="@drawable/item_background_holo_light">
 
-       <!-- <ImageView
-            android:id="@+id/imageViewBannerDefault"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@drawable/toolbar_banner" />-->
+        <!-- <ImageView
+             android:id="@+id/imageViewBannerDefault"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_gravity="center"
+             android:scaleType="fitXY"
+             android:src="@drawable/toolbar_banner" />-->
     </com.marvinlabs.widget.slideshow.SlideShowView>
 
     <LinearLayout

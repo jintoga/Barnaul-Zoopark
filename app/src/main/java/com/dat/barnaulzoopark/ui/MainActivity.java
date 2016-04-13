@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.gallery.PhotoAlbumsFragment;
 import com.dat.barnaulzoopark.ui.slideshowpicasso.GenericPicassoBitmapAdapter;
@@ -26,12 +28,7 @@ import com.marvinlabs.widget.slideshow.TransitionFactory;
 import com.marvinlabs.widget.slideshow.playlist.RandomPlayList;
 import com.marvinlabs.widget.slideshow.transition.FadeTransitionFactory;
 import com.squareup.picasso.Picasso;
-
 import java.util.Arrays;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
@@ -55,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     @Bind(R.id.imageButtonStopSlideShow)
     protected ImageButton imageButtonStopSlideShow;
 
-
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
 
@@ -72,19 +68,18 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         setupNavDrawer();
-
     }
 
     private SlideShowAdapter createPicassoAdapter() {
         Picasso.with(this).setLoggingEnabled(true);
 
-        String[] slideUrls = new String[]{
-                "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
+        String[] slideUrls = new String[] {
+                "http://s11.postimg"
+                        + ".org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
                 "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
                 "http://s12.postimg.org/h2j3q4z7h/Y7_SJw_HIFt_Ks.jpg"
         };
         return new PicassoRemoteBitmapAdapter(this, Arrays.asList(slideUrls), 300, 300);
-
     }
 
     @Override
@@ -100,21 +95,26 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private void setupNavDrawer() {
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0) {
+        ActionBarDrawerToggle actionBarDrawerToggle =
+                new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0) {
 
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes com.dat.barnaulzoopark.ui.as we dont want anything to happen so we leave this blank
-                super.onDrawerClosed(drawerView);
-            }
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Code here will be triggered once the drawer closes com.dat
+                        // .barnaulzoopark.ui.as we dont want anything to happen so we leave this
+                        // blank
+                        super.onDrawerClosed(drawerView);
+                    }
 
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open com.dat.barnaulzoopark.ui.as we dont want anything to happen so we leave this blank
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        // Code here will be triggered once the drawer open com.dat
+                        // .barnaulzoopark.ui.as we dont want anything to happen so we leave this
+                        // blank
 
-                super.onDrawerOpened(drawerView);
-            }
-        };
+                        super.onDrawerOpened(drawerView);
+                    }
+                };
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
@@ -125,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset == 0 - appBarLayout.getTotalScrollRange()) {     //fully collapsed
+                if (verticalOffset
+                        == 0 - appBarLayout.getTotalScrollRange()) {     //fully collapsed
                     toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     slideShowIsPlaying = false;
                     slideShowView.pause();
@@ -140,7 +141,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
+                    int oldScrollY) {
                 if (Math.abs(scrollY) > mScrollOffset) {
                    /* Log.d("oldScrollY", oldScrollY + "");
                     Log.d("scrollY", scrollY + "");*/
@@ -174,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         playList.setSlideDuration(2000);
         slideShowView.setPlaylist(playList);
         slideShowView.setTransitionFactory(transitionFactory);
-
     }
 
     boolean slideShowIsPlaying = false;
@@ -199,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         slideShowIsPlaying = false;
         imageButtonSlideShowTrigger.setImageResource(R.drawable.ic_play_arrow_24dp);
         slideShowView.stop();
-
     }
 
     @Override
@@ -212,7 +212,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             case R.id.ourAnimals:
                 return true;
             case R.id.photoGallery:
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction =
+                        getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container, new PhotoAlbumsFragment());
                 fragmentTransaction.commit();
                 return true;
@@ -220,5 +221,4 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
         }
     }
-
 }

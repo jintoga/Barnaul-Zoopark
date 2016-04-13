@@ -43,10 +43,10 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginBottom="8dp"
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="Nguyen Quoc Dat"
             android:textColor="@color/colorText"
             android:textStyle="bold" />

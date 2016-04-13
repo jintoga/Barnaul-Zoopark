@@ -1,18 +1,19 @@
 package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+import com.dat.barnaulzoopark.ui.gallery.model.Photo;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by DAT on 10-Apr-16.
  */
 public class PhotoGalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
+    private List<Photo> data = new ArrayList<>();
 
-    public PhotoGalleryAdapter(Context context) {
-        this.context = context;
+    public PhotoGalleryAdapter() {
     }
 
     @Override
@@ -26,6 +27,6 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 }

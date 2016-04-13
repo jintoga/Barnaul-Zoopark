@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
-import com.dat.barnaulzoopark.R;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.R;
 
 /**
  * Created by DAT on 10-Apr-16.
@@ -32,7 +30,7 @@ public class PhotoGalleryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gallery_details, container, false);
         ButterKnife.bind(this, view);
 
@@ -40,10 +38,9 @@ public class PhotoGalleryFragment extends Fragment {
         gallery.setLayoutManager(layoutManager);
 
         if (adapter == null) {
-            adapter = new PhotoGalleryAdapter(getContext());
+            adapter = new PhotoGalleryAdapter();
         }
         gallery.setAdapter(adapter);
-
 
         return view;
     }

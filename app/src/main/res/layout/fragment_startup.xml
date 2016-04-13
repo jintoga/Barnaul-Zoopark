@@ -7,11 +7,11 @@
 
 
     <FrameLayout
-        android:paddingBottom="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/toolbar_gradient"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="24dp">
 
         <ImageView
             android:layout_width="160dp"
