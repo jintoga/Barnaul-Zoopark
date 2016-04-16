@@ -38,9 +38,11 @@ public class PhotoGalleryFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_gallery_details, container, false);
         ButterKnife.bind(this, view);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         gallery.setLayoutManager(layoutManager);
-
+        gallery.addItemDecoration(new GridSpacingItemDecoration(3,
+                getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
+                true));
         if (adapter == null) {
             adapter = new PhotoGalleryAdapter();
         }

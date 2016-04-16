@@ -16,4 +16,6 @@
     <dimen name="norm_item">200dp</dimen>
     <dimen name="small_item">180dp</dimen>
 
+    <dimen name="photo_gallery_items_span">4dp</dimen>
+
 </resources>
