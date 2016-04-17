@@ -2,9 +2,7 @@ package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dat.barnaulzoopark.R;
@@ -36,9 +34,4 @@ public class PhotoGalleryViewHolder extends RecyclerView.ViewHolder {
                 .into(thumbnail);
     }
 
-    public static PhotoGalleryViewHolder createInParent(ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.photo_gallery_item, parent, false);
-        return new PhotoGalleryViewHolder(view);
-    }
 }

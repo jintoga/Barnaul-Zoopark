@@ -1,10 +1,12 @@
 package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ProgressBar;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
+import com.dat.barnaulzoopark.ui.gallery.model.Photo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * Created by DAT on 10-Apr-16.
  */
-public class PhotoGalleryFragment extends Fragment {
+public class PhotoGalleryFragment extends Fragment implements PhotoGalleryAdapter.GalleryAdapterListener {
 
     private View view;
 
@@ -44,7 +47,7 @@ public class PhotoGalleryFragment extends Fragment {
                 getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
                 true));
         if (adapter == null) {
-            adapter = new PhotoGalleryAdapter();
+            adapter = new PhotoGalleryAdapter(this);
         }
         gallery.setAdapter(adapter);
 
@@ -57,5 +60,11 @@ public class PhotoGalleryFragment extends Fragment {
             adapter.setData(DummyGenerator.getPhotoAlbumById(albumId));
             adapter.notifyDataSetChanged();
         }
+    }
+
+
+    @Override
+    public void onPhotoSelected(@NonNull Photo photo) {
+        Log.d("Photo", photo.getUrl());
     }
 }

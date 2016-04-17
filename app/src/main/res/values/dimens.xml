@@ -17,5 +17,5 @@
     <dimen name="small_item">180dp</dimen>
 
     <dimen name="photo_gallery_items_span">4dp</dimen>
-
+    <dimen name="photo_album_items_span">12dp</dimen>
 </resources>

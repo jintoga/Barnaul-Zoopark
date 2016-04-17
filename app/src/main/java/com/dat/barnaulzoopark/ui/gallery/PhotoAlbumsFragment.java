@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
+import com.dat.barnaulzoopark.ui.gallery.gallerydetails.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 
 import java.util.List;
@@ -45,7 +46,9 @@ public class PhotoAlbumsFragment extends Fragment {
         photoAlbums.setNestedScrollingEnabled(false);
         photoAlbums.setHasFixedSize(true);
         photoAlbums.setLayoutManager(gridlayoutManager);
-
+        photoAlbums.addItemDecoration(new GridSpacingItemDecoration(2,
+                getContext().getResources().getDimensionPixelSize(R.dimen.photo_album_items_span),
+                true));
         List<PhotoAlbum> data = DummyGenerator.getDummyData();
         adapter = new PhotoAlbumsAdapter(data, getContext());
         photoAlbums.setAdapter(adapter);
