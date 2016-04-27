@@ -14,9 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.gallery.PhotoAlbumsFragment;
 import com.dat.barnaulzoopark.ui.slideshowpicasso.GenericPicassoBitmapAdapter;
@@ -28,7 +26,12 @@ import com.marvinlabs.widget.slideshow.TransitionFactory;
 import com.marvinlabs.widget.slideshow.playlist.RandomPlayList;
 import com.marvinlabs.widget.slideshow.transition.FadeTransitionFactory;
 import com.squareup.picasso.Picasso;
+
 import java.util.Arrays;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private SlideShowAdapter createPicassoAdapter() {
         Picasso.with(this).setLoggingEnabled(true);
 
-        String[] slideUrls = new String[] {
+        String[] slideUrls = new String[]{
                 "http://s11.postimg"
                         + ".org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
                 "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
@@ -142,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
-                    int oldScrollY) {
+                                       int oldScrollY) {
                 if (Math.abs(scrollY) > mScrollOffset) {
                    /* Log.d("oldScrollY", oldScrollY + "");
                     Log.d("scrollY", scrollY + "");*/
