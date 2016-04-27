@@ -10,5 +10,5 @@
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:src="@drawable/test2" />
+        tools:src="@drawable/test_image" />
 </com.dat.barnaulzoopark.ui.gallery.SquareFrameLayout>

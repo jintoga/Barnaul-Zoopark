@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/toolbar_gradient"
@@ -45,10 +46,12 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/default_width"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="0.25"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_width="match_parent">
 
         <Space
             android:layout_width="match_parent"
@@ -64,7 +67,7 @@
             android:gravity="center"
             android:text="@string/create_to_support"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_14"
+            android:textSize="@dimen/normal_18"
             android:textStyle="italic" />
 
         <Space
@@ -75,10 +78,12 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/default_width"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="0.75"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_width="match_parent">
 
         <EditText
             android:id="@+id/email"
@@ -88,6 +93,7 @@
             android:layout_marginRight="32dp"
             android:background="@drawable/custom_edittext_selector"
             android:hint="@string/enter_email"
+            android:inputType="textEmailAddress"
             android:lines="1"
             android:padding="12dp"
             android:textColor="@color/white"

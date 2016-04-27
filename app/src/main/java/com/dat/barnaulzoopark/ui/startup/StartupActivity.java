@@ -7,11 +7,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.BaseActivity;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.startup.login.LoginFragment;
 import com.dat.barnaulzoopark.ui.startup.signup.SignupFragment;
 
-public class StartupActivity extends AppCompatActivity implements ICallback {
+public class StartupActivity extends BaseActivity implements ICallback {
 
     public static final int SKIP_POS = 0;
     public static final int LOGIN_POS = 1;
