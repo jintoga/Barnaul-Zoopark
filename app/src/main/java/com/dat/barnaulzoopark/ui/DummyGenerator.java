@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui;
 
+import com.dat.barnaulzoopark.ui.gallery.model.Photo;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 
 import java.util.ArrayList;
@@ -9,9 +10,11 @@ import java.util.List;
  * Created by DAT on 23-Feb-16.
  */
 public class DummyGenerator {
+
+    static List<PhotoAlbum> dummyData = new ArrayList<>();
+
     public static List<PhotoAlbum> getDummyData() {
 
-        List<PhotoAlbum> dummyData = new ArrayList<>();
         PhotoAlbum album1 = new PhotoAlbum();
         album1.setDate("2013 г.");
         album1.setName("День рождения зоопарка");
@@ -118,6 +121,18 @@ public class DummyGenerator {
                 "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
                 "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
                 "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
+                "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
+                "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
+                "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
                 "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png"
         });
         dummyData.add(album1);
@@ -133,7 +148,27 @@ public class DummyGenerator {
         dummyData.add(album11);
         dummyData.add(album12);
 
+        int i = 0;
+        for (PhotoAlbum album : dummyData) {
+            album.setId(String.valueOf(i++));
+        }
         return dummyData;
+    }
+
+    public static List<Photo> getPhotoAlbumById(String albumId) {
+        List<Photo> data = new ArrayList<>();
+        for (PhotoAlbum album : dummyData) {
+            if (albumId.equals(album.getId())) {
+                for (int i = 0; i < album.getUrls().length; i++) {
+                    Photo photo = new Photo();
+                    photo.setDate(album.getDate());
+                    photo.setId(String.valueOf(i));
+                    photo.setUrl(album.getUrls()[i]);
+                    data.add(photo);
+                }
+            }
+        }
+        return data;
     }
 
 }
