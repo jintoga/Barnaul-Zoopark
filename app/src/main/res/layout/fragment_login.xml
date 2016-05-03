@@ -96,7 +96,7 @@
         android:layout_gravity="center"
         android:layout_weight="0.75"
         android:orientation="vertical"
-        tools:layout_width="500dp">
+        tools:layout_width="match_parent">
 
         <EditText
             android:id="@+id/email"
