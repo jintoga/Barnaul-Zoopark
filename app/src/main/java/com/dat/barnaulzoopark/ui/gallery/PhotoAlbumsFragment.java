@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.gallery;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,8 +27,9 @@ public class PhotoAlbumsFragment extends Fragment {
 
     @Bind(R.id.photoAlbums)
     protected RecyclerView photoAlbums;
-    PhotoAlbumsAdapter adapter;
+    private PhotoAlbumsAdapter adapter;
     View view;
+    private GridLayoutManager gridlayoutManager;
 
     @Nullable
     @Override
@@ -40,15 +42,23 @@ public class PhotoAlbumsFragment extends Fragment {
     }
 
     private void initRecyclerView() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridlayoutManager = new GridLayoutManager(getContext(), 3);
+            photoAlbums.addItemDecoration(new GridSpacingItemDecoration(3,
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_album_items_span),
+                    true));
+        } else {
 
-        GridLayoutManager gridlayoutManager = new GridLayoutManager(getContext(), 2);
+            gridlayoutManager = new GridLayoutManager(getContext(), 2);
+            photoAlbums.addItemDecoration(new GridSpacingItemDecoration(2,
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_album_items_span),
+                    true));
+        }
 
         photoAlbums.setNestedScrollingEnabled(false);
         photoAlbums.setHasFixedSize(true);
         photoAlbums.setLayoutManager(gridlayoutManager);
-        photoAlbums.addItemDecoration(new GridSpacingItemDecoration(2,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_album_items_span),
-                true));
+
         List<PhotoAlbum> data = DummyGenerator.getDummyData();
         adapter = new PhotoAlbumsAdapter(data, getContext());
         photoAlbums.setAdapter(adapter);

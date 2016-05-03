@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,10 +30,10 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryAdapte
     @Bind(R.id.gallery)
     protected RecyclerView gallery;
     private PhotoGalleryAdapter adapter;
+    private GridLayoutManager layoutManager;
 
     @Bind(R.id.loading)
     protected ProgressBar loading;
-
 
     @Nullable
     @Override
@@ -40,12 +41,19 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryAdapte
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gallery_details, container, false);
         ButterKnife.bind(this, view);
-
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            layoutManager = new GridLayoutManager(getContext(), 3);
+            gallery.addItemDecoration(new GridSpacingItemDecoration(3,
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
+                    true));
+        } else {
+            layoutManager = new GridLayoutManager(getContext(), 2);
+            gallery.addItemDecoration(new GridSpacingItemDecoration(2,
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
+                    true));
+        }
         gallery.setLayoutManager(layoutManager);
-        gallery.addItemDecoration(new GridSpacingItemDecoration(3,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                true));
+
         if (adapter == null) {
             adapter = new PhotoGalleryAdapter(this);
         }

@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2196F3</color>
-    <color name="colorPrimaryLight">#BBDEFB</color>
-    <color name="colorPrimaryDark">#1976D2</color>
-    <color name="colorAccent">#03A9F4</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryLight">#C8E6C9</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#CDDC39</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorTextSecondary">#727272</color>
     <color name="colorDivider">#B6B6B6</color>
 
-    <color name="banner_background">#448AFF</color>
+    <color name="banner_background">#4da651</color>
 
     <color name="black">#000000</color>
+    <color name="gray">#dfdfdf</color>
     <color name="white">#ffffff</color>
 
     <color name="black_transparent_70">#B3000000</color>
     <color name="black_transparent_55">#8C000000</color>
     <color name="black_transparent_35">#59000000</color>
 
+    <color name="album_ribbon_bg">#ffb536</color>
 
     <color name="primary_transparent_70">#B32196F3</color>
     <color name="primary_transparent_35">#592196F3</color>
     <color name="primary_transparent_00">#002196F3</color>
 
-    <color name="gray">#dfdfdf</color>
     <color name="gray_transparent_70">#b3dfdfdf</color>
     <color name="fb_transparent_70">#a63e5c9a</color>
     <color name="vk_transparent_85">#d954769a</color>
