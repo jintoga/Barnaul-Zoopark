@@ -46,12 +46,11 @@
 
 
     <LinearLayout
-        android:layout_width="@dimen/default_width"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="0.25"
-        android:orientation="vertical"
-        tools:layout_width="match_parent">
+        android:orientation="vertical">
 
         <Space
             android:layout_width="match_parent"
@@ -122,8 +121,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
             android:background="@drawable/rounded_corner_signup_btn_bg"
             android:orientation="horizontal"
             android:paddingBottom="12dp"

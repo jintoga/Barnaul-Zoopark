@@ -65,7 +65,7 @@
         android:orientation="horizontal"
         android:paddingBottom="12dp"
         android:paddingTop="12dp"
-        tools:layout_width="500dp">
+        tools:layout_width="match_parent">
 
         <TextView
             android:layout_width="match_parent"
@@ -92,7 +92,7 @@
         android:orientation="horizontal"
         android:paddingBottom="12dp"
         android:paddingTop="12dp"
-        tools:layout_width="500dp">
+        tools:layout_width="360dp">
 
         <TextView
             android:layout_width="match_parent"

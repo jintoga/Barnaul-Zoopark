@@ -28,8 +28,6 @@
 
                 <include
                     layout="@layout/expanded_toolbar_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
                     app:layout_collapseMode="parallax" />
 
 
@@ -74,14 +72,14 @@
 
     <include layout="@layout/navigation_drawer" />
 
-   <!-- <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        app:menu="@menu/nav_drawer_menu">
+    <!-- <android.support.design.widget.NavigationView
+         android:id="@+id/navigation_view"
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:layout_gravity="start"
+         android:background="@color/white"
+         app:menu="@menu/nav_drawer_menu">
 
-        <include layout="@layout/nav_drawer_header" />
-    </android.support.design.widget.NavigationView>-->
+         <include layout="@layout/nav_drawer_header" />
+     </android.support.design.widget.NavigationView>-->
 </android.support.v4.widget.DrawerLayout>

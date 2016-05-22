@@ -20,4 +20,7 @@
     <dimen name="photo_album_items_span">12dp</dimen>
 
     <dimen name="default_width">-1px</dimen>
+    <dimen name="expanded_banner_height">260dp</dimen>
+    <dimen name="stack_album_view_img1_margin">20dp</dimen>
+    <dimen name="stack_album_view_img2_margin">10dp</dimen>
 </resources>

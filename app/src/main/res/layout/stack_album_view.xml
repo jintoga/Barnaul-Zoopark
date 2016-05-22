@@ -44,8 +44,8 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="28dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginRight="@dimen/stack_album_view_img2_margin"
+            android:layout_marginTop="@dimen/stack_album_view_img2_margin"
             card_view:cardElevation="3dp"
             card_view:cardPreventCornerOverlap="false">
 
@@ -71,8 +71,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginRight="@dimen/stack_album_view_img1_margin"
+            android:layout_marginTop="@dimen/stack_album_view_img1_margin"
             card_view:cardElevation="4dp"
             card_view:cardPreventCornerOverlap="false">
 
