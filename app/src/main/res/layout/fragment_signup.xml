@@ -45,17 +45,11 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="0.25"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,18 +63,17 @@
             android:textSize="@dimen/normal_18"
             android:textStyle="italic" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1" />
-    </LinearLayout>
+    </FrameLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1" />
 
     <LinearLayout
         android:layout_width="@dimen/default_width"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.75"
         android:orientation="vertical"
         tools:layout_width="match_parent">
 
@@ -101,45 +94,43 @@
             android:theme="@style/EditText"
             android:typeface="monospace" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
-
         <com.dat.barnaulzoopark.ui.PasswordView
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp" />
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="24dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="36dp" />
-
-        <LinearLayout
-            android:id="@+id/signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/rounded_corner_signup_btn_bg"
-            android:orientation="horizontal"
-            android:paddingBottom="12dp"
-            android:paddingTop="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/create_acc"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_24" />
-        </LinearLayout>
-
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/signup"
+        android:layout_width="@dimen/default_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/rounded_corner_signup_btn_bg"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        tools:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/create_acc"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_24" />
+    </LinearLayout>
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3" />
 </LinearLayout>
