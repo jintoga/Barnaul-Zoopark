@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/toolbar_gradient"
         android:orientation="horizontal"
-        android:paddingBottom="24dp">
+        android:paddingBottom="12dp">
 
         <ImageView
-            android:layout_width="160dp"
-            android:layout_height="60dp"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
             android:layout_gravity="left|top"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -78,7 +78,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="32dp" />
+        android:layout_height="16dp" />
 
     <LinearLayout
         android:id="@+id/login"
@@ -125,11 +125,11 @@
             android:gravity="center"
             android:text="@string/login_with"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_20" />
+            android:textSize="@dimen/normal_18" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/fb_white_ic"
             app:riv_corner_radius="2dp" />
@@ -152,11 +152,11 @@
             android:gravity="center"
             android:text="@string/login_with"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_20" />
+            android:textSize="@dimen/normal_18" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/vk_ic"
             android:tint="@color/white"
