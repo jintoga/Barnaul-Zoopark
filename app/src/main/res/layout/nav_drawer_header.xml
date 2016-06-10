@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:background="@color/banner_background"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <ImageButton
