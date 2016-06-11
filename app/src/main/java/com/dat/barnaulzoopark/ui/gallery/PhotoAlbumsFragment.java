@@ -37,7 +37,6 @@ public class PhotoAlbumsFragment extends TempBaseFragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
-
         initRecyclerView();
         return view;
     }
