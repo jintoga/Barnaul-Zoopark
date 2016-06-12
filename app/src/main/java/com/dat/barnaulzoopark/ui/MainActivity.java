@@ -1,17 +1,11 @@
 package com.dat.barnaulzoopark.ui;
 
-import android.app.SearchManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dat.barnaulzoopark.R;
@@ -59,18 +53,5 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         }
     }
 
-    public void setToolbar(@NonNull Toolbar toolbar) {
-        setSupportActionBar(toolbar);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.search_bar, menu);
-        // Retrieve the SearchView and plug it into SearchManager
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        return true;
-    }
 }

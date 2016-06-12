@@ -22,4 +22,15 @@
         <item name="colorControlHighlight">@color/white</item>
         <item name="android:typeface">monospace</item>
     </style>
+
+    <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+    </style>
+
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!-- Search button icon -->
+        <item name="searchHintIcon">@null</item>
+    </style>
 </resources>

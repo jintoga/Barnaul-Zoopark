@@ -31,7 +31,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+                app:theme="@style/AppTheme.ActionBar" />
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
