@@ -27,6 +27,8 @@ public class PhotoAlbumsFragment extends TempBaseFragment {
 
     @Bind(R.id.photoAlbums)
     protected RecyclerView photoAlbums;
+    @Bind(R.id.systemBar)
+    protected View systemBar;
     private PhotoAlbumsAdapter adapter;
     View view;
     private GridLayoutManager gridlayoutManager;
@@ -37,6 +39,10 @@ public class PhotoAlbumsFragment extends TempBaseFragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.bind(this, view);
+        if (systemBar != null) {
+            systemBar.getLayoutParams().height = getStatusBarHeight();
+            systemBar.requestLayout();
+        }
         initRecyclerView();
         return view;
     }
@@ -55,7 +61,7 @@ public class PhotoAlbumsFragment extends TempBaseFragment {
                     true));
         }
 
-        photoAlbums.setHasFixedSize(true);
+        //photoAlbums.setHasFixedSize(true);
         photoAlbums.setLayoutManager(gridlayoutManager);
 
         List<PhotoAlbum> data = DummyGenerator.getDummyData();
