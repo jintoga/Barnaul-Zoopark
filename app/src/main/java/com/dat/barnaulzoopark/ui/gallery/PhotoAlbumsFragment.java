@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
+import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
 import com.dat.barnaulzoopark.ui.gallery.gallerydetails.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
@@ -27,6 +29,8 @@ public class PhotoAlbumsFragment extends TempBaseFragment {
 
     @Bind(R.id.photoAlbums)
     protected RecyclerView photoAlbums;
+    @Bind(R.id.toolbar)
+    protected Toolbar toolbar;
     @Bind(R.id.systemBar)
     protected View systemBar;
     private PhotoAlbumsAdapter adapter;
@@ -43,6 +47,7 @@ public class PhotoAlbumsFragment extends TempBaseFragment {
             systemBar.getLayoutParams().height = getStatusBarHeight();
             systemBar.requestLayout();
         }
+        ((MainActivity) getActivity()).setToolbar(toolbar);
         initRecyclerView();
         return view;
     }
