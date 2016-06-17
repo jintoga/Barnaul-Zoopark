@@ -23,4 +23,8 @@
     <dimen name="expanded_banner_height">260dp</dimen>
     <dimen name="stack_album_view_img1_margin">20dp</dimen>
     <dimen name="stack_album_view_img2_margin">10dp</dimen>
+
+
+    <dimen name="search_icon_padding">12dp</dimen>
+    <dimen name="search_view_text_padding">8dp</dimen>
 </resources>

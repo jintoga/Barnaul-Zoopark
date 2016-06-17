@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/expanded_banner_height"
-    android:background="@drawable/toolbar_banner"
+    android:background="@drawable/img_toolbar_banner"
     android:fitsSystemWindows="true"
     tools:layout_height="300dp">
 
