@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.gallery.PhotoAlbumsFragment;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
@@ -35,19 +37,23 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         //Closing drawer on item click
         drawerLayout.closeDrawers();
-
+        Fragment fragment = null;
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
             case R.id.ourAnimals:
-                return true;
+                fragment = new AnimalsFragment();
+                break;
             case R.id.photoGallery:
-                FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.container, new PhotoAlbumsFragment());
-                fragmentTransaction.commit();
-                return true;
-            default:
-                return true;
+                fragment = new PhotoAlbumsFragment();
+                break;
         }
+        if (fragment != null) {
+            FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, fragment);
+            fragmentTransaction.commit();
+            return true;
+        }
+        return false;
     }
 }

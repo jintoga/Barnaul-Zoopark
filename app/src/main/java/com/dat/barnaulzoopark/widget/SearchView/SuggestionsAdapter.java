@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.dat.barnaulzoopark.R;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,8 +28,8 @@ public class SuggestionsAdapter extends ArrayAdapter<String> {
 
     public SuggestionsAdapter(Context context) {
         super(context, R.layout.custom_search_view_suggestion_item);
-        //suggestionsFromAssets =
-        //    Arrays.asList(context.getResources().getStringArray(R.array.suggestions));
+        suggestionsFromAssets =
+            Arrays.asList(context.getResources().getStringArray(R.array.suggestions));
     }
 
     @Override
