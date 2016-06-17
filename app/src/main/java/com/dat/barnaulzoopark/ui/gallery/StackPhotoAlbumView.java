@@ -37,7 +37,7 @@ public class StackPhotoAlbumView extends LinearLayout {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.stack_album_view, this);
+        inflate(getContext(), R.layout.custom_stack_album_view, this);
         ButterKnife.bind(this);
     }
 

@@ -6,12 +6,12 @@
     android:layout_gravity="start"
     android:orientation="vertical">
 
-    <include layout="@layout/nav_drawer_header" />
+    <include layout="@layout/partial_nav_drawer_header" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/white"
-        app:menu="@menu/nav_drawer_menu" />
+        app:menu="@menu/nav_drawer" />
 </LinearLayout>

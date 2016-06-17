@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 /**
  * Created by Nguyen on 6/10/2016.
  */
+//In future this class should extend BaseMvpFragment
 public class TempBaseFragment extends Fragment {
     protected int getStatusBarHeight() {
         int result = 0;

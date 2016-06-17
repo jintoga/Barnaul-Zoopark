@@ -31,7 +31,7 @@ public class PhotoAlbumsAdapter extends RecyclerView.Adapter<PhotoAlbumsAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.photo_albums_item, parent, false);
+                .inflate(R.layout.item_photo_albums, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;

@@ -53,7 +53,7 @@ public class MySearchView extends FrameLayout {
     }
 
     private void init() {
-        LayoutInflater.from(getContext()).inflate(R.layout.search_view, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.custom_search_view, this, true);
         rootView = (FrameLayout) findViewById(R.id.search_layout);
         searchBar = (LinearLayout) findViewById(R.id.search_bar);
         back = (ImageButton) findViewById(R.id.action_back);

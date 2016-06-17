@@ -27,7 +27,7 @@ public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryViewHo
     @Override
     public PhotoGalleryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.photo_gallery_item, parent, false);
+                .inflate(R.layout.item_photo_gallery, parent, false);
         PhotoGalleryViewHolder viewHolder = new PhotoGalleryViewHolder(view);
         return viewHolder;
     }
