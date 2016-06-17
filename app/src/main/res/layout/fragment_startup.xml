@@ -10,7 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/toolbar_gradient"
+        android:background="@drawable/bg_toolbar_gradient"
         android:orientation="horizontal"
         android:paddingBottom="12dp">
 
@@ -20,7 +20,7 @@
             android:layout_gravity="left|top"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:src="@drawable/logo_banner" />
+            android:src="@drawable/img_logo_banner" />
 
         <LinearLayout
             android:id="@+id/skip"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@null"
-                android:src="@drawable/chevron_double_ic" />
+                android:src="@drawable/ic_chevron_double" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:background="@drawable/rounded_corner_signup_btn_bg"
+        android:background="@drawable/bg_rounded_corner_signup_btn"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
@@ -88,7 +88,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:background="@drawable/rounded_corner_login_btn_bg"
+        android:background="@drawable/bg_rounded_corner_login_btn"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
@@ -131,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/fb_white_ic"
+            android:src="@drawable/ic_fb_white"
             app:riv_corner_radius="2dp" />
     </LinearLayout>
 
@@ -158,7 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/vk_ic"
+            android:src="@drawable/ic_vk"
             android:tint="@color/white"
             app:riv_corner_radius="2dp" />
     </LinearLayout>

@@ -14,7 +14,7 @@
         android:layout_gravity="right|bottom"
         android:layout_margin="16dp"
         android:background="@null"
-        android:src="@drawable/menu_down"
+        android:src="@drawable/ic_menu_down"
         android:tint="@color/colorText" />
 
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="40dp"
         android:scaleType="fitXY"
-        android:src="@drawable/logo_banner" />
+        android:src="@drawable/img_logo_banner" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/imageViewProfile"

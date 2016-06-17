@@ -3,7 +3,6 @@ package com.dat.barnaulzoopark.ui.gallery;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
+import com.dat.barnaulzoopark.ui.TempBaseFragment;
 import com.dat.barnaulzoopark.ui.gallery.gallerydetails.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by DAT on 07-Feb-16.
  */
-public class PhotoAlbumsFragment extends Fragment {
+public class PhotoAlbumsFragment extends TempBaseFragment {
 
     @Bind(R.id.photoAlbums)
     protected RecyclerView photoAlbums;
@@ -55,7 +55,6 @@ public class PhotoAlbumsFragment extends Fragment {
                     true));
         }
 
-        photoAlbums.setNestedScrollingEnabled(false);
         photoAlbums.setHasFixedSize(true);
         photoAlbums.setLayoutManager(gridlayoutManager);
 
@@ -63,5 +62,4 @@ public class PhotoAlbumsFragment extends Fragment {
         adapter = new PhotoAlbumsAdapter(data, getContext());
         photoAlbums.setAdapter(adapter);
     }
-
 }
