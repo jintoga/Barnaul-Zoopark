@@ -8,12 +8,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.dat.barnaulzoopark.R;
-
 /**
  * Created by DAT on 17-Jun-16.
  */
-public class SearchViewCollapseBehavior extends CoordinatorLayout.Behavior<MySearchView> {
+public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchView> implements AppBarLayout.OnOffsetChangedListener {
     private Context mContext;
 
     private float dependencyY;
@@ -23,44 +21,52 @@ public class SearchViewCollapseBehavior extends CoordinatorLayout.Behavior<MySea
     private int dependencyHeight;
     private float myOffset = 0;
 
-    public SearchViewCollapseBehavior(Context context, AttributeSet attrs) {
+    private static final int DIRECTION_UP = 1;
+    private static final int DIRECTION_DOWN = -1;
+    private int mCurrentDirection;
+
+    public SearchViewPinBehavior(Context context, AttributeSet attrs) {
         mContext = context;
     }
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, MySearchView child, View dependency) {
+        if (dependency instanceof AppBarLayout) {
+            ((AppBarLayout) dependency).addOnOffsetChangedListener(this);
+        }
         return dependency instanceof AppBarLayout;
     }
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, MySearchView child, View dependency) {
         shouldInitProperties(child, dependency);
-        int maxScroll = ((AppBarLayout) dependency).getTotalScrollRange();
-        float percentage = Math.abs(dependency.getY()) / (float) maxScroll;
 
         float diff = dependency.getY() - myOffset;
+        Log.d("diff", "diff:" + diff);
         float childPosition = child.getY();
-        if (diff > 0) {
-            Log.d("Expanding", "childPosition:" + childPosition + "  diff:" + diff);
-            if (childPosition < 0) {
-                childPosition = childPosition + 2f * percentage;
+
+        if (mCurrentDirection == DIRECTION_UP) {
+            Log.d("Collapsing", "childPosition:" + childPosition);
+            if (dependencyY - childHeight < offset) {
+                childPosition = childPosition + diff;
+                if (Math.abs(childPosition) > childHeight) {
+                    childPosition = -childHeight;
+                }
+                child.setY(childPosition);
             }
         } else {
-            Log.d("Collapsing", "childPosition:" + childPosition + "  diff:" + diff);
-            if (dependencyY - childHeight < offset) {
-                childPosition = childPosition - 2f * percentage;
+            Log.d("Expanding", "childPosition:" + childPosition);
+            childPosition = childPosition + diff;
+            if (Math.abs(childPosition) > 0) {
+                childPosition = 0;
             }
+            child.setY(childPosition);
         }
         myOffset = dependency.getY();
 
-
-        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-        child.setLayoutParams(lp);
-
-        child.setY(childPosition);
-
         return true;
     }
+
 
     private void shouldInitProperties(MySearchView child, View dependency) {
         if (myOffset == 0) {
@@ -70,18 +76,19 @@ public class SearchViewCollapseBehavior extends CoordinatorLayout.Behavior<MySea
             childHeight = getToolbarHeight();
         }
         if (dependencyHeight == 0) {
-            dependencyHeight = mContext.getResources().getDimensionPixelOffset(R.dimen.expanded_banner_height);
+            dependencyHeight = dependency.getHeight();
         }
         if (mStartMarginBottom == 0) {
-            mStartMarginBottom = mContext.getResources().getDimensionPixelOffset(R.dimen.header_view_start_margin_bottom) - childHeight;
+            mStartMarginBottom = dependencyHeight - childHeight;
         }
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();
-        Log.d("offset", "offset:" + offset);
-        Log.d("Y:", "dependencyY:" + dependencyY +
-                "dependency's height:" + dependencyHeight +
-                "child:" + child.getY() +
-                "child's height:" + childHeight);
+//        Log.d("dependency", "dependency Height:" + dependency.getHeight());
+//        Log.d("offset", "offset:" + offset);
+//        Log.d("Y:", " dependencyY:" + dependencyY +
+//                "  dependency's height:" + dependencyHeight +
+//                "  child:" + child.getY() +
+//                "  child's height:" + childHeight);
     }
 
     public int getToolbarHeight() {
@@ -91,5 +98,10 @@ public class SearchViewCollapseBehavior extends CoordinatorLayout.Behavior<MySea
             result = TypedValue.complexToDimensionPixelSize(tv.data, mContext.getResources().getDisplayMetrics());
         }
         return result;
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        mCurrentDirection = verticalOffset < 0 ? DIRECTION_UP : DIRECTION_DOWN;
     }
 }

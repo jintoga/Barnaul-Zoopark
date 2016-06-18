@@ -50,7 +50,7 @@
                     android:id="@+id/banner"
                     layout="@layout/partial_expanded_toolbar_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="@dimen/expanded_banner_height" />
 
 
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -78,8 +78,7 @@
             android:layout_width="@dimen/search_view_width"
             android:layout_height="match_parent"
             android:layout_gravity="top|center"
-            android:layout_margin="0dp"
-            app:layout_behavior="com.dat.barnaulzoopark.widget.SearchView.SearchViewCollapseBehavior" />
+            app:layout_behavior="com.dat.barnaulzoopark.widget.SearchView.SearchViewPinBehavior" />
 
 
     </android.support.design.widget.CoordinatorLayout>
