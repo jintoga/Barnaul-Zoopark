@@ -8,6 +8,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.dat.barnaulzoopark.R;
+
 /**
  * Created by DAT on 17-Jun-16.
  */
@@ -47,19 +49,16 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
 
         if (mCurrentDirection == DIRECTION_UP) {
             Log.d("Collapsing", "childPosition:" + childPosition);
-            if (dependencyY - childHeight < offset) {
+            if (dependencyY - childHeight - mStartMarginBottom <= offset) {
                 childPosition = childPosition + diff;
                 if (Math.abs(childPosition) > childHeight) {
-                    childPosition = -childHeight;
+                    childPosition = -childHeight - mStartMarginBottom;
                 }
                 child.setY(childPosition);
             }
         } else {
             Log.d("Expanding", "childPosition:" + childPosition);
-            childPosition = childPosition + diff;
-            if (Math.abs(childPosition) > 0) {
-                childPosition = 0;
-            }
+            childPosition = 0;
             child.setY(childPosition);
         }
         myOffset = dependency.getY();
@@ -79,7 +78,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
             dependencyHeight = dependency.getHeight();
         }
         if (mStartMarginBottom == 0) {
-            mStartMarginBottom = dependencyHeight - childHeight;
+            mStartMarginBottom = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_collapse_margin_bottom);
         }
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="expanded_banner_height">280dp</dimen>
+    <dimen name="search_view_width">500dp</dimen>
+    <dimen name="search_view_collapse_margin_bottom">0dp</dimen>
 </resources>
