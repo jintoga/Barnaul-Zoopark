@@ -1,7 +1,6 @@
 package com.dat.barnaulzoopark.widget.SearchView;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
@@ -22,7 +21,7 @@ public class SearchViewCollapseBehavior extends CoordinatorLayout.Behavior<MySea
     private int offset;
     private int childHeight;
     private int dependencyHeight;
-    private boolean isHide;
+    private float myOffset = 0;
 
     public SearchViewCollapseBehavior(Context context, AttributeSet attrs) {
         mContext = context;
@@ -36,37 +35,37 @@ public class SearchViewCollapseBehavior extends CoordinatorLayout.Behavior<MySea
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, MySearchView child, View dependency) {
         shouldInitProperties(child, dependency);
-
         int maxScroll = ((AppBarLayout) dependency).getTotalScrollRange();
         float percentage = Math.abs(dependency.getY()) / (float) maxScroll;
 
-        Log.d("percentage", "percentage:" + percentage);
-        float childPosition = dependencyHeight
-                + dependency.getY()
-                - childHeight
-                - childHeight * percentage;
+        float diff = dependency.getY() - myOffset;
+        float childPosition = child.getY();
+        if (diff > 0) {
+            Log.d("Expanding", "childPosition:" + childPosition + "  diff:" + diff);
+            if (childPosition < 0) {
+                childPosition = childPosition + 2f * percentage;
+            }
+        } else {
+            Log.d("Collapsing", "childPosition:" + childPosition + "  diff:" + diff);
+            if (dependencyY - childHeight < offset) {
+                childPosition = childPosition - 2f * percentage;
+            }
+        }
+        myOffset = dependency.getY();
 
 
-        childPosition = childPosition - mStartMarginBottom * (1f - percentage);
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
         child.setLayoutParams(lp);
 
         child.setY(childPosition);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            if (isHide && percentage < 1) {
-                child.setVisibility(View.VISIBLE);
-                isHide = false;
-            } else if (!isHide && percentage == 1) {
-                child.setVisibility(View.GONE);
-                isHide = true;
-            }
-        }
         return true;
     }
 
     private void shouldInitProperties(MySearchView child, View dependency) {
-
+        if (myOffset == 0) {
+            myOffset = dependency.getY();
+        }
         if (childHeight == 0) {
             childHeight = getToolbarHeight();
         }
@@ -79,7 +78,7 @@ public class SearchViewCollapseBehavior extends CoordinatorLayout.Behavior<MySea
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();
         Log.d("offset", "offset:" + offset);
-        Log.d("Y:", "dependency:" + dependency.getY() +
+        Log.d("Y:", "dependencyY:" + dependencyY +
                 "dependency's height:" + dependencyHeight +
                 "child:" + child.getY() +
                 "child's height:" + childHeight);
