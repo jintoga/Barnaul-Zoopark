@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -21,7 +20,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
     private int offset;
     private int childHeight;
     private int dependencyHeight;
-    private float myOffset = 0;
+    private float dependencyOldY = 0;
 
 
     public SearchViewPinBehavior(Context context, AttributeSet attrs) {
@@ -38,45 +37,38 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
     public boolean onDependentViewChanged(CoordinatorLayout parent, MySearchView child, View dependency) {
         shouldInitProperties(child, dependency);
 
-        float diff = dependency.getY() - myOffset;
+        float diff = dependency.getY() - dependencyOldY;
         float childPosition = child.getY();
-        if (diff < 0) {
-            if (dependencyY - childHeight - mStartMarginBottom <= offset) {
+
+        if (diff < 0) {//********Collapsing
+            if (dependencyY - childHeight - mStartMarginBottom < offset) {
                 childPosition = childPosition + diff;
                 if (Math.abs(childPosition) > childHeight) {
                     childPosition = -childHeight - mStartMarginBottom;
                 }
                 child.setY(childPosition);
             }
-        } else {
-            if (dependencyY - childHeight - mStartMarginBottom > offset
+        } else {//**********Expanding
+            if (dependencyY - childHeight - mStartMarginBottom >= offset
                     && childPosition < 0) {
-                //Decreasing child's Y
                 childPosition = childPosition + diff;
-                Log.d("Expanding 1*", "Expanding 1* childPosition:" + childPosition);
                 if (dependencyY - childHeight <= -dependencyHeight) {
                     childPosition = 0;
-                    Log.d("Expanding 2**", "Expanding 2** childPosition:" + childPosition
-                            + " \ndependencyY - childHeight:" + (dependencyY - childHeight));
                 }
-                child.setY(childPosition);
-            } else {
-                if (dependencyY - childHeight - mStartMarginBottom > offset) {
-                    childPosition = 0;
-                    child.setY(childPosition);
-                }
-                Log.d("Expanding", "childPosition: " + childPosition + " dependencyY: " + dependencyY + " offset: " + offset
-                        + "\ndependencyY - childHeight:" + (dependencyY - childHeight));
+            } else if (dependencyY - childHeight - mStartMarginBottom > offset) {
+                childPosition = 0;
             }
+            child.setY(childPosition);
         }
-        myOffset = dependency.getY();
+
+        dependencyOldY = dependency.getY();
         return true;
     }
 
 
     private void shouldInitProperties(MySearchView child, View dependency) {
-        if (myOffset == 0) {
-            myOffset = dependency.getY();
+        if (dependencyOldY == 0) {
+            dependencyOldY = dependency.getY();
         }
         if (childHeight == 0) {
             childHeight = getToolbarHeight();
