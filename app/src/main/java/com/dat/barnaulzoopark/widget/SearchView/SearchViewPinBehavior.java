@@ -16,14 +16,13 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
     private Context mContext;
 
     private float dependencyY;
-    private float childMarginBottom, childMarginTop;
+    private float childMarginBottom;
     private int offset;
     private int childHeight;
     private int dependencyHeight;
     private float dependencyOldY = 0;
     private float cardViewShadow;
 
-    private float childInitY;
 
     public SearchViewPinBehavior(Context context, AttributeSet attrs) {
         mContext = context;
@@ -42,21 +41,21 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         float childPosition = child.getY();
 
         if (diff < 0) {//********Collapsing
-            if (dependencyY - childHeight - childMarginBottom - childMarginTop - cardViewShadow < offset) {
+            if (dependencyY - childHeight - childMarginBottom - cardViewShadow < offset) {
                 childPosition = childPosition + diff;
                 if (Math.abs(childPosition) > childHeight) {
                     childPosition = -childHeight - childMarginBottom - cardViewShadow;
                 }
             }
         } else {//**********Expanding
-            if (dependencyY - childHeight - childMarginBottom - childMarginTop - cardViewShadow >= offset
+            if (dependencyY - childHeight - childMarginBottom - cardViewShadow >= offset
                     && childPosition < 0) {
                 childPosition = childPosition + diff;
-                if (dependencyY - childHeight - childMarginTop - cardViewShadow <= -dependencyHeight) {
-                    childPosition = childInitY;
+                if (dependencyY - childHeight - cardViewShadow <= -dependencyHeight) {
+                    childPosition = 0;
                 }
             } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
-                childPosition = childInitY;
+                childPosition = 0;
             }
         }
 
@@ -71,9 +70,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         if (cardViewShadow == 0) {
             cardViewShadow = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_cardview_shadow);
         }
-        if (childInitY == 0) {
-            childInitY = child.getY();
-        }
+
         if (dependencyOldY == 0) {
             dependencyOldY = dependency.getY();
         }
@@ -86,9 +83,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         if (childMarginBottom == 0) {
             childMarginBottom = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_collapse_margin_bottom);
         }
-        if (childMarginTop == 0) {
-            childMarginTop = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_margin_top);
-        }
+
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();
 

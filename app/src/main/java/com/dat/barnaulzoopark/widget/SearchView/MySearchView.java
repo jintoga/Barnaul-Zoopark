@@ -41,6 +41,8 @@ public class MySearchView extends FrameLayout {
 
     private SearchViewListener searchViewListener;
 
+    private SearchViewFocusedListener searchViewFocusedListener;
+
     private boolean collapsingSuggestions = false;
 
     public MySearchView(Context context) {
@@ -106,6 +108,7 @@ public class MySearchView extends FrameLayout {
         backgroundView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchViewFocusedListener.onSearchViewEditTextLostFocus();
                 closeSearchView();
             }
         });
@@ -113,6 +116,16 @@ public class MySearchView extends FrameLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("Clicked", (String) parent.getItemAtPosition(position));
+            }
+        });
+
+        searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    searchViewFocusedListener.onSearchViewEditTextFocus();
+                    backgroundView.setVisibility(VISIBLE);
+                }
             }
         });
     }
@@ -138,6 +151,10 @@ public class MySearchView extends FrameLayout {
 
     public void setSearchViewListener(SearchViewListener searchViewListener) {
         this.searchViewListener = searchViewListener;
+    }
+
+    public void setSearchViewFocusedListener(SearchViewFocusedListener searchViewFocusedListener) {
+        this.searchViewFocusedListener = searchViewFocusedListener;
     }
 
     public void openSearchView() {
@@ -174,6 +191,12 @@ public class MySearchView extends FrameLayout {
         }
 
         isSearchViewOpen = true;
+    }
+
+    public void clearSearchView() {
+        searchEditText.setText("");
+        searchEditText.clearFocus();
+        backgroundView.setVisibility(GONE);
     }
 
     public void closeSearchView() {
@@ -239,5 +262,11 @@ public class MySearchView extends FrameLayout {
         void onSearchViewOpen();
 
         void onSearchViewClosed();
+    }
+
+    public interface SearchViewFocusedListener {
+        void onSearchViewEditTextFocus();
+
+        void onSearchViewEditTextLostFocus();
     }
 }
