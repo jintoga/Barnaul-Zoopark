@@ -16,12 +16,13 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
     private Context mContext;
 
     private float dependencyY;
-    private float mStartMarginBottom;
+    private float childMarginBottom, childMarginTop;
     private int offset;
     private int childHeight;
     private int dependencyHeight;
     private float dependencyOldY = 0;
 
+    private float childInitY;
 
     public SearchViewPinBehavior(Context context, AttributeSet attrs) {
         mContext = context;
@@ -32,7 +33,6 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         return dependency instanceof AppBarLayout;
     }
 
-
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, MySearchView child, View dependency) {
         shouldInitProperties(child, dependency);
@@ -41,25 +41,25 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         float childPosition = child.getY();
 
         if (diff < 0) {//********Collapsing
-            if (dependencyY - childHeight - mStartMarginBottom < offset) {
+            if (dependencyY - childHeight - childMarginBottom - childMarginTop < offset) {
                 childPosition = childPosition + diff;
                 if (Math.abs(childPosition) > childHeight) {
-                    childPosition = -childHeight - mStartMarginBottom;
+                    childPosition = -childHeight - childMarginBottom;
                 }
-                child.setY(childPosition);
             }
         } else {//**********Expanding
-            if (dependencyY - childHeight - mStartMarginBottom >= offset
+            if (dependencyY - childHeight - childMarginBottom - childMarginTop >= offset
                     && childPosition < 0) {
                 childPosition = childPosition + diff;
-                if (dependencyY - childHeight <= -dependencyHeight) {
-                    childPosition = 0;
+                if (dependencyY - childHeight - childMarginTop <= -dependencyHeight) {
+                    childPosition = childInitY;
                 }
-            } else if (dependencyY - childHeight - mStartMarginBottom > offset) {
-                childPosition = 0;
+            } else if (dependencyY - childHeight - childMarginBottom > offset) {
+                childPosition = childInitY;
             }
-            child.setY(childPosition);
         }
+
+        child.setY(childPosition);
 
         dependencyOldY = dependency.getY();
         return true;
@@ -67,6 +67,9 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
 
 
     private void shouldInitProperties(MySearchView child, View dependency) {
+        if (childInitY == 0) {
+            childInitY = child.getY();
+        }
         if (dependencyOldY == 0) {
             dependencyOldY = dependency.getY();
         }
@@ -76,8 +79,11 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         if (dependencyHeight == 0) {
             dependencyHeight = dependency.getHeight();
         }
-        if (mStartMarginBottom == 0) {
-            mStartMarginBottom = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_collapse_margin_bottom);
+        if (childMarginBottom == 0) {
+            childMarginBottom = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_collapse_margin_bottom);
+        }
+        if (childMarginTop == 0) {
+            childMarginTop = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_margin_top);
         }
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();
