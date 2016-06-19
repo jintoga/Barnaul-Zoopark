@@ -39,56 +39,35 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         shouldInitProperties(child, dependency);
 
         float diff = dependency.getY() - myOffset;
-        // Log.d("diff", "diff:" + diff);
         float childPosition = child.getY();
-        // Log.d("dependencyY", "dependencyY:" + dependencyY + " offset:" + offset + " newDiff:" + newDiff);
         if (diff < 0) {
-            // Log.d("Collapsing", "childPosition:" + childPosition);
-//            Log.d("Collapsing**:", " dependencyY - childHeight: " + (dependencyY - childHeight));
-//            Log.d("Y:", " dependencyY:" + dependencyY +
-//                    "  dependency's height:" + dependencyHeight +
-//                    "  child:" + child.getY() +
-//                    "  child's height:" + childHeight);
             if (dependencyY - childHeight - mStartMarginBottom <= offset) {
                 childPosition = childPosition + diff;
                 if (Math.abs(childPosition) > childHeight) {
                     childPosition = -childHeight - mStartMarginBottom;
                 }
                 child.setY(childPosition);
-                Log.d("Collapsing 1*", "Collapsing 1 childPosition:" + childPosition);
-            } else {
-                Log.d("Collapsing 2**", "Collapsing 2** childPosition:" + childPosition);
             }
         } else {
-            //Log.d("Expanding", "childPosition:" + childPosition);
-            if (dependencyY - childHeight > -dependencyHeight
-                    && dependencyY - childHeight < offset
+            if (dependencyY - childHeight - mStartMarginBottom > offset
                     && childPosition < 0) {
                 //Decreasing child's Y
                 childPosition = childPosition + diff;
-                //Log.d("Expanding 1*", "Expanding 1*");
-            } else if (dependencyY - childHeight > -dependencyHeight) {
-//                Log.d("Expanding 2****:", " dependencyY - childHeight: " + (dependencyY - childHeight));
-                /*Log.d("Expanding 2**", " dependencyY:" + dependencyY +
-                        "  dependency's height:" + dependencyHeight +
-                        "  child:" + child.getY() +
-                        "  child's height:" + childHeight);*/
-                childPosition = 0;
-
-                Log.d("Expanding 2**", "Expanding 2** childPosition:" + childPosition);
-            } else if (dependencyY - childHeight <= -dependencyHeight
-                    && dependencyY - childHeight < offset
-                    && childPosition < 0) {
-                childPosition = -childHeight - mStartMarginBottom;
-                Log.d("Expanding 3**", "Expanding 3*** childPosition:" + childPosition);
-                Log.d("Expanding 3***", "Expanding 3*** dependencyY:" + dependencyY +
-                        "  dependency's height:" + dependencyHeight +
-                        "  \nchild:" + child.getY() +
-                        "  child's height:" + childHeight);
+                Log.d("Expanding 1*", "Expanding 1* childPosition:" + childPosition);
+                if (dependencyY - childHeight <= -dependencyHeight) {
+                    childPosition = 0;
+                    Log.d("Expanding 2**", "Expanding 2** childPosition:" + childPosition
+                            + " \ndependencyY - childHeight:" + (dependencyY - childHeight));
+                }
+                child.setY(childPosition);
+            } else {
+                if (dependencyY - childHeight - mStartMarginBottom > offset) {
+                    childPosition = 0;
+                    child.setY(childPosition);
+                }
+                Log.d("Expanding", "childPosition: " + childPosition + " dependencyY: " + dependencyY + " offset: " + offset
+                        + "\ndependencyY - childHeight:" + (dependencyY - childHeight));
             }
-            child.setY(childPosition);
-            //Log.d("Expanding**:", " dependencyY - childHeight: " + (dependencyY - childHeight));
-
         }
         myOffset = dependency.getY();
         return true;
@@ -110,12 +89,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         }
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();
-//        Log.d("dependency", "dependency Height:" + dependency.getHeight());
-//        Log.d("offset", "offset:" + offset);
-//        Log.d("Y:", " dependencyY:" + dependencyY +
-//                "  dependency's height:" + dependencyHeight +
-//                "  child:" + child.getY() +
-//                "  child's height:" + childHeight);
+
     }
 
     public int getToolbarHeight() {
