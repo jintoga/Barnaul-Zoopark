@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:layout_scrollFlags="scroll|enterAlways"
                 app:statusBarScrim="@android:color/transparent">
 
                 <include
@@ -51,7 +51,6 @@
                     layout="@layout/partial_expanded_toolbar_banner"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/expanded_banner_height" />
-
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
