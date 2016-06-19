@@ -75,7 +75,7 @@
         <com.dat.barnaulzoopark.widget.SearchView.MySearchView
             android:id="@+id/search_view"
             android:layout_width="@dimen/search_view_width"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:layout_margin="4dp"
             app:layout_behavior="com.dat.barnaulzoopark.widget.SearchView.SearchViewPinBehavior" />

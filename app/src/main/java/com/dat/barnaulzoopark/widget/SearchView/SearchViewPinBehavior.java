@@ -21,6 +21,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
     private int childHeight;
     private int dependencyHeight;
     private float dependencyOldY = 0;
+    private float cardViewShadow;
 
     private float childInitY;
 
@@ -41,20 +42,20 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
         float childPosition = child.getY();
 
         if (diff < 0) {//********Collapsing
-            if (dependencyY - childHeight - childMarginBottom - childMarginTop < offset) {
+            if (dependencyY - childHeight - childMarginBottom - childMarginTop - cardViewShadow < offset) {
                 childPosition = childPosition + diff;
                 if (Math.abs(childPosition) > childHeight) {
-                    childPosition = -childHeight - childMarginBottom;
+                    childPosition = -childHeight - childMarginBottom - cardViewShadow;
                 }
             }
         } else {//**********Expanding
-            if (dependencyY - childHeight - childMarginBottom - childMarginTop >= offset
+            if (dependencyY - childHeight - childMarginBottom - childMarginTop - cardViewShadow >= offset
                     && childPosition < 0) {
                 childPosition = childPosition + diff;
-                if (dependencyY - childHeight - childMarginTop <= -dependencyHeight) {
+                if (dependencyY - childHeight - childMarginTop - cardViewShadow <= -dependencyHeight) {
                     childPosition = childInitY;
                 }
-            } else if (dependencyY - childHeight - childMarginBottom > offset) {
+            } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
                 childPosition = childInitY;
             }
         }
@@ -67,6 +68,9 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
 
 
     private void shouldInitProperties(MySearchView child, View dependency) {
+        if (cardViewShadow == 0) {
+            cardViewShadow = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_cardview_shadow);
+        }
         if (childInitY == 0) {
             childInitY = child.getY();
         }

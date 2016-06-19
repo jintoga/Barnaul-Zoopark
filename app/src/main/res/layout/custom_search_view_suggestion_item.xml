@@ -4,8 +4,7 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/selectableItemBackground"
     android:minHeight="?attr/actionBarSize"
-    android:orientation="horizontal"
-    android:theme="@style/ThemeOverlay.AppCompat.Light">
+    android:orientation="horizontal">
 
 
     <ImageView

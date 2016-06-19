@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import com.dat.barnaulzoopark.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +31,7 @@ public class SuggestionsAdapter extends ArrayAdapter<String> {
     public SuggestionsAdapter(Context context) {
         super(context, R.layout.custom_search_view_suggestion_item);
         suggestionsFromAssets =
-            Arrays.asList(context.getResources().getStringArray(R.array.suggestions));
+                Arrays.asList(context.getResources().getStringArray(R.array.suggestions));
     }
 
     @Override
@@ -37,7 +39,7 @@ public class SuggestionsAdapter extends ArrayAdapter<String> {
         ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext())
-                .inflate(R.layout.custom_search_view_suggestion_item, null);
+                    .inflate(R.layout.custom_search_view_suggestion_item, null);
             holder = new ViewHolder();
             holder.mTextView = (TextView) convertView.findViewById(R.id.suggestion);
             convertView.setTag(holder);
@@ -88,8 +90,8 @@ public class SuggestionsAdapter extends ArrayAdapter<String> {
     private Spannable getColoredKeywordSuggestion(String suggestion) {
         Spannable result = new SpannableString(suggestion);
         result.setSpan(new ForegroundColorSpan(
-                getContext().getResources().getColor(R.color.search_view_secondary_color)), 0,
-            keyword.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        getContext().getResources().getColor(R.color.search_view_secondary_color)), 0,
+                keyword.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return result;
     }
 
@@ -102,7 +104,7 @@ public class SuggestionsAdapter extends ArrayAdapter<String> {
     public int getCount() {
         if (suggestions != null) {
             return suggestions.size() > MAX_NUMBER_SUGGESTIONS ? MAX_NUMBER_SUGGESTIONS
-                : suggestions.size();
+                    : suggestions.size();
         }
         return 0;
     }
