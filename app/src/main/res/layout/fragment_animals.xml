@@ -72,7 +72,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <com.dat.barnaulzoopark.widget.SearchView.MySearchView
+        <com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

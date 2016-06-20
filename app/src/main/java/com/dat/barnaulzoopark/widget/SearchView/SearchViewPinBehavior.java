@@ -12,7 +12,7 @@ import com.dat.barnaulzoopark.R;
 /**
  * Created by DAT on 17-Jun-16.
  */
-public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchView> {
+public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSearchView> {
     private Context mContext;
 
     private float dependencyY;
@@ -29,12 +29,12 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, MySearchView child, View dependency) {
+    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingSearchView child, View dependency) {
         return dependency instanceof AppBarLayout;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, MySearchView child, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingSearchView child, View dependency) {
         shouldInitProperties(child, dependency);
 
         float diff = dependency.getY() - dependencyOldY;
@@ -66,7 +66,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<MySearchVi
     }
 
 
-    private void shouldInitProperties(MySearchView child, View dependency) {
+    private void shouldInitProperties(FloatingSearchView child, View dependency) {
         if (cardViewShadow == 0) {
             cardViewShadow = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_cardview_shadow);
         }

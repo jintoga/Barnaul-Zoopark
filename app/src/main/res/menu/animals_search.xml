@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/search"
-        android:actionViewClass="com.dat.barnaulzoopark.widget.SearchView.MySearchView"
+        android:actionViewClass="com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView"
         android:icon="@drawable/ic_search"
         android:title="Search"
         app:showAsAction="ifRoom|collapseActionView" />

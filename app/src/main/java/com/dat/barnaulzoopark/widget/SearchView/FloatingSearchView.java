@@ -26,7 +26,7 @@ import com.dat.barnaulzoopark.R;
 /**
  * Created by DAT on 13-Jun-16.
  */
-public class MySearchView extends FrameLayout {
+public class FloatingSearchView extends FrameLayout {
 
     private boolean isSearchViewOpen;
     private FrameLayout rootView;
@@ -45,12 +45,12 @@ public class MySearchView extends FrameLayout {
 
     private boolean collapsingSuggestions = false;
 
-    public MySearchView(Context context) {
+    public FloatingSearchView(Context context) {
         super(context);
         init();
     }
 
-    public MySearchView(Context context, AttributeSet attrs) {
+    public FloatingSearchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         initSearchView();
@@ -140,7 +140,7 @@ public class MySearchView extends FrameLayout {
             @Override
             public void onTextChanged(CharSequence keyword, int start, int before, int count) {
                 suggestionsAdapter.filterSuggestions(keyword);
-                MySearchView.this.onTextChanged(keyword);
+                FloatingSearchView.this.onTextChanged(keyword);
             }
 
             @Override
@@ -173,7 +173,7 @@ public class MySearchView extends FrameLayout {
                 //After SearchBar is revealed if keyword is not empty then open suggestions section
                 if (!searchEditText.getText().toString().isEmpty()) {
                     suggestionsAdapter.filterSuggestions(searchEditText.getText());
-                    MySearchView.this.onTextChanged(searchEditText.getText());
+                    FloatingSearchView.this.onTextChanged(searchEditText.getText());
                 }
             }
         };
