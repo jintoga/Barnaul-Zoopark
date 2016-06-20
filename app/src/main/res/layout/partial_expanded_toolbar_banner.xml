@@ -5,6 +5,6 @@
     android:layout_height="@dimen/expanded_banner_height"
     android:background="@drawable/img_toolbar_banner"
     android:fitsSystemWindows="true"
-    tools:layout_height="300dp">
+    tools:layout_height="260dp">
 
 </FrameLayout>

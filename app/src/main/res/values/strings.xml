@@ -27,4 +27,30 @@
     <string name="create_to_support">Создать новый аккаунт, чтобы с нами помочь нашим любимым животным и также получить новости о зоопарке и прикольные подарки!</string>
     <string name="skip">Пропустить</string>
 
+    <string-array name="suggestions">
+        <item>Apple</item>
+        <item>Apricot</item>
+        <item>Avocado</item>
+        <item>Banana</item>
+        <item>Blueberry</item>
+        <item>Blackberry</item>
+        <item>Carrot</item>
+        <item>Cherry</item>
+        <item>Orange</item>
+        <item>Potato</item>
+        <item>Peach</item>
+        <item>Passion fruit</item>
+        <item>Pear</item>
+        <item>Orange</item>
+        <item>Potato</item>
+        <item>Peach</item>
+        <item>Passion fruit</item>
+        <item>Pear</item>
+        <item>Orange</item>
+        <item>Potato</item>
+        <item>Peach</item>
+        <item>Passion fruit</item>
+        <item>Pear</item>
+        <item>Strawberry</item>
+    </string-array>
 </resources>

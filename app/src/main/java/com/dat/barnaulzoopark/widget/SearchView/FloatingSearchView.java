@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,17 +20,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
 import com.dat.barnaulzoopark.R;
 
 /**
  * Created by DAT on 13-Jun-16.
  */
-public class MySearchView extends FrameLayout {
+public class FloatingSearchView extends FrameLayout {
 
     private boolean isSearchViewOpen;
     private FrameLayout rootView;
     private EditText searchEditText;
-    private LinearLayout searchBar;
+    private CardView searchBar;
     private ImageButton back;
     private ImageButton clear;
     private View backgroundView;
@@ -39,14 +41,16 @@ public class MySearchView extends FrameLayout {
 
     private SearchViewListener searchViewListener;
 
+    private SearchViewFocusedListener searchViewFocusedListener;
+
     private boolean collapsingSuggestions = false;
 
-    public MySearchView(Context context) {
+    public FloatingSearchView(Context context) {
         super(context);
         init();
     }
 
-    public MySearchView(Context context, AttributeSet attrs) {
+    public FloatingSearchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         initSearchView();
@@ -55,7 +59,7 @@ public class MySearchView extends FrameLayout {
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.custom_search_view, this, true);
         rootView = (FrameLayout) findViewById(R.id.search_layout);
-        searchBar = (LinearLayout) findViewById(R.id.search_bar);
+        searchBar = (CardView) findViewById(R.id.search_bar);
         back = (ImageButton) findViewById(R.id.action_back);
         searchEditText = (EditText) findViewById(R.id.et_search);
         clear = (ImageButton) findViewById(R.id.action_clear);
@@ -70,13 +74,13 @@ public class MySearchView extends FrameLayout {
         layoutTransition.addTransitionListener(new LayoutTransition.TransitionListener() {
             @Override
             public void startTransition(LayoutTransition transition, ViewGroup container, View view,
-                int transitionType) {
+                                        int transitionType) {
                 //Ignore
             }
 
             @Override
             public void endTransition(LayoutTransition transition, ViewGroup container, View view,
-                int transitionType) {
+                                      int transitionType) {
                 if (collapsingSuggestions) {
                     Log.d("collapsingSuggestions", "collapsingSuggestions");
                     closeSearchBar();
@@ -104,6 +108,7 @@ public class MySearchView extends FrameLayout {
         backgroundView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchViewFocusedListener.onSearchViewEditTextLostFocus();
                 closeSearchView();
             }
         });
@@ -111,6 +116,16 @@ public class MySearchView extends FrameLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("Clicked", (String) parent.getItemAtPosition(position));
+            }
+        });
+
+        searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    searchViewFocusedListener.onSearchViewEditTextFocus();
+                    backgroundView.setVisibility(VISIBLE);
+                }
             }
         });
     }
@@ -125,7 +140,7 @@ public class MySearchView extends FrameLayout {
             @Override
             public void onTextChanged(CharSequence keyword, int start, int before, int count) {
                 suggestionsAdapter.filterSuggestions(keyword);
-                MySearchView.this.onTextChanged(keyword);
+                FloatingSearchView.this.onTextChanged(keyword);
             }
 
             @Override
@@ -136,6 +151,10 @@ public class MySearchView extends FrameLayout {
 
     public void setSearchViewListener(SearchViewListener searchViewListener) {
         this.searchViewListener = searchViewListener;
+    }
+
+    public void setSearchViewFocusedListener(SearchViewFocusedListener searchViewFocusedListener) {
+        this.searchViewFocusedListener = searchViewFocusedListener;
     }
 
     public void openSearchView() {
@@ -154,7 +173,7 @@ public class MySearchView extends FrameLayout {
                 //After SearchBar is revealed if keyword is not empty then open suggestions section
                 if (!searchEditText.getText().toString().isEmpty()) {
                     suggestionsAdapter.filterSuggestions(searchEditText.getText());
-                    MySearchView.this.onTextChanged(searchEditText.getText());
+                    FloatingSearchView.this.onTextChanged(searchEditText.getText());
                 }
             }
         };
@@ -172,6 +191,12 @@ public class MySearchView extends FrameLayout {
         }
 
         isSearchViewOpen = true;
+    }
+
+    public void clearSearchView() {
+        searchEditText.setText("");
+        searchEditText.clearFocus();
+        backgroundView.setVisibility(GONE);
     }
 
     public void closeSearchView() {
@@ -237,5 +262,11 @@ public class MySearchView extends FrameLayout {
         void onSearchViewOpen();
 
         void onSearchViewClosed();
+    }
+
+    public interface SearchViewFocusedListener {
+        void onSearchViewEditTextFocus();
+
+        void onSearchViewEditTextLostFocus();
     }
 }

@@ -3,4 +3,7 @@
     <dimen name="expanded_banner_height">360dp</dimen>
     <dimen name="stack_album_view_img1_margin">30dp</dimen>
     <dimen name="stack_album_view_img2_margin">15dp</dimen>
+
+    <dimen name="search_view_width">360dp</dimen>
+    <dimen name="search_view_divider">2.5dp</dimen>
 </resources>
