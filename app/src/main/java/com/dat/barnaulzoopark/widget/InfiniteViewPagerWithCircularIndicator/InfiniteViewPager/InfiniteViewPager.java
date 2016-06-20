@@ -30,7 +30,7 @@ public class InfiniteViewPager extends ViewPager {
     @Override
     public void setCurrentItem(int item) {
         // offset the current item to ensure there is space to scroll
-        setCurrentItem(item, false);
+        setCurrentItem(item, true);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class InfiniteViewPager extends ViewPager {
             // should be enough to create an illusion of infinity
             // warning: scrolling to very high values (1,000,000+) results in
             // strange drawing behaviour
-            return infAdapter.getRealCount() * 10000;
+            return infAdapter.getRealCount() * 1000;
         } else {
             return 0;
         }

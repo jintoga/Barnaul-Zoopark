@@ -20,7 +20,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import com.dat.barnaulzoopark.R;
 
 /**
@@ -36,6 +35,7 @@ public class FloatingSearchView extends FrameLayout {
     private ImageButton clear;
     private View backgroundView;
     private LinearLayout container;
+    private CardView suggestionsContainer;
     private ListView suggestions;
     private SuggestionsAdapter suggestionsAdapter;
 
@@ -65,6 +65,7 @@ public class FloatingSearchView extends FrameLayout {
         clear = (ImageButton) findViewById(R.id.action_clear);
         backgroundView = findViewById(R.id.transparent_view);
         backgroundView.setVisibility(View.GONE);
+        suggestionsContainer = (CardView) findViewById(R.id.suggestionsContainer);
         suggestions = (ListView) findViewById(R.id.suggestion_list);
         suggestionsAdapter = new SuggestionsAdapter(getContext());
         suggestions.setAdapter(suggestionsAdapter);
@@ -74,13 +75,13 @@ public class FloatingSearchView extends FrameLayout {
         layoutTransition.addTransitionListener(new LayoutTransition.TransitionListener() {
             @Override
             public void startTransition(LayoutTransition transition, ViewGroup container, View view,
-                                        int transitionType) {
+                int transitionType) {
                 //Ignore
             }
 
             @Override
             public void endTransition(LayoutTransition transition, ViewGroup container, View view,
-                                      int transitionType) {
+                int transitionType) {
                 if (collapsingSuggestions) {
                     Log.d("collapsingSuggestions", "collapsingSuggestions");
                     closeSearchBar();
@@ -123,6 +124,7 @@ public class FloatingSearchView extends FrameLayout {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
+                    suggestionsContainer.setVisibility(VISIBLE);
                     searchViewFocusedListener.onSearchViewEditTextFocus();
                     backgroundView.setVisibility(VISIBLE);
                 }
@@ -197,6 +199,7 @@ public class FloatingSearchView extends FrameLayout {
         searchEditText.setText("");
         searchEditText.clearFocus();
         backgroundView.setVisibility(GONE);
+        suggestionsContainer.setVisibility(GONE);
     }
 
     public void closeSearchView() {
