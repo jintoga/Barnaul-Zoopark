@@ -11,8 +11,7 @@
         android:id="@+id/viewpagerObject"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:fitsSystemWindows="true" />
+        android:layout_gravity="center" />
 
     <com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.CircularIndicator
         android:id="@+id/indicatorObject"

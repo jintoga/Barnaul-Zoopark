@@ -32,14 +32,10 @@ import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener, AnimalsAdapter.AnimalsAdapterListener {
 
-    @Bind(R.id.systemBar)
-    protected View systemBar;
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
     protected CollapsingToolbarLayout collapsingToolbarLayoutBanner;
-    @Bind(R.id.collapsing_toolbar_layout_tabs)
-    protected CollapsingToolbarLayout collapsingToolbarLayoutTabs;
     @Bind(R.id.search_view)
     protected FloatingSearchView searchView;
     @Bind(R.id.animals)
@@ -62,10 +58,6 @@ public class AnimalsFragment extends TempBaseFragment
         @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals, container, false);
         ButterKnife.bind(this, view);
-        if (systemBar != null) {
-            systemBar.getLayoutParams().height = getStatusBarHeight();
-            systemBar.requestLayout();
-        }
         init();
         return view;
     }
