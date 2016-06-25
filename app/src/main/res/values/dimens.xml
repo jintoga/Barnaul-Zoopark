@@ -28,7 +28,7 @@
     <dimen name="search_icon_padding">12dp</dimen>
     <dimen name="search_view_text_padding">8dp</dimen>
     <dimen name="search_view_width">-1dp</dimen>
-    <dimen name="search_view_divider">2dp</dimen>
+    <dimen name="search_view_divider">1dp</dimen>
     <dimen name="search_view_cardview_shadow">24dp</dimen>
 
     <dimen name="search_view_collapse_margin_bottom">0dp</dimen>
