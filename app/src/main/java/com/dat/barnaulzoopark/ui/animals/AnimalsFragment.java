@@ -13,8 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
@@ -26,12 +25,17 @@ import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.Infi
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.PagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by Nguyen on 6/17/2016.
  */
 public class AnimalsFragment extends TempBaseFragment
-    implements FloatingSearchView.SearchViewFocusedListener, AnimalsAdapter.AnimalsAdapterListener {
+        implements FloatingSearchView.SearchViewFocusedListener, AnimalsAdapter.AnimalsAdapterListener {
 
+    @Bind(R.id.systemBar)
+    protected View systemBar;
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
@@ -55,9 +59,13 @@ public class AnimalsFragment extends TempBaseFragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals, container, false);
         ButterKnife.bind(this, view);
+        if (systemBar != null) {
+            systemBar.getLayoutParams().height = getStatusBarHeight();
+            systemBar.requestLayout();
+        }
         init();
         return view;
     }
@@ -72,48 +80,58 @@ public class AnimalsFragment extends TempBaseFragment
             collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
             collapsingToolbarLayoutBanner.setFocusable(false);
             collapsingToolbarLayoutBanner.setClickable(false);
-            //collapsingToolbarLayoutTabs.setNestedScrollingEnabled(false);
-            //appBarLayout.setNestedScrollingEnabled(false);
         }
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                //change systemBar's color when appBarLayout collapse more than 2/3 of it's height
+                if (verticalOffset < -appBarLayout.getTotalScrollRange() * 2 / 3) {
+                    systemBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                } else {
+                    systemBar.setBackgroundColor(getResources().getColor(R.color.transparent));
+                }
+            }
+        });
 
         searchView.setSearchViewFocusedListener(this);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);
             animals.addItemDecoration(new GridSpacingItemDecoration(3,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
+                    true));
         } else {
             layoutManager = new GridLayoutManager(getContext(), 2);
             animals.addItemDecoration(new GridSpacingItemDecoration(2,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
+                    true));
         }
         animals.setLayoutManager(layoutManager);
         if (animalsAdapter == null) {
             animalsAdapter = new AnimalsAdapter(this);
         }
+        animals.setHasFixedSize(true);
         animals.setAdapter(animalsAdapter);
 
-        final String[] images = new String[] {
-            "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
-            "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-            "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
-            "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
-            "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png",
-            "http://s32.postimg.org/bu2cb8dlh/018.jpg",
-            "http://s32.postimg.org/mi63a2nkl/10472795_1516097865378010_1206966512854576988_o.jpg",
-            "http://s32.postimg.org/lothhghjp/11014977_419568654912989_2640509535362674658_n.jpg",
-            "http://s32.postimg.org/jlj29shqt/12791057_657347101072467_2630471624444555902_n.jpg",
-            "http://s32.postimg.org/b0z8uv1sl/afro_samurai_resurrection_original.jpg",
-            "http://s32.postimg.org/n6og59gid/asuras_wrath_wallpaper_hd_2_1080p.jpg",
-            "http://s32.postimg.org/8or8x9p79/barret_M107_by_mimi3d.jpg",
-            "http://s32.postimg.org/vz5esy1n9/barrett_m107_by_deargruadher_d4dikw8.jpg",
-            "http://s32.postimg.org/wiai27t1x/Darksiders_Wrath_of_War_1920x1080.jpg"
+        final String[] images = new String[]{
+                "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
+                "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png",
+                "http://s32.postimg.org/bu2cb8dlh/018.jpg",
+                "http://s32.postimg.org/mi63a2nkl/10472795_1516097865378010_1206966512854576988_o.jpg",
+                "http://s32.postimg.org/lothhghjp/11014977_419568654912989_2640509535362674658_n.jpg",
+                "http://s32.postimg.org/jlj29shqt/12791057_657347101072467_2630471624444555902_n.jpg",
+                "http://s32.postimg.org/b0z8uv1sl/afro_samurai_resurrection_original.jpg",
+                "http://s32.postimg.org/n6og59gid/asuras_wrath_wallpaper_hd_2_1080p.jpg",
+                "http://s32.postimg.org/8or8x9p79/barret_M107_by_mimi3d.jpg",
+                "http://s32.postimg.org/vz5esy1n9/barrett_m107_by_deargruadher_d4dikw8.jpg",
+                "http://s32.postimg.org/wiai27t1x/Darksiders_Wrath_of_War_1920x1080.jpg"
         };
         fragmentPagerAdapter =
-            new AnimalsHeaderFragmentPagerAdapter(getFragmentManager(), getContext(), images);
+                new AnimalsHeaderFragmentPagerAdapter(getFragmentManager(), getContext(), images);
         final PagerAdapter wrappedFragmentPagerAdapter =
-            new InfinitePagerAdapter(fragmentPagerAdapter);
+                new InfinitePagerAdapter(fragmentPagerAdapter);
 
         objectViewPager.setAdapter(wrappedFragmentPagerAdapter);
         indicatorObject.setViewPager(objectViewPager);
