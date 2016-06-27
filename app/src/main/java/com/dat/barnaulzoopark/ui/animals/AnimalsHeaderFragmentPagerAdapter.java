@@ -7,20 +7,22 @@ import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.FragmentPagerAdapter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Nguyen on 6/20/2016.
  */
 public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
-    private String[] data;
+    private List<String> data;
     private Context context;
     private boolean shouldShowChildren = false;
     private FragmentManager mFragmentManager;
     private Map<Integer, String> mFragmentTags;
     private int mLastPosition = -1;
 
-    public AnimalsHeaderFragmentPagerAdapter(FragmentManager fm, Context context, String[] data) {
+    public AnimalsHeaderFragmentPagerAdapter(FragmentManager fm, Context context,
+        List<String> data) {
         super(fm);
         this.mFragmentManager = fm;
         this.context = context;
@@ -36,12 +38,12 @@ public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return data.length;
+        return data.size();
     }
 
     @Override
     public int getActualCount() {
-        return data.length;
+        return data.size();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
             AnimalsHeaderPhotoItemFragment fragment = (AnimalsHeaderPhotoItemFragment) obj;
             if (fragment.getArguments() == null) {
                 Bundle args = new Bundle();
-                args.putString(AnimalsHeaderPhotoItemFragment.ARGUMENT_PHOTO, data[position]);
+                args.putString(AnimalsHeaderPhotoItemFragment.ARGUMENT_PHOTO, data.get(position));
                 fragment.setArguments(args);
             }
             String tag = fragment.getTag();

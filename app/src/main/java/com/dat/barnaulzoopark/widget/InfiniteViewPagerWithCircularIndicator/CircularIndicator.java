@@ -220,11 +220,11 @@ public class CircularIndicator extends LinearLayout {
 
     private void createIndicators() {
         removeAllViews();
-        int count = mViewpager.getAdapter().getActualCount();
+        int count = mViewpager.getAdapter().getActualCount() / 2;
         if (count <= 0) {
             return;
         }
-        int currentItem = mViewpager.getCurrentItem();
+        int currentItem = mViewpager.getCurrentItem() / 2;
 
         for (int i = 0; i < count; i++) {
             if (currentItem == i) {
@@ -266,6 +266,7 @@ public class CircularIndicator extends LinearLayout {
     }
 
     public int transformToActualPosition(int position) {
-        return position % mViewpager.getAdapter().getActualCount();
+        int result = position % mViewpager.getAdapter().getActualCount();
+        return result % (mViewpager.getAdapter().getActualCount() / 2);
     }
 }
