@@ -81,9 +81,12 @@ public class AnimalsFragment extends TempBaseFragment
     private void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
-            collapsingToolbarLayoutBanner.setFocusable(false);
-            collapsingToolbarLayoutBanner.setClickable(false);
+            collapsingToolbarLayoutBanner.setTouchscreenBlocksFocus(false);
+            appBarLayout.setNestedScrollingEnabled(false);
         }
+        collapsingToolbarLayoutBanner.setFocusable(false);
+        collapsingToolbarLayoutBanner.setClickable(false);
+
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {

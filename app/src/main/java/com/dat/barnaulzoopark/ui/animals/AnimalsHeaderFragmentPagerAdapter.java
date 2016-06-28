@@ -100,7 +100,7 @@ public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public float getPageWidth(int position) {
         if (shouldShowChildren) {
-            return 0.6f;
+            return 0.75f;
         }
         return 1f;
     }
