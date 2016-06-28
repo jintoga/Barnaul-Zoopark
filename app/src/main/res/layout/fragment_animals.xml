@@ -10,7 +10,7 @@
         android:id="@+id/animals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-25dp"
+        android:layout_marginTop="@dimen/animals_recycler_view_margin_top"
         android:clipToPadding="false"
         android:fitsSystemWindows="true"
         android:scrollbars="vertical"
