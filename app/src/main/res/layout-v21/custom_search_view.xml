@@ -8,12 +8,6 @@
     android:layout_gravity="center"
     android:visibility="visible">
 
-    <View
-        android:id="@+id/transparent_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/search_view_dim_color" />
-
     <FrameLayout
         android:layout_width="@dimen/search_view_width"
         android:layout_height="match_parent"

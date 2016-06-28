@@ -43,6 +43,8 @@ public class AnimalsFragment extends TempBaseFragment
     protected CollapsingToolbarLayout collapsingToolbarLayoutBanner;
     @Bind(R.id.search_view)
     protected FloatingSearchView searchView;
+    @Bind(R.id.transparent_view)
+    protected View backgroundView;
     @Bind(R.id.animals)
     protected RecyclerView animals;
     private AnimalsAdapter animalsAdapter;
@@ -94,6 +96,7 @@ public class AnimalsFragment extends TempBaseFragment
             }
         });
 
+        searchView.setBackgroundView(backgroundView);
         searchView.setSearchViewFocusedListener(this);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);

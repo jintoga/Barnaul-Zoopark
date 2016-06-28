@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout android:id="@+id/search_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/search_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:visibility="visible">
-
-    <View
-        android:id="@+id/transparent_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/search_view_dim_color" />
 
     <FrameLayout
         android:layout_width="@dimen/search_view_width"

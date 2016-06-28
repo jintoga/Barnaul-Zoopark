@@ -54,16 +54,6 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="top|center"
-        android:layout_marginTop="@dimen/search_view_margin_top"
-        app:layout_behavior="com.dat.barnaulzoopark.widget.SearchView.SearchViewPinBehavior"
-        tools:visibility="gone" />
-
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -73,6 +63,22 @@
         android:clickable="true"
         android:src="@drawable/ic_search"
         app:backgroundTint="@color/colorPrimaryLight" />
+
+    <View
+        android:id="@+id/transparent_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/search_view_dim_color"
+        android:visibility="gone" />
+
+    <com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="@dimen/search_view_margin_top"
+        app:layout_behavior="com.dat.barnaulzoopark.widget.SearchView.SearchViewPinBehavior"
+        tools:visibility="gone" />
 
     <View
         android:id="@+id/systemBar"
