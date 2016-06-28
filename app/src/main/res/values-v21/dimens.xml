@@ -2,4 +2,5 @@
 <resources>
     <dimen name="search_view_divider">2dp</dimen>
     <dimen name="search_view_cardview_shadow">4dp</dimen>
+    <dimen name="search_view_margin_top">25dp</dimen>
 </resources>

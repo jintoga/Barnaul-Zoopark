@@ -85,8 +85,8 @@ public class AnimalsFragment extends TempBaseFragment
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                //change systemBar's color when appBarLayout collapse more than 2/3 of it's height
-                if (verticalOffset < -appBarLayout.getTotalScrollRange() * 2 / 3) {
+                //change systemBar's color when appBarLayout collapse more than 60% of it's height
+                if (verticalOffset < -appBarLayout.getTotalScrollRange() * 3 / 5) {
                     systemBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     systemBar.setBackgroundColor(getResources().getColor(R.color.transparent));
