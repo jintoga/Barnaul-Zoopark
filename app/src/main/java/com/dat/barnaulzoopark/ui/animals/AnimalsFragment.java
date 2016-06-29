@@ -41,6 +41,8 @@ public class AnimalsFragment extends TempBaseFragment
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
     protected CollapsingToolbarLayout collapsingToolbarLayoutBanner;
+    @Bind(R.id.marginView)
+    protected View marginView;
     @Bind(R.id.search_view)
     protected FloatingSearchView searchView;
     @Bind(R.id.transparent_view)
@@ -95,7 +97,21 @@ public class AnimalsFragment extends TempBaseFragment
                     systemBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     systemBar.setBackgroundColor(getResources().getColor(R.color.transparent));
+                    marginView.setVisibility(View.GONE);
                 }
+                //hack: to make the second toolbar's height display properly
+                //by adding a view with height of StatusBar above it
+                //show the marginView when the banner is fully collapsed
+                if (verticalOffset <= -collapsingToolbarLayoutBanner.getHeight()
+                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    marginView.setVisibility(View.VISIBLE);
+                } else {
+                    marginView.setVisibility(View.GONE);
+                }
+                /*Log.d("onOffsetChanged", "collapsingToolbarLayoutBanner.getHeight():"
+                    + collapsingToolbarLayoutBanner.getHeight()
+                    + "   verticalOffset:"
+                    + verticalOffset);*/
             }
         });
 

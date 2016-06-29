@@ -38,19 +38,24 @@
                 layout="@layout/partial_expanded_toolbar_banner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/expanded_banner_height"
-                android:layout_marginBottom="?attr/actionBarSize"
                 android:fitsSystemWindows="true" />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="bottom"
-                android:background="@color/colorPrimary"
-                app:layout_collapseMode="pin"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
+        <View
+            android:id="@+id/marginView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_bar_height"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"
+            app:layout_scrollFlags="scroll|enterAlways" />
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </android.support.design.widget.AppBarLayout>
 
 
@@ -68,6 +73,7 @@
         android:id="@+id/transparent_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/status_bar_height"
         android:background="@color/search_view_dim_color"
         android:visibility="gone" />
 
