@@ -3,8 +3,10 @@ package com.dat.barnaulzoopark.widget.SearchView;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Build;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -51,6 +53,7 @@ public class FloatingSearchView extends FrameLayout {
 
     public FloatingSearchView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initDrawables();
         init();
         initSearchView();
     }
@@ -73,6 +76,7 @@ public class FloatingSearchView extends FrameLayout {
         rootView = (FrameLayout) findViewById(R.id.search_layout);
         searchBar = (CardView) findViewById(R.id.search_bar);
         back = (ImageButton) findViewById(R.id.action_back);
+        back.setImageDrawable(mMenuBtnDrawable);
         searchEditText = (EditText) findViewById(R.id.et_search);
         clear = (ImageButton) findViewById(R.id.action_clear);
         suggestions = (ListView) findViewById(R.id.suggestion_list);
@@ -126,11 +130,14 @@ public class FloatingSearchView extends FrameLayout {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
+                    openMenuDrawable(mMenuBtnDrawable, true);
                     searchViewFocusedListener.onSearchViewEditTextFocus();
                     if (backgroundView != null) {
                         backgroundView.setVisibility(VISIBLE);
                         backgroundView.requestFocus();
                     }
+                } else {
+                    closeMenuDrawable(mMenuBtnDrawable, true);
                 }
             }
         });
@@ -153,6 +160,50 @@ public class FloatingSearchView extends FrameLayout {
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    private DrawerArrowDrawable mMenuBtnDrawable;
+
+    private void initDrawables() {
+        mMenuBtnDrawable = new DrawerArrowDrawable(getContext());
+        mMenuBtnDrawable.setColor(getContext().getResources().getColor(R.color.black));
+    }
+
+    private void openMenuDrawable(final DrawerArrowDrawable drawerArrowDrawable, boolean withAnim) {
+        if (withAnim) {
+            ValueAnimator anim = ValueAnimator.ofFloat(0.0f, 1.0f);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+
+                    float value = (Float) animation.getAnimatedValue();
+                    drawerArrowDrawable.setProgress(value);
+                }
+            });
+            anim.setDuration(200);
+            anim.start();
+        } else {
+            drawerArrowDrawable.setProgress(1.0f);
+        }
+    }
+
+    private void closeMenuDrawable(final DrawerArrowDrawable drawerArrowDrawable,
+        boolean withAnim) {
+        if (withAnim) {
+            ValueAnimator anim = ValueAnimator.ofFloat(1.0f, 0.0f);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+
+                    float value = (Float) animation.getAnimatedValue();
+                    drawerArrowDrawable.setProgress(value);
+                }
+            });
+            anim.setDuration(200);
+            anim.start();
+        } else {
+            drawerArrowDrawable.setProgress(0.0f);
+        }
     }
 
     public void setSearchViewListener(SearchViewListener searchViewListener) {
