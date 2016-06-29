@@ -9,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,8 @@ public class AnimalsFragment extends TempBaseFragment
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
     protected CollapsingToolbarLayout collapsingToolbarLayoutBanner;
+    @Bind(R.id.toolbar)
+    protected Toolbar toolbar;
     @Bind(R.id.marginView)
     protected View marginView;
     @Bind(R.id.search_view)
@@ -83,11 +86,10 @@ public class AnimalsFragment extends TempBaseFragment
     private void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
-            collapsingToolbarLayoutBanner.setTouchscreenBlocksFocus(false);
             appBarLayout.setNestedScrollingEnabled(false);
+            toolbar.setNestedScrollingEnabled(false);
+            marginView.setNestedScrollingEnabled(false);
         }
-        collapsingToolbarLayoutBanner.setFocusable(false);
-        collapsingToolbarLayoutBanner.setClickable(false);
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -137,7 +139,7 @@ public class AnimalsFragment extends TempBaseFragment
 
         final String[] images = new String[] {
             "http://s11.postimg.org/aft369v1v/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
-            "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
+            "http://www.zoo22.ru/upload/iblock/460/460adab08733299454dff517e44d2add.jpg",
             "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
             "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
             "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png",
