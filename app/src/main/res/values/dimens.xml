@@ -25,7 +25,7 @@
     <dimen name="stack_album_view_img2_margin">10dp</dimen>
 
 
-    <dimen name="search_icon_padding">12dp</dimen>
+    <dimen name="search_icon_padding">16dp</dimen>
     <dimen name="search_view_text_padding">8dp</dimen>
     <dimen name="search_view_width">-1dp</dimen>
     <dimen name="search_view_divider">1dp</dimen>

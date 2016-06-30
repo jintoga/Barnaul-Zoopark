@@ -32,7 +32,9 @@ public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        highlightCurrentFragment(position);
+        if (position > 0) {
+            highlightCurrentFragment(position);
+        }
         super.setPrimaryItem(container, position, object);
     }
 
