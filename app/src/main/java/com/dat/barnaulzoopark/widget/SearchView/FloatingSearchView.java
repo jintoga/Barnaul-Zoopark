@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -59,13 +60,13 @@ public class FloatingSearchView extends FrameLayout {
     public void setBackgroundView(View backgroundView) {
         this.backgroundView = backgroundView;
         if (this.backgroundView != null) {
-            this.backgroundView.setOnClickListener(new OnClickListener() {
+            this.backgroundView.setOnTouchListener(new OnTouchListener() {
                 @Override
-                public void onClick(View v) {
-
+                public boolean onTouch(View v, MotionEvent event) {
                     mMenuBtnDrawable.animateDrawable(false);
                     searchViewFocusedListener.onSearchViewEditTextLostFocus();
                     closeSearchView();
+                    return false;
                 }
             });
         }
