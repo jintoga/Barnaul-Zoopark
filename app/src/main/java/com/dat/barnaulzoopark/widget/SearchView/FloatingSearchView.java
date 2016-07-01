@@ -28,11 +28,14 @@ import com.dat.barnaulzoopark.R;
  */
 public class FloatingSearchView extends FrameLayout {
 
+    private static final int MODE_HAMBURGER = 1;
+    private static final int MODE_ARROW = 2;
+    private int leftActionButtonMode = -1;
     private boolean isSearchViewOpen;
     private FrameLayout rootView;
     private EditText searchEditText;
     private CardView searchBar;
-    private ImageButton back;
+    private ImageButton leftActionButton;
     private ImageButton clear;
     private View backgroundView;
     private LinearLayout container;
@@ -40,7 +43,7 @@ public class FloatingSearchView extends FrameLayout {
     private SuggestionsAdapter suggestionsAdapter;
 
     private SearchViewListener searchViewListener;
-
+    private SearchViewDrawerListener searchViewDrawerListener;
     private SearchViewFocusedListener searchViewFocusedListener;
 
     private boolean collapsingSuggestions = false;
@@ -48,12 +51,14 @@ public class FloatingSearchView extends FrameLayout {
     public FloatingSearchView(Context context) {
         super(context);
         init();
+        setEvents();
     }
 
     public FloatingSearchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initDrawables();
         init();
+        setEvents();
         initSearchView();
     }
 
@@ -63,7 +68,7 @@ public class FloatingSearchView extends FrameLayout {
             this.backgroundView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    mMenuBtnDrawable.animateDrawable(false);
+                    mMenuBtnDrawable.animateDrawable(MenuArrowDrawable.ARROW_TO_HAMBURGER);
                     searchViewFocusedListener.onSearchViewEditTextLostFocus();
                     closeSearchView();
                     return false;
@@ -76,8 +81,8 @@ public class FloatingSearchView extends FrameLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.custom_search_view, this, true);
         rootView = (FrameLayout) findViewById(R.id.search_layout);
         searchBar = (CardView) findViewById(R.id.search_bar);
-        back = (ImageButton) findViewById(R.id.action_back);
-        back.setImageDrawable(mMenuBtnDrawable);
+        leftActionButton = (ImageButton) findViewById(R.id.left_action_button);
+        initLeftActionButton();
         searchEditText = (EditText) findViewById(R.id.et_search);
         clear = (ImageButton) findViewById(R.id.action_clear);
         suggestions = (ListView) findViewById(R.id.suggestion_list);
@@ -103,15 +108,18 @@ public class FloatingSearchView extends FrameLayout {
                 }
             }
         });
+    }
 
-        setEvents();
+    private void initLeftActionButton() {
+        leftActionButton.setImageDrawable(mMenuBtnDrawable);
+        leftActionButtonMode = MODE_HAMBURGER;
     }
 
     private void setEvents() {
-        back.setOnClickListener(new OnClickListener() {
+        leftActionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeSearchView();
+                leftActionButtonToggle();
             }
         });
         clear.setOnClickListener(new OnClickListener() {
@@ -131,17 +139,28 @@ public class FloatingSearchView extends FrameLayout {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mMenuBtnDrawable.animateDrawable(true);
+                    leftActionButtonMode = MODE_ARROW;
+                    mMenuBtnDrawable.animateDrawable(MenuArrowDrawable.HAMBURGER_TO_ARROW);
                     searchViewFocusedListener.onSearchViewEditTextFocus();
                     if (backgroundView != null) {
                         backgroundView.setVisibility(VISIBLE);
                         backgroundView.requestFocus();
                     }
                 } else {
-                    mMenuBtnDrawable.animateDrawable(false);
+                    leftActionButtonMode = MODE_HAMBURGER;
+                    mMenuBtnDrawable.animateDrawable(MenuArrowDrawable.ARROW_TO_HAMBURGER);
                 }
             }
         });
+    }
+
+    private void leftActionButtonToggle() {
+        if (leftActionButtonMode == MODE_HAMBURGER) {
+            searchViewDrawerListener.onNavigationDrawerOpen();
+        } else if (leftActionButtonMode == MODE_ARROW) {
+            searchViewDrawerListener.onNavigationDrawerClosed();
+            clearSearchView();
+        }
     }
 
     private void initSearchView() {
@@ -176,6 +195,10 @@ public class FloatingSearchView extends FrameLayout {
 
     public void setSearchViewFocusedListener(SearchViewFocusedListener searchViewFocusedListener) {
         this.searchViewFocusedListener = searchViewFocusedListener;
+    }
+
+    public void setSearchViewDrawerListener(SearchViewDrawerListener searchViewDrawerListener) {
+        this.searchViewDrawerListener = searchViewDrawerListener;
     }
 
     public void openSearchView() {
@@ -290,6 +313,12 @@ public class FloatingSearchView extends FrameLayout {
         void onSearchViewOpen();
 
         void onSearchViewClosed();
+    }
+
+    public interface SearchViewDrawerListener {
+        void onNavigationDrawerOpen();
+
+        void onNavigationDrawerClosed();
     }
 
     public interface SearchViewFocusedListener {

@@ -48,6 +48,9 @@ public class MenuArrowDrawable extends DrawerArrowDrawable {
         return getProgress();
     }
 
+    public static final boolean HAMBURGER_TO_ARROW = true;
+    public static final boolean ARROW_TO_HAMBURGER = false;
+
     public void animateDrawable(boolean menuToArrow) {
         if (menuToArrow && getPosition() >= 1f) return;
         if (!menuToArrow && getPosition() <= 0f) return;

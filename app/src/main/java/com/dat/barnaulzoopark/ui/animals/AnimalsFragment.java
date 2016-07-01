@@ -18,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
+import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
 import com.dat.barnaulzoopark.ui.gallery.gallerydetails.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.gallery.model.Photo;
@@ -34,7 +35,8 @@ import java.util.List;
  * Created by Nguyen on 6/17/2016.
  */
 public class AnimalsFragment extends TempBaseFragment
-    implements FloatingSearchView.SearchViewFocusedListener, AnimalsAdapter.AnimalsAdapterListener {
+    implements FloatingSearchView.SearchViewFocusedListener,
+    FloatingSearchView.SearchViewDrawerListener, AnimalsAdapter.AnimalsAdapterListener {
 
     @Bind(R.id.systemBar)
     protected View systemBar;
@@ -83,6 +85,20 @@ public class AnimalsFragment extends TempBaseFragment
 
     }
 
+    @Override
+    public void onNavigationDrawerOpen() {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).openDrawer();
+        }
+    }
+
+    @Override
+    public void onNavigationDrawerClosed() {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).closeDrawer();
+        }
+    }
+
     private void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
@@ -119,6 +135,7 @@ public class AnimalsFragment extends TempBaseFragment
 
         searchView.setBackgroundView(backgroundView);
         searchView.setSearchViewFocusedListener(this);
+        searchView.setSearchViewDrawerListener(this);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);
             animals.addItemDecoration(new GridSpacingItemDecoration(3,
