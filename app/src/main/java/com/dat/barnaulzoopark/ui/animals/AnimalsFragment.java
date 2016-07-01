@@ -126,10 +126,11 @@ public class AnimalsFragment extends TempBaseFragment
                 } else {
                     marginView.setVisibility(View.GONE);
                 }
-                /*Log.d("onOffsetChanged", "collapsingToolbarLayoutBanner.getHeight():"
-                    + collapsingToolbarLayoutBanner.getHeight()
-                    + "   verticalOffset:"
-                    + verticalOffset);*/
+                if (verticalOffset + collapsingToolbarLayoutBanner.getHeight() == 0) {
+                    Log.d("OPEN SEARCHVIEW", "OPEN SEARCHVIEW");
+                } else {
+                    Log.d("CLOSE SEARCHVIEW", "CLOSE SEARCHVIEW");
+                }
             }
         });
 

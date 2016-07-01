@@ -57,6 +57,15 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
                 }
             } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
                 childPosition = childInitY;
+            } else {
+                childPosition = 0;
+                /*Log.d("else", "else"
+                    + " dependencyOldY:"
+                    + dependencyOldY
+                    + " dependencyY:"
+                    + dependencyY
+                    + "  childPosition:"
+                    + childPosition);*/
             }
         }
 
