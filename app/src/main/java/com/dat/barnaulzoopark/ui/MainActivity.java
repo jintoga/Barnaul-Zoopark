@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     protected NavigationView navigationView;
     @Bind(R.id.drawer)
     protected DrawerLayout drawerLayout;
+    private int currentMenuItemID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,11 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupNavDrawer();
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container, new AnimalsFragment());
+        fragmentTransaction.commit();
+        currentMenuItemID = R.id.ourAnimals;
     }
 
     private void setupNavDrawer() {
@@ -38,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         //Closing drawer on item click
         drawerLayout.closeDrawers();
+        if (currentMenuItemID == menuItem.getItemId()) {
+            return false;
+        }
+        currentMenuItemID = menuItem.getItemId();
         Fragment fragment = null;
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
