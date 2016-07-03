@@ -38,7 +38,15 @@
                 layout="@layout/partial_expanded_toolbar_banner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/expanded_banner_height"
-                android:fitsSystemWindows="true" />
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
         <View
@@ -48,13 +56,11 @@
             android:background="@color/colorPrimary"
             android:visibility="gone"
             app:layout_scrollFlags="scroll|enterAlways" />
- 
+
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </android.support.design.widget.AppBarLayout>
@@ -84,7 +90,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="top|center"
         android:layout_marginTop="@dimen/search_view_margin_top"
-        app:layout_behavior="com.dat.barnaulzoopark.widget.SearchView.SearchViewPinBehavior"
         tools:visibility="gone" />
 
     <View

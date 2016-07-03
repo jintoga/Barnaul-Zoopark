@@ -158,6 +158,7 @@ public class FloatingSearchView extends FrameLayout {
         if (leftActionButtonMode == MODE_HAMBURGER) {
             searchViewDrawerListener.onNavigationDrawerOpen();
         } else if (leftActionButtonMode == MODE_ARROW) {
+            closeSearchView();
             searchViewDrawerListener.onNavigationDrawerClosed();
             clearSearchView();
         }

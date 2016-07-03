@@ -14,8 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
 import com.dat.barnaulzoopark.ui.MainActivity;
@@ -27,16 +26,21 @@ import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.Infi
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfiniteViewPager;
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.PagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Nguyen on 6/17/2016.
  */
 public class AnimalsFragment extends TempBaseFragment
-    implements FloatingSearchView.SearchViewFocusedListener,
-    FloatingSearchView.SearchViewDrawerListener, AnimalsAdapter.AnimalsAdapterListener {
+        implements FloatingSearchView.SearchViewFocusedListener,
+        FloatingSearchView.SearchViewDrawerListener, FloatingSearchView.SearchViewListener, AnimalsAdapter.AnimalsAdapterListener {
 
     @Bind(R.id.systemBar)
     protected View systemBar;
@@ -69,7 +73,7 @@ public class AnimalsFragment extends TempBaseFragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals, container, false);
         ButterKnife.bind(this, view);
         if (systemBar != null) {
@@ -121,7 +125,7 @@ public class AnimalsFragment extends TempBaseFragment
                 //by adding a view with height of StatusBar above it
                 //show the marginView when the banner is fully collapsed
                 if (verticalOffset <= -collapsingToolbarLayoutBanner.getHeight()
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     marginView.setVisibility(View.VISIBLE);
                 } else {
                     marginView.setVisibility(View.GONE);
@@ -137,16 +141,17 @@ public class AnimalsFragment extends TempBaseFragment
         searchView.setBackgroundView(backgroundView);
         searchView.setSearchViewFocusedListener(this);
         searchView.setSearchViewDrawerListener(this);
+        searchView.setVisibility(View.GONE);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);
             animals.addItemDecoration(new GridSpacingItemDecoration(3,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
+                    true));
         } else {
             layoutManager = new GridLayoutManager(getContext(), 2);
             animals.addItemDecoration(new GridSpacingItemDecoration(2,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
+                    true));
         }
         animals.setLayoutManager(layoutManager);
         if (animalsAdapter == null) {
@@ -155,19 +160,19 @@ public class AnimalsFragment extends TempBaseFragment
         animals.setHasFixedSize(true);
         animals.setAdapter(animalsAdapter);
 
-        final String[] images = new String[] {
-            "https://s31.postimg.org/lzogm934b/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
-            "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-            "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
-            "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
-            "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png",
-            "https://s32.postimg.org/qdg1ceg9x/unnamed.jpg"
+        final String[] images = new String[]{
+                "https://s31.postimg.org/lzogm934b/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
+                "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
+                "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
+                "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
+                "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png",
+                "https://s32.postimg.org/qdg1ceg9x/unnamed.jpg"
         };
         List<String> data = multiplyItems(images, 2);
         fragmentPagerAdapter =
-            new AnimalsHeaderFragmentPagerAdapter(getFragmentManager(), getContext(), data);
+                new AnimalsHeaderFragmentPagerAdapter(getFragmentManager(), getContext(), data);
         final PagerAdapter wrappedFragmentPagerAdapter =
-            new InfinitePagerAdapter(fragmentPagerAdapter);
+                new InfinitePagerAdapter(fragmentPagerAdapter);
 
         objectViewPager.setAdapter(wrappedFragmentPagerAdapter);
         indicatorObject.setViewPager(objectViewPager);
@@ -206,11 +211,29 @@ public class AnimalsFragment extends TempBaseFragment
         searchView.clearSearchView();
     }
 
+    @OnClick(R.id.fab)
+    protected void fabClick() {
+        searchView.setSearchViewListener(AnimalsFragment.this);
+        searchView.openSearchView();
+    }
+
     private List<String> multiplyItems(String[] images, int n) {
         List<String> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             result.addAll(Arrays.asList(images));
         }
         return result;
+    }
+
+    @Override
+    public void onSearchViewOpen() {
+        //deal with first attempt width,height 0
+        if (searchView.getVisibility() == View.GONE) {
+            searchView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onSearchViewClosed() {
     }
 }
