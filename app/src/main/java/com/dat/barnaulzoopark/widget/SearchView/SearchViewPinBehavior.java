@@ -6,7 +6,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-
 import com.dat.barnaulzoopark.R;
 
 /**
@@ -21,20 +20,22 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
     private int childHeight;
     private int dependencyHeight;
     private float dependencyOldY = 0;
+    private float childInitY;
     private float cardViewShadow;
-
 
     public SearchViewPinBehavior(Context context, AttributeSet attrs) {
         mContext = context;
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingSearchView child, View dependency) {
+    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingSearchView child,
+        View dependency) {
         return dependency instanceof AppBarLayout;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingSearchView child, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingSearchView child,
+        View dependency) {
         shouldInitProperties(child, dependency);
 
         float diff = dependency.getY() - dependencyOldY;
@@ -48,15 +49,32 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
                 }
             }
         } else {//**********Expanding
-            if (dependencyY - childHeight - childMarginBottom - cardViewShadow >= offset
-                    && childPosition < 0) {
-                childPosition = childPosition + diff;
-                if (dependencyY - childHeight - cardViewShadow <= -dependencyHeight) {
-                    childPosition = 0;
-                }
-            } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
+            if (Math.abs(dependencyY + childPosition) + childMarginBottom + cardViewShadow
+                <= dependency.getHeight()) {
                 childPosition = 0;
             }
+            if (dependencyY - childHeight - childMarginBottom - cardViewShadow >= offset
+                && childPosition < 0) {
+                childPosition = childPosition + diff;
+                if (dependencyY - childHeight - cardViewShadow <= -dependencyHeight) {
+                    childPosition = childInitY;
+                }
+            } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
+                childPosition = childInitY;
+            }
+            /*Log.d("else", "else"
+                + " dependencyOldY:"
+                + dependencyOldY
+                + " dependencyY:"
+                + dependencyY
+                + "  childPosition:"
+                + childPosition
+                + "  dependency.getHeight():"
+                + dependency.getHeight()
+                + "   toolbarHeight():"
+                + toolbarHeight
+                + "   Math.abs(dependencyY + childPosition):"
+                + Math.abs(dependencyY + childPosition));*/
         }
 
         child.setY(childPosition);
@@ -65,10 +83,10 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
         return true;
     }
 
-
     private void shouldInitProperties(FloatingSearchView child, View dependency) {
         if (cardViewShadow == 0) {
-            cardViewShadow = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_cardview_shadow);
+            cardViewShadow = mContext.getResources()
+                .getDimensionPixelOffset(R.dimen.search_view_cardview_shadow);
         }
 
         if (dependencyOldY == 0) {
@@ -81,21 +99,26 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
             dependencyHeight = dependency.getHeight();
         }
         if (childMarginBottom == 0) {
-            childMarginBottom = mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_collapse_margin_bottom);
+            childMarginBottom = mContext.getResources()
+                .getDimensionPixelOffset(R.dimen.search_view_collapse_margin_bottom);
+            float statusBarHeight =
+                mContext.getResources().getDimensionPixelOffset(R.dimen.search_view_margin_top);
+            childMarginBottom = childMarginBottom + statusBarHeight;
         }
-
+        if (childInitY == 0) {
+            childInitY = child.getY();
+        }
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();
-
     }
 
     public int getToolbarHeight() {
         int result = 0;
         TypedValue tv = new TypedValue();
         if (mContext.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            result = TypedValue.complexToDimensionPixelSize(tv.data, mContext.getResources().getDisplayMetrics());
+            result = TypedValue.complexToDimensionPixelSize(tv.data,
+                mContext.getResources().getDisplayMetrics());
         }
         return result;
     }
-
 }

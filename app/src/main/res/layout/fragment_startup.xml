@@ -27,9 +27,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="14dp"
-            android:orientation="vertical">
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="6dp"
+            android:background="?selectableItemBackground"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <ImageView
                 android:layout_width="wrap_content"

@@ -14,6 +14,8 @@
     <color name="gray">#dfdfdf</color>
     <color name="white">#ffffff</color>
 
+    <color name="transparent">#00000000</color>
+
     <color name="black_transparent_70">#B3000000</color>
     <color name="black_transparent_55">#8C000000</color>
     <color name="black_transparent_35">#59000000</color>
@@ -28,8 +30,6 @@
     <color name="fb_transparent_70">#a63e5c9a</color>
     <color name="vk_transparent_85">#d954769a</color>
     <color name="green_transparent_70">#9923c257</color>
-    <color name="fab_btn">#FF5252</color>
-
 
     <color name="search_view_dim_color">#4d000000</color>
     <color name="search_view_color">#fffefefe</color>

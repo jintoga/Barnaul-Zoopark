@@ -20,18 +20,23 @@
     <dimen name="photo_album_items_span">12dp</dimen>
 
     <dimen name="default_width">-1px</dimen>
-    <dimen name="expanded_banner_height">260dp</dimen>
+    <dimen name="expanded_banner_height">220dp</dimen>
     <dimen name="stack_album_view_img1_margin">20dp</dimen>
     <dimen name="stack_album_view_img2_margin">10dp</dimen>
 
 
-    <dimen name="search_icon_padding">12dp</dimen>
+    <dimen name="search_icon_padding">16dp</dimen>
     <dimen name="search_view_text_padding">8dp</dimen>
     <dimen name="search_view_width">-1dp</dimen>
-    <dimen name="search_view_divider">2dp</dimen>
-    <dimen name="search_view_cardview_shadow">4dp</dimen>
+    <dimen name="search_view_divider">1dp</dimen>
+    <dimen name="search_view_cardview_shadow">24dp</dimen>
 
     <dimen name="search_view_collapse_margin_bottom">0dp</dimen>
+    <dimen name="search_view_margin_top">1dp</dimen>
 
-    <dimen name="search_view_margin_top">4dp</dimen>
+    <dimen name="animals_recycler_view_margin_top">0dp</dimen>
+    <dimen name="status_bar_height">0dp</dimen>
+
+    <dimen name="search_view_margin_top_not_fully_expanded">0dp</dimen>
+    <dimen name="search_view_margin_bottom_not_fully_expanded">10dp</dimen>
 </resources>
