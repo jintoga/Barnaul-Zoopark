@@ -137,8 +137,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            fresco:backgroundImage="@drawable/ic_fb_white"
-            fresco:roundedCornerRadius="2dp" />
+            fresco:overlayImage="@drawable/ic_fb" />
     </LinearLayout>
 
 
@@ -164,9 +163,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:tint="@color/white"
-            fresco:backgroundImage="@drawable/ic_vk"
-            fresco:roundedCornerRadius="2dp" />
+            fresco:overlayImage="@drawable/ic_vk" />
     </LinearLayout>
 
 </LinearLayout>
