@@ -24,13 +24,14 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:elevation="0dp">
 
+
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout_banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
             app:statusBarScrim="@color/colorPrimary">
 
             <include
@@ -39,22 +40,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/expanded_banner_height"
                 android:fitsSystemWindows="true" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="top"
+                android:layout_marginBottom="@dimen/search_view_margin_bottom_not_fully_expanded"
+                android:layout_marginTop="@dimen/search_view_margin_top_not_fully_expanded"
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
-        <View
-            android:id="@+id/marginView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/status_bar_height"
-            android:background="@color/colorPrimary"
-            android:visibility="gone"
-            app:layout_scrollFlags="scroll|enterAlways" />
- 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
+            android:background="@color/orange"
+            android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|enterAlways"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </android.support.design.widget.AppBarLayout>

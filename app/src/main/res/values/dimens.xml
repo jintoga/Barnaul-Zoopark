@@ -36,4 +36,7 @@
 
     <dimen name="animals_recycler_view_margin_top">0dp</dimen>
     <dimen name="status_bar_height">0dp</dimen>
+
+    <dimen name="search_view_margin_top_not_fully_expanded">0dp</dimen>
+    <dimen name="search_view_margin_bottom_not_fully_expanded">10dp</dimen>
 </resources>

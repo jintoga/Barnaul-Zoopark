@@ -100,7 +100,6 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
         if (childInitY == 0) {
             childInitY = child.getY();
         }
-
         offset = childHeight - dependencyHeight;
         dependencyY = dependency.getY();
     }
