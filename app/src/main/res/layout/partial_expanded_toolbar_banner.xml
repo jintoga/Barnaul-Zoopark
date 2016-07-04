@@ -16,11 +16,10 @@
     <com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.CircularIndicator
         android:id="@+id/indicatorObject"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="28dp"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="8dp"
         app:ci_animator="@animator/scale_with_alpha"
-        app:ci_height="6dp"
-        app:ci_margin="4dp"
-        app:ci_width="6dp" />
+        app:ci_height="4dp"
+        app:ci_margin="3dp"
+        app:ci_width="4dp" />
 </FrameLayout>
