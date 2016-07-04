@@ -64,7 +64,7 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
         android:layout_margin="24dp"
         android:clickable="true"
         android:src="@drawable/ic_search"
-        app:backgroundTint="@color/colorPrimaryLight" />
+        app:backgroundTint="@color/colorPrimaryLight" />-->
 
     <View
         android:id="@+id/transparent_view"

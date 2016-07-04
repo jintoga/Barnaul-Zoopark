@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/expanded_banner_height"
+    android:background="@color/gray"
     android:fitsSystemWindows="true"
     tools:layout_height="260dp">
 
