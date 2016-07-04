@@ -1,9 +1,16 @@
 package com.dat.barnaulzoopark.ui.animals.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.dat.barnaulzoopark.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +23,11 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
     private final List<String> mFragmentTitleList = new ArrayList<>();
     Context context;
 
-    public AnimalsViewPagerAdapter(FragmentManager fm) {
+    public AnimalsViewPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        this.context = context;
     }
+
 
     @Override
     public Fragment getItem(int position) {
@@ -41,5 +50,35 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentTitleList.get(position);
     }
 
+    @NonNull
+    public View getTabView(int position) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_animals_tab, null);
+        TextView tabItemName = (TextView) view.findViewById(R.id.textViewTabItemName);
+        ImageView tabItemAvatar = (ImageView) view.findViewById(R.id.imageViewTabItemAvatar);
+
+
+        tabItemName.setText(mFragmentTitleList.get(position));
+        tabItemName.setTextColor(context.getResources().getColor(android.R.color.background_light));
+        if (mFragmentTitleList.get(position).equals("Млекопитающие")) {
+            tabItemAvatar.setImageResource(R.drawable.ic_bear);
+        } else {
+            tabItemAvatar.setImageResource(R.drawable.ic_bird);
+        }
+
+        return view;
+    }
+
+    public void highlightSelectedView(View view, boolean shouldHighLight) {
+        TextView tabItemName = (TextView) view.findViewById(R.id.textViewTabItemName);
+        ImageView tabItemAvatar = (ImageView) view.findViewById(R.id.imageViewTabItemAvatar);
+
+        if (shouldHighLight) {
+            tabItemName.setTextColor(context.getResources().getColor(R.color.white));
+            tabItemAvatar.setColorFilter(context.getResources().getColor(R.color.white));
+        } else {
+            tabItemName.setTextColor(context.getResources().getColor(R.color.gray));
+            tabItemAvatar.setColorFilter(context.getResources().getColor(R.color.gray));
+        }
+    }
 
 }

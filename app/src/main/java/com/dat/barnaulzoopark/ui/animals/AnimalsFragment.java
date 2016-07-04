@@ -58,7 +58,7 @@ public class AnimalsFragment extends TempBaseFragment
 
     @Bind(R.id.viewpagerAnimals)
     protected ViewPager viewpagerAnimals;
-
+    private AnimalsViewPagerAdapter adapter;
     private AnimalsHeaderFragmentPagerAdapter fragmentPagerAdapter;
 
     private View view;
@@ -146,13 +146,51 @@ public class AnimalsFragment extends TempBaseFragment
     }
 
     private void initAnimalsViewPager() {
-        AnimalsViewPagerAdapter adapter = new AnimalsViewPagerAdapter(getFragmentManager());
+        adapter = new AnimalsViewPagerAdapter(getFragmentManager(), getContext());
         adapter.addFragment(new AnimalsViewPageFragment(), "Млекопитающие");
         adapter.addFragment(new AnimalsViewPageFragment(), "Птицы");
         viewpagerAnimals.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewpagerAnimals);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            if (adapter != null && tabLayout.getTabAt(i) != null && tabLayout != null) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                View view = adapter.getTabView(i);
+                if (tab != null) {
+                    tab.setCustomView(view);
+                }
+            }
+        }
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewpagerAnimals) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                viewpagerAnimals.setCurrentItem(tab.getPosition());
+                View view = tab.getCustomView();
+                adapter.highlightSelectedView(view, true);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                View view = tab.getCustomView();
+                adapter.highlightSelectedView(view, false);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        viewpagerAnimals.setCurrentItem(0);
+        if (tabLayout.getTabAt(0) != null) {
+            TabLayout.Tab tab = tabLayout.getTabAt(0);
+            if (tab != null) {
+                View view = tab.getCustomView();
+                adapter.highlightSelectedView(view, true);
+            }
+        }
     }
+
 
     @Override
     public void onSearchViewEditTextFocus() {
