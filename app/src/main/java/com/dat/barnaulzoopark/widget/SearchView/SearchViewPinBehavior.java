@@ -49,6 +49,10 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
                 }
             }
         } else {//**********Expanding
+            if (Math.abs(dependencyY + childPosition) + childMarginBottom + cardViewShadow
+                <= dependency.getHeight()) {
+                childPosition = 0;
+            }
             if (dependencyY - childHeight - childMarginBottom - cardViewShadow >= offset
                 && childPosition < 0) {
                 childPosition = childPosition + diff;
@@ -57,16 +61,20 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
                 }
             } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
                 childPosition = childInitY;
-            } else {
-                childPosition = 0;
-                /*Log.d("else", "else"
-                    + " dependencyOldY:"
-                    + dependencyOldY
-                    + " dependencyY:"
-                    + dependencyY
-                    + "  childPosition:"
-                    + childPosition);*/
             }
+            /*Log.d("else", "else"
+                + " dependencyOldY:"
+                + dependencyOldY
+                + " dependencyY:"
+                + dependencyY
+                + "  childPosition:"
+                + childPosition
+                + "  dependency.getHeight():"
+                + dependency.getHeight()
+                + "   toolbarHeight():"
+                + toolbarHeight
+                + "   Math.abs(dependencyY + childPosition):"
+                + Math.abs(dependencyY + childPosition));*/
         }
 
         child.setY(childPosition);
