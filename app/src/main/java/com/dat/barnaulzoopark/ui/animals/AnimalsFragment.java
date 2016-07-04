@@ -9,7 +9,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,8 +43,6 @@ public class AnimalsFragment extends TempBaseFragment
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
     protected CollapsingToolbarLayout collapsingToolbarLayoutBanner;
-    @Bind(R.id.toolbar)
-    protected Toolbar toolbar;
     @Bind(R.id.search_view)
     protected FloatingSearchView searchView;
     @Bind(R.id.transparent_view)
@@ -101,7 +98,6 @@ public class AnimalsFragment extends TempBaseFragment
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
             appBarLayout.setNestedScrollingEnabled(false);
-            toolbar.setNestedScrollingEnabled(false);
         }
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
