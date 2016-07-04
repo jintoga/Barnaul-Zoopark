@@ -1,10 +1,12 @@
-package com.dat.barnaulzoopark.ui.animals;
+package com.dat.barnaulzoopark.ui.animals.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
+
+import com.dat.barnaulzoopark.ui.animals.AnimalsHeaderPhotoItemFragment;
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.FragmentPagerAdapter;
 import java.util.HashMap;
 import java.util.List;

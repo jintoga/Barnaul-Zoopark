@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -133,12 +133,12 @@
             android:textColor="@color/white"
             android:textSize="@dimen/normal_18" />
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:layout_width="wrap_content"
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_fb_white"
-            app:riv_corner_radius="2dp" />
+            fresco:backgroundImage="@drawable/ic_fb_white"
+            fresco:roundedCornerRadius="2dp" />
     </LinearLayout>
 
 
@@ -160,13 +160,13 @@
             android:textColor="@color/white"
             android:textSize="@dimen/normal_18" />
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:layout_width="wrap_content"
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_vk"
             android:tint="@color/white"
-            app:riv_corner_radius="2dp" />
+            fresco:backgroundImage="@drawable/ic_vk"
+            fresco:roundedCornerRadius="2dp" />
     </LinearLayout>
 
 </LinearLayout>
