@@ -61,6 +61,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:tabIndicatorColor="@color/orange"
             app:tabIndicatorHeight="2.5dp"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </android.support.design.widget.AppBarLayout>

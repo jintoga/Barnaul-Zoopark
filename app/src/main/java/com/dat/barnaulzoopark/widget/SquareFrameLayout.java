@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.gallery;
+package com.dat.barnaulzoopark.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -7,11 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.dat.barnaulzoopark.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +21,12 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
     Context context;
+    private Fragment mCurrentFragment;
 
     public AnimalsViewPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
-
 
     @Override
     public Fragment getItem(int position) {
@@ -44,10 +43,21 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
         mFragmentTitleList.add(title);
     }
 
-
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
+    }
+
+    public Fragment getCurrentFragment() {
+        return mCurrentFragment;
+    }
+
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        if (getCurrentFragment() != object) {
+            mCurrentFragment = ((Fragment) object);
+        }
+        super.setPrimaryItem(container, position, object);
     }
 
     @NonNull
@@ -56,10 +66,8 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
         TextView tabItemName = (TextView) view.findViewById(R.id.textViewTabItemName);
         ImageView tabItemAvatar = (ImageView) view.findViewById(R.id.imageViewTabItemAvatar);
 
-
         tabItemName.setText(mFragmentTitleList.get(position));
-        tabItemName.setTextColor(context.getResources().getColor(android.R.color.background_light));
-        if (mFragmentTitleList.get(position).equals("Млекопитающие")) {
+        if (mFragmentTitleList.get(position).toLowerCase().equals("Млекопитающие".toLowerCase())) {
             tabItemAvatar.setImageResource(R.drawable.ic_bear);
         } else {
             tabItemAvatar.setImageResource(R.drawable.ic_bird);
@@ -80,5 +88,4 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
             tabItemAvatar.setColorFilter(context.getResources().getColor(R.color.gray));
         }
     }
-
 }
