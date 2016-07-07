@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
+import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
 import com.dat.barnaulzoopark.ui.gallery.gallerydetails.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.gallery.model.Photo;
 
@@ -78,6 +80,7 @@ public class AnimalsViewPageFragment extends Fragment
 
     @Override
     public void onPhotoSelected(@NonNull Photo photo) {
-
+        Log.d("Click Animals", photo.getUrl());
+        AnimalsDetailActivity.startActivity(getContext());
     }
 }

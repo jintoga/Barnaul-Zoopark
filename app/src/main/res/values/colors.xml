@@ -18,7 +18,10 @@
 
     <color name="black_transparent_70">#B3000000</color>
     <color name="black_transparent_55">#8C000000</color>
+    <color name="black_transparent_40">#66000000</color>
     <color name="black_transparent_35">#59000000</color>
+    <color name="black_transparent_25">#40000000</color>
+    <color name="black_transparent_20">#33000000</color>
 
     <color name="orange">#ffb536</color>
 
@@ -34,4 +37,7 @@
     <color name="search_view_dim_color">#4d000000</color>
     <color name="search_view_color">#fffefefe</color>
     <color name="search_view_secondary_color">#88888888</color>
+
+
+    <color name="animals_detail_background">#256829</color>
 </resources>
