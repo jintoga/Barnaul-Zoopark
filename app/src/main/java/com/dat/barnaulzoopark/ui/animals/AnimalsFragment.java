@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
-import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsHeaderFragmentPagerAdapter;
+import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsBannerFragmentPagerAdapter;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.CircularIndicator;
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfinitePagerAdapter;
@@ -56,7 +56,7 @@ public class AnimalsFragment extends TempBaseFragment
     @Bind(R.id.viewpagerAnimals)
     protected ViewPager animalsViewPager;
     private AnimalsViewPagerAdapter animalsViewPagerAdapter;
-    private AnimalsHeaderFragmentPagerAdapter fragmentPagerAdapter;
+    private AnimalsBannerFragmentPagerAdapter fragmentPagerAdapter;
 
     private View view;
 
@@ -121,7 +121,7 @@ public class AnimalsFragment extends TempBaseFragment
         };
         List<String> data = multiplyItems(images, 2);
         fragmentPagerAdapter =
-            new AnimalsHeaderFragmentPagerAdapter(getFragmentManager(), getContext(), data);
+            new AnimalsBannerFragmentPagerAdapter(getFragmentManager(), getContext(), data);
         final PagerAdapter wrappedFragmentPagerAdapter =
             new InfinitePagerAdapter(fragmentPagerAdapter);
 

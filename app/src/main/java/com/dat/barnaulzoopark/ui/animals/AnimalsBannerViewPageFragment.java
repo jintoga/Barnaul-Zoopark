@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
@@ -16,11 +17,15 @@ import com.facebook.drawee.view.SimpleDraweeView;
 /**
  * Created by Nguyen on 6/20/2016.
  */
-public class AnimalsHeaderPhotoItemFragment extends Fragment implements View.OnClickListener {
+public class AnimalsBannerViewPageFragment extends Fragment implements View.OnClickListener {
     public static final String ARGUMENT_PHOTO = "Photo";
 
-    @Bind(R.id.imageView)
-    protected SimpleDraweeView imageView;
+    @Bind(R.id.banner_image)
+    protected SimpleDraweeView bannerImage;
+    @Bind(R.id.banner_title)
+    protected TextView bannerTitle;
+    @Bind(R.id.banner_description)
+    protected TextView bannerDescription;
     View view;
 
     private Uri photo;
@@ -39,12 +44,14 @@ public class AnimalsHeaderPhotoItemFragment extends Fragment implements View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_animals_header_photo_item, container, false);
+        view = inflater.inflate(R.layout.fragment_animals_banner_item, container, false);
         ButterKnife.bind(this, view);
         if (photo != null) {
-            imageView.setImageURI(photo);
+            bannerImage.setImageURI(photo);
         }
-        imageView.setOnClickListener(this);
+        bannerImage.setOnClickListener(this);
+        bannerTitle.setText("Banner's Title");
+        bannerDescription.setText("Banner's Description asfjsaifj asifja isfias ");
         return view;
     }
 

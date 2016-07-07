@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 
-import com.dat.barnaulzoopark.ui.animals.AnimalsHeaderPhotoItemFragment;
+import com.dat.barnaulzoopark.ui.animals.AnimalsBannerViewPageFragment;
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.FragmentPagerAdapter;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Nguyen on 6/20/2016.
  */
-public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
+public class AnimalsBannerFragmentPagerAdapter extends FragmentPagerAdapter {
     private List<String> data;
     private Context context;
     private boolean shouldShowChildren = false;
@@ -23,7 +23,7 @@ public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
     private Map<Integer, String> mFragmentTags;
     private int mLastPosition = -1;
 
-    public AnimalsHeaderFragmentPagerAdapter(FragmentManager fm, Context context,
+    public AnimalsBannerFragmentPagerAdapter(FragmentManager fm, Context context,
         List<String> data) {
         super(fm);
         this.mFragmentManager = fm;
@@ -52,19 +52,19 @@ public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return Fragment.instantiate(context, AnimalsHeaderPhotoItemFragment.class.getName(), null);
+        return Fragment.instantiate(context, AnimalsBannerViewPageFragment.class.getName(), null);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         position = position % getActualCount();
         Object obj = super.instantiateItem(container, position);
-        if (obj instanceof AnimalsHeaderPhotoItemFragment) {
+        if (obj instanceof AnimalsBannerViewPageFragment) {
             // record the fragment tag here.
-            AnimalsHeaderPhotoItemFragment fragment = (AnimalsHeaderPhotoItemFragment) obj;
+            AnimalsBannerViewPageFragment fragment = (AnimalsBannerViewPageFragment) obj;
             if (fragment.getArguments() == null) {
                 Bundle args = new Bundle();
-                args.putString(AnimalsHeaderPhotoItemFragment.ARGUMENT_PHOTO, data.get(position));
+                args.putString(AnimalsBannerViewPageFragment.ARGUMENT_PHOTO, data.get(position));
                 fragment.setArguments(args);
             }
             String tag = fragment.getTag();
@@ -86,12 +86,12 @@ public class AnimalsHeaderFragmentPagerAdapter extends FragmentPagerAdapter {
         Fragment lastFragment = getFragment(mLastPosition);
        /* if (mLastPosition >= 0
             && lastFragment != null
-            && lastFragment instanceof AnimalsHeaderPhotoItemFragment) {
-            ((AnimalsHeaderPhotoItemFragment) lastFragment).displayOverGroundImage(true);
+            && lastFragment instanceof AnimalsBannerViewPageFragment) {
+            ((AnimalsBannerViewPageFragment) lastFragment).displayOverGroundImage(true);
         }
         Fragment curFragment = getFragment(position);
-        if (curFragment != null && curFragment instanceof AnimalsHeaderPhotoItemFragment) {
-            ((AnimalsHeaderPhotoItemFragment) curFragment).displayOverGroundImage(false);
+        if (curFragment != null && curFragment instanceof AnimalsBannerViewPageFragment) {
+            ((AnimalsBannerViewPageFragment) curFragment).displayOverGroundImage(false);
         }*/
 
         mLastPosition = position;
