@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,7 +20,7 @@ public class AnimalsDetailActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(activity, AnimalsDetailActivity.class);
         activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.pull_in_right, R.anim.pull_in_left);
+        activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
     @Bind(R.id.toolbar)
@@ -47,7 +48,26 @@ public class AnimalsDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+        finishWithTransition(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finishWithTransition(true);
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    public void finishWithTransition(boolean withAnimation) {
+        finish();
+        if (withAnimation) {
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+        }
     }
 
     protected int getStatusBarHeight() {

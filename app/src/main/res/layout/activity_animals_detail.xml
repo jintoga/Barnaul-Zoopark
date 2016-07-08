@@ -56,7 +56,7 @@
             android:overScrollMode="ifContentScrolls"
             android:scrollbarFadeDuration="1500"
             android:scrollbarSize="2dp"
-            android:scrollbarStyle="outsideInset"
+            android:scrollbarStyle="outsideOverlay"
             android:scrollbarThumbVertical="@color/white"
             android:scrollbars="vertical"
             app:behavior_overlapTop="28dp"
