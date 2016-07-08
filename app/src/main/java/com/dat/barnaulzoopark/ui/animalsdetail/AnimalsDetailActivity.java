@@ -6,11 +6,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.DummyGenerator;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -29,6 +32,9 @@ public class AnimalsDetailActivity extends AppCompatActivity {
     protected Toolbar toolbar;
     @Bind(R.id.image_map)
     protected SimpleDraweeView imageMap;
+    @Bind(R.id.animals_images)
+    protected RecyclerView animalsImages;
+    AnimalsImagesHorizontalAdapter animalsImagesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +51,29 @@ public class AnimalsDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+        initRecyclerView();
         Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
             .path(String.valueOf(R.drawable.test_image_map))
             .build();
         imageMap.setImageURI(uri);
+    }
+
+    private void initRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        animalsImages.setLayoutManager(linearLayoutManager);
+        animalsImages.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
+        if (animalsImagesAdapter == null) {
+            animalsImagesAdapter = new AnimalsImagesHorizontalAdapter();
+        }
+        animalsImages.setAdapter(animalsImagesAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        animalsImagesAdapter.setData(DummyGenerator.getAnimalsPhotos());
+        animalsImagesAdapter.notifyDataSetChanged();
     }
 
     @Override
