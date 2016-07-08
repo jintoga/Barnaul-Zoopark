@@ -81,6 +81,6 @@ public class AnimalsViewPageFragment extends Fragment
     @Override
     public void onPhotoSelected(@NonNull Photo photo) {
         Log.d("Click Animals", photo.getUrl());
-        AnimalsDetailActivity.startActivity(getContext());
+        AnimalsDetailActivity.startActivity(getActivity());
     }
 }
