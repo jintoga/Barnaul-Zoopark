@@ -2,15 +2,17 @@ package com.dat.barnaulzoopark.ui.animalsdetail;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 public class AnimalsDetailActivity extends AppCompatActivity {
 
@@ -25,8 +27,8 @@ public class AnimalsDetailActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
-    @Bind(R.id.container)
-    protected FrameLayout container;
+    @Bind(R.id.image_map)
+    protected SimpleDraweeView imageMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,10 @@ public class AnimalsDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+        Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+            .path(String.valueOf(R.drawable.test_image_map))
+            .build();
+        imageMap.setImageURI(uri);
     }
 
     @Override
