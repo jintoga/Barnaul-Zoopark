@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.dat.barnaulzoopark.R;
@@ -20,6 +21,9 @@ import butterknife.ButterKnife;
 public class AnimalsDetailActivity extends AppCompatActivity {
     public static final String KEY_PAGE_NUM = "PAGE_NUM";
     public static final String KEY_SELECTED_PAGE_POSITION = "SELECTED_PAGE_POSITION";
+    private String headerURL;
+
+    int selectedPage;
 
     public static void startActivity(Activity activity, int position) {
         if (activity instanceof AnimalsDetailActivity) {
@@ -28,6 +32,7 @@ public class AnimalsDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, AnimalsDetailActivity.class);
         intent.putExtra(KEY_PAGE_NUM, DummyGenerator.getAnimalsPhotos().size());
         intent.putExtra(KEY_SELECTED_PAGE_POSITION, position);
+
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
@@ -54,6 +59,9 @@ public class AnimalsDetailActivity extends AppCompatActivity {
         if (pageNum > 0) {
             initMaterialViewPager(pageNum);
         }
+
+        selectedPage = getIntent().getIntExtra(KEY_SELECTED_PAGE_POSITION, 0);
+        headerURL = DummyGenerator.getAnimalsImageHeader(selectedPage);
     }
 
     private void initMaterialViewPager(final int pageNum) {
@@ -70,15 +78,20 @@ public class AnimalsDetailActivity extends AppCompatActivity {
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return "Tab #" + position;
+                return DummyGenerator.getAnimalsSpeciesName(position);
             }
         });
         materialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {
-
+                if (headerURL == null || headerURL.equals("")) {
+                    return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
+                            getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
+                }
+                String url = DummyGenerator.getAnimalsImageHeader(page);
+                Log.d("URL", url);
                 return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary,
-                        "https://hsto.org/files/87c/913/f5f/87c913f5fa3a4d4c807efbcccfa047f7.jpg");
+                        url);
             }
         });
 
@@ -87,9 +100,14 @@ public class AnimalsDetailActivity extends AppCompatActivity {
         materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
 
         //Move to selected animal
-        materialViewPager.getViewPager().setCurrentItem(getIntent().getIntExtra(KEY_SELECTED_PAGE_POSITION, 0));
+        materialViewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                materialViewPager.getViewPager().setCurrentItem(selectedPage);
+                materialViewPager.onPageSelected(selectedPage);
+            }
+        });
     }
-
 
     @Override
     public void onBackPressed() {
