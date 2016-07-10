@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.gallery.model.Photo;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by Nguyen on 6/20/2016.
@@ -29,19 +32,19 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =
-            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_animals, parent, false);
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_animals, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if (data.get(position) != null) {
             final Photo photo = data.get(position);
             holder.bindData(photo);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onPhotoSelected(photo);
+                    listener.onPhotoSelected(photo, holder.getAdapterPosition());
                 }
             });
         }
@@ -64,7 +67,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     }
 
     public interface AnimalsAdapterListener {
-        void onPhotoSelected(@NonNull Photo photo);
+        void onPhotoSelected(@NonNull Photo photo, int position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

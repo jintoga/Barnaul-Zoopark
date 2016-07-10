@@ -1,65 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.github.florent37.materialviewpager.MaterialViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/materialViewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity">
-
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:elevation="0dp">
-
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/banner_image"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/expanded_banner_height"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                fresco:actualImageScaleType="focusCrop"
-                fresco:failureImageScaleType="centerInside"
-                fresco:placeholderImage="@drawable/test_image"
-                fresco:placeholderImageScaleType="centerCrop" />
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="-2dp"
-            android:fadeScrollbars="true"
-            android:fitsSystemWindows="true"
-            android:overScrollMode="ifContentScrolls"
-            android:scrollbarFadeDuration="1500"
-            android:scrollbarSize="2dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbarThumbVertical="@color/white"
-            android:scrollbars="vertical"
-            app:behavior_overlapTop="53dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <include layout="@layout/partial_animals_detail_content" />
-
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.design.widget.CoordinatorLayout>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="@drawable/bg_animals_detail_toolbar_gradient"
-        android:minHeight="?attr/actionBarSize"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-</FrameLayout>
+    app:viewpager_animatedHeaderImage="true"
+    app:viewpager_color="@color/colorPrimary"
+    app:viewpager_displayToolbarWhenSwipe="true"
+    app:viewpager_enableToolbarElevation="true"
+    app:viewpager_headerAdditionalHeight="20dp"
+    app:viewpager_headerAlpha="1.0"
+    app:viewpager_headerHeight="200dp"
+    app:viewpager_hideToolbarAndTitle="true"
+    app:viewpager_imageHeaderDarkLayerAlpha="0.0"
+    app:viewpager_pagerTitleStrip="@layout/material_view_pager_pagertitlestrip_standard"
+    app:viewpager_parallaxHeaderFactor="1.5"
+    app:viewpager_transparentToolbar="false"
+    tools:context="com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity" />

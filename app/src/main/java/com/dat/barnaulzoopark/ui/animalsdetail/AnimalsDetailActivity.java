@@ -2,79 +2,94 @@ package com.dat.barnaulzoopark.ui.animalsdetail;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
-import com.facebook.common.util.UriUtil;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.github.florent37.materialviewpager.MaterialViewPager;
+import com.github.florent37.materialviewpager.header.HeaderDesign;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class AnimalsDetailActivity extends AppCompatActivity {
+    public static final String KEY_PAGE_NUM = "PAGE_NUM";
+    public static final String KEY_SELECTED_PAGE_POSITION = "SELECTED_PAGE_POSITION";
 
-    public static void startActivity(Activity activity) {
+    public static void startActivity(Activity activity, int position) {
         if (activity instanceof AnimalsDetailActivity) {
             return;
         }
         Intent intent = new Intent(activity, AnimalsDetailActivity.class);
+        intent.putExtra(KEY_PAGE_NUM, DummyGenerator.getAnimalsPhotos().size());
+        intent.putExtra(KEY_SELECTED_PAGE_POSITION, position);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
-    @Bind(R.id.toolbar)
-    protected Toolbar toolbar;
-    @Bind(R.id.image_map)
-    protected SimpleDraweeView imageMap;
-    @Bind(R.id.animals_images)
-    protected RecyclerView animalsImages;
-    AnimalsImagesHorizontalAdapter animalsImagesAdapter;
+    @Bind(R.id.materialViewPager)
+    protected MaterialViewPager materialViewPager;
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animals_detail);
         ButterKnife.bind(this);
-        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
-        /*FrameLayout.LayoutParams layoutParams =
-            (FrameLayout.LayoutParams) toolbar.getLayoutParams();
-        layoutParams.topMargin = getStatusBarHeight();
-        toolbar.setLayoutParams(layoutParams);*/
-        setSupportActionBar(toolbar);
+        toolbar = materialViewPager.getToolbar();
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        initRecyclerView();
-        Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-            .path(String.valueOf(R.drawable.test_image_map))
-            .build();
-        imageMap.setImageURI(uri);
-    }
-
-    private void initRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        animalsImages.setLayoutManager(linearLayoutManager);
-        animalsImages.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
-        if (animalsImagesAdapter == null) {
-            animalsImagesAdapter = new AnimalsImagesHorizontalAdapter();
+        int pageNum = getIntent().getIntExtra(KEY_PAGE_NUM, 0);
+        if (pageNum > 0) {
+            initMaterialViewPager(pageNum);
         }
-        animalsImages.setAdapter(animalsImagesAdapter);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        animalsImagesAdapter.setData(DummyGenerator.getAnimalsPhotos());
-        animalsImagesAdapter.notifyDataSetChanged();
+    private void initMaterialViewPager(final int pageNum) {
+        materialViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return AnimalsDetailFragment.newInstance();
+            }
+
+            @Override
+            public int getCount() {
+                return pageNum;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return "Tab #" + position;
+            }
+        });
+        materialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+            @Override
+            public HeaderDesign getHeaderDesign(int page) {
+
+                return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary,
+                        "https://hsto.org/files/87c/913/f5f/87c913f5fa3a4d4c807efbcccfa047f7.jpg");
+            }
+        });
+
+        materialViewPager.getViewPager()
+                .setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
+        materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
+
+        //Move to selected animal
+        materialViewPager.getViewPager().setCurrentItem(getIntent().getIntExtra(KEY_SELECTED_PAGE_POSITION, 0));
     }
+
 
     @Override
     public void onBackPressed() {
@@ -101,12 +116,4 @@ public class AnimalsDetailActivity extends AppCompatActivity {
         }
     }
 
-    protected int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
 }
