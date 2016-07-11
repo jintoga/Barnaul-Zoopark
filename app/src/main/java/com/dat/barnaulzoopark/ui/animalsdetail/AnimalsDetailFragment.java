@@ -9,16 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by DAT on 10-Jul-16.
@@ -42,17 +40,22 @@ public class AnimalsDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals_detail, container, false);
         ButterKnife.bind(this, view);
-        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         initRecyclerView();
         Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-                .path(String.valueOf(R.drawable.test_image_map))
-                .build();
+            .path(String.valueOf(R.drawable.test_image_map))
+            .build();
         imageMap.setImageURI(uri);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
     }
 
     @Override
@@ -72,5 +75,4 @@ public class AnimalsDetailFragment extends Fragment {
         }
         animalsImages.setAdapter(animalsImagesAdapter);
     }
-
 }
