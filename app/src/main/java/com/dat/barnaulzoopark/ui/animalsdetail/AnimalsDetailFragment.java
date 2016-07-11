@@ -9,16 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by DAT on 10-Jul-16.
@@ -33,6 +32,13 @@ public class AnimalsDetailFragment extends Fragment {
     @Bind(R.id.image_map)
     protected SimpleDraweeView imageMap;
 
+    @Bind(R.id.aboutOurAnimal)
+    protected TextView aboutOurAnimal;
+    @Bind(R.id.aboutSpecies)
+    protected TextView aboutSpecies;
+    @Bind(R.id.aboutCharacteristics)
+    protected TextView aboutCharacteristics;
+
     private View view;
 
     public static AnimalsDetailFragment newInstance() {
@@ -42,17 +48,25 @@ public class AnimalsDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals_detail, container, false);
         ButterKnife.bind(this, view);
-        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         initRecyclerView();
         Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
-                .path(String.valueOf(R.drawable.test_image_map))
-                .build();
+            .path(String.valueOf(R.drawable.test_image_map))
+            .build();
         imageMap.setImageURI(uri);
+        aboutOurAnimal.setText("");
+        aboutSpecies.setText("");
+        aboutCharacteristics.setText("");
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
     }
 
     @Override
@@ -60,6 +74,18 @@ public class AnimalsDetailFragment extends Fragment {
         super.onStart();
         animalsImagesAdapter.setData(DummyGenerator.getAnimalsPhotos());
         animalsImagesAdapter.notifyDataSetChanged();
+        aboutOurAnimal.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bindData();
+            }
+        }, 500);
+    }
+
+    private void bindData() {
+        aboutOurAnimal.setText(getString(R.string.test_text));
+        aboutSpecies.setText(getString(R.string.test_text2));
+        aboutCharacteristics.setText(getString(R.string.test_text3));
     }
 
     private void initRecyclerView() {
@@ -72,5 +98,4 @@ public class AnimalsDetailFragment extends Fragment {
         }
         animalsImages.setAdapter(animalsImagesAdapter);
     }
-
 }

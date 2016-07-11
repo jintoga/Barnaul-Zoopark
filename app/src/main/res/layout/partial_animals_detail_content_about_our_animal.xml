@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="О наших питомцах"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="@dimen/normal_16"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/aboutOurAnimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:lineSpacingExtra="4dp"
+        android:textSize="@dimen/normal_14"
+        tools:text="@string/test_text" />
+
+</android.support.v7.widget.CardView>
+
