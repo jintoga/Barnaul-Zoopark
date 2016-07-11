@@ -9,14 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class AnimalsDetailActivity extends AppCompatActivity {
     public static final String KEY_PAGE_NUM = "PAGE_NUM";
@@ -41,7 +39,6 @@ public class AnimalsDetailActivity extends AppCompatActivity {
     protected MaterialViewPager materialViewPager;
     private Toolbar toolbar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,38 +62,38 @@ public class AnimalsDetailActivity extends AppCompatActivity {
     }
 
     private void initMaterialViewPager(final int pageNum) {
-        materialViewPager.getViewPager().setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return AnimalsDetailFragment.newInstance();
-            }
+        materialViewPager.getViewPager()
+            .setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+                @Override
+                public Fragment getItem(int position) {
+                    return AnimalsDetailFragment.newInstance();
+                }
 
-            @Override
-            public int getCount() {
-                return pageNum;
-            }
+                @Override
+                public int getCount() {
+                    return pageNum;
+                }
 
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return DummyGenerator.getAnimalsSpeciesName(position);
-            }
-        });
+                @Override
+                public CharSequence getPageTitle(int position) {
+                    return DummyGenerator.getAnimalsSpeciesName(position);
+                }
+            });
         materialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {
                 if (headerURL == null || headerURL.equals("")) {
                     return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
-                            getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
+                        getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
                 }
                 String url = DummyGenerator.getAnimalsImageHeader(page);
                 Log.d("URL", url);
-                return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary,
-                        url);
+                return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
             }
         });
 
         materialViewPager.getViewPager()
-                .setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
+            .setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
         materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
 
         //Move to selected animal
@@ -133,5 +130,4 @@ public class AnimalsDetailActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         }
     }
-
 }

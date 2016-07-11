@@ -38,6 +38,8 @@ public class AnimalsDetailFragment extends Fragment {
     protected TextView aboutSpecies;
     @Bind(R.id.aboutCharacteristics)
     protected TextView aboutCharacteristics;
+    @Bind(R.id.factsAboutAnimal)
+    protected TextView factsAboutAnimal;
 
     private View view;
 
@@ -60,6 +62,7 @@ public class AnimalsDetailFragment extends Fragment {
         aboutOurAnimal.setText("");
         aboutSpecies.setText("");
         aboutCharacteristics.setText("");
+        factsAboutAnimal.setText("");
         return view;
     }
 
@@ -86,6 +89,7 @@ public class AnimalsDetailFragment extends Fragment {
         aboutOurAnimal.setText(getString(R.string.test_text));
         aboutSpecies.setText(getString(R.string.test_text2));
         aboutCharacteristics.setText(getString(R.string.test_text3));
+        factsAboutAnimal.setText(getString(R.string.test_text4));
     }
 
     private void initRecyclerView() {

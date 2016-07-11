@@ -11,24 +11,14 @@
 
         <include layout="@layout/material_view_pager_placeholder" />
 
-        <include
-            layout="@layout/partial_animals_detail_content_about_our_animal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/partial_animals_detail_content_about_animal" />
 
-        <include
-            layout="@layout/partial_animals_detail_content_images"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/partial_animals_detail_content_images" />
 
-        <include
-            layout="@layout/partial_animals_detail_content_about_species"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/partial_animals_detail_content_facts_about_species" />
 
-        <include
-            layout="@layout/partial_animals_detail_content_habitat_map"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/partial_animals_detail_content_habitat_map" />
+
+
     </LinearLayout>
 </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
