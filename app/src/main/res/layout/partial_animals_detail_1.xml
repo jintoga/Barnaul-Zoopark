@@ -2,6 +2,8 @@
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="4dp"
@@ -9,11 +11,17 @@
     app:cardUseCompatPadding="true"
     app:contentPadding="8dp">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="100dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -29,6 +37,60 @@
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="4dp"
             android:text="@string/test_text"
+            android:textSize="@dimen/normal_14" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Фотографии животного"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/normal_16"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/animals_images"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            fresco:actualImageScaleType="centerCrop"
+            tools:listitem="@layout/item_animals_detail_images" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:lineSpacingExtra="4dp"
+            android:text="Header 2"
+            android:textSize="@dimen/normal_18"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/test_text2"
+            android:textSize="@dimen/normal_14" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="4dp"
+            android:text="Header 2"
+            android:textSize="@dimen/normal_14"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/test_text3"
             android:textSize="@dimen/normal_14" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

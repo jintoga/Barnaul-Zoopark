@@ -11,18 +11,8 @@
 
         <include layout="@layout/material_view_pager_placeholder" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <include layout="@layout/partial_animals_detail_1" />
 
-            <include layout="@layout/partial_animals_detail_1" />
-
-            <include layout="@layout/partial_animals_detail_2" />
-
-            <include layout="@layout/partial_animals_detail_3" />
-
-            <include layout="@layout/partial_animals_detail_4" />
-        </LinearLayout>
+        <include layout="@layout/partial_animals_detail_4" />
     </LinearLayout>
 </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>

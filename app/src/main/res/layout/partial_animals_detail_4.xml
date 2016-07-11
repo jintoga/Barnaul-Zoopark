@@ -8,6 +8,7 @@
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
+
     app:cardUseCompatPadding="true"
     app:contentPadding="8dp">
 
