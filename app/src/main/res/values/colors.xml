@@ -38,7 +38,7 @@
     <color name="vk_transparent_85">#d954769a</color>
     <color name="green_transparent_70">#9923c257</color>
 
-    <color name="search_view_dim_color">#4d000000</color>
+    <color name="search_view_dim_color">@color/black_transparent_40</color>
     <color name="search_view_color">#fffefefe</color>
     <color name="search_view_secondary_color">#88888888</color>
 
