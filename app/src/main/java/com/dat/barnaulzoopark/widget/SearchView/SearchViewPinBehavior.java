@@ -1,6 +1,8 @@
 package com.dat.barnaulzoopark.widget.SearchView;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
@@ -41,6 +43,14 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
         float diff = dependency.getY() - dependencyOldY;
         float childPosition = child.getY();
 
+        if (childPosition <= -(childHeight + childInitY + cardViewShadow)) {
+            child.setVisibility(View.GONE);
+            //Log.d("Hide", "Hide: " + -(childHeight + childInitY + cardViewShadow));
+        } else {
+            child.setVisibility(View.VISIBLE);
+            //Log.d("SHOW", "SHOW: " + -(childHeight + childInitY + cardViewShadow));
+        }
+
         if (diff < 0) {//********Collapsing
             if (dependencyY - childHeight - childMarginBottom - cardViewShadow < offset) {
                 childPosition = childPosition + diff;
@@ -62,23 +72,23 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
             } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
                 childPosition = childInitY;
             }
-            /*Log.d("else", "else"
-                + " dependencyOldY:"
-                + dependencyOldY
-                + " dependencyY:"
-                + dependencyY
-                + "  childPosition:"
-                + childPosition
-                + "  dependency.getHeight():"
-                + dependency.getHeight()
-                + "   toolbarHeight():"
-                + toolbarHeight
-                + "   Math.abs(dependencyY + childPosition):"
-                + Math.abs(dependencyY + childPosition));*/
         }
-
+        /*Log.d("else", "else"
+            + " dependencyOldY:"
+            + dependencyOldY
+            + " dependencyY:"
+            + dependencyY
+            + "  childPosition:"
+            + childPosition
+            + "  dependency.getHeight():"
+            + dependency.getHeight()
+            + " childInitYToSave:"
+            + childInitY
+            + " childMarginBottom:"
+            + childMarginBottom
+            + " cardViewShadow:"
+            + cardViewShadow);*/
         child.setY(childPosition);
-
         dependencyOldY = dependency.getY();
         return true;
     }
@@ -120,5 +130,69 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
                 mContext.getResources().getDisplayMetrics());
         }
         return result;
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState(CoordinatorLayout parent, FloatingSearchView child) {
+        float childPosition = child.getY();
+        //Log.d("onSaveInstanceState", "childPosition:" + childPosition);
+        Parcelable superState = super.onSaveInstanceState(parent, child);
+
+        SavedState ss = new SavedState(superState);
+
+        ss.childPositionToSave = childPosition;
+        ss.childInitYToSave = childInitY;
+        return ss;
+    }
+
+    @Override
+    public void onRestoreInstanceState(CoordinatorLayout parent, FloatingSearchView child,
+        Parcelable state) {
+
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(parent, child, state);
+            return;
+        }
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(parent, child, ss.getSuperState());
+
+        float childPositionSaved = ss.childPositionToSave;
+        child.setY(childPositionSaved);
+        childInitY = ss.childInitYToSave;
+       /* Log.d("onRestoreInstanceState",
+            "childPositionSaved:" + childPositionSaved + "  childInitYToSave:" + childInitY);*/
+    }
+
+    static class SavedState extends View.BaseSavedState {
+        float childPositionToSave, childInitYToSave;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.childPositionToSave = in.readFloat();
+            this.childInitYToSave = in.readFloat();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeFloat(this.childPositionToSave);
+            out.writeFloat(this.childInitYToSave);
+        }
+
+        //required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<SavedState> CREATOR =
+            new Parcelable.Creator<SavedState>() {
+                public SavedState createFromParcel(Parcel in) {
+                    return new SavedState(in);
+                }
+
+                public SavedState[] newArray(int size) {
+                    return new SavedState[size];
+                }
+            };
     }
 }

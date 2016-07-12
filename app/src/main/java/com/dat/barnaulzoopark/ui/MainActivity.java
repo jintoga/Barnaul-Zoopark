@@ -55,11 +55,13 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupNavDrawer();
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container, new AnimalsFragment());
-        fragmentTransaction.commit();
-        currentMenuItemID = R.id.ourAnimals;
+        if (savedInstanceState == null) {
+            FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, new AnimalsFragment());
+            fragmentTransaction.commit();
+            currentMenuItemID = R.id.ourAnimals;
+        }
     }
 
     private void setupNavDrawer() {
