@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class DummyGenerator {
 
-    static List<PhotoAlbum> dummyData = new ArrayList<>();
 
     public static List<PhotoAlbum> getDummyData() {
 
+        List<PhotoAlbum> dummyData = new ArrayList<>();
         PhotoAlbum album1 = new PhotoAlbum();
         album1.setDate("2013 г.");
         album1.setName("День рождения зоопарка");
@@ -156,6 +156,8 @@ public class DummyGenerator {
     }
 
     public static List<Photo> getPhotoAlbumById(String albumId) {
+
+        List<PhotoAlbum> dummyData = getDummyData();
         List<Photo> data = new ArrayList<>();
         for (PhotoAlbum album : dummyData) {
             if (albumId.equals(album.getId())) {

@@ -6,14 +6,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.gallery.gallerydetails.PhotoGalleryActivity;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
 import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by DAT on 22-Feb-16.
@@ -31,7 +34,7 @@ public class PhotoAlbumsAdapter extends RecyclerView.Adapter<PhotoAlbumsAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_photo_albums, parent, false);
+                .inflate(R.layout.item_photo_albums, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -41,6 +44,7 @@ public class PhotoAlbumsAdapter extends RecyclerView.Adapter<PhotoAlbumsAdapter.
         if (this.data == null) {
             this.data = new ArrayList<>();
         }
+        this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
     }

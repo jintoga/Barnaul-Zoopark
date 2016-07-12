@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -60,15 +63,10 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         setupNavDrawer();
         if (savedInstanceState == null) {
-            FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.container, new AnimalsFragment(), HOME_FRAGMENT_TAG);
-            fragmentTransaction.commit();
+            onNavigationItemSelected(navigationView.getMenu().getItem(0));
             currentMenuItemID = R.id.ourAnimals;
         }
     }
-
-    private static final String HOME_FRAGMENT_TAG = "HOME";
 
     private void setupNavDrawer() {
         navigationView.setNavigationItemSelectedListener(this);
@@ -111,13 +109,46 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.container, fragment);
+                    fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, fragment).addToBackStack(null);
             fragmentTransaction.commit();
+            //return TRUE to Highlight menuItem
             return true;
         }
+        //return FALSE: MenuItem should NOT be highlighted if no fragment was replaced
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+            return;
+        }
+        if (currentMenuItemID == R.id.ourAnimals) {
+            finish();
+            return;
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            //Back to "home" if BackPressed from other fragments than home
+            //if the previous backStack is the FIRST Fragment, then just popBack to keep its state
+            if (fragmentManager.getBackStackEntryCount() == 2) {
+                navigationView.getMenu().getItem(0).setChecked(true);
+                currentMenuItemID = R.id.ourAnimals;
+                Log.d("HIGHLIGHT", "HOME HIGHLIGHTED");
+                super.onBackPressed();
+                return;
+            }
+            //otherwise navigate to the FIRST Fragment
+            onNavigationItemSelected(navigationView.getMenu().getItem(0));
+            navigationView.getMenu().getItem(0).setChecked(true);
+            currentMenuItemID = R.id.ourAnimals;
+            return;
+        }
+        super.onBackPressed();
     }
 
     public void openDrawer() {
