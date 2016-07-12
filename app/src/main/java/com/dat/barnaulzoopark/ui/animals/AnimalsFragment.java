@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener,
-    FloatingSearchView.SearchViewDrawerListener {
+    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
 
     @Bind(R.id.systemBar)
     protected View systemBar;
@@ -76,6 +76,12 @@ public class AnimalsFragment extends TempBaseFragment
     }
 
     @Override
+    public void onDrawerOpen() {
+        Log.d("onDrawerOpen", "onDrawerOpen");
+        searchView.clearSearchView();
+    }
+
+    @Override
     public void onNavigationDrawerOpen() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).openDrawer();
@@ -110,6 +116,8 @@ public class AnimalsFragment extends TempBaseFragment
         searchView.setBackgroundView(backgroundView);
         searchView.setSearchViewFocusedListener(this);
         searchView.setSearchViewDrawerListener(this);
+        //Listener to help close SearchView when NavDrawer is open
+        ((MainActivity) getActivity()).setDrawerListener(this);
 
         final String[] images = new String[] {
             "https://s31.postimg.org/lzogm934b/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",

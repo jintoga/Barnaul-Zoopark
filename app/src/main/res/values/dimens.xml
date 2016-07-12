@@ -39,4 +39,8 @@
 
     <dimen name="search_view_margin_top_not_fully_expanded">0dp</dimen>
     <dimen name="search_view_margin_bottom_not_fully_expanded">10dp</dimen>
+
+
+    <dimen name="material_view_pager_temp_margin_bottom">300dp</dimen>
+
 </resources>
