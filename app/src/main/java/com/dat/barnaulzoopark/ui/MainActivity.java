@@ -7,17 +7,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.gallery.PhotoAlbumsFragment;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity
-    implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
+        implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
@@ -57,16 +61,35 @@ public class MainActivity extends AppCompatActivity
         setupNavDrawer();
         if (savedInstanceState == null) {
             FragmentTransaction fragmentTransaction =
-                getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.container, new AnimalsFragment());
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, new AnimalsFragment(), HOME_FRAGMENT_TAG);
             fragmentTransaction.commit();
             currentMenuItemID = R.id.ourAnimals;
         }
     }
 
+    private static final String HOME_FRAGMENT_TAG = "HOME";
+
     private void setupNavDrawer() {
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(this);
+    }
+
+    public void setupNavDrawerWithToolbar(Toolbar toolbar) {
+        if (toolbar == null) {
+            return;
+        }
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar,
+                R.string.nav_drawer_open, R.string.nav_drawer_closed
+        );
+        drawerLayout.addDrawerListener(mDrawerToggle);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -89,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (fragment != null) {
             FragmentTransaction fragmentTransaction =
-                getSupportFragmentManager().beginTransaction();
+                    getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.container, fragment);
             fragmentTransaction.commit();
             return true;
