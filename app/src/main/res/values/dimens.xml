@@ -3,21 +3,25 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="normal_24">24sp</dimen>
-    <dimen name="normal_22">22sp</dimen>
-    <dimen name="normal_20">20sp</dimen>
-    <dimen name="normal_18">18sp</dimen>
-    <dimen name="normal_16">16sp</dimen>
-    <dimen name="normal_14">14sp</dimen>
-    <dimen name="normal_12">12sp</dimen>
-    <dimen name="normal_10">10.7sp</dimen>
+
+    <dimen name="text_size_50">50.7sp</dimen>
+    <dimen name="text_size_45">45sp</dimen>
+    <dimen name="text_size_30">30sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_10">10.7sp</dimen>
 
     <dimen name="big_item">300dp</dimen>
     <dimen name="norm_item">200dp</dimen>
     <dimen name="small_item">180dp</dimen>
 
     <dimen name="photo_gallery_items_span">2dp</dimen>
-    <dimen name="photo_album_items_span">12dp</dimen>
+    <dimen name="photo_album_items_span">2dp</dimen>
 
     <dimen name="default_width">-1px</dimen>
     <dimen name="expanded_banner_height">220dp</dimen>

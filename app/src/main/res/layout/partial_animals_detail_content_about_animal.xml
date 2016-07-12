@@ -20,7 +20,7 @@
             android:layout_marginTop="8dp"
             android:text="О виде животного"
             android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/normal_16"
+            android:textSize="@dimen/text_size_16"
             android:textStyle="bold" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="8dp"
-            android:textSize="@dimen/normal_14"
+            android:textSize="@dimen/text_size_14"
             tools:text="@string/test_text2" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_marginTop="8dp"
             android:text="Отличительные и характерные особенности"
             android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/normal_14"
+            android:textSize="@dimen/text_size_14"
             android:textStyle="bold" />
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="8dp"
-            android:textSize="@dimen/normal_14"
+            android:textSize="@dimen/text_size_14"
             tools:text="@string/test_text3" />
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_marginTop="16dp"
             android:text="О наших питомцах"
             android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/normal_16"
+            android:textSize="@dimen/text_size_16"
             android:textStyle="bold" />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="8dp"
-            android:textSize="@dimen/normal_14"
+            android:textSize="@dimen/text_size_14"
             tools:text="@string/test_text" />
 
 

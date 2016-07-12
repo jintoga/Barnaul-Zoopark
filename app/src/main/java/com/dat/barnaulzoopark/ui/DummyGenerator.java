@@ -138,7 +138,7 @@ public class DummyGenerator {
         dummyData.add(album1);
         dummyData.add(album2);
         dummyData.add(album3);
-        dummyData.add(album4);
+        /*dummyData.add(album4);
         dummyData.add(album5);
         dummyData.add(album6);
         dummyData.add(album7);
@@ -146,7 +146,7 @@ public class DummyGenerator {
         dummyData.add(album9);
         dummyData.add(album10);
         dummyData.add(album11);
-        dummyData.add(album12);
+        dummyData.add(album12);*/
 
         int i = 0;
         for (PhotoAlbum album : dummyData) {

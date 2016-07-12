@@ -1,19 +1,19 @@
 package com.dat.barnaulzoopark.ui.gallery;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.gallery.gallerydetails.PhotoGalleryActivity;
 import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
-
+import com.facebook.drawee.view.SimpleDraweeView;
+import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by DAT on 22-Feb-16.
@@ -31,18 +31,29 @@ public class PhotoAlbumsAdapter extends RecyclerView.Adapter<PhotoAlbumsAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_photo_albums, parent, false);
+            .inflate(R.layout.item_photo_albums, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
+    }
+
+    public void setData(List<PhotoAlbum> data) {
+        if (this.data == null) {
+            this.data = new ArrayList<>();
+        }
+        this.data.addAll(data);
+        notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (data != null && data.size() > 0) {
             final PhotoAlbum photoAlbum = data.get(position);
-            holder.stackPhotoAlbumView.setData(photoAlbum.getUrls());
-            holder.stackPhotoAlbumView.setOnClickListener(new View.OnClickListener() {
+            if (photoAlbum != null) {
+                Uri imgThumbnail = Uri.parse(photoAlbum.getUrls()[0]);
+                holder.thumbnail.setImageURI(imgThumbnail);
+            }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PhotoGalleryActivity.startActivity(context, photoAlbum);
@@ -60,8 +71,8 @@ public class PhotoAlbumsAdapter extends RecyclerView.Adapter<PhotoAlbumsAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.stackAlbumView)
-        protected StackPhotoAlbumView stackPhotoAlbumView;
+        @Bind(R.id.thumbnail)
+        protected SimpleDraweeView thumbnail;
 
         public ViewHolder(View itemView) {
             super(itemView);
