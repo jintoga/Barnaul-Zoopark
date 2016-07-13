@@ -17,6 +17,7 @@
             android:icon="@drawable/ic_collections_black"
             android:title="@string/photo_gallery" />
         <item
+            android:id="@+id/newsAndEvents"
             android:checked="false"
             android:icon="@drawable/ic_newspaper"
             android:title="@string/news" />
