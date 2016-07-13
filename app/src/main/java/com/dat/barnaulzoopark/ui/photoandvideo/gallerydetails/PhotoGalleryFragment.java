@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
+package com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.DummyGenerator;
-import com.dat.barnaulzoopark.ui.gallery.model.Photo;
+import com.dat.barnaulzoopark.ui.photoandvideo.model.Photo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

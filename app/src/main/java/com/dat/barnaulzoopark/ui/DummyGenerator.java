@@ -1,7 +1,7 @@
 package com.dat.barnaulzoopark.ui;
 
-import com.dat.barnaulzoopark.ui.gallery.model.Photo;
-import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
+import com.dat.barnaulzoopark.ui.photoandvideo.model.Photo;
+import com.dat.barnaulzoopark.ui.photoandvideo.model.PhotoAlbum;
 
 import java.util.ArrayList;
 import java.util.List;

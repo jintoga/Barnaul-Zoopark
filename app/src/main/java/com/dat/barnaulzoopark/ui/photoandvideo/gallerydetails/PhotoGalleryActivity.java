@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
+package com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
+import com.dat.barnaulzoopark.ui.photoandvideo.model.PhotoAlbum;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

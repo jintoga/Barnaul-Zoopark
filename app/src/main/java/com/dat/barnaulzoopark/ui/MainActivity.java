@@ -20,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
-import com.dat.barnaulzoopark.ui.gallery.PhotoAlbumsFragment;
+import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
                 addInitFragment(new AnimalsFragment());
                 return true;
             case R.id.photoGallery:
-                fragment = new PhotoAlbumsFragment();
+                fragment = new PhotoAndVideoFragment();
                 break;
             case R.id.newsAndEvents:
                 fragment = new NewsFragment();

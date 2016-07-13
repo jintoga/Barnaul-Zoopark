@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
+package com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

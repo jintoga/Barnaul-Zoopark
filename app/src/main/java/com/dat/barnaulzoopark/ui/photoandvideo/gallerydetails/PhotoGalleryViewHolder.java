@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.gallery.gallerydetails;
+package com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails;
 
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.gallery.model.Photo;
+import com.dat.barnaulzoopark.ui.photoandvideo.model.Photo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

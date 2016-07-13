@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.gallery;
+package com.dat.barnaulzoopark.ui.photoandvideo;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.gallery.gallerydetails.PhotoGalleryActivity;
-import com.dat.barnaulzoopark.ui.gallery.model.PhotoAlbum;
+import com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails.PhotoGalleryActivity;
+import com.dat.barnaulzoopark.ui.photoandvideo.model.PhotoAlbum;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
