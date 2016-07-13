@@ -15,16 +15,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.gallery.PhotoAlbumsFragment;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 public class MainActivity extends AppCompatActivity
-        implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
+    implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
@@ -78,10 +76,9 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         setSupportActionBar(toolbar);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar,
-                R.string.nav_drawer_open, R.string.nav_drawer_closed
-        );
+        ActionBarDrawerToggle mDrawerToggle =
+            new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_drawer_open,
+                R.string.nav_drawer_closed);
         drawerLayout.addDrawerListener(mDrawerToggle);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,8 +107,12 @@ public class MainActivity extends AppCompatActivity
         }
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction =
-                    fragmentManager.beginTransaction();
+            Log.d("entryCount", fragmentManager.getBackStackEntryCount() + "");
+            if (fragmentManager.getBackStackEntryCount() > 1) {
+                //CLEAR all back stack entries to save memory
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, fragment).addToBackStack(null);
             fragmentTransaction.commit();
             //return TRUE to Highlight menuItem
@@ -131,21 +132,14 @@ public class MainActivity extends AppCompatActivity
             finish();
             return;
         }
+        //Back to "HOME" if BackPressed from other fragments than home
+        //if the previous backStack is the FIRST Fragment(HOME), then just popBack to keep its state
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            //Back to "home" if BackPressed from other fragments than home
-            //if the previous backStack is the FIRST Fragment, then just popBack to keep its state
-            if (fragmentManager.getBackStackEntryCount() == 2) {
-                navigationView.getMenu().getItem(0).setChecked(true);
-                currentMenuItemID = R.id.ourAnimals;
-                Log.d("HIGHLIGHT", "HOME HIGHLIGHTED");
-                super.onBackPressed();
-                return;
-            }
-            //otherwise navigate to the FIRST Fragment
-            onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        Log.d("entryCount", fragmentManager.getBackStackEntryCount() + "");
+        if (fragmentManager.getBackStackEntryCount() == 2) {
             navigationView.getMenu().getItem(0).setChecked(true);
             currentMenuItemID = R.id.ourAnimals;
+            getSupportFragmentManager().popBackStack();
             return;
         }
         super.onBackPressed();
