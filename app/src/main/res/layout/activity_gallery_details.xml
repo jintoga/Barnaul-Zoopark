@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.photoandvideo.gallerydetails.PhotoGalleryActivity">
+    tools:context=".ui.photoandvideodetails.PhotoGalleryActivity">
 
     <View
         android:id="@+id/systemBar"
@@ -44,7 +44,7 @@
 
         <fragment
             android:id="@+id/fragmentPhotoGallery"
-            android:name="com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails.PhotoGalleryFragment"
+            android:name="com.dat.barnaulzoopark.ui.photoandvideodetails.PhotoGalleryFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"

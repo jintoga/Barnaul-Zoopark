@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails.PhotoGalleryActivity;
+import com.dat.barnaulzoopark.ui.photoandvideodetails.PhotoGalleryActivity;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.facebook.drawee.view.SimpleDraweeView;
 

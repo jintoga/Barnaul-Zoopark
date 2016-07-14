@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui;
+package com.dat.barnaulzoopark.widget;
 
 import android.content.Context;
 import android.graphics.Typeface;

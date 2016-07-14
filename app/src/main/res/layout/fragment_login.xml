@@ -57,7 +57,7 @@
             android:typeface="monospace" />
 
 
-        <com.dat.barnaulzoopark.ui.PasswordView
+        <com.dat.barnaulzoopark.widget.PasswordView
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

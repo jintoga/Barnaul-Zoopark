@@ -16,7 +16,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
 import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
-import com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails.GridSpacingItemDecoration;
+import com.dat.barnaulzoopark.ui.photoandvideodetails.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.model.Photo;
 
 import butterknife.Bind;
