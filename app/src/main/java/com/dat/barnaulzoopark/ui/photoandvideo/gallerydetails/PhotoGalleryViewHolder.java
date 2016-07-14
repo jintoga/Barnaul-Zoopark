@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.photoandvideo.model.Photo;
+import com.dat.barnaulzoopark.model.Photo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

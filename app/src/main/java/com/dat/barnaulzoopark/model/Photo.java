@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.photoandvideo.model;
+package com.dat.barnaulzoopark.model;
 
 /**
  * Created by DAT on 13-Apr-16.

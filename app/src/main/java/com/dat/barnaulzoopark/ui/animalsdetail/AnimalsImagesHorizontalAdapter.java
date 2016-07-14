@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.photoandvideo.model.Photo;
+import com.dat.barnaulzoopark.model.Photo;
 import java.util.ArrayList;
 import java.util.List;
 

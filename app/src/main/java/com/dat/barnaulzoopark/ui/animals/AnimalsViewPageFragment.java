@@ -13,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.DummyGenerator;
+import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
 import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
 import com.dat.barnaulzoopark.ui.photoandvideo.gallerydetails.GridSpacingItemDecoration;
-import com.dat.barnaulzoopark.ui.photoandvideo.model.Photo;
+import com.dat.barnaulzoopark.model.Photo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

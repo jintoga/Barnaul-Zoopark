@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.DummyGenerator;
-import com.dat.barnaulzoopark.ui.photoandvideo.model.Photo;
+import com.dat.barnaulzoopark.model.DummyGenerator;
+import com.dat.barnaulzoopark.model.Photo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
