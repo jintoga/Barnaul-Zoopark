@@ -1,23 +1,21 @@
 package com.dat.barnaulzoopark.ui.photoandvideo;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
-import com.dat.barnaulzoopark.ui.photoandvideodetails.GridSpacingItemDecoration;
-import com.dat.barnaulzoopark.model.PhotoAlbum;
-import java.util.List;
+import com.dat.barnaulzoopark.ui.photoandvideo.adapters.PhotoAndVideoViewPagerAdapter;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by DAT on 07-Feb-16.
@@ -28,14 +26,16 @@ public class PhotoAndVideoFragment extends TempBaseFragment {
     protected View systemBar;
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
-    @Bind(R.id.photoAlbums)
-    protected RecyclerView photoAlbums;
-    private PhotoAlbumsAdapter adapter;
+    @Bind(R.id.tabLayout)
+    protected TabLayout tabLayout;
+    @Bind(R.id.viewpagerPhotoAndVideo)
+    protected ViewPager photoAndVideoViewPager;
+    private PhotoAndVideoViewPagerAdapter photoAndVideoViewPagerAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_and_video, container, false);
         ButterKnife.bind(this, view);
         if (systemBar != null) {
@@ -43,30 +43,58 @@ public class PhotoAndVideoFragment extends TempBaseFragment {
             systemBar.requestLayout();
         }
         ((MainActivity) getActivity()).setupNavDrawerWithToolbar(toolbar);
-        initRecyclerView();
+        initViewPager();
         return view;
     }
 
-    private void initRecyclerView() {
-        GridLayoutManager gridlayoutManager;
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            gridlayoutManager = new GridLayoutManager(getContext(), 3);
-            photoAlbums.addItemDecoration(new GridSpacingItemDecoration(3,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_album_items_span),
-                true));
-        } else {
-
-            gridlayoutManager = new GridLayoutManager(getContext(), 2);
-            photoAlbums.addItemDecoration(new GridSpacingItemDecoration(2,
-                getContext().getResources().getDimensionPixelSize(R.dimen.photo_album_items_span),
-                true));
+    private void initViewPager() {
+        photoAndVideoViewPagerAdapter =
+                new PhotoAndVideoViewPagerAdapter(getChildFragmentManager(), getContext());
+        photoAndVideoViewPagerAdapter.addFragment(new PhotoAndVideoViewPageFragment(),
+                "Фото".toUpperCase());
+        photoAndVideoViewPagerAdapter.addFragment(new PhotoAndVideoViewPageFragment(), "Видео".toUpperCase());
+        photoAndVideoViewPager.setAdapter(photoAndVideoViewPagerAdapter);
+        tabLayout.setupWithViewPager(photoAndVideoViewPager);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            if (photoAndVideoViewPagerAdapter != null
+                    && tabLayout.getTabAt(i) != null
+                    && tabLayout != null) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                View view = photoAndVideoViewPagerAdapter.getTabView(i);
+                if (tab != null) {
+                    tab.setCustomView(view);
+                }
+            }
         }
+        tabLayout.setOnTabSelectedListener(
+                new TabLayout.ViewPagerOnTabSelectedListener(photoAndVideoViewPager) {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        super.onTabSelected(tab);
+                        photoAndVideoViewPager.setCurrentItem(tab.getPosition());
+                        View view = tab.getCustomView();
+                        photoAndVideoViewPagerAdapter.highlightSelectedView(view, true);
 
-        photoAlbums.setLayoutManager(gridlayoutManager);
+                    }
 
-        adapter = new PhotoAlbumsAdapter(null, getContext());
-        photoAlbums.setAdapter(adapter);
-        List<PhotoAlbum> data = DummyGenerator.getDummyData();
-        adapter.setData(data);
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        View view = tab.getCustomView();
+                        photoAndVideoViewPagerAdapter.highlightSelectedView(view, false);
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+        photoAndVideoViewPager.setCurrentItem(0);
+        if (tabLayout.getTabAt(0) != null) {
+            TabLayout.Tab tab = tabLayout.getTabAt(0);
+            if (tab != null) {
+                View view = tab.getCustomView();
+                photoAndVideoViewPagerAdapter.highlightSelectedView(view, true);
+            }
+        }
     }
 }

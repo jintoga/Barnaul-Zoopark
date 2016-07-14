@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.photoandvideo;
+package com.dat.barnaulzoopark.ui.photoandvideo.adapters;
 
 import android.content.Context;
 import android.net.Uri;
