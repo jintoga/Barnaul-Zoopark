@@ -62,6 +62,7 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
             if (Math.abs(dependencyY + childPosition) + childMarginBottom + cardViewShadow
                 <= dependency.getHeight()) {
                 childPosition = 0;
+                child.setVisibility(View.VISIBLE);
             }
             if (dependencyY - childHeight - childMarginBottom - cardViewShadow >= offset
                 && childPosition < 0) {
