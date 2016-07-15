@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.photoandvideodetails;
+package com.dat.barnaulzoopark.ui.photoalbumsdetail;
 
 import android.content.Context;
 import android.content.Intent;

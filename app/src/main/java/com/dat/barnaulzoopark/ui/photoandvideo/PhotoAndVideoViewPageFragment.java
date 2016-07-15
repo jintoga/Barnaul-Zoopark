@@ -16,7 +16,7 @@ import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.PhotoAlbumsAdapter;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.VideoAlbumsAdapter;
-import com.dat.barnaulzoopark.ui.photoandvideodetails.GridSpacingItemDecoration;
+import com.dat.barnaulzoopark.ui.photoalbumsdetail.GridSpacingItemDecoration;
 import java.util.List;
 
 /**
