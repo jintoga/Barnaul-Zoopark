@@ -41,7 +41,7 @@
             android:fitsSystemWindows="true"
             android:paddingBottom="0.5dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:tabIndicatorColor="@color/orange"
+            app:tabIndicatorColor="@color/yellow"
             app:tabIndicatorHeight="2.5dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"

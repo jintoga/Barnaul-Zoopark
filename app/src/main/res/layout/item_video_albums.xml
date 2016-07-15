@@ -21,30 +21,12 @@
         fresco:placeholderImageScaleType="centerCrop" />
 
 
-    <LinearLayout
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/photosCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="46"
-            android:textColor="@color/yellow"
-            android:textSize="@dimen/text_size_24"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Фотографий"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_18" />
-    </LinearLayout>
+        android:src="@drawable/ic_play_circle_filled_black"
+        android:tint="@color/yellow" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,12 +35,13 @@
         android:background="@color/black_transparent_40">
 
         <TextView
-            android:id="@+id/albumName"
+            android:id="@+id/videoName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="12dp"
-            android:text="День рождения зоопарка (2015 г.)"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Медведь Жора принимает душ"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_14" />
     </LinearLayout>

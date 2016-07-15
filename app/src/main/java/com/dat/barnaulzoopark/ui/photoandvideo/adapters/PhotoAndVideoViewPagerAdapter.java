@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.dat.barnaulzoopark.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +40,7 @@ public class PhotoAndVideoViewPagerAdapter extends FragmentPagerAdapter {
     public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -60,7 +59,6 @@ public class PhotoAndVideoViewPagerAdapter extends FragmentPagerAdapter {
         }
         super.setPrimaryItem(container, position, object);
     }
-
 
     @NonNull
     public View getTabView(int position) {
