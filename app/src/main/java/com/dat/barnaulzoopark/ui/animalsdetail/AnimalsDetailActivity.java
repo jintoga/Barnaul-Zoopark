@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,10 +12,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
+import com.dat.barnaulzoopark.ui.BaseActivity;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 
-public class AnimalsDetailActivity extends AppCompatActivity {
+public class AnimalsDetailActivity extends BaseActivity {
     public static final String KEY_PAGE_NUM = "PAGE_NUM";
     public static final String KEY_SELECTED_PAGE_POSITION = "SELECTED_PAGE_POSITION";
     private String headerURL;
@@ -122,12 +122,5 @@ public class AnimalsDetailActivity extends AppCompatActivity {
                 return false;
         }
         return true;
-    }
-
-    public void finishWithTransition(boolean withAnimation) {
-        finish();
-        if (withAnimation) {
-            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-        }
     }
 }

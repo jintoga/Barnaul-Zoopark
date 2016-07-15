@@ -35,8 +35,6 @@ public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener,
     FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
 
-    @Bind(R.id.systemBar)
-    protected View systemBar;
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
@@ -66,10 +64,6 @@ public class AnimalsFragment extends TempBaseFragment
         @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals, container, false);
         ButterKnife.bind(this, view);
-        if (systemBar != null) {
-            systemBar.getLayoutParams().height = getStatusBarHeight();
-            systemBar.requestLayout();
-        }
         init();
         initAnimalsViewPager();
         return view;
@@ -114,18 +108,6 @@ public class AnimalsFragment extends TempBaseFragment
             collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
             appBarLayout.setNestedScrollingEnabled(false);
         }
-
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                //change systemBar's color when appBarLayout collapse more than 50% of it's height
-                if (verticalOffset < -appBarLayout.getTotalScrollRange() * 1 / 2) {
-                    systemBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                } else {
-                    systemBar.setBackgroundColor(getResources().getColor(R.color.transparent));
-                }
-            }
-        });
 
         searchView.setBackgroundView(backgroundView);
         searchView.setSearchViewFocusedListener(this);

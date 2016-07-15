@@ -20,8 +20,6 @@ import com.dat.barnaulzoopark.ui.photoandvideo.adapters.PhotoAndVideoViewPagerAd
  */
 public class PhotoAndVideoFragment extends TempBaseFragment {
 
-    @Bind(R.id.systemBar)
-    protected View systemBar;
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.tabLayout)
@@ -36,10 +34,6 @@ public class PhotoAndVideoFragment extends TempBaseFragment {
         @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo_and_video, container, false);
         ButterKnife.bind(this, view);
-        if (systemBar != null) {
-            systemBar.getLayoutParams().height = getStatusBarHeight();
-            systemBar.requestLayout();
-        }
         ((MainActivity) getActivity()).setupNavDrawerWithToolbar(toolbar,
             getString(R.string.photo_and_video));
         initViewPager();
