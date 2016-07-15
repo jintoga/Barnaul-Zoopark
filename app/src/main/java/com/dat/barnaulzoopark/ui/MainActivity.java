@@ -20,8 +20,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
-import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
+import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 
 public class MainActivity extends AppCompatActivity
     implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(this);
     }
 
-    public void setupNavDrawerWithToolbar(Toolbar toolbar) {
+    public void setupNavDrawerWithToolbar(Toolbar toolbar, String title) {
         if (toolbar == null) {
             return;
         }
@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
+            if (title != null) {
+                getSupportActionBar().setTitle(title);
+            }
         }
         mDrawerToggle.syncState();
     }
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 addInitFragment(new AnimalsFragment());
                 return true;
-            case R.id.photoGallery:
+            case R.id.photoAndVideo:
                 fragment = new PhotoAndVideoFragment();
                 break;
             case R.id.newsAndEvents:

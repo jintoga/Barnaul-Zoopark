@@ -4,7 +4,7 @@
     <!--navigation items-->
     <string name="our_animals">Наши питомцы</string>
     <string name="news">Новости и события</string>
-    <string name="photo_gallery">Фотогалерея</string>
+    <string name="photo_and_video">Фото и видео</string>
     <string name="navigation">Навигация</string>
     <string name="zoopark_map">Карта зоопарка</string>
     <string name="cage_location">Местоположение клетки</string>

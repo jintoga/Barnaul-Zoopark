@@ -40,7 +40,8 @@ public class PhotoAndVideoFragment extends TempBaseFragment {
             systemBar.getLayoutParams().height = getStatusBarHeight();
             systemBar.requestLayout();
         }
-        ((MainActivity) getActivity()).setupNavDrawerWithToolbar(toolbar);
+        ((MainActivity) getActivity()).setupNavDrawerWithToolbar(toolbar,
+            getString(R.string.photo_and_video));
         initViewPager();
         return view;
     }

@@ -12,10 +12,10 @@
             android:title="@string/our_animals" />
 
         <item
-            android:id="@+id/photoGallery"
+            android:id="@+id/photoAndVideo"
             android:checked="false"
             android:icon="@drawable/ic_collections_black"
-            android:title="@string/photo_gallery" />
+            android:title="@string/photo_and_video" />
         <item
             android:id="@+id/newsAndEvents"
             android:checked="false"
