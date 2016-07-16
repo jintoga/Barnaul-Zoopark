@@ -47,13 +47,13 @@ public class AnimalsViewPageFragment extends Fragment
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);
             animals.addItemDecoration(new GridSpacingItemDecoration(3,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                    true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_animals_items_span),
+                    false));
         } else {
             layoutManager = new GridLayoutManager(getContext(), 2);
             animals.addItemDecoration(new GridSpacingItemDecoration(2,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                    true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_animals_items_span),
+                    false));
         }
         animals.setLayoutManager(layoutManager);
         if (animalsAdapter == null) {

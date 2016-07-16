@@ -14,12 +14,12 @@ import butterknife.ButterKnife;
 /**
  * Created by DAT on 10-Apr-16.
  */
-public class PhotoGalleryViewHolder extends RecyclerView.ViewHolder {
+public class PhotoAlbumsDetailViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.thumbnail)
     protected ImageView thumbnail;
 
-    public PhotoGalleryViewHolder(View itemView) {
+    public PhotoAlbumsDetailViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

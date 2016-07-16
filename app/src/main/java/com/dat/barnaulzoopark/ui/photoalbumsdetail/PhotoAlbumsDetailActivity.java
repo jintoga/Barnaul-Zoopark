@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.ui.BaseActivity;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class PhotoAlbumsDetailActivity extends BaseActivity {
 
@@ -34,10 +36,14 @@ public class PhotoAlbumsDetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             String albumId = getIntent().getStringExtra(KEY_PHOTO_ALBUM);
             String albumName = getIntent().getStringExtra(KEY_PHOTO_ALBUM_NAME);
-            getSupportActionBar().setTitle(albumName);
-            PhotoGalleryFragment fragment =
-                (PhotoGalleryFragment) getSupportFragmentManager().findFragmentById(
-                    R.id.fragmentPhotoGallery);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(albumName);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setHomeButtonEnabled(true);
+            }
+            PhotoAlbumsDetailFragment fragment =
+                    (PhotoAlbumsDetailFragment) getSupportFragmentManager().findFragmentById(
+                            R.id.fragmentPhotoGallery);
             fragment.loadData(albumId);
         }
     }

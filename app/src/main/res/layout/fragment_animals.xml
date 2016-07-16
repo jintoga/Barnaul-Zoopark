@@ -56,7 +56,7 @@
             android:layout_height="?attr/actionBarSize"
             android:paddingBottom="0.5dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:tabIndicatorColor="@color/yellow"
+            app:tabIndicatorColor="@color/white"
             app:tabIndicatorHeight="2.5dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"

@@ -20,8 +20,8 @@
     <dimen name="norm_item">200dp</dimen>
     <dimen name="small_item">180dp</dimen>
 
-    <dimen name="photo_gallery_items_span">2dp</dimen>
-    <dimen name="photo_album_items_span">2dp</dimen>
+    <dimen name="recycler_view_animals_items_span">2.5dp</dimen>
+    <dimen name="recycler_view_photo_album_items_span">2.5dp</dimen>
 
     <dimen name="default_width">-1px</dimen>
     <dimen name="expanded_banner_height">220dp</dimen>

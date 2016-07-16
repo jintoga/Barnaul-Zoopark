@@ -16,15 +16,17 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity
-    implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
+        implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
@@ -81,8 +83,8 @@ public class MainActivity extends AppCompatActivity
         }
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle mDrawerToggle =
-            new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_drawer_open,
-                R.string.nav_drawer_closed);
+                new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_drawer_open,
+                        R.string.nav_drawer_closed);
         drawerLayout.addDrawerListener(mDrawerToggle);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.ourAnimals:
                 getSupportFragmentManager().popBackStack(null,
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 addInitFragment(new AnimalsFragment());
                 return true;
             case R.id.photoAndVideo:
@@ -151,17 +153,19 @@ public class MainActivity extends AppCompatActivity
         if (fragmentManager.getBackStackEntryCount() > 0) {
             if (fragmentManager.getBackStackEntryCount() == 1) {
                 getSupportFragmentManager().popBackStack(null,
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 navigationView.getMenu().getItem(0).setChecked(true);
                 currentMenuItemID = R.id.ourAnimals;
                 return;
             }
             getSupportFragmentManager().popBackStack(null,
-                FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
             addInitFragment(new AnimalsFragment());
             navigationView.getMenu().getItem(0).setChecked(true);
             currentMenuItemID = R.id.ourAnimals;
+            return;
         }
+        super.onBackPressed();
     }
 
     private void addInitFragment(@NonNull Fragment fragment) {

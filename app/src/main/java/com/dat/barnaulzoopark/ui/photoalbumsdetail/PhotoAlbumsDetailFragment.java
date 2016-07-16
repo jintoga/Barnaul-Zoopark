@@ -23,13 +23,13 @@ import butterknife.ButterKnife;
 /**
  * Created by DAT on 10-Apr-16.
  */
-public class PhotoGalleryFragment extends Fragment implements PhotoGalleryAdapter.GalleryAdapterListener {
+public class PhotoAlbumsDetailFragment extends Fragment implements PhotoAlbumsDetailAdapter.GalleryAdapterListener {
 
     private View view;
 
     @Bind(R.id.gallery)
     protected RecyclerView gallery;
-    private PhotoGalleryAdapter adapter;
+    private PhotoAlbumsDetailAdapter adapter;
     private GridLayoutManager layoutManager;
 
     @Bind(R.id.loading)
@@ -39,23 +39,23 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryAdapte
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_gallery_details, container, false);
+        view = inflater.inflate(R.layout.fragment_photo_albums_detail, container, false);
         ButterKnife.bind(this, view);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);
             gallery.addItemDecoration(new GridSpacingItemDecoration(3,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                    true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span),
+                    false));
         } else {
             layoutManager = new GridLayoutManager(getContext(), 2);
             gallery.addItemDecoration(new GridSpacingItemDecoration(2,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.photo_gallery_items_span),
-                    true));
+                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span),
+                    false));
         }
         gallery.setLayoutManager(layoutManager);
 
         if (adapter == null) {
-            adapter = new PhotoGalleryAdapter(this);
+            adapter = new PhotoAlbumsDetailAdapter(this);
         }
         gallery.setAdapter(adapter);
 

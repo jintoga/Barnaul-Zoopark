@@ -9,5 +9,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:fitsSystemWindows="true"
+        android:scrollbarSize="3dp"
+        android:scrollbarThumbVertical="@color/white"
         android:scrollbars="vertical" />
 </LinearLayout>

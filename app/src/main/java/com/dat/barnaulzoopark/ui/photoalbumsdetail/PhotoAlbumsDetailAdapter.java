@@ -15,25 +15,25 @@ import java.util.List;
 /**
  * Created by DAT on 10-Apr-16.
  */
-public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryViewHolder> {
+public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDetailViewHolder> {
 
     private List<Photo> data = new ArrayList<>();
     private GalleryAdapterListener listener;
 
-    public PhotoGalleryAdapter(GalleryAdapterListener listener) {
+    public PhotoAlbumsDetailAdapter(GalleryAdapterListener listener) {
         this.listener = listener;
     }
 
     @Override
-    public PhotoGalleryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PhotoAlbumsDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_photo_gallery, parent, false);
-        PhotoGalleryViewHolder viewHolder = new PhotoGalleryViewHolder(view);
+        PhotoAlbumsDetailViewHolder viewHolder = new PhotoAlbumsDetailViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(PhotoGalleryViewHolder holder, final int position) {
+    public void onBindViewHolder(PhotoAlbumsDetailViewHolder holder, final int position) {
         if (data.get(position) != null) {
             holder.bindData(data.get(position));
             holder.itemView.setOnClickListener(new View.OnClickListener() {
