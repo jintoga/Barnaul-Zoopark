@@ -42,13 +42,13 @@ public class PhotoAlbumsDetailFragment extends Fragment implements PhotoAlbumsDe
         view = inflater.inflate(R.layout.fragment_photo_albums_detail, container, false);
         ButterKnife.bind(this, view);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            layoutManager = new GridLayoutManager(getContext(), 3);
-            gallery.addItemDecoration(new GridSpacingItemDecoration(3,
+            layoutManager = new GridLayoutManager(getContext(), 4);
+            gallery.addItemDecoration(new GridSpacingItemDecoration(4,
                     getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span),
                     false));
         } else {
-            layoutManager = new GridLayoutManager(getContext(), 2);
-            gallery.addItemDecoration(new GridSpacingItemDecoration(2,
+            layoutManager = new GridLayoutManager(getContext(), 3);
+            gallery.addItemDecoration(new GridSpacingItemDecoration(3,
                     getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span),
                     false));
         }

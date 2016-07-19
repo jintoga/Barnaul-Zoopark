@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.ui.BaseActivity;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class PhotoAlbumsDetailActivity extends BaseActivity {
 
@@ -33,18 +31,16 @@ public class PhotoAlbumsDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_photo_albums_detail);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        if (savedInstanceState == null) {
-            String albumId = getIntent().getStringExtra(KEY_PHOTO_ALBUM);
-            String albumName = getIntent().getStringExtra(KEY_PHOTO_ALBUM_NAME);
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(albumName);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setHomeButtonEnabled(true);
-            }
-            PhotoAlbumsDetailFragment fragment =
-                    (PhotoAlbumsDetailFragment) getSupportFragmentManager().findFragmentById(
-                            R.id.fragmentPhotoGallery);
-            fragment.loadData(albumId);
+        String albumId = getIntent().getStringExtra(KEY_PHOTO_ALBUM);
+        String albumName = getIntent().getStringExtra(KEY_PHOTO_ALBUM_NAME);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(albumName);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
         }
+        PhotoAlbumsDetailFragment fragment =
+            (PhotoAlbumsDetailFragment) getSupportFragmentManager().findFragmentById(
+                R.id.fragmentPhotoGallery);
+        fragment.loadData(albumId);
     }
 }
