@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
@@ -42,5 +43,23 @@ public class PhotoAlbumsDetailActivity extends BaseActivity {
             (PhotoAlbumsDetailFragment) getSupportFragmentManager().findFragmentById(
                 R.id.fragmentPhotoGallery);
         fragment.loadData(albumId);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishWithTransition(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finishWithTransition(true);
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 }
