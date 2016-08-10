@@ -35,4 +35,5 @@ dependencies {
     compile ('com.github.florent37:materialviewpager:1.2.0@aar'){
         transitive = true
     }
+    compile 'me.relex:photodraweeview:1.0.0'
 }
