@@ -12,18 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.model.Photo;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 
 /**
  * Created by DAT on 10-Apr-16.
  */
-public class PhotoAlbumsDetailFragment extends Fragment implements PhotoAlbumsDetailAdapter.GalleryAdapterListener {
+public class PhotoAlbumsDetailFragment extends Fragment
+    implements PhotoAlbumsDetailAdapter.GalleryAdapterListener {
 
     private View view;
 
@@ -38,19 +38,17 @@ public class PhotoAlbumsDetailFragment extends Fragment implements PhotoAlbumsDe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_photo_albums_detail, container, false);
         ButterKnife.bind(this, view);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 4);
-            gallery.addItemDecoration(new GridSpacingItemDecoration(4,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span),
-                    false));
+            gallery.addItemDecoration(new GridSpacingItemDecoration(4, getContext().getResources()
+                .getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span), false));
         } else {
             layoutManager = new GridLayoutManager(getContext(), 3);
-            gallery.addItemDecoration(new GridSpacingItemDecoration(3,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span),
-                    false));
+            gallery.addItemDecoration(new GridSpacingItemDecoration(3, getContext().getResources()
+                .getDimensionPixelSize(R.dimen.recycler_view_photo_album_items_span), false));
         }
         gallery.setLayoutManager(layoutManager);
 
@@ -62,7 +60,6 @@ public class PhotoAlbumsDetailFragment extends Fragment implements PhotoAlbumsDe
         return view;
     }
 
-
     public void loadData(String albumId) {
         if (albumId != null) {
             adapter.setData(DummyGenerator.getPhotoAlbumById(albumId));
@@ -70,9 +67,9 @@ public class PhotoAlbumsDetailFragment extends Fragment implements PhotoAlbumsDe
         }
     }
 
-
     @Override
     public void onPhotoSelected(@NonNull Photo photo) {
         Log.d("Photo", photo.getUrl());
+        PhotosDetailActivity.startActivity(getActivity(), photo.getUrl());
     }
 }
