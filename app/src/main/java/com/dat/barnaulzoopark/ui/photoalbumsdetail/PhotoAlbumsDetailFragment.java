@@ -2,7 +2,6 @@ package com.dat.barnaulzoopark.ui.photoalbumsdetail;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +17,8 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.model.Photo;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by DAT on 10-Apr-16.
@@ -68,8 +69,12 @@ public class PhotoAlbumsDetailFragment extends Fragment
     }
 
     @Override
-    public void onPhotoSelected(@NonNull Photo photo) {
-        Log.d("Photo", photo.getUrl());
-        PhotosDetailActivity.startActivity(getActivity(), photo.getUrl());
+    public void onPhotoSelected(int position) {
+        Log.d("Photo", adapter.getData().get(position).getUrl());
+        List<String> urls = new ArrayList<>();
+        for (Photo photo : adapter.getData()) {
+            urls.add(photo.getUrl());
+        }
+        PhotosDetailActivity.startActivity(getActivity(), urls, position);
     }
 }

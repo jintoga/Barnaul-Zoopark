@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.BaseActivity;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhotosDetailActivity extends BaseActivity {
 
@@ -15,11 +18,15 @@ public class PhotosDetailActivity extends BaseActivity {
     protected ViewPager photoViewPager;
     private PhotosDetailViewPagerAdapter photosDetailViewPagerAdapter;
 
-    private static final String KEY_PHOTO_URL = "PHOTO_URL";
+    private static final String KEY_PHOTO_POSITION = "PHOTO_POSITION";
+    private static final String KEY_PHOTO_ALBUM = "PHOTO_ALBUM";
+    private List<String> albums;
+    private int currentPosition = -1;
 
-    public static void startActivity(Activity activity, String photo_url) {
+    public static void startActivity(Activity activity, List<String> albums, int photo_position) {
         Intent intent = new Intent(activity, PhotosDetailActivity.class);
-        intent.putExtra(KEY_PHOTO_URL, photo_url);
+        intent.putStringArrayListExtra(KEY_PHOTO_ALBUM, new ArrayList<String>(albums));
+        intent.putExtra(KEY_PHOTO_POSITION, photo_position);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
@@ -33,15 +40,38 @@ public class PhotosDetailActivity extends BaseActivity {
     }
 
     private void initViewPager() {
+        albums = getIntent().getStringArrayListExtra(KEY_PHOTO_ALBUM);
+        if (albums == null) {
+            return;
+        }
         photosDetailViewPagerAdapter =
-            new PhotosDetailViewPagerAdapter(getSupportFragmentManager(), this);
+            new PhotosDetailViewPagerAdapter(getSupportFragmentManager(), albums, this);
         photoViewPager.setAdapter(photosDetailViewPagerAdapter);
+        photoViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+                Log.d("TAG", "pos:" + position + " pos offset:" + positionOffset);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        photosDetailViewPagerAdapter.addFragment(
-            PhotosDetailPageFragment.newInstance(getIntent().getStringExtra(KEY_PHOTO_URL)));
+        currentPosition = getIntent().getIntExtra(KEY_PHOTO_POSITION, -1);
+        if (currentPosition != -1) {
+            photoViewPager.setCurrentItem(currentPosition);
+        }
     }
 }

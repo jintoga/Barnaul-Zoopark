@@ -1,14 +1,11 @@
 package com.dat.barnaulzoopark.ui.photoalbumsdetail;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Photo;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDe
     @Override
     public PhotoAlbumsDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_photo_gallery, parent, false);
+            .inflate(R.layout.item_photo_gallery, parent, false);
         PhotoAlbumsDetailViewHolder viewHolder = new PhotoAlbumsDetailViewHolder(view);
         return viewHolder;
     }
@@ -39,7 +36,7 @@ public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDe
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onPhotoSelected(data.get(position));
+                    listener.onPhotoSelected(position);
                 }
             });
         }
@@ -56,13 +53,16 @@ public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDe
         notifyDataSetChanged();
     }
 
+    public List<Photo> getData() {
+        return data;
+    }
+
     @Override
     public int getItemCount() {
         return data.size();
     }
 
     public interface GalleryAdapterListener {
-        void onPhotoSelected(@NonNull Photo photo);
+        void onPhotoSelected(int position);
     }
-
 }

@@ -12,26 +12,25 @@ import java.util.List;
  */
 public class PhotosDetailViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private List<String> urls = new ArrayList<>();
     private Context context;
 
-    public PhotosDetailViewPagerAdapter(FragmentManager fm, Context context) {
+    public PhotosDetailViewPagerAdapter(FragmentManager fm, List<String> urls, Context context) {
         super(fm);
+        this.urls = urls;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return mFragmentList.size();
+        if (urls == null) {
+            return 0;
+        }
+        return urls.size();
     }
 
     @Override
     public Fragment getItem(int position) {
-        return mFragmentList.get(position);
-    }
-
-    public void addFragment(Fragment fragment) {
-        mFragmentList.add(fragment);
-        notifyDataSetChanged();
+        return PhotosDetailPageFragment.newInstance(urls.get(position));
     }
 }
