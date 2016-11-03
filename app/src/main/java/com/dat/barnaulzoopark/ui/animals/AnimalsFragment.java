@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
@@ -33,8 +35,10 @@ import java.util.List;
  */
 public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener,
-    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
+    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener, View.OnTouchListener {
 
+    @Bind(R.id.coordinatorLayout)
+    protected CoordinatorLayout coordinatorLayout;
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
@@ -70,6 +74,63 @@ public class AnimalsFragment extends TempBaseFragment
     }
 
     @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int action = event.getActionMasked();
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                initialX = event.getX();
+                initialY = event.getY();
+
+                Log.d(TAG, "Action was DOWN");
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                Log.d(TAG, "Action was MOVE");
+                coordinatorLayout.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+                break;
+
+            case MotionEvent.ACTION_UP:
+                float finalX = event.getX();
+                float finalY = event.getY();
+
+                Log.d(TAG, "Action was UP");
+
+                if (initialX < finalX) {
+                    Log.d(TAG, "Left to Right swipe performed");
+                }
+
+                if (initialX > finalX) {
+                    Log.d(TAG, "Right to Left swipe performed");
+                }
+
+                if (initialY < finalY) {
+                    Log.d(TAG, "Up to Down swipe performed");
+                }
+
+                if (initialY > finalY) {
+                    Log.d(TAG, "Down to Up swipe performed");
+                }
+
+                break;
+
+            case MotionEvent.ACTION_CANCEL:
+                Log.d(TAG, "Action was CANCEL");
+                break;
+
+            case MotionEvent.ACTION_OUTSIDE:
+                Log.d(TAG, "Movement occurred outside bounds of current screen element");
+                break;
+        }
+        return false;
+    }
+
+    @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         boolean isSearchViewFocused = searchView.isSearchViewFocused();
@@ -102,6 +163,10 @@ public class AnimalsFragment extends TempBaseFragment
             ((MainActivity) getActivity()).closeDrawer();
         }
     }
+
+    float initialX, initialY;
+    String TAG = AnimalsFragment.class.getSimpleName();
+    String TAG2 = "COLLAPSING_TAG";
 
     private void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -142,6 +207,61 @@ public class AnimalsFragment extends TempBaseFragment
         objectViewPager.setClipToPadding(false);
         objectViewPager.enableCenterLockOfChilds();
         objectViewPager.setCurrentItemInCenter(0);
+
+        objectViewPager.setOnTouchListener(this);
+
+        coordinatorLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked();
+
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialX = event.getX();
+                        initialY = event.getY();
+
+                        Log.d(TAG2, "Action was DOWN");
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d(TAG2, "Action was MOVE");
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        float finalX = event.getX();
+                        float finalY = event.getY();
+
+                        Log.d(TAG2, "Action was UP");
+
+                        if (initialX < finalX) {
+                            Log.d(TAG2, "Left to Right swipe performed");
+                        }
+
+                        if (initialX > finalX) {
+                            Log.d(TAG2, "Right to Left swipe performed");
+                        }
+
+                        if (initialY < finalY) {
+                            Log.d(TAG2, "Up to Down swipe performed");
+                        }
+
+                        if (initialY > finalY) {
+                            Log.d(TAG2, "Down to Up swipe performed");
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_CANCEL:
+                        Log.d(TAG2, "Action was CANCEL");
+                        break;
+
+                    case MotionEvent.ACTION_OUTSIDE:
+                        Log.d(TAG2, "Movement occurred outside bounds of current screen element");
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
