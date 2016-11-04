@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
@@ -142,6 +143,14 @@ public class AnimalsFragment extends TempBaseFragment
         objectViewPager.setClipToPadding(false);
         objectViewPager.enableCenterLockOfChilds();
         objectViewPager.setCurrentItemInCenter(0);
+        objectViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //fully expand the appBar
+                appBarLayout.setExpanded(true, true);
+                return false;
+            }
+        });
     }
 
     @Override
