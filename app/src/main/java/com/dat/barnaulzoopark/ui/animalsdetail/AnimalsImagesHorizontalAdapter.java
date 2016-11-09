@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.AnimalData;
 import com.dat.barnaulzoopark.model.Photo;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class AnimalsImagesHorizontalAdapter
     extends RecyclerView.Adapter<AnimalsImagesHorizontalAdapter.ViewHolder> {
-    private List<Photo> data = new ArrayList<>();
+    private List<AnimalData> data = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,7 +31,7 @@ public class AnimalsImagesHorizontalAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (data.get(position) != null) {
-            final Photo photo = data.get(position);
+            final Photo photo = data.get(position).getPhoto();
             holder.bindData(photo);
         }
     }
@@ -45,9 +46,9 @@ public class AnimalsImagesHorizontalAdapter
         return position;
     }
 
-    public void setData(List<Photo> photos) {
+    public void setData(List<AnimalData> animalDatas) {
         data.clear();
-        data.addAll(photos);
+        data.addAll(animalDatas);
         notifyDataSetChanged();
     }
 

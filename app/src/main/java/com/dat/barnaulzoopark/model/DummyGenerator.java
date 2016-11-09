@@ -198,8 +198,8 @@ public class DummyGenerator {
         return data;
     }
 
-    public static List<Photo> getAnimalsPhotos() {
-        List<Photo> data = new ArrayList<>();
+    public static List<AnimalData> getAnimalsPhotos() {
+        List<AnimalData> data = new ArrayList<>();
         PhotoAlbum album12 = new PhotoAlbum();
         album12.setDate("2015 г.");
         album12.setName("Благоустройство зоопарка");
@@ -220,12 +220,33 @@ public class DummyGenerator {
             "http://www.zoo22.ru/upload/iblock/e80/e80ae61dae5f6884bf884213664b323b.png",
             "http://www.zoo22.ru/upload/iblock/634/6340cb6e09ba87ea21ce0edca68361d4.png",
         });
+        String[] soundURLs = new String[] {
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+            "http://www.zoo22.ru/upload/iblock/474/474a8c78eeac0b941fa3c3915ee4e0e5.mp3",
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+            "http://www.zoo22.ru/upload/iblock/474/474a8c78eeac0b941fa3c3915ee4e0e5.mp3",
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+            "http://www.zoo22.ru/upload/iblock/474/474a8c78eeac0b941fa3c3915ee4e0e5.mp3",
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+            "http://www.zoo22.ru/upload/iblock/474/474a8c78eeac0b941fa3c3915ee4e0e5.mp3",
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+            "http://www.zoo22.ru/upload/iblock/474/474a8c78eeac0b941fa3c3915ee4e0e5.mp3",
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+            "http://www.zoo22.ru/upload/iblock/474/474a8c78eeac0b941fa3c3915ee4e0e5.mp3",
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+            "http://www.zoo22.ru/upload/iblock/474/474a8c78eeac0b941fa3c3915ee4e0e5.mp3",
+            "http://www.zoo22.ru/upload/iblock/f0b/f0b880919a3d5d4f56f42dfd73b7c84f.mp3",
+        };
         for (int i = 0; i < album12.getUrls().length; i++) {
             Photo photo = new Photo();
             photo.setDate(album12.getDate());
             photo.setId(String.valueOf(i));
             photo.setUrl(album12.getUrls()[i]);
-            data.add(photo);
+            Sound sound = new Sound();
+            sound.setUrl(soundURLs[i]);
+
+            AnimalData animalData = new AnimalData(photo, sound);
+            data.add(animalData);
         }
 
         return data;

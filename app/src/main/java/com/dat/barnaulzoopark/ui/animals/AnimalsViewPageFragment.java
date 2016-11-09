@@ -11,22 +11,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.AnimalData;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
 import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
 import com.dat.barnaulzoopark.ui.photoalbumsdetail.GridSpacingItemDecoration;
-import com.dat.barnaulzoopark.model.Photo;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by DAT on 04-Jul-16.
  */
 public class AnimalsViewPageFragment extends Fragment
-        implements AnimalsAdapter.AnimalsAdapterListener {
+    implements AnimalsAdapter.AnimalsAdapterListener {
     @Bind(R.id.animals)
     protected RecyclerView animals;
     private AnimalsAdapter animalsAdapter;
@@ -36,7 +34,7 @@ public class AnimalsViewPageFragment extends Fragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals_page, container, false);
         ButterKnife.bind(this, view);
         init();
@@ -46,14 +44,12 @@ public class AnimalsViewPageFragment extends Fragment
     private void init() {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);
-            animals.addItemDecoration(new GridSpacingItemDecoration(3,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_animals_items_span),
-                    false));
+            animals.addItemDecoration(new GridSpacingItemDecoration(3, getContext().getResources()
+                .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), false));
         } else {
             layoutManager = new GridLayoutManager(getContext(), 2);
-            animals.addItemDecoration(new GridSpacingItemDecoration(2,
-                    getContext().getResources().getDimensionPixelSize(R.dimen.recycler_view_animals_items_span),
-                    false));
+            animals.addItemDecoration(new GridSpacingItemDecoration(2, getContext().getResources()
+                .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), false));
         }
         animals.setLayoutManager(layoutManager);
         if (animalsAdapter == null) {
@@ -81,8 +77,8 @@ public class AnimalsViewPageFragment extends Fragment
     }
 
     @Override
-    public void onPhotoSelected(@NonNull Photo photo, int position) {
-        Log.d("Click Animals", photo.getUrl());
+    public void onPhotoSelected(@NonNull AnimalData animalData, int position) {
+        Log.d("Click Animals", animalData.getPhoto().getUrl());
         AnimalsDetailActivity.startActivity(getActivity(), position);
     }
 }

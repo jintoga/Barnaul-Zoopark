@@ -19,7 +19,7 @@
         fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
         fresco:placeholderImageScaleType="centerCrop" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="bottom"
@@ -29,10 +29,20 @@
             android:id="@+id/species"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|left"
             android:layout_marginLeft="12dp"
             android:text="Tiger"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_16" />
-    </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/playSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="12dp"
+            android:background="@null"
+            android:src="@drawable/ic_play_circle_filled_white"
+            android:tint="@color/white" />
+    </FrameLayout>
 </com.dat.barnaulzoopark.widget.SquareFrameLayout>
