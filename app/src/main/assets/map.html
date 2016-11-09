@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <script type="text/javascript" src="map.js"></script>
+</head>
+<body style="margin-top:64px; margin-bottom:64px;">
+<div class="map">
+    <div class="map__icon_legend">
+        <div class="icon_legend icon_legend_cup">
+        </div>
+        <div class="icon_legend icon_legend_ticket">
+        </div>
+        <div class="icon_legend icon_legend_info">
+        </div>
+        <div class="icon_legend icon_legend_mic">
+        </div>
+        <div class="icon_legend icon_legend_house">
+        </div>
+        <div class="icon_legend icon_legend_rings">
+        </div>
+        <div class="icon_legend icon_legend_castle">
+        </div>
+        <div class="icon_legend icon_legend_wc">
+        </div>
+        <div class="icon_legend icon_legend_paw">
+        </div>
+        <div class="icon_legend icon_legend_enter">
+            Вход
+        </div>
+    </div>
+    <div class="animal animal_jungle-cat" onClick="clickedCage1()">
+        <div class="animal__text">1</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_badger" onClick="clickedCage2()">
+        <div class="animal__text">2</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_coypu" onClick="clickedCage3()">
+        <div class="animal__text">3</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_flamingo" onClick="clickedCage4()">
+        <div class="animal__text">4</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_sable" onClick="clickedCage5()">
+        <div class="animal__text">5</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_squirel" onClick="clickedCage6()">
+        <div class="animal__text">6</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_guinea-pig" onClick="clickedCage7()">
+        <div class="animal__text">7</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_nasua" onClick="clickedCage8()">
+        <div class="animal__text">8</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_porcupine" onClick="clickedCage9()">
+        <div class="animal__text">9</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_siberian-tiger" onClick="clickedCage10()">
+        <div class="animal__text">10</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_leopard" onClick="clickedCage11()">
+        <div class="animal__text">11</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_lion" onClick="clickedCage12()">
+        <div class="animal__text">12</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_puma" onClick="clickedCage13()">
+        <div class="animal__text">13</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_corsac" onClick="clickedCage14()">
+        <div class="animal__text">14</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_silver-fox-snow" onClick="clickedCage15()">
+        <div class="animal__text">15</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_carpelous" onClick="clickedCage16()">
+        <div class="animal__text">16</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_rabbit" onClick="clickedCage17()">
+        <div class="animal__text">17</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_moose" onClick="clickedCage18()">
+        <div class="animal__text">18</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_donkey" onClick="clickedCage19()">
+        <div class="animal__text">19</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_wild-boar" onClick="clickedCage20()">
+        <div class="animal__text">20</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_vietnam-pig" onClick="clickedCage21()">
+        <div class="animal__text">21</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_pony" onClick="clickedCage22()">
+        <div class="animal__text">22</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_goat" onClick="clickedCage23()">
+        <div class="animal__text">23</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_sheep" onClick="clickedCage24()">
+        <div class="animal__text">24</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_mouflon" onClick="clickedCage25()">
+        <div class="animal__text">25</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_yak" onClick="clickedCage26()">
+        <div class="animal__text">26</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_red-deer" onClick="clickedCage27()">
+        <div class="animal__text">27</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_north-deer" onClick="clickedCage28()">
+        <div class="animal__text">28</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_european-deer" onClick="clickedCage29()">
+        <div class="animal__text">29</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_macaque" onClick="clickedCage30()">
+        <div class="animal__text">30</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_green-monkey" onClick="clickedCage31()">
+        <div class="animal__text">31</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_lynx" onClick="clickedCage32()">
+        <div class="animal__text">32</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_racoon-dog" onClick="clickedCage33()">
+        <div class="animal__text">33</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_polarfox" onClick="clickedCage34()">
+        <div class="animal__text">34</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_silver-fox" onClick="clickedCage35()">
+        <div class="animal__text">35</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_wolf" onClick="clickedCage36()">
+        <div class="animal__text">36</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_bear" onClick="clickedCage37()">
+        <div class="animal__text">37</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_emu" onClick="clickedCage38()">
+        <div class="animal__text">38</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_birds" onClick="clickedCage39()">
+        <div class="animal__text">39</div>
+        <div class="animal__icon animal__icon_pheasant"></div>
+        <div class="animal__icon animal__icon animal__icon_duck"></div>
+        <div class="animal__icon animal__icon animal__icon_goose"></div>
+        <div class="animal__icon animal__icon animal__icon_turkey"></div>
+        <div class="animal__icon animal__icon animal__icon_chiken"></div>
+    </div>
+    <div class="animal animal_pelican" onClick="clickedCage40()">
+        <div class="animal__text">40</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_swan" onClick="clickedCage41()">
+        <div class="animal__text">41</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_camel" onClick="clickedCage42()">
+        <div class="animal__text">42</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_baikal-horse" onClick="clickedCage43()">
+        <div class="animal__text">43</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_weasel" onClick="clickedCage44()">
+        <div class="animal__text">44</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_mink" onClick="clickedCage45()">
+        <div class="animal__text">45</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_wildcat" onClick="clickedCage46()">
+        <div class="animal__text">46</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_canadian-wolf" onClick="clickedCage47()">
+        <div class="animal__text">47</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_red-wolf" onClick="clickedCage48()">
+        <div class="animal__text">48</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_kangaroo" onClick="clickedCage49()">
+        <div class="animal__text">49</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_markhor" onClick="clickedCage50()">
+        <div class="animal__text">50</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_homemade-goat" onClick="clickedCage51()">
+        <div class="animal__text">51</div>
+        <div class="animal__icon"></div>
+    </div>
+    <div class="animal animal_bear-brown" onClick="clickedCage52()">
+        <div class="animal__text">52</div>
+        <div class="animal__icon"></div>
+    </div>
+
+
+</div>
+
+<div class="map-description">
+    <div class="map-description__column">
+        <a onClick="clickedCage1()" class="animal">
+            <div class="animal__name">
+                1. Камышовый кот
+            </div>
+            <div class="animal__latin">
+                Felis chaus
+            </div>
+        </a>
+        <a onClick="clickedCage2()" class="animal">
+            <div class="animal__name">
+                2. Барсуки
+            </div>
+            <div class="animal__latin">
+                Meles meles
+            </div>
+        </a> <a onClick="clickedCage3()" class="animal">
+        <div class="animal__name">
+            3. Нутрия
+        </div>
+        <div class="animal__latin">
+            Myocastor coypus
+        </div>
+    </a> <a onClick="clickedCage4()" class="animal">
+        <div class="animal__name">
+            4. Фламинго
+        </div>
+        <div class="animal__latin">
+            Phoenicopterus
+        </div>
+    </a> <a onClick="clickedCage5()" class="animal">
+        <div class="animal__name">
+            5. Соболь
+        </div>
+        <div class="animal__latin">
+            Martes zibellina
+        </div>
+    </a> <a onClick="clickedCage6()" class="animal">
+        <div class="animal__name">
+            6. Белка
+        </div>
+        <div class="animal__latin">
+            Sciurus
+        </div>
+    </a> <a onClick="clickedCage7()" class="animal">
+        <div class="animal__name">
+            7. Морская свинка
+        </div>
+        <div class="animal__latin">
+            Cavia porcellus
+        </div>
+    </a> <a onClick="clickedCage8()" class="animal">
+        <div class="animal__name">
+            8. Носуха
+        </div>
+        <div class="animal__latin">
+            Nasua
+        </div>
+    </a> <a onClick="clickedCage9()" class="animal">
+        <div class="animal__name">
+            9. Дикобраз
+        </div>
+        <div class="animal__latin">
+            Hystricidae
+        </div>
+    </a> <a onClick="clickedCage10()" class="animal">
+        <div class="animal__name">
+            10. Амурский тигр
+        </div>
+        <div class="animal__latin">
+            Panthera tigris altaica
+        </div>
+    </a> <a onClick="clickedCage11()" class="animal">
+        <div class="animal__name">
+            11. Дальневосточный леопард
+        </div>
+        <div class="animal__latin">
+            Panthera pardus orientalis
+        </div>
+    </a> <a onClick="clickedCage12()" class="animal">
+        <div class="animal__name">
+            12. Африканский лев
+        </div>
+        <div class="animal__latin">
+            Panthera leo
+        </div>
+    </a> <a onClick="clickedCage13()" class="animal">
+        <div class="animal__name">
+            13. Канадская пума
+        </div>
+        <div class="animal__latin">
+            Puma concolor
+        </div>
+    </a>
+    </div>
+    <div class="map-description__column">
+        <a onClick="clickedCage14()" class="animal">
+            <div class="animal__name">
+                14. Корсак
+            </div>
+            <div class="animal__latin">
+                Vulpes corsac
+            </div>
+        </a> <a onClick="clickedCage15()" class="animal">
+        <div class="animal__name">
+            15. Снежная лисица
+        </div>
+        <div class="animal__latin">
+            Vulpes vulpes
+        </div>
+    </a> <a onClick="clickedCage16()" class="animal">
+        <div class="animal__name">
+            16. Косуля
+        </div>
+        <div class="animal__latin">
+            Capreolus
+        </div>
+    </a> <a onClick="clickedCage17()" class="animal">
+        <div class="animal__name">
+            17. Кролики
+        </div>
+        <div class="animal__latin">
+            Pronolagus
+        </div>
+    </a> <a onClick="clickedCage18()" class="animal">
+        <div class="animal__name">
+            18. Лось
+        </div>
+        <div class="animal__latin">
+            Alces alces
+        </div>
+    </a> <a onClick="clickedCage19()" class="animal">
+        <div class="animal__name">
+            19. Домашний осёл
+        </div>
+        <div class="animal__latin">
+            Equus asinus asinus
+        </div>
+    </a> <a onClick="clickedCage20()" class="animal">
+        <div class="animal__name">
+            20. Дикий кабан
+        </div>
+        <div class="animal__latin">
+            Sus scrofa
+        </div>
+    </a> <a onClick="clickedCage21()" class="animal">
+        <div class="animal__name">
+            21. Вьетнамская вислобрюхая свинья
+        </div>
+        <div class="animal__latin">
+            Sus scrofa domesticus
+        </div>
+    </a> <a onClick="clickedCage22()" class="animal">
+        <div class="animal__name">
+            22. Шетландский пони
+        </div>
+        <div class="animal__latin">
+            Equus ferus caballus
+        </div>
+    </a> <a onClick="clickedCage23()" class="animal">
+        <div class="animal__name">
+            23. Камерунская коза
+        </div>
+        <div class="animal__latin">
+            Capra hircus
+        </div>
+    </a> <a onClick="clickedCage24()" class="animal">
+        <div class="animal__name">
+            24. Домашняя овца
+        </div>
+        <div class="animal__latin">
+            Ovis aries
+        </div>
+    </a> <a onClick="clickedCage25()" class="animal">
+        <div class="animal__name">
+            25. Муфлон
+        </div>
+        <div class="animal__latin">
+            Ovis gmelini
+        </div>
+    </a> <a onClick="clickedCage26()" class="animal">
+        <div class="animal__name">
+            26. Як
+        </div>
+        <div class="animal__latin">
+            Bos grunniens
+        </div>
+    </a>
+    </div>
+    <div class="map-description__column">
+        <a onClick="clickedCage27()" class="animal">
+            <div class="animal__name">
+                27. Марал
+            </div>
+            <div class="animal__latin">
+                Cervus elaphus
+            </div>
+        </a> <a onClick="clickedCage28()" class="animal">
+        <div class="animal__name">
+            28. Северный олень
+        </div>
+        <div class="animal__latin">
+            Rangifer tarandus
+        </div>
+    </a> <a onClick="clickedCage29()" class="animal">
+        <div class="animal__name">
+            29. Пятнистый олень
+        </div>
+        <div class="animal__latin">
+            Cervus nippon
+        </div>
+    </a> <a onClick="clickedCage30()" class="animal">
+        <div class="animal__name">
+            30. Яванская макака
+        </div>
+        <div class="animal__latin">
+            Macaca fascicularis
+        </div>
+    </a> <a onClick="clickedCage31()" class="animal">
+        <div class="animal__name">
+            31. Зелёная мартышка
+        </div>
+        <div class="animal__latin">
+            Chlorocebus sabaeus
+        </div>
+    </a> <a onClick="clickedCage32()" class="animal">
+        <div class="animal__name">
+            32. Рысь сибирская
+        </div>
+        <div class="animal__latin">
+            Lynx lynx
+        </div>
+    </a> <a onClick="clickedCage33()" class="animal">
+        <div class="animal__name">
+            33. Енотовидная собака
+        </div>
+        <div class="animal__latin">
+            Nyctereutes procyonoides
+        </div>
+    </a> <a onClick="clickedCage34()" class="animal">
+        <div class="animal__name">
+            34. Песец
+        </div>
+        <div class="animal__latin">
+            Alopex lagopus
+        </div>
+    </a> <a onClick="clickedCage35()" class="animal">
+        <div class="animal__name">
+            35. Черно-бурая лиса
+        </div>
+        <div class="animal__latin">
+            Vulpes vulpes
+        </div>
+    </a> <a onClick="clickedCage36()" class="animal">
+        <div class="animal__name">
+            36. Волк
+        </div>
+        <div class="animal__latin">
+            Canis lupus
+        </div>
+    </a> <a onClick="clickedCage37()" class="animal">
+        <div class="animal__name">
+            37. Гималайский медведь
+        </div>
+        <div class="animal__latin">
+            Ursus thibetanus
+        </div>
+    </a> <a onClick="clickedCage38()" class="animal">
+        <div class="animal__name">
+            38. Ему
+        </div>
+        <div class="animal__latin">
+            Dromaius
+        </div>
+    </a> <a onClick="clickedCage39()" class="animal">
+        <div class="animal__name">
+            39. Птицы разных пород
+        </div>
+        <div class="animal__latin">
+            Aves
+        </div>
+    </a>
+    </div>
+    <div class="map-description__column">
+        <a onClick="clickedCage40()" class="animal">
+            <div class="animal__name">
+                40. Розовый пеликан
+            </div>
+            <div class="animal__latin">
+                Pelecanus onocrotalus
+            </div>
+        </a> <a onClick="clickedCage41()" class="animal">
+        <div class="animal__name">
+            41. Лебедь
+        </div>
+        <div class="animal__latin">
+            Cygnus
+        </div>
+    </a> <a onClick="clickedCage42()" class="animal">
+        <div class="animal__name">
+            42. Верблюд
+        </div>
+        <div class="animal__latin">
+            Camelus
+        </div>
+    </a> <a onClick="clickedCage43()" class="animal">
+        <div class="animal__name">
+            43. Забайкальская кучерявая лошадь
+        </div>
+        <div class="animal__latin">
+            Equus
+        </div>
+    </a> <a onClick="clickedCage44()" class="animal">
+        <div class="animal__name">
+            44. Хорёк
+        </div>
+        <div class="animal__latin">
+            Mustela
+        </div>
+    </a> <a honClick="clickedCage45()" class="animal">
+        <div class="animal__name">
+            45. Американская норка
+        </div>
+        <div class="animal__latin">
+            Neovison vison
+        </div>
+    </a> <a onClick="clickedCage46()" class="animal">
+        <div class="animal__name">
+            46. Дальневосточный лесной кот
+        </div>
+        <div class="animal__latin">
+            Prionailurus bengalensis euptilurus
+        </div>
+    </a> <a onClick="clickedCage47()" class="animal">
+        <div class="animal__name">
+            47. Канадский волк
+        </div>
+        <div class="animal__latin">
+            Canis lupus occidentalis
+        </div>
+    </a> <a onClick="clickedCage48()" class="animal">
+        <div class="animal__name">
+            48. Красный волк
+        </div>
+        <div class="animal__latin">
+            Cuon alpinus
+        </div>
+    </a> <a onClick="clickedCage49()" class="animal">
+        <div class="animal__name">
+            49. Кенгуру Беннета
+        </div>
+        <div class="animal__latin">
+            Dendrolagus bennettianus
+        </div>
+    </a> <a onClick="clickedCage50()" class="animal">
+        <div class="animal__name">
+            50. Винторогий козёл
+        </div>
+        <div class="animal__latin">
+            Capra falconeri
+        </div>
+    </a> <a onClick="clickedCage51()" class="animal">
+        <div class="animal__name">
+            51. Домашняя коза
+        </div>
+        <div class="animal__latin">
+            Capra hircus
+        </div>
+    </a>
+        <a onClick="clickedCage52()" class="animal">
+            <div class="animal__name">
+                52. Бурый медведь
+            </div>
+            <div class="animal__latin">
+                Ursus arctos
+            </div>
+        </a>
+    </div>
+    <div class="map-description__column">
+        <div class="legend legend_paw">
+            Экологическая тропа
+        </div>
+        <div class="legend legend_rings">
+            Аллея молодожёнов
+        </div>
+        <div class="legend legend_castle">
+            Детская площадка
+        </div>
+        <br>
+        <div class="legend legend_house">
+            Кухня, бытовка
+        </div>
+        <div class="legend legend_wc">
+            Туалет
+        </div>
+        <div class="legend legend_mic">
+            Сцена
+        </div>
+        <div class="legend legend_info">
+            Стойка информации
+        </div>
+        <div class="legend legend_ticket">
+            Касса
+        </div>
+        <div class="legend legend_cup">
+            Кафе
+        </div>
+    </div>
+</div>
+</body>
+</html> 
