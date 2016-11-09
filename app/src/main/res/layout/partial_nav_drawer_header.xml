@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:background="@drawable/img_drawer_header_bg_banner"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:src="@drawable/ic_menu_down"
+        android:tint="@color/colorText" />
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="48dp"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="40dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_logo" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="16dp"
+        fresco:actualImageScaleType="centerInside"
+        fresco:overlayImage="@color/gray"
+        fresco:roundAsCircle="true"
+        fresco:roundingBorderColor="@color/gray"
+        fresco:roundingBorderWidth="2dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="left|bottom"
+        android:layout_marginLeft="16dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Nguyen Quoc Dat"
+            android:textColor="@color/colorText"
+            android:textStyle="bold" />
+    </LinearLayout>
+</FrameLayout>

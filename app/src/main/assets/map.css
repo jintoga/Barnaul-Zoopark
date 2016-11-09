@@ -1,0 +1,1962 @@
+
+#container {
+    position: relative;
+    background-image: url("map.png");
+}
+.map {
+  font-family: "Roboto Slab";
+  position: relative;
+  height: 737px;
+  width: 1030px;
+  background-image: url("map.png");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.icon_legend {
+  position: absolute;
+}
+.icon_legend_cup {
+  width: 30px;
+  height: 36px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -761px;
+  bottom: 75px;
+  right: 245px;
+}
+.icon_legend_ticket {
+  width: 41px;
+  height: 35px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -603px;
+  bottom: 70px;
+  right: 320px;
+}
+.icon_legend_info {
+  width: 13px;
+  height: 30px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -831px -683px;
+  bottom: 149px;
+  right: 255px;
+}
+.icon_legend_mic {
+  width: 32px;
+  height: 31px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -42px -807px;
+  bottom: 147px;
+  right: 162px;
+}
+.icon_legend_house {
+  width: 31px;
+  height: 32px;
+  background-image: url("sprite.png");
+  background-repeat: no-repeat;
+  background-position: 0px -163px;
+  bottom: 186px;
+  right: 333px;
+}
+.icon_legend_rings {
+  width: 30px;
+  height: 20px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -693px -719px;
+  bottom: 24px;
+  left: 110px;
+}
+.icon_legend_castle {
+  width: 32px;
+  height: 33px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -807px;
+  bottom: 488px;
+  left: 107px;
+}
+.icon_legend_wc {
+  width: 30px;
+  height: 14px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -411px -347px;
+  bottom: 360px;
+  right: 13px;
+}
+.icon_legend_paw {
+  width: 25px;
+  height: 28px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -856px -44px;
+  top: 116px;
+  right: 125px;
+}
+.icon_legend_enter {
+  bottom: -39px;
+  right: 170px;
+  color: #606060;
+  font-size: 28px;
+  font-weight: 700;
+}
+.icon_legend_enter::before {
+  content: "";
+  position: absolute;
+  width: 61px;
+  height: 46px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -521px -516px;
+  left: -70px;
+  top: -16px;
+}
+.map-description {
+  margin-top: 100px;
+  padding-left: 30px;
+  font-family: "Roboto Slab";
+}
+.map-description__column {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 5px;
+}
+.map-description__column:last-child {
+  margin-right: 0;
+  margin-left: 100px;
+}
+.map-description .animal {
+  display: block;
+  width: 150px;
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 2px;
+  text-decoration: none;
+  color: #000;
+}
+.map-description .animal__name {
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  padding-left: 4px;
+}
+.map-description .animal__name span {
+  left: -2px;
+  top: 0;
+  position: absolute;
+}
+.map-description .animal__latin {
+  color: #848484;
+  font-size: 11px;
+  font-weight: 700;
+  padding-left: 4px;
+}
+.map-description .legend {
+  position: relative;
+  margin-bottom: 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.map-description .legend_paw::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  width: 18px;
+  height: 19px;
+  margin-top: -9px;
+  background-image: url("sprite_animals.png");
+  background-position: -856px -816px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_rings::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  width: 16px;
+  height: 10px;
+  margin-top: -5px;
+  background-image: url("sprite_animals.png");
+  background-position: -451px -347px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_castle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  width: 16px;
+  height: 17px;
+  margin-top: -8px;
+  background-image: url("sprite_animals.png");
+  background-position: -497px -176px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_house::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  background-image: url("sprite.png");
+  background-position: 0px -269px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_wc::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  width: 16px;
+  height: 7px;
+  margin-top: -3px;
+  background-image: url("sprite_animals.png");
+  background-position: -724px -643px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_mic::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  width: 16px;
+  height: 15px;
+  margin-top: -7px;
+  background-image: url("sprite_animals.png");
+  background-position: -733px -719px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_info::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  width: 7px;
+  height: 16px;
+  margin-top: -8px;
+  background-image: url("sprite_animals.png");
+  background-position: -837px -39px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_ticket::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -26px;
+  width: 17px;
+  height: 14px;
+  margin-top: -7px;
+  background-image: url("sprite.png");
+  background-position: -53px -269px;
+  background-repeat: no-repeat;
+}
+.map-description .legend_cup::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  width: 16px;
+  height: 19px;
+  margin-top: -9px;
+  background-image: url("sprite_animals.png");
+  background-position: -497px -147px;
+  background-repeat: no-repeat;
+}
+.map .animal_coypu {
+  position: absolute;
+  left: 441px;
+  bottom: 150px;
+}
+.map .animal_coypu .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 24px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -469px -719px;
+  left: -6px;
+  bottom: -5px;
+}
+.map .animal_coypu .animal__icon:hover {
+  position: absolute;
+  width: 51px;
+  height: 34px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -259px;
+  left: -6px;
+  bottom: -5px;
+}
+.map .animal_coypu .animal__text {
+  position: absolute;
+  top: -32px;
+  left: -12px;
+}
+.map .animal_jungle-cat {
+  position: absolute;
+  left: 440px;
+  bottom: 204px;
+}
+.map .animal_jungle-cat .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 40px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -233px;
+  left: -5.5px;
+  bottom: -6.5px;
+}
+.map .animal_jungle-cat .animal__icon:hover {
+  position: absolute;
+  width: 50px;
+  height: 53px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -130px;
+  left: -5.5px;
+  bottom: -6.5px;
+}
+.map .animal_jungle-cat .animal__text {
+  position: absolute;
+  top: -42px;
+  left: -8px;
+}
+.map .animal_silver-fox {
+  position: absolute;
+  left: 472px;
+  bottom: 375px;
+}
+.map .animal_silver-fox .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 38px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -117px;
+  left: -5px;
+  bottom: 0px;
+}
+.map .animal_silver-fox .animal__icon:hover {
+  position: absolute;
+  width: 66px;
+  height: 54px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -225px -516px;
+  left: -5px;
+  bottom: 0px;
+}
+.map .animal_silver-fox .animal__text {
+  position: absolute;
+  top: -35px;
+  left: -38px;
+}
+.map .animal_polarfox {
+  position: absolute;
+  left: 472px;
+  bottom: 418px;
+}
+.map .animal_polarfox .animal__icon {
+  position: absolute;
+  width: 49px;
+  height: 30px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -480px;
+  left: -5px;
+  bottom: 0px;
+}
+.map .animal_polarfox .animal__icon:hover {
+  position: absolute;
+  width: 68px;
+  height: 43px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -345px -447px;
+  left: -9.5px;
+  bottom: -6.5px;
+}
+.map .animal_polarfox .animal__text {
+  position: absolute;
+  top: -26px;
+  left: -36px;
+}
+.map .animal_markhor {
+  position: absolute;
+  left: 172px;
+  top: 95px;
+}
+.map .animal_markhor .animal__icon {
+  width: 50px;
+  height: 55px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -65px;
+}
+.map .animal_markhor .animal__icon:hover {
+  width: 69px;
+  height: 75px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -411px -62px;
+  left: -9.5px;
+  bottom: -10px;
+}
+.map .animal_markhor .animal__text {
+  position: absolute;
+  top: -12px;
+  left: -7px;
+}
+.map .animal_homemade-goat {
+  position: absolute;
+  left: 315px;
+  top: 234px;
+}
+.map .animal_homemade-goat .animal__icon {
+  width: 38px;
+  height: 52px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -422px;
+}
+.map .animal_homemade-goat .animal__icon:hover {
+  width: 51px;
+  height: 68px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px -145px;
+  left: -6.5px;
+  bottom: -8px;
+}
+.map .animal_homemade-goat .animal__text {
+  position: absolute;
+  top: -5px;
+  left: -4px;
+}
+.map .animal_sable {
+  position: absolute;
+  left: 298px;
+  bottom: 85px;
+}
+.map .animal_sable .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 32px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -719px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_sable .animal__icon:hover {
+  position: absolute;
+  width: 70px;
+  height: 41px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -423px -447px;
+  left: 2px;
+  bottom: -4.5px;
+}
+.map .animal_sable .animal__text {
+  position: absolute;
+  top: -35px;
+  left: 0px;
+}
+.map .animal_squirel {
+  position: absolute;
+  left: 391px;
+  bottom: 85px;
+}
+.map .animal_squirel .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -333px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_squirel .animal__icon:hover {
+  position: absolute;
+  width: 46px;
+  height: 47px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -193px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_squirel .animal__text {
+  position: absolute;
+  top: -32px;
+  left: -10px;
+}
+.map .animal_guinea-pig {
+  position: absolute;
+  left: 450px;
+  bottom: 87px;
+}
+.map .animal_guinea-pig .animal__icon {
+  position: absolute;
+  width: 38px;
+  height: 29px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -344px -302px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_guinea-pig .animal__icon:hover {
+  position: absolute;
+  width: 49px;
+  height: 40px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -484px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_guinea-pig .animal__text {
+  position: absolute;
+  top: -30px;
+  left: -5px;
+}
+.map .animal_nasua {
+  position: absolute;
+  left: 420px;
+  bottom: 31px;
+}
+.map .animal_nasua .animal__icon {
+  position: absolute;
+  width: 77px;
+  height: 22px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -521px -591px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_nasua .animal__icon:hover {
+  position: absolute;
+  width: 114px;
+  height: 37px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -174px -371px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_nasua .animal__text {
+  position: absolute;
+  top: -32px;
+  left: -12px;
+}
+.map .animal_porcupine {
+  position: absolute;
+  left: 245px;
+  bottom: 23px;
+}
+.map .animal_porcupine .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 39px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -594px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_porcupine .animal__icon:hover {
+  position: absolute;
+  width: 64px;
+  height: 54px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -301px -516px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_porcupine .animal__text {
+  position: absolute;
+  top: -40px;
+  left: -12px;
+}
+.map .animal_siberian-tiger {
+  position: absolute;
+  left: 83px;
+  bottom: 102px;
+}
+.map .animal_siberian-tiger .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 43px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -133px -661px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_siberian-tiger .animal__icon:hover {
+  position: absolute;
+  width: 88px;
+  height: 68px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -205px -221px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_siberian-tiger .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -8px;
+}
+.map .animal_leopard {
+  position: absolute;
+  left: 83px;
+  bottom: 172px;
+}
+.map .animal_leopard .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 43px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -201px -661px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_leopard .animal__icon:hover {
+  position: absolute;
+  width: 76px;
+  height: 59px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -447px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_leopard .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -8px;
+}
+.map .animal_lion {
+  position: absolute;
+  left: 83px;
+  bottom: 242px;
+}
+.map .animal_lion .animal__icon {
+  position: absolute;
+  width: 60px;
+  height: 34px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -609px -661px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_lion .animal__icon:hover {
+  position: absolute;
+  width: 91px;
+  height: 53px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -411px -221px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_lion .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -8px;
+}
+.map .animal_puma {
+  position: absolute;
+  left: 172px;
+  bottom: 232px;
+}
+.map .animal_puma .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 36px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -541px -661px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_puma .animal__icon:hover {
+  position: absolute;
+  width: 83px;
+  height: 54px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -81px -371px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_puma .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -2px;
+}
+.map .animal_corsac {
+  position: absolute;
+  left: 245px;
+  bottom: 222px;
+}
+.map .animal_corsac .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 37px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -212px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_corsac .animal__icon:hover {
+  position: absolute;
+  width: 62px;
+  height: 49px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -449px -516px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_corsac .animal__text {
+  position: absolute;
+  top: -42px;
+  left: 0px;
+}
+.map .animal_silver-fox-snow {
+  position: absolute;
+  left: 315px;
+  bottom: 210px;
+}
+.map .animal_silver-fox-snow .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 38px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -117px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_silver-fox-snow .animal__icon:hover {
+  position: absolute;
+  width: 66px;
+  height: 54px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -225px -516px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_silver-fox-snow .animal__text {
+  position: absolute;
+  top: -42px;
+  left: -2px;
+}
+.map .animal_genet {
+  position: absolute;
+  left: 288px;
+  bottom: 210px;
+}
+.map .animal_genet .animal__icon {
+  width: 58px;
+  height: 27px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -145px;
+}
+.map .animal_genet .animal__icon:hover {
+  width: 103px;
+  height: 52px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -411px 0px;
+  left: -22.5px;
+  bottom: -12.5px;
+}
+.map .animal_genet .animal__text {
+  position: absolute;
+  top: -50px;
+  left: 5px;
+}
+.map .animal_carpelous {
+  position: absolute;
+  left: 175px;
+  top: 55px;
+}
+.map .animal_carpelous .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 53px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -250px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_carpelous .animal__icon:hover {
+  position: absolute;
+  width: 72px;
+  height: 97px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -222px -99px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_carpelous .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -12px;
+}
+.map .animal_rabbit {
+  position: absolute;
+  left: 145px;
+  bottom: 334px;
+}
+.map .animal_rabbit .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 33px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -338px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_rabbit .animal__icon:hover {
+  position: absolute;
+  width: 55px;
+  height: 48px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -661px;
+  left: -5px;
+  bottom: -4.5px;
+}
+.map .animal_rabbit .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -1px;
+}
+.map .animal_moose {
+  position: absolute;
+  left: 200px;
+  top: 248px;
+}
+.map .animal_moose .animal__icon {
+  width: 58px;
+  height: 53px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -139px -591px;
+}
+.map .animal_moose .animal__icon:hover {
+  width: 71px;
+  height: 66px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -371px;
+  left: -6.5px;
+  bottom: -6.5px;
+}
+.map .animal_moose .animal__text {
+  position: absolute;
+  top: -18px;
+  left: -1px;
+}
+.map .animal_donkey {
+  position: absolute;
+  left: 198px;
+  bottom: 324px;
+}
+.map .animal_donkey .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 65px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -524px -408px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_donkey .animal__icon:hover {
+  position: absolute;
+  width: 72px;
+  height: 81px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -313px -77px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_donkey .animal__text {
+  position: absolute;
+  top: -72px;
+  left: 3px;
+}
+.map .animal_wild-boar {
+  position: absolute;
+  left: 285px;
+  bottom: 285px;
+}
+.map .animal_wild-boar .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 41px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -405px -661px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_wild-boar .animal__icon:hover {
+  position: absolute;
+  width: 76px;
+  height: 56px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -86px -447px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_wild-boar .animal__text {
+  position: absolute;
+  top: -42px;
+  left: -12px;
+}
+.map .animal_vietnam-pig {
+  position: absolute;
+  left: 282px;
+  bottom: 342px;
+}
+.map .animal_vietnam-pig .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 32px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -679px -661px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_vietnam-pig .animal__icon:hover {
+  position: absolute;
+  width: 82px;
+  height: 47px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -313px -243px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_vietnam-pig .animal__text {
+  position: absolute;
+  top: -42px;
+  left: -16px;
+}
+.map .animal_pony {
+  position: absolute;
+  left: 283px;
+  bottom: 390px;
+}
+.map .animal_pony .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 45px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -65px -661px;
+  left: 0px;
+  bottom: -4.5px;
+}
+.map .animal_pony .animal__icon:hover {
+  position: absolute;
+  width: 88px;
+  height: 71px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -107px -221px;
+  left: 5px;
+  bottom: -4.5px;
+}
+.map .animal_pony .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -12px;
+}
+.map .animal_goat {
+  position: absolute;
+  left: 271px;
+  bottom: 456px;
+}
+.map .animal_goat .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 41px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -182px;
+  left: -5px;
+  bottom: -2.5px;
+}
+.map .animal_goat .animal__icon:hover {
+  position: absolute;
+  width: 53px;
+  height: 58px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px 0px;
+  left: -7px;
+  bottom: -9px;
+}
+.map .animal_goat .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -2px;
+}
+.map .animal_sheep {
+  position: absolute;
+  left: 266px;
+  bottom: 514px;
+}
+.map .animal_sheep .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 38px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -520px;
+  left: -2px;
+  bottom: -2.5px;
+}
+.map .animal_sheep .animal__icon:hover {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px -446px;
+  left: -5px;
+  bottom: -12px;
+}
+.map .animal_sheep .animal__text {
+  position: absolute;
+  top: -52px;
+  left: 0px;
+}
+.map .animal_mouflon {
+  position: absolute;
+  left: 312px;
+  bottom: 514px;
+}
+.map .animal_mouflon .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 44px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -39px;
+  left: -2px;
+  bottom: -2.5px;
+}
+.map .animal_mouflon .animal__icon:hover {
+  position: absolute;
+  width: 58px;
+  height: 66px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -524px -332px;
+  left: 2.5px;
+  bottom: -11px;
+}
+.map .animal_mouflon .animal__text {
+  position: absolute;
+  top: -52px;
+  left: 0px;
+}
+.map .animal_yak {
+  position: absolute;
+  left: 283px;
+  bottom: 580px;
+}
+.map .animal_yak .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 41px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -473px -661px;
+  left: -2px;
+  bottom: -2.5px;
+}
+.map .animal_yak .animal__icon:hover {
+  position: absolute;
+  width: 97px;
+  height: 71px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -221px;
+  left: -2.5px;
+  bottom: -15px;
+}
+.map .animal_yak .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -16px;
+}
+.map .animal_red-deer {
+  position: absolute;
+  left: 309px;
+  top: 60px;
+}
+.map .animal_red-deer .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 63px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px 0px;
+  left: -2.5px;
+  bottom: -15px;
+}
+.map .animal_red-deer .animal__icon:hover {
+  position: absolute;
+  width: 81px;
+  height: 89px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -222px 0px;
+  left: 5.5px;
+  bottom: -15px;
+}
+.map .animal_red-deer .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -16px;
+}
+.map .animal_north-deer {
+  position: absolute;
+  left: 435px;
+  top: 60px;
+}
+.map .animal_north-deer .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 70px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -524px -252px;
+  left: -2.5px;
+  bottom: -15px;
+}
+.map .animal_north-deer .animal__icon:hover {
+  position: absolute;
+  width: 86px;
+  height: 104px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -107px;
+  left: 2.5px;
+  bottom: -15px;
+}
+.map .animal_north-deer .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -19px;
+}
+.map .animal_european-deer {
+  position: absolute;
+  left: 535px;
+  top: 60px;
+}
+.map .animal_european-deer .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 72px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -524px -170px;
+  left: -2.5px;
+  bottom: -15px;
+}
+.map .animal_european-deer .animal__icon:hover {
+  position: absolute;
+  width: 77px;
+  height: 97px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -118px -98px;
+  left: -2.5px;
+  bottom: -18px;
+}
+.map .animal_european-deer .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -2px;
+}
+.map .animal_macaque {
+  position: absolute;
+  left: 613px;
+  top: 60px;
+}
+.map .animal_macaque .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 39px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -68px;
+  left: -2.5px;
+  bottom: -5px;
+}
+.map .animal_macaque .animal__icon:hover {
+  position: absolute;
+  width: 76px;
+  height: 64px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -411px -147px;
+  left: -6px;
+  bottom: -12.5px;
+}
+.map .animal_macaque .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -3px;
+}
+.map .animal_green-monkey {
+  position: absolute;
+  left: 486px;
+  top: 123px;
+}
+.map .animal_green-monkey .animal__icon {
+  width: 68px;
+  height: 25px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -68px -719px;
+}
+.map .animal_green-monkey .animal__icon:hover {
+  width: 104px;
+  height: 42px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -230px -302px;
+  left: -18px;
+  bottom: -8.5px;
+}
+.map .animal_green-monkey .animal__text {
+  position: absolute;
+  top: -12px;
+  left: 2px;
+}
+.map .animal_lynx {
+  position: absolute;
+  left: 469px;
+  bottom: 499px;
+}
+.map .animal_lynx .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 42px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -337px -661px;
+  left: -6px;
+  bottom: -2.5px;
+}
+.map .animal_lynx .animal__icon:hover {
+  position: absolute;
+  width: 86px;
+  height: 65px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -313px -168px;
+  left: -6px;
+  bottom: -2.5px;
+}
+.map .animal_lynx .animal__text {
+  position: absolute;
+  top: -42px;
+  left: -32px;
+}
+.map .animal_racoon-dog {
+  position: absolute;
+  left: 462px;
+  bottom: 457px;
+}
+.map .animal_racoon-dog .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 29px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px 0px;
+  left: 2px;
+  bottom: 2.5px;
+}
+.map .animal_racoon-dog .animal__icon:hover {
+  position: absolute;
+  width: 89px;
+  height: 47px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -172px -447px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_racoon-dog .animal__text {
+  position: absolute;
+  top: -35px;
+  left: -26px;
+}
+.map .animal_wolf {
+  position: absolute;
+  left: 469px;
+  bottom: 326px;
+}
+.map .animal_wolf .animal__icon {
+  position: absolute;
+  width: 58px;
+  height: 42px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -269px -661px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_wolf .animal__icon:hover {
+  position: absolute;
+  width: 88px;
+  height: 67px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -313px 0px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_wolf .animal__text {
+  position: absolute;
+  top: -36px;
+  left: -36px;
+}
+.map .animal_bear {
+  position: absolute;
+  left: 470px;
+  bottom: 275px;
+}
+.map .animal_bear .animal__icon {
+  position: absolute;
+  width: 68px;
+  height: 39px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -275px -591px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_bear .animal__icon:hover {
+  position: absolute;
+  width: 98px;
+  height: 59px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -302px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_bear .animal__text {
+  position: absolute;
+  top: -35px;
+  left: -36px;
+}
+.map .animal_emu {
+  position: absolute;
+  left: 624px;
+  bottom: 292px;
+}
+.map .animal_emu .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 50px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -534px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_emu .animal__icon:hover {
+  position: absolute;
+  width: 59px;
+  height: 75px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -524px 0px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_emu .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -36px;
+}
+.map .animal_birds {
+  position: absolute;
+  bottom: 300px;
+  left: 561px;
+}
+.map .animal_birds .animal__icon_pheasant {
+  position: absolute;
+  width: 61px;
+  height: 25px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -294px -719px;
+  bottom: 115px;
+  left: 15px;
+}
+.map .animal_birds .animal__icon_pheasant:hover {
+  position: absolute;
+  width: 112px;
+  height: 49px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -108px -302px;
+  bottom: 115px;
+  left: -12px;
+}
+.map .animal_birds .animal__icon_duck {
+  position: absolute;
+  width: 28px;
+  height: 32px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -747px -661px;
+  bottom: 115px;
+  left: 100px;
+}
+.map .animal_birds .animal__icon_duck:hover {
+  position: absolute;
+  width: 54px;
+  height: 62px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px -299px;
+}
+.map .animal_birds .animal__icon_goose {
+  position: absolute;
+  width: 30px;
+  height: 39px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -450px;
+  bottom: 65px;
+  left: 24px;
+}
+.map .animal_birds .animal__icon_goose:hover {
+  position: absolute;
+  width: 57px;
+  height: 75px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -524px -85px;
+  bottom: 50px;
+  left: 20px;
+}
+.map .animal_birds .animal__icon_turkey {
+  position: absolute;
+  width: 33px;
+  height: 34px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -578px;
+  bottom: 65px;
+  left: 75px;
+}
+.map .animal_birds .animal__icon_turkey:hover {
+  position: absolute;
+  width: 63px;
+  height: 65px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -74px -516px;
+  bottom: 55px;
+  left: 50px;
+}
+.map .animal_birds .animal__icon_chiken {
+  position: absolute;
+  width: 27px;
+  height: 34px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -856px 0px;
+  bottom: 65px;
+  left: 121px;
+}
+.map .animal_birds .animal__icon_chiken:hover {
+  position: absolute;
+  width: 51px;
+  height: 65px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px -371px;
+}
+.map .animal_birds .animal__text {
+  position: absolute;
+  top: -148px;
+  left: 24px;
+}
+.map .animal_pelican {
+  position: absolute;
+  bottom: 478px;
+  left: 591px;
+}
+.map .animal_pelican .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -431px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_pelican .animal__icon:hover {
+  position: absolute;
+  width: 59px;
+  height: 60px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -591px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_pelican .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -2px;
+}
+.map .animal_swan {
+  position: absolute;
+  bottom: 480px;
+  left: 652px;
+}
+.map .animal_swan .animal__icon {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -499px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_swan .animal__icon:hover {
+  position: absolute;
+  width: 64px;
+  height: 65px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px -516px;
+  left: 2px;
+  bottom: -6.5px;
+}
+.map .animal_swan .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -2px;
+}
+.map .animal_flamingo {
+  position: absolute;
+  bottom: 20px;
+  left: 332px;
+}
+.map .animal_flamingo .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 40px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -283px;
+  left: 2px;
+  bottom: -7px;
+}
+.map .animal_flamingo .animal__icon:hover {
+  position: absolute;
+  width: 58px;
+  height: 62px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px -73px;
+  left: -9.5px;
+  bottom: -11px;
+}
+.map .animal_flamingo .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -15px;
+}
+.map .animal_turtle {
+  position: absolute;
+  bottom: 570px;
+  left: 706px;
+}
+.map .animal_turtle .animal__icon {
+  width: 34px;
+  height: 24px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -567px -719px;
+}
+.map .animal_turtle .animal__icon:hover {
+  width: 64px;
+  height: 47px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -271px -447px;
+  left: -15px;
+  bottom: -11.5px;
+}
+.map .animal_turtle .animal__text {
+  position: absolute;
+  top: -55px;
+  left: -13px;
+}
+.map .animal_camel {
+  position: absolute;
+  top: 15px;
+  left: 706px;
+}
+.map .animal_camel .animal__icon {
+  width: 68px;
+  height: 60px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -147px -516px;
+}
+.map .animal_camel .animal__icon:hover {
+  width: 108px;
+  height: 97px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  left: -20px;
+  bottom: -18.5px;
+}
+.map .animal_camel .animal__text {
+  position: absolute;
+  top: -8px;
+  left: -20px;
+}
+.map .animal_baikal-horse {
+  position: absolute;
+  top: 20px;
+  left: 834px;
+}
+.map .animal_baikal-horse .animal__icon {
+  width: 58px;
+  height: 53px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -207px -591px;
+}
+.map .animal_baikal-horse .animal__icon:hover {
+  width: 94px;
+  height: 88px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -118px 0px;
+  left: -18px;
+  bottom: -17.5px;
+}
+.map .animal_baikal-horse .animal__text {
+  position: absolute;
+  top: -12px;
+  left: -15px;
+}
+.map .animal_badger {
+  position: absolute;
+  bottom: 213px;
+  left: 512px;
+}
+.map .animal_badger .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 21px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -524px -483px;
+  left: -12px;
+  bottom: -7px;
+}
+.map .animal_badger .animal__icon:hover {
+  position: absolute;
+  width: 72px;
+  height: 35px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -381px -371px;
+  left: -5px;
+  bottom: -7px;
+}
+.map .animal_badger .animal__text {
+  position: absolute;
+  top: -33px;
+  left: -15px;
+}
+.map .animal_weasel {
+  position: absolute;
+  bottom: 512px;
+  left: 838px;
+}
+.map .animal_weasel .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 21px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -608px -591px;
+  left: -6px;
+  bottom: -8.5px;
+}
+.map .animal_weasel .animal__icon:hover {
+  position: absolute;
+  width: 63px;
+  height: 38px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -353px -591px;
+  left: -14px;
+  bottom: -12.5px;
+}
+.map .animal_weasel .animal__text {
+  position: absolute;
+  top: -30px;
+  left: -6px;
+}
+.map .animal_mink {
+  position: absolute;
+  bottom: 485px;
+  left: 838px;
+}
+.map .animal_mink .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 16px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -735px;
+  left: -6px;
+  bottom: -8.5px;
+}
+.map .animal_mink .animal__icon:hover {
+  position: absolute;
+  width: 73px;
+  height: 35px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -298px -371px;
+  left: -14px;
+  bottom: -17.5px;
+}
+.map .animal_mink .animal__text {
+  position: absolute;
+  top: -20px;
+  left: -12px;
+}
+.map .animal_wildcat {
+  position: absolute;
+  bottom: 487px;
+  left: 914px;
+}
+.map .animal_wildcat .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -382px;
+  left: 0px;
+  bottom: -8.5px;
+}
+.map .animal_wildcat .animal__icon:hover {
+  position: absolute;
+  width: 54px;
+  height: 55px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px 0px;
+  left: -7.5px;
+  bottom: -17px;
+}
+.map .animal_wildcat .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -12px;
+}
+.map .animal_canadian-wolf {
+  position: absolute;
+  bottom: 400px;
+  left: 837px;
+}
+.map .animal_canadian-wolf .animal__icon {
+  position: absolute;
+  width: 39px;
+  height: 42px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -93px;
+  left: -7px;
+  bottom: -8.5px;
+}
+.map .animal_canadian-wolf .animal__icon:hover {
+  position: absolute;
+  width: 53px;
+  height: 59px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px -512px;
+  left: -7px;
+  bottom: -8.5px;
+}
+.map .animal_canadian-wolf .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -12px;
+}
+.map .animal_red-wolf {
+  position: absolute;
+  bottom: 313px;
+  left: 831px;
+}
+.map .animal_red-wolf .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 37px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -661px -165px;
+  left: 0px;
+  bottom: -6.5px;
+}
+.map .animal_red-wolf .animal__icon:hover {
+  position: absolute;
+  width: 64px;
+  height: 50px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -375px -516px;
+  left: -8px;
+  bottom: -6.5px;
+}
+.map .animal_red-wolf .animal__text {
+  position: absolute;
+  top: -52px;
+  left: -8px;
+}
+.map .animal_kangaroo {
+  position: absolute;
+  bottom: 232px;
+  left: 825px;
+}
+.map .animal_kangaroo .animal__icon {
+  position: absolute;
+  width: 48px;
+  height: 43px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -369px;
+  left: -4px;
+  bottom: -1.5px;
+}
+.map .animal_kangaroo .animal__icon:hover {
+  position: absolute;
+  width: 60px;
+  height: 55px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -69px -591px;
+  left: -6px;
+  bottom: -6px;
+}
+.map .animal_kangaroo .animal__text {
+  position: absolute;
+  top: -52px;
+  left: 2px;
+}
+.map .animal_pigeon {
+  position: absolute;
+  bottom: 231px;
+  left: 896px;
+}
+.map .animal_pigeon .animal__icon {
+  width: 33px;
+  height: 33px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -463px -371px;
+}
+.map .animal_pigeon .animal__icon:hover {
+  width: 45px;
+  height: 46px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -724px -313px;
+  left: -6px;
+  bottom: -6.5px;
+}
+.map .animal_pigeon .animal__text {
+  position: absolute;
+  top: -53px;
+  left: -14px;
+}
+.map .animal_bear-brown {
+  position: absolute;
+  left: 759px;
+  bottom: 481px;
+}
+.map .animal_bear-brown .animal__icon {
+  position: absolute;
+  width: 33px;
+  height: 42px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -788px -683px;
+  left: 6px;
+  bottom: -6.5px;
+}
+.map .animal_bear-brown .animal__icon:hover {
+  position: absolute;
+  width: 52px;
+  height: 66px;
+  background-image: url("sprite_animals.png");
+  background-repeat: no-repeat;
+  background-position: -593px -223px;
+  left: -2.5px;
+  bottom: -17px;
+}
+.map .animal_bear-brown .animal__text {
+  position: absolute;
+  top: -32px;
+  left: -20px;
+}

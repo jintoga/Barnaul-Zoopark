@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.ksoichiro.android.observablescrollview.ObservableScrollView android:id="@+id/scrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/material_view_pager_placeholder" />
+
+        <include layout="@layout/partial_animals_detail_content_about_animal" />
+
+        <include layout="@layout/partial_animals_detail_content_images" />
+
+        <include layout="@layout/partial_animals_detail_content_facts_about_species" />
+
+        <include layout="@layout/partial_animals_detail_content_habitat_map" />
+
+
+    </LinearLayout>
+</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>

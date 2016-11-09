@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dat.barnaulzoopark">
+<manifest package="com.dat.barnaulzoopark"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.gallery.gallerydetails.PhotoGalleryActivity"></activity>
+        <activity android:name=".ui.photoalbumsdetail.PhotoAlbumsDetailActivity" />
+        <activity android:name=".ui.animalsdetail.AnimalsDetailActivity" />
+        <activity android:name=".ui.photosdetail.PhotosDetailActivity"></activity>
     </application>
 
 </manifest>

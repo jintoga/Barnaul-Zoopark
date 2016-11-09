@@ -1,65 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/toolbar_gradient"
+    android:background="@drawable/bg_toolbar_gradient"
     android:orientation="vertical">
+
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:layout_collapseMode="pin"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:theme="@style/StartUpActionBar">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.andexert.library.RippleView
-                android:id="@+id/back"
-                android:layout_width="?android:actionBarSize"
-                android:layout_height="?android:actionBarSize"
-                android:layout_gravity="center|left"
-                app:rv_centered="true"
-                app:rv_color="@color/rippelColor"
-                app:rv_framerate="10"
-                app:rv_rippleDuration="100"
-                app:rv_zoomDuration="100">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_arrow_back_black_24dp"
-                    android:tint="@color/white" />
-
-            </com.andexert.library.RippleView>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="4dp"
-                android:padding="4dp">
-
-                <TextView
-                    android:id="@+id/restore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/forget_password"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/normal_14" />
-            </LinearLayout>
-        </FrameLayout>
     </android.support.v7.widget.Toolbar>
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +22,7 @@
         android:layout_marginTop="36dp"
         android:text="@string/welcome_back"
         android:textColor="@color/white"
-        android:textSize="@dimen/normal_18"
+        android:textSize="@dimen/text_size_18"
         android:textStyle="italic" />
 
 
@@ -91,19 +45,19 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
-            android:background="@drawable/custom_edittext_selector"
+            android:background="@drawable/custom_selector_edittext"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
             android:lines="1"
             android:padding="12dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="@dimen/normal_18"
+            android:textSize="@dimen/text_size_18"
             android:theme="@style/EditText"
             android:typeface="monospace" />
 
 
-        <com.dat.barnaulzoopark.ui.PasswordView
+        <com.dat.barnaulzoopark.widget.PasswordView
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,7 +77,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:background="@drawable/rounded_corner_login_btn_bg"
+        android:background="@drawable/bg_rounded_corner_login_btn"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
@@ -136,7 +90,7 @@
             android:gravity="center"
             android:text="@string/sign_in"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_24" />
+            android:textSize="@dimen/text_size_24" />
     </LinearLayout>
 
     <Space

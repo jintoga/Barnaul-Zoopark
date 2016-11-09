@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dat.barnaulzoopark.widget.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?selectableItemBackground"
+    android:clickable="true">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        fresco:actualImageScaleType="focusCrop"
+        fresco:fadeDuration="100"
+        fresco:failureImage="@android:drawable/stat_notify_error"
+        fresco:failureImageScaleType="centerInside"
+        fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
+        fresco:placeholderImageScaleType="centerCrop" />
+</com.dat.barnaulzoopark.widget.SquareFrameLayout>

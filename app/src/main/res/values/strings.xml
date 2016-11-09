@@ -3,15 +3,18 @@
 
     <!--navigation items-->
     <string name="our_animals">Наши питомцы</string>
-    <string name="news">Новости</string>
-    <string name="photo_gallery">Фотогалерея</string>
+    <string name="news">Новости и события</string>
+    <string name="photo_and_video">Фото и видео</string>
     <string name="navigation">Навигация</string>
-    <string name="zoopark_map">Карта зоопарка</string>
+    <string name="zoo_park_map">Карта зоопарка</string>
     <string name="cage_location">Местоположение клетки</string>
     <string name="information">Информация</string>
     <string name="schedule">Расписание зоопарка</string>
     <string name="price">Цена билетов</string>
     <string name="about_zoopark">О зоопарке</string>
+
+    <string name="nav_drawer_open">nav drawer open</string>
+    <string name="nav_drawer_closed">nav drawer closed</string>
 
     <!--authorize-->
     <string name="register_with_email">Регистрация с Email</string>
@@ -27,4 +30,49 @@
     <string name="create_to_support">Создать новый аккаунт, чтобы с нами помочь нашим любимым животным и также получить новости о зоопарке и прикольные подарки!</string>
     <string name="skip">Пропустить</string>
 
+    <string-array name="suggestions">
+        <item>Apple</item>
+        <item>Apricot</item>
+        <item>Avocado</item>
+        <item>Banana</item>
+        <item>Blueberry</item>
+        <item>Blackberry</item>
+        <item>Carrot</item>
+        <item>Cherry</item>
+        <item>Orange</item>
+        <item>Potato</item>
+        <item>Peach</item>
+        <item>Passion fruit</item>
+        <item>Pear</item>
+        <item>Orange</item>
+        <item>Potato</item>
+        <item>Peach</item>
+        <item>Passion fruit</item>
+        <item>Pear</item>
+        <item>Orange</item>
+        <item>Potato</item>
+        <item>Peach</item>
+        <item>Passion fruit</item>
+        <item>Pear</item>
+        <item>Strawberry</item>
+    </string-array>
+
+
+    <string name="test_text">Амир, наряду с дальневосточным леопардом Елисеем, является одним из первых представителей кошек в нашем зоопарке. Он нелюдим, замкнут, но ночью ведет себя, как маленький кот. В прошлом году к нему привезли самку Миру. У него уже был негативный опыт общения с самками. Но в этот раз они соседствуют уже на протяжении полугода. Амир и Мира привыкли друг к другу, и самое интересное, что общаются только ночью.
+    </string>
+    <string name="test_text2">
+        Амурский лесной кот — разновидность бенгальского кота. От обычной домашней кошки отличается, прежде всего, размерами: тело дальневосточного кота может достигать 90 сантиметров в длину, хвост — 37 сантиметров, а вес — 6 килограммов. Шерсть у такого кота серовато-желтая с темно-рыжими пятнами.
+    </string>
+    <string name="test_text3">
+        - Крепкое тело до 60 сантиметров в длину, шкурка имеет различные окраски.
+    \n- Развитые обоняние и слух при слабоватом зрении.
+    \n- Голос соболя напоминает кошачий.
+    \n- Соболь отлично лазает по деревьям и передвигается прыжками.
+    \n- С легкостью бегает по глубокому снегу.
+\nПитается соболь мышами, бурундуками, зачастую зайцами. Не отказывается и от ягод — голубики, рябины и черемухи. Если зимой соболю повезет наткнуться на бурундука, у которого есть орехи, съедены будут и орехи, и их владелец. Обычно соболь активен в темное время суток, но иногда охотится и днем.
+    </string>
+    <string name="test_text4">
+     - Соболь легко приручается и своим поведением в домашних условиях похож на кошку.
+    \n- Ученые и охотоведы вовремя пришли на помощь зверьку, которого убивали ради шкур в промышленных масштабах. Сейчас соболиной популяции ничто не угрожает.
+ </string>
 </resources>
