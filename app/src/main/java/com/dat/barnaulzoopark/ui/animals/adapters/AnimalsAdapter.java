@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.animals.adapters;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.AnimalData;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
 
     private List<AnimalData> data = new ArrayList<>();
     private AnimalsAdapterListener listener;
+
+    private MediaPlayer mp;
 
     public AnimalsAdapter(AnimalsAdapterListener listener) {
         this.listener = listener;
@@ -49,11 +53,32 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
             holder.playSound.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    clearAllOtherPlayingSounds(holder.getAdapterPosition());
                     togglePlaySound(animalData);
                     updatePlaySoundIcon(animalData, holder.playSound);
                 }
             });
         }
+    }
+
+    private void clearAllOtherPlayingSounds(int position) {
+        //stop streaming audio
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+        //set all playing sounds(except clicked one) to false
+        for (int i = 0; i < data.size(); i++) {
+            if (i == position) {
+                continue;
+            }
+            AnimalData animalData = data.get(i);
+            if (animalData.getSound().isPlaying()) {
+                animalData.getSound().setPlaying(false);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     private void updatePlaySoundIcon(AnimalData animalData, ImageButton playSound) {
@@ -70,9 +95,42 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
 
     private void togglePlaySound(AnimalData animalData) {
         if (!animalData.getSound().isPlaying()) {
+            playAudio(animalData);
             animalData.getSound().setPlaying(true);
         } else {
+            playAudio(null);
             animalData.getSound().setPlaying(false);
+        }
+    }
+
+    private void playAudio(final AnimalData data) {
+        if (data == null) {
+            if (mp != null) {
+                mp.stop();
+                mp.release();
+                mp = null;
+            }
+            return;
+        }
+        try {
+            mp = new MediaPlayer();
+            mp.setDataSource(data.getSound().getUrl());
+            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    data.getSound().setPlaying(false);
+                    notifyDataSetChanged();
+                }
+            });
+            mp.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
