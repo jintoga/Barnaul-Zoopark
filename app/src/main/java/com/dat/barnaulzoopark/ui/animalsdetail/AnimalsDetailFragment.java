@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.animalsdetail;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,15 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.AnimalData;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import java.io.IOException;
 
 /**
  * Created by DAT on 10-Jul-16.
@@ -31,6 +36,8 @@ public class AnimalsDetailFragment extends Fragment {
     AnimalsImagesHorizontalAdapter animalsImagesAdapter;
     @Bind(R.id.image_map)
     protected SimpleDraweeView imageMap;
+    @Bind(R.id.playSound)
+    protected ImageButton playSound;
 
     @Bind(R.id.aboutOurAnimal)
     protected TextView aboutOurAnimal;
@@ -43,8 +50,15 @@ public class AnimalsDetailFragment extends Fragment {
 
     private View view;
 
-    public static AnimalsDetailFragment newInstance() {
-        return new AnimalsDetailFragment();
+    private MediaPlayer mp;
+    private AnimalData animalData;
+
+    public static AnimalsDetailFragment newInstance(int position) {
+        AnimalsDetailFragment fragment = new AnimalsDetailFragment();
+        Bundle arg = new Bundle();
+        arg.putInt(AnimalsDetailActivity.KEY_SELECTED_PAGE_POSITION, position);
+        fragment.setArguments(arg);
+        return fragment;
     }
 
     @Nullable
@@ -63,6 +77,11 @@ public class AnimalsDetailFragment extends Fragment {
         aboutSpecies.setText("");
         aboutCharacteristics.setText("");
         factsAboutAnimal.setText("");
+        if (getArguments() != null) {
+            int selectedPage =
+                getArguments().getInt(AnimalsDetailActivity.KEY_SELECTED_PAGE_POSITION);
+            this.animalData = DummyGenerator.getAnimalsDatas().get(selectedPage);
+        }
         return view;
     }
 
@@ -75,7 +94,7 @@ public class AnimalsDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        animalsImagesAdapter.setData(DummyGenerator.getAnimalsPhotos());
+        animalsImagesAdapter.setData(DummyGenerator.getAnimalsDatas());
         animalsImagesAdapter.notifyDataSetChanged();
         aboutOurAnimal.postDelayed(new Runnable() {
             @Override
@@ -101,5 +120,90 @@ public class AnimalsDetailFragment extends Fragment {
             animalsImagesAdapter = new AnimalsImagesHorizontalAdapter();
         }
         animalsImages.setAdapter(animalsImagesAdapter);
+    }
+
+    @OnClick(R.id.playSoundContainer)
+    protected void playSound() {
+        if (animalData != null && animalData.getSound() != null) {
+            togglePlaySound(animalData);
+            updatePlaySoundIcon(animalData, playSound);
+        }
+    }
+
+    private void updatePlaySoundIcon(AnimalData animalData, ImageButton imageButton) {
+        if (!animalData.getSound().isPlaying()) {
+            imageButton.setImageDrawable(imageButton.getContext()
+                .getResources()
+                .getDrawable(R.drawable.ic_play_circle_filled_white));
+        } else {
+            imageButton.setImageDrawable(imageButton.getContext()
+                .getResources()
+                .getDrawable(R.drawable.ic_pause_circle_filled_white));
+        }
+    }
+
+    private void togglePlaySound(AnimalData animalData) {
+        if (!animalData.getSound().isPlaying()) {
+            playAudio(animalData);
+            animalData.getSound().setPlaying(true);
+        } else {
+            playAudio(null);
+            animalData.getSound().setPlaying(false);
+        }
+    }
+
+    private void playAudio(final AnimalData data) {
+        if (data == null) {
+            if (mp != null) {
+                mp.stop();
+                mp.release();
+                mp = null;
+            }
+            return;
+        }
+        try {
+            mp = new MediaPlayer();
+            mp.setDataSource(data.getSound().getUrl());
+            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    data.getSound().setPlaying(false);
+                    updatePlaySoundIcon(animalData, playSound);
+                }
+            });
+            mp.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        clearPlayingSound();
+    }
+
+    @Override
+    public void onPause() {
+        clearPlayingSound();
+        super.onPause();
+    }
+
+    private void clearPlayingSound() {
+        //stop streaming audio
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+        if (animalData != null && animalData.getSound() != null) {
+            animalData.getSound().setPlaying(false);
+        }
     }
 }

@@ -28,7 +28,7 @@ public class AnimalsDetailActivity extends BaseActivity {
             return;
         }
         Intent intent = new Intent(activity, AnimalsDetailActivity.class);
-        intent.putExtra(KEY_PAGE_NUM, DummyGenerator.getAnimalsPhotos().size());
+        intent.putExtra(KEY_PAGE_NUM, DummyGenerator.getAnimalsDatas().size());
         intent.putExtra(KEY_SELECTED_PAGE_POSITION, position);
 
         activity.startActivity(intent);
@@ -66,7 +66,7 @@ public class AnimalsDetailActivity extends BaseActivity {
             .setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
                 @Override
                 public Fragment getItem(int position) {
-                    return AnimalsDetailFragment.newInstance();
+                    return AnimalsDetailFragment.newInstance(position);
                 }
 
                 @Override

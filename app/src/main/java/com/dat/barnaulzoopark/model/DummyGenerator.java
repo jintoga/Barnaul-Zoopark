@@ -198,7 +198,7 @@ public class DummyGenerator {
         return data;
     }
 
-    public static List<AnimalData> getAnimalsPhotos() {
+    public static List<AnimalData> getAnimalsDatas() {
         List<AnimalData> data = new ArrayList<>();
         PhotoAlbum album12 = new PhotoAlbum();
         album12.setDate("2015 г.");

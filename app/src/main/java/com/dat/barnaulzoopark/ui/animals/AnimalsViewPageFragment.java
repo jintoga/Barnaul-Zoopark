@@ -66,7 +66,7 @@ public class AnimalsViewPageFragment extends Fragment
     }
 
     public void loadData() {
-        animalsAdapter.setData(DummyGenerator.getAnimalsPhotos());
+        animalsAdapter.setData(DummyGenerator.getAnimalsDatas());
         animalsAdapter.notifyDataSetChanged();
     }
 
