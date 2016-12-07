@@ -25,6 +25,11 @@ import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.Infi
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfiniteViewPager;
 import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.PagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +41,7 @@ public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener,
     FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
 
+    private static final String TAG = AnimalsFragment.class.getName();
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
@@ -67,6 +73,25 @@ public class AnimalsFragment extends TempBaseFragment
         ButterKnife.bind(this, view);
         init();
         initAnimalsViewPager();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("animals");
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Log.e("Get Data", postSnapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
         return view;
     }
 

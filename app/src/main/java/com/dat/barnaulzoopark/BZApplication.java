@@ -13,6 +13,7 @@ public class BZApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Fresco.initialize(this);
+        Firebase.setAndroidContext(this);
         MaterialViewPagerAnimator.ENABLE_LOG = false;
     }
 }
