@@ -1,8 +1,8 @@
 package com.dat.barnaulzoopark;
 
 import android.app.Application;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.firebase.client.Firebase;
 import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
 
 /**
