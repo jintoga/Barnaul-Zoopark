@@ -11,25 +11,36 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.AnimalData;
-import com.dat.barnaulzoopark.model.DummyGenerator;
+import com.dat.barnaulzoopark.model.Animal;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
 import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
 import com.dat.barnaulzoopark.ui.photoalbumsdetail.GridSpacingItemDecoration;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by DAT on 04-Jul-16.
  */
 public class AnimalsViewPageFragment extends Fragment
     implements AnimalsAdapter.AnimalsAdapterListener {
+    @Bind(R.id.loading)
+    protected ProgressBar loading;
     @Bind(R.id.animals)
     protected RecyclerView animals;
     private AnimalsAdapter animalsAdapter;
     private GridLayoutManager layoutManager;
     private View view;
+
+    private FirebaseDatabase database;
+    private DatabaseReference animalDatabaseReference;
 
     @Nullable
     @Override
@@ -42,6 +53,8 @@ public class AnimalsViewPageFragment extends Fragment
     }
 
     private void init() {
+        database = FirebaseDatabase.getInstance();
+        animalDatabaseReference = database.getReference("animals");
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 3);
             animals.addItemDecoration(new GridSpacingItemDecoration(3, getContext().getResources()
@@ -53,21 +66,57 @@ public class AnimalsViewPageFragment extends Fragment
         }
         animals.setLayoutManager(layoutManager);
         if (animalsAdapter == null) {
-            animalsAdapter = new AnimalsAdapter(this);
+            animalsAdapter = new AnimalsAdapter(Animal.class, R.layout.item_animals,
+                AnimalsAdapter.ViewHolder.class, animalDatabaseReference, this);
         }
         animals.setHasFixedSize(true);
+        animalDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                long size = dataSnapshot.getChildrenCount();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Animal animal = postSnapshot.getValue(Animal.class);
+                    Log.e("Get Data", postSnapshot.getKey());
+                }
+                loading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("ERR", "Failed to read value.", error.toException());
+                loading.setVisibility(View.GONE);
+            }
+        });
+        animalDatabaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                loading.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         animals.setAdapter(animalsAdapter);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        loadData();
-    }
-
-    public void loadData() {
-        animalsAdapter.setData(DummyGenerator.getAnimalsDatas());
-        animalsAdapter.notifyDataSetChanged();
     }
 
     public void moveToFirst() {
@@ -77,8 +126,8 @@ public class AnimalsViewPageFragment extends Fragment
     }
 
     @Override
-    public void onPhotoSelected(@NonNull AnimalData animalData, int position) {
-        Log.d("Click Animals", animalData.getPhoto().getUrl());
+    public void onPhotoSelected(@NonNull Animal animalData, int position) {
+        Log.d("Click Animals", animalData.getImageUrl());
         AnimalsDetailActivity.startActivity(getActivity(), position);
     }
 }
