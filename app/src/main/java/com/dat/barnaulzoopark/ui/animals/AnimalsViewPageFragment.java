@@ -19,7 +19,6 @@ import com.dat.barnaulzoopark.model.Animal;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
 import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
 import com.dat.barnaulzoopark.ui.photoalbumsdetail.GridSpacingItemDecoration;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,7 +69,7 @@ public class AnimalsViewPageFragment extends Fragment
                 AnimalsAdapter.ViewHolder.class, animalDatabaseReference, this);
         }
         animals.setHasFixedSize(true);
-        animalDatabaseReference.addValueEventListener(new ValueEventListener() {
+        animalDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -90,32 +89,6 @@ public class AnimalsViewPageFragment extends Fragment
                 loading.setVisibility(View.GONE);
             }
         });
-        animalDatabaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                loading.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         animals.setAdapter(animalsAdapter);
     }
 
@@ -127,7 +100,7 @@ public class AnimalsViewPageFragment extends Fragment
 
     @Override
     public void onPhotoSelected(@NonNull Animal animalData, int position) {
-        Log.d("Click Animals", animalData.getImageUrl());
+        Log.d("Click Animals", animalData.getImageUrl() != null ? animalData.getImageUrl() : "");
         AnimalsDetailActivity.startActivity(getActivity(), position);
     }
 }

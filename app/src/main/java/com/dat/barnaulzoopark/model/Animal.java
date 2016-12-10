@@ -53,12 +53,4 @@ public class Animal {
     public void setBannerImageUrl(String bannerImageUrl) {
         this.bannerImageUrl = bannerImageUrl;
     }
-
-    public boolean isSoundPlaying() {
-        return isSoundPlaying;
-    }
-
-    public void setSoundPlaying(boolean soundPlaying) {
-        isSoundPlaying = soundPlaying;
-    }
 }

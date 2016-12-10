@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +24,8 @@ public class AnimalsAdapter extends FirebaseRecyclerAdapter<Animal, AnimalsAdapt
     private AnimalsAdapterListener listener;
 
     private MediaPlayer mp;
+
+    private int isPlayingPosition = -1;
 
     /**
      * @param modelClass Firebase will marshall the data at a location into an instance of a class
@@ -48,7 +49,7 @@ public class AnimalsAdapter extends FirebaseRecyclerAdapter<Animal, AnimalsAdapt
     }
 
     @Override
-    protected void populateViewHolder(final ViewHolder holder, Animal model, int position) {
+    protected void populateViewHolder(final ViewHolder holder, Animal model, final int position) {
         final Animal animalData = model;
         if (animalData != null) {
             holder.bindData(animalData);
@@ -58,40 +59,29 @@ public class AnimalsAdapter extends FirebaseRecyclerAdapter<Animal, AnimalsAdapt
                     listener.onPhotoSelected(animalData, holder.getAdapterPosition());
                 }
             });
-            updatePlaySoundIcon(animalData, holder.playSound);
+            updatePlaySoundIcon(position, holder.playSound);
             holder.playSound.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //clearAllOtherPlayingSounds(holder.getAdapterPosition());
-                    togglePlaySound(animalData);
-                    updatePlaySoundIcon(animalData, holder.playSound);
+                    togglePlaySound(holder.getAdapterPosition(), animalData);
+                    updatePlaySoundIcon(holder.getAdapterPosition(), holder.playSound);
                 }
             });
         }
     }
 
-    /*private void clearAllOtherPlayingSounds(int position) {
+    private void clearAllOtherPlayingSounds() {
         //stop streaming audio
         if (mp != null) {
             mp.stop();
             mp.release();
             mp = null;
         }
-        //set all playing sounds(except clicked one) to false
-        for (int i = 0; i < data.size(); i++) {
-            if (i == position) {
-                continue;
-            }
-            Animal animalData = data.get(i);
-            if (animalData.isSoundPlaying()) {
-                animalData.setSoundPlaying(false);
-            }
-        }
         notifyDataSetChanged();
-    }*/
+    }
 
-    private void updatePlaySoundIcon(Animal animalData, ImageButton playSound) {
-        if (!animalData.isSoundPlaying()) {
+    private void updatePlaySoundIcon(int position, ImageButton playSound) {
+        if (position != isPlayingPosition) {
             playSound.setImageDrawable(playSound.getContext()
                 .getResources()
                 .getDrawable(R.drawable.ic_play_circle_filled_white));
@@ -102,13 +92,17 @@ public class AnimalsAdapter extends FirebaseRecyclerAdapter<Animal, AnimalsAdapt
         }
     }
 
-    private void togglePlaySound(Animal animalData) {
-        if (!animalData.isSoundPlaying()) {
+    private void togglePlaySound(int position, Animal animalData) {
+        if (animalData.getSoundUrl() == null) {
+            return;
+        }
+        clearAllOtherPlayingSounds();
+        if (position != isPlayingPosition) {
             playAudio(animalData);
-            animalData.setSoundPlaying(true);
+            isPlayingPosition = position;
         } else {
             playAudio(null);
-            animalData.setSoundPlaying(false);
+            isPlayingPosition = -1;
         }
     }
 
@@ -133,7 +127,7 @@ public class AnimalsAdapter extends FirebaseRecyclerAdapter<Animal, AnimalsAdapt
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    data.setSoundPlaying(false);
+                    isPlayingPosition = -1;
                     notifyDataSetChanged();
                 }
             });
@@ -175,16 +169,6 @@ public class AnimalsAdapter extends FirebaseRecyclerAdapter<Animal, AnimalsAdapt
                     .getResources()
                     .getDrawable(R.drawable.img_photo_gallery_placeholder));
             }
-        }
-    }
-
-    public static class ViewHolderLoading extends RecyclerView.ViewHolder {
-        @Bind(R.id.loading)
-        protected ProgressBar loading;
-
-        public ViewHolderLoading(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
         }
     }
 }
