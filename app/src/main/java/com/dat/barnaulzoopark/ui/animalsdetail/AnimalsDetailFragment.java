@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,23 @@ public class AnimalsDetailFragment extends Fragment {
     protected TextView aboutCharacteristics;
     @Bind(R.id.factsAboutAnimal)
     protected TextView factsAboutAnimal;
+
+    //Titles to hide when data is empty
+    @Bind(R.id.aboutOurAnimalTitle)
+    protected TextView aboutOurAnimalTitle;
+    @Bind(R.id.aboutSpeciesTitle)
+    protected TextView aboutSpeciesTitle;
+    @Bind(R.id.aboutCharacteristicsTitle)
+    protected TextView aboutCharacteristicsTitle;
+
+    @Bind(R.id.part1)
+    protected View part1;
+    @Bind(R.id.part2)
+    protected View part2;
+    @Bind(R.id.part3)
+    protected View part3;
+    @Bind(R.id.part4)
+    protected View part4;
 
     private MediaPlayer mp;
     private boolean isSoundPlaying = false;
@@ -96,7 +116,23 @@ public class AnimalsDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
+        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView,
+            new ObservableScrollViewCallbacks() {
+                @Override
+                public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+                    Log.d("MVP", scrollY + "");
+                }
+
+                @Override
+                public void onDownMotionEvent() {
+
+                }
+
+                @Override
+                public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+
+                }
+            });
     }
 
     @Override
@@ -104,12 +140,12 @@ public class AnimalsDetailFragment extends Fragment {
         super.onStart();
         animalsImagesAdapter.setData(DummyGenerator.getAnimalsDatas());
         animalsImagesAdapter.notifyDataSetChanged();
-        aboutOurAnimal.postDelayed(new Runnable() {
+        mScrollView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 bindData();
             }
-        }, 500);
+        }, 100);
     }
 
     private void bindData() {
@@ -118,11 +154,28 @@ public class AnimalsDetailFragment extends Fragment {
         }
         aboutOurAnimal.setText(
             animalData.getAboutOurAnimals() == null ? "" : animalData.getAboutOurAnimals());
+        if (animalData.getAboutOurAnimals() == null) {
+            aboutOurAnimalTitle.setVisibility(View.GONE);
+        }
         aboutSpecies.setText(
             animalData.getAboutSpecies() == null ? "" : animalData.getAboutSpecies());
+        if (animalData.getAboutSpecies() == null) {
+            aboutSpeciesTitle.setVisibility(View.GONE);
+        }
         aboutCharacteristics.setText(
             animalData.getCharacteristics() == null ? "" : animalData.getCharacteristics());
+        if (animalData.getCharacteristics() == null) {
+            aboutCharacteristicsTitle.setVisibility(View.GONE);
+        }
         factsAboutAnimal.setText(animalData.getFacts() == null ? "" : animalData.getFacts());
+        if (animalData.getFacts() == null) {
+            part3.setVisibility(View.GONE);
+        }
+        if (animalData.getAboutOurAnimals() == null
+            && animalData.getAboutSpecies() == null
+            && animalData.getCharacteristics() == null) {
+            part1.setVisibility(View.GONE);
+        }
     }
 
     private void initRecyclerView() {
@@ -203,6 +256,16 @@ public class AnimalsDetailFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         clearPlayingSound();
         updatePlaySoundIcon();
+
+        //hack: expand the header of Material ViewPager on tab selected
+        if (mScrollView != null) {
+            mScrollView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScrollView.smoothScrollTo(0, 0);
+                }
+            }, 100);
+        }
     }
 
     @Override
