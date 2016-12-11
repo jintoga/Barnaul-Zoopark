@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,13 +17,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.AnimalData;
+import com.dat.barnaulzoopark.model.Animal;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by DAT on 10-Jul-16.
@@ -48,15 +51,16 @@ public class AnimalsDetailFragment extends Fragment {
     @Bind(R.id.factsAboutAnimal)
     protected TextView factsAboutAnimal;
 
-    private View view;
-
     private MediaPlayer mp;
-    private AnimalData animalData;
+    private boolean isSoundPlaying = false;
+    private Animal animalData;
 
-    public static AnimalsDetailFragment newInstance(int position) {
+    public static AnimalsDetailFragment newInstance(int position,
+        @Nullable ArrayList<Animal> animalList) {
         AnimalsDetailFragment fragment = new AnimalsDetailFragment();
         Bundle arg = new Bundle();
         arg.putInt(AnimalsDetailActivity.KEY_SELECTED_PAGE_POSITION, position);
+        arg.putParcelableArrayList(AnimalsDetailActivity.KEY_ANIMAL_LIST, animalList);
         fragment.setArguments(arg);
         return fragment;
     }
@@ -65,7 +69,7 @@ public class AnimalsDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_animals_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_animals_detail, container, false);
         ButterKnife.bind(this, view);
 
         initRecyclerView();
@@ -78,9 +82,13 @@ public class AnimalsDetailFragment extends Fragment {
         aboutCharacteristics.setText("");
         factsAboutAnimal.setText("");
         if (getArguments() != null) {
-            int selectedPage =
-                getArguments().getInt(AnimalsDetailActivity.KEY_SELECTED_PAGE_POSITION);
-            this.animalData = DummyGenerator.getAnimalsDatas().get(selectedPage);
+            List<Animal> animalList =
+                getArguments().getParcelableArrayList(AnimalsDetailActivity.KEY_ANIMAL_LIST);
+            if (animalList != null && animalList.size() > 0) {
+                int selectedPage =
+                    getArguments().getInt(AnimalsDetailActivity.KEY_SELECTED_PAGE_POSITION);
+                this.animalData = animalList.get(selectedPage);
+            }
         }
         return view;
     }
@@ -124,35 +132,36 @@ public class AnimalsDetailFragment extends Fragment {
 
     @OnClick(R.id.playSoundContainer)
     protected void playSound() {
-        if (animalData != null && animalData.getSound() != null) {
+        if (animalData != null && animalData.getSoundUrl() != null) {
             togglePlaySound(animalData);
-            updatePlaySoundIcon(animalData, playSound);
+            updatePlaySoundIcon();
         }
     }
 
-    private void updatePlaySoundIcon(AnimalData animalData, ImageButton imageButton) {
-        if (!animalData.getSound().isPlaying()) {
-            imageButton.setImageDrawable(imageButton.getContext()
-                .getResources()
-                .getDrawable(R.drawable.ic_play_circle_filled_white));
+    private void updatePlaySoundIcon() {
+        if (playSound == null) {
+            return;
+        }
+        if (!isSoundPlaying) {
+            playSound.setImageDrawable(
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_play_circle_filled_white));
         } else {
-            imageButton.setImageDrawable(imageButton.getContext()
-                .getResources()
-                .getDrawable(R.drawable.ic_pause_circle_filled_white));
+            playSound.setImageDrawable(
+                ContextCompat.getDrawable(getContext(), R.drawable.ic_pause_circle_filled_white));
         }
     }
 
-    private void togglePlaySound(AnimalData animalData) {
-        if (!animalData.getSound().isPlaying()) {
+    private void togglePlaySound(Animal animalData) {
+        if (!isSoundPlaying) {
             playAudio(animalData);
-            animalData.getSound().setPlaying(true);
+            isSoundPlaying = true;
         } else {
             playAudio(null);
-            animalData.getSound().setPlaying(false);
+            isSoundPlaying = false;
         }
     }
 
-    private void playAudio(final AnimalData data) {
+    private void playAudio(final Animal data) {
         if (data == null) {
             if (mp != null) {
                 mp.stop();
@@ -163,7 +172,7 @@ public class AnimalsDetailFragment extends Fragment {
         }
         try {
             mp = new MediaPlayer();
-            mp.setDataSource(data.getSound().getUrl());
+            mp.setDataSource(data.getSoundUrl());
             mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -173,8 +182,8 @@ public class AnimalsDetailFragment extends Fragment {
             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    data.getSound().setPlaying(false);
-                    updatePlaySoundIcon(animalData, playSound);
+                    isSoundPlaying = false;
+                    updatePlaySoundIcon();
                 }
             });
             mp.prepareAsync();
@@ -187,11 +196,13 @@ public class AnimalsDetailFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         clearPlayingSound();
+        updatePlaySoundIcon();
     }
 
     @Override
     public void onPause() {
         clearPlayingSound();
+        updatePlaySoundIcon();
         super.onPause();
     }
 
@@ -202,8 +213,6 @@ public class AnimalsDetailFragment extends Fragment {
             mp.release();
             mp = null;
         }
-        if (animalData != null && animalData.getSound() != null) {
-            animalData.getSound().setPlaying(false);
-        }
+        isSoundPlaying = false;
     }
 }

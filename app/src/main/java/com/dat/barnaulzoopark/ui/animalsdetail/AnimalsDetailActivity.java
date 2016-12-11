@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.animalsdetail;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.Toolbar;
@@ -11,26 +12,29 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.DummyGenerator;
+import com.dat.barnaulzoopark.model.Animal;
 import com.dat.barnaulzoopark.ui.BaseActivity;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnimalsDetailActivity extends BaseActivity {
-    public static final String KEY_PAGE_NUM = "PAGE_NUM";
+    public static final String KEY_ANIMAL_LIST = "ANIMAL_LIST";
     public static final String KEY_SELECTED_PAGE_POSITION = "SELECTED_PAGE_POSITION";
-    private String headerURL;
 
-    int selectedPage;
+    public int selectedPage;
 
-    public static void startActivity(Activity activity, int position) {
+    private List<Animal> animalList;
+
+    public static void startActivity(Activity activity, @Nullable ArrayList<Animal> animalList,
+        int position) {
         if (activity instanceof AnimalsDetailActivity) {
             return;
         }
         Intent intent = new Intent(activity, AnimalsDetailActivity.class);
-        intent.putExtra(KEY_PAGE_NUM, DummyGenerator.getAnimalsDatas().size());
+        intent.putParcelableArrayListExtra(KEY_ANIMAL_LIST, animalList);
         intent.putExtra(KEY_SELECTED_PAGE_POSITION, position);
-
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
@@ -52,13 +56,14 @@ public class AnimalsDetailActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        int pageNum = getIntent().getIntExtra(KEY_PAGE_NUM, 0);
-        if (pageNum > 0) {
-            initMaterialViewPager(pageNum);
+        animalList = getIntent().getParcelableArrayListExtra(KEY_ANIMAL_LIST);
+        if (animalList != null) {
+            int pageNum = animalList.size();
+            if (pageNum > 0) {
+                initMaterialViewPager(pageNum);
+            }
+            selectedPage = getIntent().getIntExtra(KEY_SELECTED_PAGE_POSITION, 0);
         }
-
-        selectedPage = getIntent().getIntExtra(KEY_SELECTED_PAGE_POSITION, 0);
-        headerURL = DummyGenerator.getAnimalsImageHeader(selectedPage);
     }
 
     private void initMaterialViewPager(final int pageNum) {
@@ -66,7 +71,7 @@ public class AnimalsDetailActivity extends BaseActivity {
             .setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
                 @Override
                 public Fragment getItem(int position) {
-                    return AnimalsDetailFragment.newInstance(position);
+                    return AnimalsDetailFragment.newInstance(position, new ArrayList<>(animalList));
                 }
 
                 @Override
@@ -76,19 +81,25 @@ public class AnimalsDetailActivity extends BaseActivity {
 
                 @Override
                 public CharSequence getPageTitle(int position) {
-                    return DummyGenerator.getAnimalsSpeciesName(position);
+                    if (animalList == null || animalList.get(position).getName() == null) {
+                        return "";
+                    }
+                    return animalList.get(position).getName();
                 }
             });
         materialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
             @Override
             public HeaderDesign getHeaderDesign(int page) {
-                if (headerURL == null || headerURL.equals("")) {
+                if (animalList != null
+                    && animalList.get(page) != null
+                    && animalList.get(page).getImageUrl() != null) {
+                    String url = animalList.get(page).getImageUrl();
+                    Log.d("URL", url);
+                    return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
+                } else {
                     return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
                         getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
                 }
-                String url = DummyGenerator.getAnimalsImageHeader(page);
-                Log.d("URL", url);
-                return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
             }
         });
 

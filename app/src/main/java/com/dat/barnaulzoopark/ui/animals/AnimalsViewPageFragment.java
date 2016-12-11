@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by DAT on 04-Jul-16.
@@ -40,6 +42,8 @@ public class AnimalsViewPageFragment extends Fragment
 
     private FirebaseDatabase database;
     private DatabaseReference animalDatabaseReference;
+
+    private List<Animal> animalList;
 
     @Nullable
     @Override
@@ -74,9 +78,10 @@ public class AnimalsViewPageFragment extends Fragment
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                long size = dataSnapshot.getChildrenCount();
+                animalList = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Animal animal = postSnapshot.getValue(Animal.class);
+                    animalList.add(animal);
                     Log.e("Get Data", postSnapshot.getKey());
                 }
                 loading.setVisibility(View.GONE);
@@ -101,6 +106,6 @@ public class AnimalsViewPageFragment extends Fragment
     @Override
     public void onPhotoSelected(@NonNull Animal animalData, int position) {
         Log.d("Click Animals", animalData.getImageUrl() != null ? animalData.getImageUrl() : "");
-        AnimalsDetailActivity.startActivity(getActivity(), position);
+        AnimalsDetailActivity.startActivity(getActivity(), new ArrayList<>(animalList), position);
     }
 }
