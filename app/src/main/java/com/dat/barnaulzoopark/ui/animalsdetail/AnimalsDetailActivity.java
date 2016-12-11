@@ -98,7 +98,7 @@ public class AnimalsDetailActivity extends BaseActivity {
                     return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
                 } else {
                     return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
-                        getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
+                        getResources().getDrawable(R.color.colorPrimary));
                 }
             }
         });

@@ -73,7 +73,7 @@ public class AnimalsViewPageFragment extends Fragment
                 AnimalsAdapter.ViewHolder.class, animalDatabaseReference, this);
         }
         animals.setHasFixedSize(true);
-        animalDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        animalDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -84,6 +84,16 @@ public class AnimalsViewPageFragment extends Fragment
                     animalList.add(animal);
                     Log.e("Get Data", postSnapshot.getKey());
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        animalDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 loading.setVisibility(View.GONE);
             }
 

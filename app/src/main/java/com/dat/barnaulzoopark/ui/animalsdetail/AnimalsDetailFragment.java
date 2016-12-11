@@ -87,7 +87,7 @@ public class AnimalsDetailFragment extends Fragment {
             if (animalList != null && animalList.size() > 0) {
                 int selectedPage =
                     getArguments().getInt(AnimalsDetailActivity.KEY_SELECTED_PAGE_POSITION);
-                this.animalData = animalList.get(selectedPage);
+                animalData = animalList.get(selectedPage);
             }
         }
         return view;
@@ -113,10 +113,16 @@ public class AnimalsDetailFragment extends Fragment {
     }
 
     private void bindData() {
-        aboutOurAnimal.setText(getString(R.string.test_text));
-        aboutSpecies.setText(getString(R.string.test_text2));
-        aboutCharacteristics.setText(getString(R.string.test_text3));
-        factsAboutAnimal.setText(getString(R.string.test_text4));
+        if (animalData == null) {
+            return;
+        }
+        aboutOurAnimal.setText(
+            animalData.getAboutOurAnimals() == null ? "" : animalData.getAboutOurAnimals());
+        aboutSpecies.setText(
+            animalData.getAboutSpecies() == null ? "" : animalData.getAboutSpecies());
+        aboutCharacteristics.setText(
+            animalData.getCharacteristics() == null ? "" : animalData.getCharacteristics());
+        factsAboutAnimal.setText(animalData.getFacts() == null ? "" : animalData.getFacts());
     }
 
     private void initRecyclerView() {
