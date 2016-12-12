@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 
 public class Animal implements Parcelable {
-    private String name;
+    private String species;
     //thumbnail image URL
     private String imageUrl;
     //banner image URL
@@ -22,9 +22,9 @@ public class Animal implements Parcelable {
     public Animal() {
     }
 
-    public Animal(String name, String imageUrl, String bannerImageUrl, String soundUrl,
+    public Animal(String species, String imageUrl, String bannerImageUrl, String soundUrl,
         String aboutOurAnimals, String characteristics, String aboutSpecies, String facts) {
-        this.name = name;
+        this.species = species;
         this.imageUrl = imageUrl;
         this.bannerImageUrl = bannerImageUrl;
         this.soundUrl = soundUrl;
@@ -34,12 +34,12 @@ public class Animal implements Parcelable {
         this.facts = facts;
     }
 
-    public String getName() {
-        return name;
+    public String getSpecies() {
+        return species;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSpecies(String species) {
+        this.species = species;
     }
 
     public String getImageUrl() {
@@ -99,7 +99,7 @@ public class Animal implements Parcelable {
     }
 
     protected Animal(Parcel in) {
-        name = in.readString();
+        species = in.readString();
         imageUrl = in.readString();
         bannerImageUrl = in.readString();
         soundUrl = in.readString();
@@ -128,7 +128,7 @@ public class Animal implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
+        parcel.writeString(species);
         parcel.writeString(imageUrl);
         parcel.writeString(bannerImageUrl);
         parcel.writeString(soundUrl);

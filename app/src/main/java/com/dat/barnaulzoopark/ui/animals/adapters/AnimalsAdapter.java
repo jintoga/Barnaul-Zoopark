@@ -161,7 +161,7 @@ public class AnimalsAdapter extends FirebaseRecyclerAdapter<Animal, AnimalsAdapt
         }
 
         public void bindData(@NonNull final Animal animalData) {
-            species.setText(animalData.getName());
+            species.setText(animalData.getSpecies());
             if (animalData.getImageUrl() != null) {
                 thumbnail.setImageURI(Uri.parse(animalData.getImageUrl()));
             } else {

@@ -81,10 +81,10 @@ public class AnimalsDetailActivity extends BaseActivity {
 
                 @Override
                 public CharSequence getPageTitle(int position) {
-                    if (animalList == null || animalList.get(position).getName() == null) {
+                    if (animalList == null || animalList.get(position).getSpecies() == null) {
                         return "";
                     }
-                    return animalList.get(position).getName();
+                    return animalList.get(position).getSpecies();
                 }
             });
         materialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
