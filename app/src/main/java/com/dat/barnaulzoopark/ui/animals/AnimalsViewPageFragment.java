@@ -51,8 +51,36 @@ public class AnimalsViewPageFragment extends Fragment
         @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals_page, container, false);
         ButterKnife.bind(this, view);
+        testMethod();
         init();
         return view;
+    }
+
+    //ToDo: remove this shit
+    private void testMethod() {
+
+        FirebaseDatabase database;
+        DatabaseReference tigerRef;
+
+        database = FirebaseDatabase.getInstance();
+        tigerRef = database.getReference("animals_gallery").child("tigeras");
+        tigerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> values = new ArrayList<>();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String url = (String) postSnapshot.getValue(true);
+                    values.add(url);
+                    Log.e("Get Data", postSnapshot.getKey());
+                }
+                Log.e("Get Data", values.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void init() {
