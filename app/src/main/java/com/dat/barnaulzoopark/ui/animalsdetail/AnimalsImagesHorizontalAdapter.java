@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.AnimalData;
-import com.dat.barnaulzoopark.model.Photo;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +17,7 @@ import java.util.List;
  */
 public class AnimalsImagesHorizontalAdapter
     extends RecyclerView.Adapter<AnimalsImagesHorizontalAdapter.ViewHolder> {
-    private List<AnimalData> data = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,8 +29,8 @@ public class AnimalsImagesHorizontalAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (data.get(position) != null) {
-            final Photo photo = data.get(position).getPhoto();
-            holder.bindData(photo);
+            final String photoUrl = data.get(position);
+            holder.bindData(photoUrl);
         }
     }
 
@@ -46,7 +44,7 @@ public class AnimalsImagesHorizontalAdapter
         return position;
     }
 
-    public void setData(List<AnimalData> animalDatas) {
+    public void setData(List<String> animalDatas) {
         data.clear();
         data.addAll(animalDatas);
         notifyDataSetChanged();
@@ -61,8 +59,8 @@ public class AnimalsImagesHorizontalAdapter
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindData(final Photo photo) {
-            thumbnail.setImageURI(Uri.parse(photo.getUrl()));
+        public void bindData(final String photoUrl) {
+            thumbnail.setImageURI(Uri.parse(photoUrl));
         }
     }
 }

@@ -19,13 +19,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Animal;
-import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,20 +142,45 @@ public class AnimalsDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        animalsImagesAdapter.setData(DummyGenerator.getAnimalsDatas());
-        animalsImagesAdapter.notifyDataSetChanged();
-        mScrollView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                bindData();
-            }
-        }, 100);
+        if (animalData != null) {
+            loadAnimalsGallery(animalData.getSpecies());
+            mScrollView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    bindData();
+                }
+            }, 100);
+        }
+    }
+
+    private void loadAnimalsGallery(@Nullable String species) {
+        if (species != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference animalReference =
+                database.getReference("animals_gallery").child(species);
+            animalReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<String> values = new ArrayList<>();
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        String url = (String) postSnapshot.getValue(true);
+                        values.add(url);
+                        Log.e("Get Data", postSnapshot.getKey());
+                    }
+                    Log.e("Get Data", values.toString());
+                    animalsImagesAdapter.setData(values);
+                    animalsImagesAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void bindData() {
-        if (animalData == null) {
-            return;
-        }
         aboutOurAnimal.setText(
             animalData.getAboutOurAnimals() == null ? "" : animalData.getAboutOurAnimals());
         if (animalData.getAboutOurAnimals() == null) {

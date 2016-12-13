@@ -63,7 +63,7 @@ public class AnimalsViewPageFragment extends Fragment
         DatabaseReference tigerRef;
 
         database = FirebaseDatabase.getInstance();
-        tigerRef = database.getReference("animals_gallery").child("tigeras");
+        tigerRef = database.getReference("animals_gallery").child("tiger");
         tigerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
