@@ -48,8 +48,8 @@ public class AnimalsFragment extends TempBaseFragment
     @Bind(R.id.transparent_view)
     protected View backgroundView;
 
-    @Bind(R.id.viewpagerObject)
-    protected InfiniteViewPager objectViewPager;
+    @Bind(R.id.infiniteViewPager)
+    protected InfiniteViewPager infiniteViewPager;
     @Bind(R.id.indicatorObject)
     protected CircularIndicator indicatorObject;
 
@@ -135,20 +135,20 @@ public class AnimalsFragment extends TempBaseFragment
         final PagerAdapter wrappedFragmentPagerAdapter =
             new InfinitePagerAdapter(fragmentPagerAdapter);
 
-        objectViewPager.setAdapter(wrappedFragmentPagerAdapter);
-        indicatorObject.setViewPager(objectViewPager);
-        //objectViewPager.setOffscreenPageLimit(2);
+        infiniteViewPager.setAdapter(wrappedFragmentPagerAdapter);
+        indicatorObject.setViewPager(infiniteViewPager);
+        //infiniteViewPager.setOffscreenPageLimit(2);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             fragmentPagerAdapter.setShouldShowChildren(true);
-            objectViewPager.setPageMargin(-1);
+            infiniteViewPager.setPageMargin(-1);
         } else {
             fragmentPagerAdapter.setShouldShowChildren(false);
-            objectViewPager.setPageMargin(0);
+            infiniteViewPager.setPageMargin(0);
         }
-        objectViewPager.setClipToPadding(false);
-        objectViewPager.enableCenterLockOfChilds();
-        objectViewPager.setCurrentItemInCenter(0);
-        objectViewPager.setOnTouchListener(new View.OnTouchListener() {
+        infiniteViewPager.setClipToPadding(false);
+        infiniteViewPager.enableCenterLockOfChilds();
+        infiniteViewPager.setCurrentItemInCenter(0);
+        infiniteViewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //fully expand the appBar
