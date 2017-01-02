@@ -4,14 +4,17 @@
     <!--navigation items-->
     <string name="our_animals">Наши питомцы</string>
     <string name="news">Новости и события</string>
-    <string name="photo_gallery">Фотогалерея</string>
+    <string name="photo_and_video">Фото и видео</string>
     <string name="navigation">Навигация</string>
-    <string name="zoopark_map">Карта зоопарка</string>
+    <string name="zoo_park_map">Карта зоопарка</string>
     <string name="cage_location">Местоположение клетки</string>
     <string name="information">Информация</string>
     <string name="schedule">Расписание зоопарка</string>
     <string name="price">Цена билетов</string>
     <string name="about_zoopark">О зоопарке</string>
+
+    <string name="nav_drawer_open">nav drawer open</string>
+    <string name="nav_drawer_closed">nav drawer closed</string>
 
     <!--authorize-->
     <string name="register_with_email">Регистрация с Email</string>

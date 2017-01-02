@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -46,6 +48,7 @@ public class FloatingSearchView extends FrameLayout {
     private SearchViewFocusedListener searchViewFocusedListener;
 
     private boolean collapsingSuggestions = false;
+    private boolean isSearchViewFocused = false;
 
     public FloatingSearchView(Context context) {
         super(context);
@@ -136,6 +139,7 @@ public class FloatingSearchView extends FrameLayout {
         searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                isSearchViewFocused = hasFocus;
                 if (hasFocus) {
                     leftActionButtonMode = MODE_ARROW;
                     mMenuBtnDrawable.animateDrawable(MenuArrowDrawable.HAMBURGER_TO_ARROW);
@@ -197,6 +201,10 @@ public class FloatingSearchView extends FrameLayout {
 
     public void setSearchViewDrawerListener(SearchViewDrawerListener searchViewDrawerListener) {
         this.searchViewDrawerListener = searchViewDrawerListener;
+    }
+
+    public boolean isSearchViewFocused() {
+        return isSearchViewFocused;
     }
 
     public void openSearchView() {
@@ -323,5 +331,55 @@ public class FloatingSearchView extends FrameLayout {
         void onSearchViewEditTextFocus();
 
         void onSearchViewEditTextLostFocus();
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+        ss.isSearchViewFocused = isSearchViewFocused;
+        return ss;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        isSearchViewFocused = ss.isSearchViewFocused;
+    }
+
+    static class SavedState extends View.BaseSavedState {
+        boolean isSearchViewFocused;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.isSearchViewFocused = in.readByte() != 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeByte((byte) (isSearchViewFocused ? 1 : 0));
+        }
+
+        //required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<SavedState> CREATOR =
+            new Parcelable.Creator<SavedState>() {
+                public SavedState createFromParcel(Parcel in) {
+                    return new SavedState(in);
+                }
+
+                public SavedState[] newArray(int size) {
+                    return new SavedState[size];
+                }
+            };
     }
 }

@@ -26,7 +26,7 @@
         android:layout_above="@+id/banner_description"
         android:layout_centerInParent="true"
         android:textColor="@color/white"
-        android:textSize="@dimen/normal_20"
+        android:textSize="@dimen/text_size_20"
         android:textStyle="bold"
         tools:text="Title" />
 
@@ -38,7 +38,7 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="30dp"
         android:textColor="@color/white"
-        android:textSize="@dimen/normal_14"
+        android:textSize="@dimen/text_size_14"
         android:textStyle="normal"
         tools:text="Description aaaaaaaaaaaaa" />
 </RelativeLayout>

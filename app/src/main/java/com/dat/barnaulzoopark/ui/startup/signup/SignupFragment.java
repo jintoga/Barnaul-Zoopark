@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.PasswordView;
+import com.dat.barnaulzoopark.widget.PasswordView;
 import com.dat.barnaulzoopark.ui.startup.ICallback;
 
 import butterknife.Bind;

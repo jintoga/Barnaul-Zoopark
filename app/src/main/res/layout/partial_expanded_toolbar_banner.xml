@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/expanded_banner_height"
     android:background="@color/gray"
-    android:fitsSystemWindows="true"
     tools:layout_height="260dp">
 
     <com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfiniteViewPager
-        android:id="@+id/viewpagerObject"
+        android:id="@+id/infiniteViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />

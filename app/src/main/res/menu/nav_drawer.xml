@@ -12,43 +12,44 @@
             android:title="@string/our_animals" />
 
         <item
-            android:id="@+id/photoGallery"
+            android:id="@+id/photoAndVideo"
             android:checked="false"
             android:icon="@drawable/ic_collections_black"
-            android:title="@string/photo_gallery" />
+            android:title="@string/photo_and_video" />
         <item
+            android:id="@+id/newsAndEvents"
             android:checked="false"
             android:icon="@drawable/ic_newspaper"
             android:title="@string/news" />
-
-        <item android:title="@string/information">
-            <menu>
-                <group android:checkableBehavior="single">
-                    <item
-                        android:icon="@drawable/ic_calendar"
-                        android:title="@string/schedule" />
-                    <item
-                        android:icon="@drawable/ic_currency_ruble"
-                        android:title="@string/price" />
-                </group>
-            </menu>
-        </item>
-        <item android:title="@string/navigation">
-            <menu>
-                <group android:checkableBehavior="single">
-                    <item
-                        android:checked="false"
-                        android:icon="@drawable/ic_map_black"
-                        android:title="@string/zoopark_map" />
-                    <item
-                        android:icon="@drawable/ic_search_pet"
-                        android:title="@string/cage_location" />
-                </group>
-            </menu>
-        </item>
-
-
     </group>
+
+    <item android:title="@string/information">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:icon="@drawable/ic_calendar"
+                    android:title="@string/schedule" />
+                <item
+                    android:icon="@drawable/ic_currency_ruble"
+                    android:title="@string/price" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/navigation">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/zooMap"
+                    android:icon="@drawable/ic_map_black"
+                    android:title="@string/zoo_park_map" />
+                <item
+                    android:icon="@drawable/ic_search_pet"
+                    android:title="@string/cage_location" />
+            </group>
+        </menu>
+    </item>
+
+
     <group
         android:id="@+id/about_group"
         android:checkableBehavior="single">

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.gallery.model.Photo;
+import com.dat.barnaulzoopark.model.Photo;
 
 import java.util.ArrayList;
 import java.util.List;

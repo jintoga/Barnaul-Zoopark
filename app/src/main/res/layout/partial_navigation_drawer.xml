@@ -1,17 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<include layout="@layout/partial_nav_drawer_header" />-->
+<android.support.design.widget.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_view"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:orientation="vertical">
-
-    <include layout="@layout/partial_nav_drawer_header" />
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:menu="@menu/nav_drawer"
-        app:theme="@style/ThemeOverlay.AppCompat.Light" />
-</LinearLayout>
+    app:headerLayout="@layout/partial_nav_drawer_header"
+    app:menu="@menu/nav_drawer"
+    app:theme="@style/ThemeOverlay.AppCompat.Light" />

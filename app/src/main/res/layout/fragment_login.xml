@@ -22,7 +22,7 @@
         android:layout_marginTop="36dp"
         android:text="@string/welcome_back"
         android:textColor="@color/white"
-        android:textSize="@dimen/normal_18"
+        android:textSize="@dimen/text_size_18"
         android:textStyle="italic" />
 
 
@@ -52,12 +52,12 @@
             android:padding="12dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="@dimen/normal_18"
+            android:textSize="@dimen/text_size_18"
             android:theme="@style/EditText"
             android:typeface="monospace" />
 
 
-        <com.dat.barnaulzoopark.ui.PasswordView
+        <com.dat.barnaulzoopark.widget.PasswordView
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:gravity="center"
             android:text="@string/sign_in"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_24" />
+            android:textSize="@dimen/text_size_24" />
     </LinearLayout>
 
     <Space

@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
@@ -35,8 +37,6 @@ public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener,
     FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
 
-    @Bind(R.id.systemBar)
-    protected View systemBar;
     @Bind(R.id.app_bar_layout)
     protected AppBarLayout appBarLayout;
     @Bind(R.id.collapsing_toolbar_layout_banner)
@@ -48,8 +48,8 @@ public class AnimalsFragment extends TempBaseFragment
     @Bind(R.id.transparent_view)
     protected View backgroundView;
 
-    @Bind(R.id.viewpagerObject)
-    protected InfiniteViewPager objectViewPager;
+    @Bind(R.id.infiniteViewPager)
+    protected InfiniteViewPager infiniteViewPager;
     @Bind(R.id.indicatorObject)
     protected CircularIndicator indicatorObject;
 
@@ -66,13 +66,23 @@ public class AnimalsFragment extends TempBaseFragment
         @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_animals, container, false);
         ButterKnife.bind(this, view);
-        if (systemBar != null) {
-            systemBar.getLayoutParams().height = getStatusBarHeight();
-            systemBar.requestLayout();
-        }
         init();
         initAnimalsViewPager();
         return view;
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        boolean isSearchViewFocused = searchView.isSearchViewFocused();
+        if (!isSearchViewFocused) {
+            searchView.post(new Runnable() {
+                @Override
+                public void run() {
+                    searchView.clearSearchView();
+                }
+            });
+        }
     }
 
     @Override
@@ -101,18 +111,10 @@ public class AnimalsFragment extends TempBaseFragment
             appBarLayout.setNestedScrollingEnabled(false);
         }
 
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                //change systemBar's color when appBarLayout collapse more than 50% of it's height
-                if (verticalOffset < -appBarLayout.getTotalScrollRange() * 1 / 2) {
-                    systemBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                } else {
-                    systemBar.setBackgroundColor(getResources().getColor(R.color.transparent));
-                }
-            }
-        });
-
+        CoordinatorLayout.LayoutParams layoutParams =
+            (CoordinatorLayout.LayoutParams) backgroundView.getLayoutParams();
+        layoutParams.topMargin = getStatusBarHeight();
+        backgroundView.setLayoutParams(layoutParams);
         searchView.setBackgroundView(backgroundView);
         searchView.setSearchViewFocusedListener(this);
         searchView.setSearchViewDrawerListener(this);
@@ -129,23 +131,31 @@ public class AnimalsFragment extends TempBaseFragment
         };
         List<String> data = multiplyItems(images, 2);
         fragmentPagerAdapter =
-            new AnimalsBannerFragmentPagerAdapter(getFragmentManager(), getContext(), data);
+            new AnimalsBannerFragmentPagerAdapter(getChildFragmentManager(), getContext(), data);
         final PagerAdapter wrappedFragmentPagerAdapter =
             new InfinitePagerAdapter(fragmentPagerAdapter);
 
-        objectViewPager.setAdapter(wrappedFragmentPagerAdapter);
-        indicatorObject.setViewPager(objectViewPager);
-        //objectViewPager.setOffscreenPageLimit(2);
+        infiniteViewPager.setAdapter(wrappedFragmentPagerAdapter);
+        indicatorObject.setViewPager(infiniteViewPager);
+        //infiniteViewPager.setOffscreenPageLimit(2);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             fragmentPagerAdapter.setShouldShowChildren(true);
-            objectViewPager.setPageMargin(-1);
+            infiniteViewPager.setPageMargin(-1);
         } else {
             fragmentPagerAdapter.setShouldShowChildren(false);
-            objectViewPager.setPageMargin(0);
+            infiniteViewPager.setPageMargin(0);
         }
-        objectViewPager.setClipToPadding(false);
-        objectViewPager.enableCenterLockOfChilds();
-        objectViewPager.setCurrentItemInCenter(0);
+        infiniteViewPager.setClipToPadding(false);
+        infiniteViewPager.enableCenterLockOfChilds();
+        infiniteViewPager.setCurrentItemInCenter(0);
+        infiniteViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //fully expand the appBar
+                appBarLayout.setExpanded(true, true);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -161,7 +171,8 @@ public class AnimalsFragment extends TempBaseFragment
     }
 
     private void initAnimalsViewPager() {
-        animalsViewPagerAdapter = new AnimalsViewPagerAdapter(getFragmentManager(), getContext());
+        animalsViewPagerAdapter =
+            new AnimalsViewPagerAdapter(getChildFragmentManager(), getContext());
         animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(),
             "Млекопитающие".toUpperCase());
         animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(), "Птицы".toUpperCase());

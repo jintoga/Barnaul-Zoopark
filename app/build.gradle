@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.dat.barnaulzoopark"
@@ -35,4 +35,5 @@ dependencies {
     compile ('com.github.florent37:materialviewpager:1.2.0@aar'){
         transitive = true
     }
+    compile 'me.relex:photodraweeview:1.0.0'
 }

@@ -130,6 +130,7 @@ public class ViewPager extends ViewGroup {
     private int mGutterSize;
     private int mTouchSlop;
     private float mInitialMotionX;
+    private float mInitialMotionY;
     /**
      * Position of the last motion event.
      */
@@ -1822,6 +1823,7 @@ public class ViewPager extends ViewGroup {
                     canScroll(this, false, (int) dx, (int) x, (int) y)) {
                     // Nested view has scrollable area under this point. Let it be handled there.
                     mInitialMotionX = mLastMotionX = x;
+                    mInitialMotionY = ev.getY();
                     mLastMotionY = y;
                     mIsUnableToDrag = true;
                     return false;
@@ -1939,21 +1941,22 @@ public class ViewPager extends ViewGroup {
                 mScroller.abortAnimation();
                 mPopulatePending = false;
                 populate();
-                mIsBeingDragged = true;
-                setScrollState(SCROLL_STATE_DRAGGING);
 
                 // Remember where the motion event started
                 mLastMotionX = mInitialMotionX = ev.getX();
-                //                Log.d(TAG, SUB_TAG+"mLastMotionX:"+mLastMotionX);
+                mLastMotionY = mInitialMotionY = ev.getY();
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
                 break;
             }
             case MotionEvent.ACTION_MOVE:
-                //            	Log.d(TAG, SUB_TAG+"mIsBeingDragged:"+mIsBeingDragged);
                 if (!mIsBeingDragged) {
-
                     final int pointerIndex =
                         MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                    if (pointerIndex == -1) {
+                        // A child has consumed some touch events and put us into an inconsistent state.
+                        needsInvalidate = resetTouch();
+                        break;
+                    }
                     final float x = MotionEventCompat.getX(ev, pointerIndex);
                     final float xDiff = Math.abs(x - mLastMotionX);
                     final float y = MotionEventCompat.getY(ev, pointerIndex);
@@ -1964,10 +1967,18 @@ public class ViewPager extends ViewGroup {
                     if (xDiff > mTouchSlop && xDiff > yDiff) {
                         if (DEBUG) Log.v(TAG, "Starting drag!");
                         mIsBeingDragged = true;
+                        requestParentDisallowInterceptTouchEvent(true);
                         mLastMotionX = x - mInitialMotionX > 0 ? mInitialMotionX + mTouchSlop
                             : mInitialMotionX - mTouchSlop;
+                        mLastMotionY = y;
                         setScrollState(SCROLL_STATE_DRAGGING);
                         setScrollingCacheEnabled(true);
+
+                        // Disallow Parent Intercept, just in case
+                        ViewParent parent = getParent();
+                        if (parent != null) {
+                            parent.requestDisallowInterceptTouchEvent(true);
+                        }
                     }
                 }
                 // Not else! Note that mIsBeingDragged can be set above.
@@ -1986,12 +1997,13 @@ public class ViewPager extends ViewGroup {
                     int initialVelocity =
                         (int) VelocityTrackerCompat.getXVelocity(velocityTracker, mActivePointerId);
                     mPopulatePending = true;
-                    final int width = getWidth();
+                    final int width = getClientWidth();
                     final int scrollX = getScrollX();
                     final ItemInfo ii = infoForCurrentScrollPosition();
+                    final float marginOffset = (float) mPageMargin / width;
                     final int currentPage = ii.position;
                     final float pageOffset =
-                        (((float) scrollX / width) - ii.offset) / ii.widthFactor;
+                        (((float) scrollX / width) - ii.offset) / (ii.widthFactor + marginOffset);
                     final int activePointerIndex =
                         MotionEventCompat.findPointerIndex(ev, mActivePointerId);
                     final float x = MotionEventCompat.getX(ev, activePointerIndex);
@@ -2000,23 +2012,18 @@ public class ViewPager extends ViewGroup {
                         determineTargetPage(currentPage, pageOffset, initialVelocity, totalDelta);
                     setCurrentItemInternal(nextPage, true, true, initialVelocity);
 
-                    mActivePointerId = INVALID_POINTER;
-                    endDrag();
-                    needsInvalidate = mLeftEdge.onRelease() | mRightEdge.onRelease();
+                    needsInvalidate = resetTouch();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
                 if (mIsBeingDragged) {
                     scrollToItem(mCurItem, true, 0, false);
-                    mActivePointerId = INVALID_POINTER;
-                    endDrag();
-                    needsInvalidate = mLeftEdge.onRelease() | mRightEdge.onRelease();
+                    needsInvalidate = resetTouch();
                 }
                 break;
             case MotionEventCompat.ACTION_POINTER_DOWN: {
                 final int index = MotionEventCompat.getActionIndex(ev);
                 final float x = MotionEventCompat.getX(ev, index);
-                //                Log.d(TAG, SUB_TAG+"x:"+x);
                 mLastMotionX = x;
                 mActivePointerId = MotionEventCompat.getPointerId(ev, index);
                 break;
@@ -2031,6 +2038,25 @@ public class ViewPager extends ViewGroup {
             ViewCompat.postInvalidateOnAnimation(this);
         }
         return true;
+    }
+
+    private boolean resetTouch() {
+        boolean needsInvalidate;
+        mActivePointerId = INVALID_POINTER;
+        endDrag();
+        needsInvalidate = mLeftEdge.onRelease() | mRightEdge.onRelease();
+        return needsInvalidate;
+    }
+
+    private int getClientWidth() {
+        return getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
+    }
+
+    private void requestParentDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        final ViewParent parent = getParent();
+        if (parent != null) {
+            parent.requestDisallowInterceptTouchEvent(disallowIntercept);
+        }
     }
 
     private boolean performDrag(float x) {

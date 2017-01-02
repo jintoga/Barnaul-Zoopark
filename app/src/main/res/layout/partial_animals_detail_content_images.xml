@@ -16,7 +16,7 @@
         android:layout_marginLeft="8dp"
         android:text="Фотографии животного"
         android:textColor="@color/colorTextSecondary"
-        android:textSize="@dimen/normal_16"
+        android:textSize="@dimen/text_size_16"
         android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
