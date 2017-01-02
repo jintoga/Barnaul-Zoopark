@@ -6,8 +6,14 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/ourAnimals"
+            android:id="@+id/newsAndEvents"
             android:checked="true"
+            android:icon="@drawable/ic_newspaper"
+            android:title="@string/news" />
+
+        <item
+            android:id="@+id/ourAnimals"
+            android:checked="false"
             android:icon="@drawable/ic_pets_black"
             android:title="@string/our_animals" />
 
@@ -16,11 +22,6 @@
             android:checked="false"
             android:icon="@drawable/ic_collections_black"
             android:title="@string/photo_and_video" />
-        <item
-            android:id="@+id/newsAndEvents"
-            android:checked="false"
-            android:icon="@drawable/ic_newspaper"
-            android:title="@string/news" />
     </group>
 
     <item android:title="@string/information">
