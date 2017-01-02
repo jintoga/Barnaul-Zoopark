@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.model.Photo;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
@@ -28,6 +27,7 @@ public class NewsFragment extends TempBaseFragment
     protected Toolbar toolbar;
     @Bind(R.id.recyclerViewNews)
     protected RecyclerView recyclerViewNews;
+    private NewsAdapter adapter;
 
     @Nullable
     @Override
@@ -48,12 +48,14 @@ public class NewsFragment extends TempBaseFragment
     private void init() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewNews.setLayoutManager(layoutManager);
-
+        recyclerViewNews.addItemDecoration(new NewsItemDecoration(
+            (int) getResources().getDimension(R.dimen.item_news_margin_bottom_decoration)));
+        adapter = new NewsAdapter();
+        recyclerViewNews.setAdapter(adapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
     }
-
 }
