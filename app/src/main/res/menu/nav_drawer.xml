@@ -6,7 +6,7 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/newsAndEvents"
+            android:id="@+id/news"
             android:checked="true"
             android:icon="@drawable/ic_newspaper"
             android:title="@string/news" />

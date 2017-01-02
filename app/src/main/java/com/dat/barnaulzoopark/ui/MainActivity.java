@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         setupNavDrawer();
         if (savedInstanceState == null) {
             addInitFragment(new NewsFragment());
-            currentMenuItemID = R.id.newsAndEvents;
+            currentMenuItemID = R.id.news;
         }
     }
 
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
-            case R.id.newsAndEvents:
+            case R.id.news:
                 getSupportFragmentManager().popBackStack(null,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 addInitFragment(new NewsFragment());
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
             drawerLayout.closeDrawer(Gravity.LEFT);
             return;
         }
-        if (currentMenuItemID == R.id.newsAndEvents) {
+        if (currentMenuItemID == R.id.news) {
             finish();
             return;
         }
@@ -158,14 +158,14 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().popBackStack(null,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 navigationView.getMenu().getItem(0).setChecked(true);
-                currentMenuItemID = R.id.newsAndEvents;
+                currentMenuItemID = R.id.news;
                 return;
             }
             getSupportFragmentManager().popBackStack(null,
                 FragmentManager.POP_BACK_STACK_INCLUSIVE);
             addInitFragment(new NewsFragment());
             navigationView.getMenu().getItem(0).setChecked(true);
-            currentMenuItemID = R.id.newsAndEvents;
+            currentMenuItemID = R.id.news;
             return;
         }
         super.onBackPressed();
