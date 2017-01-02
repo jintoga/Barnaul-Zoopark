@@ -102,4 +102,18 @@ public class AnimalsDetailFragment extends Fragment {
         }
         animalsImages.setAdapter(animalsImagesAdapter);
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        //hack: expand the header of Material ViewPager on tab selected
+        if (mScrollView != null) {
+            mScrollView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScrollView.smoothScrollTo(0, 0);
+                }
+            }, 100);
+        }
+    }
 }
