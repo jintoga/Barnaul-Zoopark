@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -110,6 +111,10 @@ public class AnimalsFragment extends TempBaseFragment
             appBarLayout.setNestedScrollingEnabled(false);
         }
 
+        CoordinatorLayout.LayoutParams layoutParams =
+            (CoordinatorLayout.LayoutParams) backgroundView.getLayoutParams();
+        layoutParams.topMargin = getStatusBarHeight();
+        backgroundView.setLayoutParams(layoutParams);
         searchView.setBackgroundView(backgroundView);
         searchView.setSearchViewFocusedListener(this);
         searchView.setSearchViewDrawerListener(this);
