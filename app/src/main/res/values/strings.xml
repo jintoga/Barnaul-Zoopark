@@ -1,34 +1,30 @@
 <resources>
-    <string name="app_name">Барнаульский зоопарк</string>
-
-    <!--navigation items-->
-    <string name="our_animals">Наши питомцы</string>
-    <string name="news">Новости и события</string>
-    <string name="photo_and_video">Фото и видео</string>
-    <string name="navigation">Навигация</string>
-    <string name="zoo_park_map">Карта зоопарка</string>
-    <string name="cage_location">Местоположение клетки</string>
-    <string name="information">Информация</string>
-    <string name="schedule">Расписание зоопарка</string>
-    <string name="price">Цена билетов</string>
-    <string name="about_zoopark">О зоопарке</string>
+    <string name="app_name">Barnaul Zoopark</string>
 
     <string name="nav_drawer_open">nav drawer open</string>
     <string name="nav_drawer_closed">nav drawer closed</string>
 
+    <!--navigation items-->
+    <string name="our_animals">Our animals</string>
+    <string name="news">News</string>
+    <string name="photo_and_video">Photos and videos</string>
+    <string name="navigation">Navigation</string>
+    <string name="zoo_park_map">Map</string>
+    <string name="cage_location">Cage\'s location</string>
+    <string name="information">Information</string>
+    <string name="schedule">Schedule</string>
+    <string name="price">Ticket price</string>
+    <string name="about_zoopark">About</string>
     <!--authorize-->
-    <string name="register_with_email">Регистрация с Email</string>
-    <string name="login_with">Вход через</string>
-    <string name="sign_up">Регистрация</string>
-    <string name="login">Вход</string>
-    <string name="create_acc">Создать</string>
-    <string name="sign_in">Войти</string>
-    <string name="forget_password"><u>Забыли пароль?</u></string>
-    <string name="enter_email">Введите E-mail</string>
-    <string name="enter_password">Введите пароль</string>
-    <string name="welcome_back">С возвращением!</string>
-    <string name="create_to_support">Создать новый аккаунт, чтобы с нами помочь нашим любимым животным и также получить новости о зоопарке и прикольные подарки!</string>
-    <string name="skip">Пропустить</string>
+    <string name="login_with">Login with</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="forget_password"><u>Forgot password?</u></string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="create_to_support">Create a new account to help us with our beloved animals, and also to receive news about the zoo and cool gifts!</string>
+    <string name="skip">Skip</string>
 
     <string-array name="suggestions">
         <item>Apple</item>
