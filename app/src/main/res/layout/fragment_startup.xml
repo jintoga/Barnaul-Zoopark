@@ -61,7 +61,7 @@
         android:layout_weight="0.35" />
 
     <LinearLayout
-        android:id="@+id/signup"
+        android:id="@+id/goToSignup"
         android:layout_width="@dimen/default_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -87,7 +87,7 @@
         android:layout_height="16dp" />
 
     <LinearLayout
-        android:id="@+id/login"
+        android:id="@+id/goToLogin"
         android:layout_width="@dimen/default_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

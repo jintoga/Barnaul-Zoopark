@@ -8,11 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.dat.barnaulzoopark.R;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.dat.barnaulzoopark.R;
 
 /**
  * Created by DAT on 20-Mar-16.
@@ -25,7 +23,7 @@ public class StartupFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_startup, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -37,8 +35,8 @@ public class StartupFragment extends Fragment {
         try {
             callback = (ICallback) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(
+                context.toString() + " must implement OnHeadlineSelectedListener");
         }
     }
 
@@ -47,12 +45,12 @@ public class StartupFragment extends Fragment {
         callback.selected(StartupActivity.SKIP_POS);
     }
 
-    @OnClick(R.id.signup)
+    @OnClick(R.id.goToSignup)
     protected void signUp() {
         callback.selected(StartupActivity.SIGNUP_POS);
     }
 
-    @OnClick(R.id.login)
+    @OnClick(R.id.goToLogin)
     protected void login() {
         callback.selected(StartupActivity.LOGIN_POS);
     }

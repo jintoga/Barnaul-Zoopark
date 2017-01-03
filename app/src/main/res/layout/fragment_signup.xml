@@ -75,13 +75,14 @@
 
 
     <LinearLayout
-        android:id="@+id/signup"
+        android:id="@+id/signUp"
         android:layout_width="@dimen/default_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/bg_rounded_corner_signup_btn"
+        android:clickable="true"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
