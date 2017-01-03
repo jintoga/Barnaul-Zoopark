@@ -11,7 +11,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.BaseActivity;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.startup.login.LoginFragment;
-import com.dat.barnaulzoopark.ui.startup.signup.SignupFragment;
+import com.dat.barnaulzoopark.ui.startup.signup.SignUpFragment;
 
 public class StartupActivity extends BaseActivity implements ICallback {
 
@@ -56,7 +56,7 @@ public class StartupActivity extends BaseActivity implements ICallback {
                 fragment = new LoginFragment();
                 break;
             case SIGNUP_POS:
-                fragment = new SignupFragment();
+                fragment = new SignUpFragment();
                 break;
             default:
                 break;

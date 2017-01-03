@@ -23,11 +23,11 @@ import com.google.firebase.auth.FirebaseAuth;
 /**
  * Created by DAT on 20-Mar-16.
  */
-public class SignupFragment
-    extends BaseMvpFragment<SignupContract.View, SignupContract.UserActionListener>
-    implements SignupContract.View {
+public class SignUpFragment
+    extends BaseMvpFragment<SignUpContract.View, SignUpContract.UserActionListener>
+    implements SignUpContract.View {
 
-    private static final String TAG = SignupFragment.class.getName();
+    private static final String TAG = SignUpFragment.class.getName();
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.email)
@@ -36,11 +36,10 @@ public class SignupFragment
     protected PasswordView password;
     private View view;
 
-    private FirebaseAuth auth;
-
     @Override
-    public SignupContract.UserActionListener createPresenter() {
-        return new SignupPresenter();
+    public SignUpContract.UserActionListener createPresenter() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        return new SignUpPresenter(getContext(), auth);
     }
 
     @Nullable
@@ -48,7 +47,6 @@ public class SignupFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_signup, container, false);
-        auth = FirebaseAuth.getInstance();
         ButterKnife.bind(this, view);
         initToolbar();
         email.requestFocus();
@@ -64,6 +62,16 @@ public class SignupFragment
     @Override
     public void showSignupSuccess() {
         Log.d(TAG, "showSignupSuccess");
+    }
+
+    @Override
+    public void showSigningUpProgress() {
+        Log.d(TAG, "showSigningUpProgress");
+    }
+
+    @Override
+    public void moveForward() {
+        Log.d(TAG, "moveForward");
     }
 
     private void initToolbar() {
@@ -82,6 +90,6 @@ public class SignupFragment
     @OnClick(R.id.signUp)
     protected void signUpClicked() {
         Log.d(TAG, "signUpClicked");
-        getPresenter().signUpClicked();
+        getPresenter().signUpClicked(email.getText().toString(), password.getPassword());
     }
 }
