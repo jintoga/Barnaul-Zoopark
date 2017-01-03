@@ -1,11 +1,10 @@
 package com.dat.barnaulzoopark.ui.startup.signup;
 
-import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,13 +16,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.startup.ICallback;
+import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.widget.PasswordView;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by DAT on 20-Mar-16.
  */
-public class SignupFragment extends Fragment {
+public class SignupFragment
+    extends BaseMvpFragment<SignupContract.View, SignupContract.UserActionListener>
+    implements SignupContract.View {
 
     private static final String TAG = SignupFragment.class.getName();
     @Bind(R.id.toolbar)
@@ -33,18 +35,35 @@ public class SignupFragment extends Fragment {
     @Bind(R.id.password)
     protected PasswordView password;
     private View view;
-    private ICallback callback;
+
+    private FirebaseAuth auth;
+
+    @Override
+    public SignupContract.UserActionListener createPresenter() {
+        return new SignupPresenter();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_signup, container, false);
+        auth = FirebaseAuth.getInstance();
         ButterKnife.bind(this, view);
         initToolbar();
         email.requestFocus();
         email.setTypeface(Typeface.MONOSPACE);
         return view;
+    }
+
+    @Override
+    public void showSignupError(@NonNull String error) {
+        Log.d(TAG, "showSignupError: " + error);
+    }
+
+    @Override
+    public void showSignupSuccess() {
+        Log.d(TAG, "showSignupSuccess");
     }
 
     private void initToolbar() {
@@ -60,19 +79,9 @@ public class SignupFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            callback = (ICallback) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(
-                context.toString() + " must implement OnHeadlineSelectedListener");
-        }
-    }
-
     @OnClick(R.id.signUp)
     protected void signUpClicked() {
         Log.d(TAG, "signUpClicked");
+        getPresenter().signUpClicked();
     }
 }
