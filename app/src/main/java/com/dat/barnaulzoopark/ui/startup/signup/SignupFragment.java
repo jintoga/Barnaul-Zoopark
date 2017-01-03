@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.startup.signup;
 
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,8 +16,11 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
+import com.dat.barnaulzoopark.ui.startup.ICallback;
 import com.dat.barnaulzoopark.widget.PasswordView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,11 +39,14 @@ public class SignUpFragment
     @Bind(R.id.password)
     protected PasswordView password;
     private View view;
+    private ICallback callback;
+
+    private MaterialDialog progressDialog;
 
     @Override
     public SignUpContract.UserActionListener createPresenter() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        return new SignUpPresenter(getContext(), auth);
+        return new SignUpPresenter(auth);
     }
 
     @Nullable
@@ -55,23 +62,38 @@ public class SignUpFragment
     }
 
     @Override
-    public void showSignupError(@NonNull String error) {
-        Log.d(TAG, "showSignupError: " + error);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callback = (ICallback) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(
+                context.toString() + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
-    public void showSignupSuccess() {
-        Log.d(TAG, "showSignupSuccess");
+    public void showSignUpError(@NonNull String error) {
+        Log.d(TAG, "showSignUpError: " + error);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        BZDialogBuilder.createSimpleErrorDialog(getContext(), error);
+    }
+
+    @Override
+    public void showSignUpSuccess() {
+        Log.d(TAG, "showSignUpSuccess");
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        callback.onSignUpSuccess();
     }
 
     @Override
     public void showSigningUpProgress() {
         Log.d(TAG, "showSigningUpProgress");
-    }
-
-    @Override
-    public void moveForward() {
-        Log.d(TAG, "moveForward");
+        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext());
     }
 
     private void initToolbar() {

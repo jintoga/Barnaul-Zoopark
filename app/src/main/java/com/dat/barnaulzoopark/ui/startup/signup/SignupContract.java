@@ -10,13 +10,11 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 public interface SignUpContract {
     interface View extends MvpView {
-        void showSignupError(@NonNull String error);
+        void showSignUpError(@NonNull String error);
 
-        void showSignupSuccess();
+        void showSignUpSuccess();
 
         void showSigningUpProgress();
-
-        void moveForward();
     }
 
     interface UserActionListener extends MvpPresenter<View> {

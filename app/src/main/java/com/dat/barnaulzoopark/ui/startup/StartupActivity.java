@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.BaseActivity;
 import com.dat.barnaulzoopark.ui.MainActivity;
@@ -43,6 +42,16 @@ public class StartupActivity extends BaseActivity implements ICallback {
     @Override
     public void back() {
         onBackPressed();
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+        goToMain();
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        goToMain();
     }
 
     private void changeFragment(int position) {
