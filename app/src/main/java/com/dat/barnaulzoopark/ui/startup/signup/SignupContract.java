@@ -18,6 +18,6 @@ public interface SignUpContract {
     }
 
     interface UserActionListener extends MvpPresenter<View> {
-        void signUpClicked(String email, String password);
+        void signUpClicked(String userName, String email, String password);
     }
 }

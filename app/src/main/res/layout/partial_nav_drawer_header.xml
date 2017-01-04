@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:background="@drawable/img_drawer_header_bg_banner"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <ImageView
+        android:id="@+id/logButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
         android:layout_margin="16dp"
-        android:background="@null"
-        android:src="@drawable/ic_menu_down"
-        android:tint="@color/colorText" />
+        android:src="@drawable/ic_login"
+        android:tint="@color/white" />
 
     <ImageView
         android:layout_width="130dp"
@@ -40,19 +40,28 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="left|bottom"
         android:layout_marginLeft="16dp"
-        android:gravity="center"
+        android:layout_marginTop="6dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textColor="@color/white"
+            tools:text="Nguyen Quoc Dat" />
+
+        <TextView
+            android:id="@+id/userEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Nguyen Quoc Dat"
-            android:textColor="@color/colorText"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-light"
+            android:lines="1"
+            android:textColor="@color/white"
+            tools:text="jintoga123@yahoo.com" />
     </LinearLayout>
 </FrameLayout>

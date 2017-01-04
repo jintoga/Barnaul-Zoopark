@@ -46,11 +46,29 @@
         tools:layout_width="match_parent">
 
         <EditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/custom_selector_edittext"
+            android:hint="@string/enter_name"
+            android:inputType="textPersonName"
+            android:lines="1"
+            android:padding="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/text_size_18"
+            android:theme="@style/EditText"
+            android:typeface="monospace" />
+
+        <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/custom_selector_edittext"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"

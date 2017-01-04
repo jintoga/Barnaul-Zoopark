@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.startup;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,14 @@ public class StartupActivity extends BaseActivity implements ICallback {
     public static final int SKIP_POS = 0;
     public static final int LOGIN_POS = 1;
     public static final int SIGNUP_POS = 2;
+
+    public static void start(Context context) {
+        if (context instanceof StartupActivity) {
+            return;
+        }
+        Intent intent = new Intent(context, StartupActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

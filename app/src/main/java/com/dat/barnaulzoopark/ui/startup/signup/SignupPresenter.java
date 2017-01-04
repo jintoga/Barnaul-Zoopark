@@ -28,7 +28,7 @@ class SignUpPresenter extends MvpBasePresenter<SignUpContract.View>
     }
 
     @Override
-    public void signUpClicked(final String email, final String password) {
+    public void signUpClicked(final String userName, final String email, final String password) {
         Log.d(TAG, "signUpClicked");
         if (!"".equals(email) && !"".equals(password)) {
             if (getView() != null) {
@@ -38,8 +38,10 @@ class SignUpPresenter extends MvpBasePresenter<SignUpContract.View>
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        addUserInfoToDatabase(authResult.getUser().getUid(), email);
-                        getView().showSignUpSuccess();
+                        addUserInfoToDatabase(authResult.getUser().getUid(), userName, email);
+                        if (getView() != null) {
+                            getView().showSignUpSuccess();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -55,10 +57,12 @@ class SignUpPresenter extends MvpBasePresenter<SignUpContract.View>
         }
     }
 
-    private void addUserInfoToDatabase(@NonNull String userUID, @NonNull String email) {
-        DatabaseReference databaseReference = database.getReference().child("Users");
+    private void addUserInfoToDatabase(@NonNull String userUID, @NonNull String name,
+        @NonNull String email) {
+        DatabaseReference databaseReference = database.getReference().child("users");
         DatabaseReference currentUserReference = databaseReference.child(userUID);
-        currentUserReference.child("name").setValue(email);
+        currentUserReference.child("name").setValue(name);
+        currentUserReference.child("email").setValue(email);
         currentUserReference.child("image").setValue("defaultIMG_URL");
     }
 }

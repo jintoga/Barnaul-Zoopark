@@ -35,6 +35,8 @@ public class SignUpFragment
     private static final String TAG = SignUpFragment.class.getName();
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
+    @Bind(R.id.userName)
+    protected EditText userName;
     @Bind(R.id.email)
     protected EditText email;
     @Bind(R.id.password)
@@ -58,7 +60,8 @@ public class SignUpFragment
         view = inflater.inflate(R.layout.fragment_signup, container, false);
         ButterKnife.bind(this, view);
         initToolbar();
-        email.requestFocus();
+        userName.requestFocus();
+        userName.setTypeface(Typeface.MONOSPACE);
         email.setTypeface(Typeface.MONOSPACE);
         return view;
     }
@@ -114,6 +117,7 @@ public class SignUpFragment
     @OnClick(R.id.signUp)
     protected void signUpClicked() {
         Log.d(TAG, "signUpClicked");
-        getPresenter().signUpClicked(email.getText().toString(), password.getPassword());
+        getPresenter().signUpClicked(userName.getText().toString(), email.getText().toString(),
+            password.getPassword());
     }
 }

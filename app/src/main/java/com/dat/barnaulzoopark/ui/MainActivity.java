@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView.OnNavigationItemSelectedList
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,21 +17,34 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
+import com.dat.barnaulzoopark.ui.startup.StartupActivity;
 import com.dat.barnaulzoopark.ui.zoomap.ZooMapFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
     implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
+    private static final String TAG = MainActivity.class.getName();
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
     @Bind(R.id.drawer)
     protected DrawerLayout drawerLayout;
+    protected TextView userName;
+    protected TextView userEmail;
+    protected ImageView logButton;
     private int currentMenuItemID = -1;
     DrawerListener drawerListener;
 
@@ -74,6 +88,59 @@ public class MainActivity extends AppCompatActivity
     private void setupNavDrawer() {
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(this);
+        //Views in Drawer's header
+        userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
+        userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
+        logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
+
+        authenticate();
+    }
+
+    private void authenticate() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            DatabaseReference currentUser = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(auth.getCurrentUser().getUid())
+                .child("name");
+            currentUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    userName.setText((String) dataSnapshot.getValue());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            userEmail.setText(auth.getCurrentUser().getEmail());
+            logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
+            logButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseAuth.getInstance().signOut();
+                    goStartUp();
+                }
+            });
+        } else {
+            userName.setText("Guest");
+            userEmail.setText("");
+            logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_login));
+            logButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Go to startup screen");
+                    goStartUp();
+                }
+            });
+        }
+    }
+
+    private void goStartUp() {
+        finish();
+        StartupActivity.start(MainActivity.this);
     }
 
     public void setupNavDrawerWithToolbar(Toolbar toolbar, String title) {
@@ -96,7 +163,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         //Closing drawer on item click
         drawerLayout.closeDrawers();
         if (currentMenuItemID == menuItem.getItemId()) {

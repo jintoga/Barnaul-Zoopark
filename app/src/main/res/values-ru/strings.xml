@@ -18,6 +18,7 @@
     <string name="sign_up">Регистрация</string>
     <string name="login">Войти</string>
     <string name="forget_password"><u>Забыли пароль?</u></string>
+    <string name="enter_name">Введите ваше имя</string>
     <string name="enter_email">Введите E-mail</string>
     <string name="enter_password">Введите пароль</string>
     <string name="welcome_back">С возвращением!</string>
