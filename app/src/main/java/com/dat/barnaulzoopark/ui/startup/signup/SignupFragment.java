@@ -23,6 +23,7 @@ import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.startup.ICallback;
 import com.dat.barnaulzoopark.widget.PasswordView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by DAT on 20-Mar-16.
@@ -46,7 +47,8 @@ public class SignUpFragment
     @Override
     public SignUpContract.UserActionListener createPresenter() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        return new SignUpPresenter(auth);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        return new SignUpPresenter(auth, database);
     }
 
     @Nullable

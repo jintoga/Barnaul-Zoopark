@@ -29,12 +29,9 @@ public class BZDialogBuilder {
     }
 
     public static MaterialDialog createSimpleProgressDialog(@NonNull Context context) {
-        return new MaterialDialog.Builder(context).title("Loading")
-            .backgroundColorRes(R.color.white)
-            .positiveColorRes(R.color.colorAccent)
-            .titleColorRes(R.color.black)
+        return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
             .contentColorRes(R.color.black)
-            .content("Please wait")
+            .content("Loading...")
             .progress(true, 0)
             .show();
     }

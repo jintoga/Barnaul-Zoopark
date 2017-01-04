@@ -2,10 +2,12 @@ package com.dat.barnaulzoopark.ui.startup.signup;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 /**
@@ -18,34 +20,45 @@ class SignUpPresenter extends MvpBasePresenter<SignUpContract.View>
     private static final String TAG = SignUpPresenter.class.getName();
 
     private FirebaseAuth auth;
+    private FirebaseDatabase database;
 
-    SignUpPresenter(FirebaseAuth auth) {
+    SignUpPresenter(FirebaseAuth auth, FirebaseDatabase database) {
         this.auth = auth;
+        this.database = database;
     }
 
     @Override
-    public void signUpClicked(String email, String password) {
+    public void signUpClicked(final String email, final String password) {
         Log.d(TAG, "signUpClicked");
         if (!"".equals(email) && !"".equals(password)) {
-            if (isViewAttached() && getView() != null) {
+            if (getView() != null) {
                 getView().showSigningUpProgress();
             }
             auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "task");
-                        if (!task.isSuccessful()) {
-                            getView().showSignUpError(task.getException().getLocalizedMessage());
-                        } else {
-                            getView().showSignUpSuccess();
-                        }
+                    public void onSuccess(AuthResult authResult) {
+                        addUserInfoToDatabase(authResult.getUser().getUid(), email);
+                        getView().showSignUpSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        getView().showSignUpError(e.getLocalizedMessage());
                     }
                 });
         } else {
-            if (isViewAttached() && getView() != null) {
+            if (getView() != null) {
                 getView().showSignUpError("Email or password is empty.");
             }
         }
+    }
+
+    private void addUserInfoToDatabase(@NonNull String userUID, @NonNull String email) {
+        DatabaseReference databaseReference = database.getReference().child("Users");
+        DatabaseReference currentUserReference = databaseReference.child(userUID);
+        currentUserReference.child("name").setValue(email);
+        currentUserReference.child("image").setValue("defaultIMG_URL");
     }
 }
