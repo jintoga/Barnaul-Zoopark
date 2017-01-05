@@ -24,4 +24,8 @@
     <string name="welcome_back">С возвращением!</string>
     <string name="create_to_support">Создать новый аккаунт, чтобы с нами помочь нашим любимым животным и также получить новости о зоопарке и прикольные подарки!</string>
     <string name="skip">Пропустить</string>
+    <string name="verify_logout">Вы уверены, что хотите выйти?</string>
+    <string name="logout">Выйти</string>
+    <string name="cancel">Отмена</string>
+    <string name="welcome_to_our_zoo">Добро пожаловать в наш зоопарк!</string>
 </resources>

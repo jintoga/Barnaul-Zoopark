@@ -26,6 +26,10 @@
     <string name="welcome_back">Welcome back!</string>
     <string name="create_to_support">Create a new account to help us with our beloved animals, and also to receive news about the zoo and cool gifts!</string>
     <string name="skip">Skip</string>
+    <string name="verify_logout">Are you sure want to log out?</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="welcome_to_our_zoo">Welcome to our zoo!</string>
 
     <string-array name="suggestions">
         <item>Apple</item>

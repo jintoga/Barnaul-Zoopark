@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,12 +22,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
 import com.dat.barnaulzoopark.ui.zoomap.ZooMapFragment;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     protected NavigationView navigationView;
     @Bind(R.id.drawer)
     protected DrawerLayout drawerLayout;
+    protected SimpleDraweeView userPicture;
     protected TextView userName;
     protected TextView userEmail;
     protected ImageView logButton;
@@ -89,6 +95,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(this);
         //Views in Drawer's header
+        userPicture =
+            (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPicture);
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
@@ -107,6 +115,7 @@ public class MainActivity extends AppCompatActivity
             currentUser.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    userName.setVisibility(View.VISIBLE);
                     userName.setText((String) dataSnapshot.getValue());
                 }
 
@@ -120,18 +129,28 @@ public class MainActivity extends AppCompatActivity
             logButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FirebaseAuth.getInstance().signOut();
-                    goStartUp();
+                    BZDialogBuilder.createVerifyLogoutDialog(MainActivity.this)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog,
+                                @NonNull DialogAction which) {
+                                FirebaseAuth.getInstance().signOut();
+                                goStartUp();
+                            }
+                        })
+                        .show();
                 }
             });
         } else {
-            userName.setText("Guest");
-            userEmail.setText("");
+            Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
+            userPicture.setImageURI(uri);
+            userName.setVisibility(View.GONE);
+            userEmail.setText(getString(R.string.welcome_to_our_zoo));
             logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_login));
             logButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Go to startup screen");
                     goStartUp();
                 }
             });
@@ -185,13 +204,13 @@ public class MainActivity extends AppCompatActivity
                 fragment = new NewsFragment();
                 break;
             case R.id.zooMap:
-                Log.d("TAG", "ZOO MAP");
+                Log.d(TAG, "ZOO MAP");
                 fragment = new ZooMapFragment();
                 break;
         }
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Log.d("entryCount", fragmentManager.getBackStackEntryCount() + "");
+            Log.d(TAG, fragmentManager.getBackStackEntryCount() + "");
             if (fragmentManager.getBackStackEntryCount() > 1) {
                 //CLEAR all back stack entries to save memory
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -219,7 +238,7 @@ public class MainActivity extends AppCompatActivity
         //Back to "HOME" if BackPressed from other fragments than home
         //if the previous backStack is the FIRST Fragment(HOME), then just popBack to keep its state
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Log.d("entryCount", fragmentManager.getBackStackEntryCount() + "");
+        Log.d(TAG, fragmentManager.getBackStackEntryCount() + "");
         if (fragmentManager.getBackStackEntryCount() > 0) {
             if (fragmentManager.getBackStackEntryCount() == 1) {
                 getSupportFragmentManager().popBackStack(null,

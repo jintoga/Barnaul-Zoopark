@@ -35,4 +35,19 @@ public class BZDialogBuilder {
             .progress(true, 0)
             .show();
     }
+
+    public static MaterialDialog.Builder createVerifyLogoutDialog(@NonNull Context context) {
+        return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
+            .positiveColorRes(R.color.colorAccent)
+            .contentColorRes(R.color.black)
+            .content(context.getString(R.string.verify_logout))
+            .positiveText(context.getString(R.string.logout))
+            .negativeText(context.getString(R.string.cancel))
+            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                }
+            });
+    }
 }

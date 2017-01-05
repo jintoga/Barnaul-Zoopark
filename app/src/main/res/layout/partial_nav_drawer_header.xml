@@ -27,13 +27,14 @@
         android:src="@drawable/img_logo" />
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/imageViewProfile"
+        android:id="@+id/userPicture"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="left|center_vertical"
+        android:layout_marginBottom="4dp"
         android:layout_marginLeft="16dp"
         fresco:actualImageScaleType="centerInside"
-        fresco:overlayImage="@color/gray"
+        fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
         fresco:roundAsCircle="true"
         fresco:roundingBorderColor="@color/gray"
         fresco:roundingBorderWidth="2dp" />
@@ -43,7 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left|bottom"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginRight="80dp"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
@@ -60,8 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-light"
-            android:lines="1"
+            android:maxLines="2"
             android:textColor="@color/white"
-            tools:text="jintoga123@yahoo.com" />
+            tools:text="jintjintoga123jintoga123jintoga123jintoga123oga123@yahoo.com" />
     </LinearLayout>
 </FrameLayout>
