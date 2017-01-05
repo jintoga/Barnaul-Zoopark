@@ -11,17 +11,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.startup.StartupActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.startup.StartupActivity" />
         <activity android:name=".ui.photoalbumsdetail.PhotoAlbumsDetailActivity" />
         <activity android:name=".ui.animalsdetail.AnimalsDetailActivity" />
-        <activity android:name=".ui.photosdetail.PhotosDetailActivity"></activity>
+        <activity android:name=".ui.photosdetail.PhotosDetailActivity" />
     </application>
 
 </manifest>

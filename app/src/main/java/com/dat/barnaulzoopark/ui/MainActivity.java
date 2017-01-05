@@ -1,7 +1,11 @@
 package com.dat.barnaulzoopark.ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -43,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity
     implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
+    private static final String KEY_IS_GUEST = "IS_GUEST";
     private static final String TAG = MainActivity.class.getName();
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
@@ -80,15 +85,37 @@ public class MainActivity extends AppCompatActivity
         //Ignore
     }
 
+    public static void start(@NonNull Context context) {
+        if (context instanceof MainActivity) {
+            return;
+        }
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(KEY_IS_GUEST, true);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        authenticate();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupNavDrawer();
         if (savedInstanceState == null) {
             addInitFragment(new AnimalsFragment());
             currentMenuItemID = R.id.ourAnimals;
+        }
+    }
+
+    private void authenticate() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isLoggedIn = sharedPreferences.getBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+        if (isLoggedIn) {
+            return;
+        }
+        boolean isGuest = getIntent().getBooleanExtra(KEY_IS_GUEST, false);
+        if (!isGuest) {
+            goToStartUp();
         }
     }
 
@@ -102,10 +129,10 @@ public class MainActivity extends AppCompatActivity
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
 
-        authenticate();
+        setUserData();
     }
 
-    private void authenticate() {
+    private void setUserData() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             DatabaseReference currentUser = FirebaseDatabase.getInstance()
@@ -136,7 +163,12 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(@NonNull MaterialDialog dialog,
                                 @NonNull DialogAction which) {
                                 FirebaseAuth.getInstance().signOut();
-                                goStartUp();
+                                SharedPreferences.Editor editor =
+                                    PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                                        .edit();
+                                editor.putBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+                                editor.apply();
+                                goToStartUp();
                             }
                         })
                         .show();
@@ -152,15 +184,15 @@ public class MainActivity extends AppCompatActivity
             logButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goStartUp();
+                    goToStartUp();
                 }
             });
         }
     }
 
-    private void goStartUp() {
+    private void goToStartUp() {
         finish();
-        StartupActivity.start(MainActivity.this);
+        StartupActivity.start(this);
     }
 
     public void setupNavDrawerWithToolbar(Toolbar toolbar, String title) {

@@ -41,7 +41,7 @@ public class StartupFragment extends Fragment {
     }
 
     @OnClick(R.id.skip)
-    protected void skip() {
+    protected void skipClicked() {
         callback.selected(StartupActivity.SKIP_POS);
     }
 
