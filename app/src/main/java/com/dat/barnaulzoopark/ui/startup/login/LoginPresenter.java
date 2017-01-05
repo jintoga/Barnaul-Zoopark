@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui.startup.login;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -56,24 +57,26 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View>
     }
 
     private void checkUserExist(@NonNull final String userUID) {
-        database.getReference().child("users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(userUID)) {
-                    if (getView() != null) {
-                        getView().showLoginSuccess();
-                    }
-                } else {
-                    if (getView() != null) {
-                        getView().showLoginError("This user doesn't exist.");
+        database.getReference()
+            .child(BZFireBaseApi.users)
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild(userUID)) {
+                        if (getView() != null) {
+                            getView().showLoginSuccess();
+                        }
+                    } else {
+                        if (getView() != null) {
+                            getView().showLoginError("This user doesn't exist.");
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
     }
 }

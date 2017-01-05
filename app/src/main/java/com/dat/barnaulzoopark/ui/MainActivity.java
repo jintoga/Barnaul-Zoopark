@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         if (auth.getCurrentUser() != null) {
             DatabaseReference currentUser = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("users")
+                .child(BZFireBaseApi.users)
                 .child(auth.getCurrentUser().getUid())
                 .child("name");
             currentUser.addValueEventListener(new ValueEventListener() {
