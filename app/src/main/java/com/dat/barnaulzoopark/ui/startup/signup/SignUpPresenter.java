@@ -64,6 +64,5 @@ class SignUpPresenter extends MvpBasePresenter<SignUpContract.View>
         DatabaseReference currentUserReference = databaseReference.child(userUID);
         currentUserReference.child("name").setValue(name);
         currentUserReference.child("email").setValue(email);
-        currentUserReference.child("image").setValue("defaultIMG_URL");
     }
 }

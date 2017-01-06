@@ -24,19 +24,31 @@
         android:scaleType="fitXY"
         android:src="@drawable/img_logo" />
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/userPicture"
+    <FrameLayout
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="left|center_vertical"
         android:layout_marginBottom="6dp"
-        android:layout_marginLeft="16dp"
-        android:elevation="2dp"
-        fresco:actualImageScaleType="centerInside"
-        fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
-        fresco:roundAsCircle="true"
-        fresco:roundingBorderColor="@color/gray"
-        fresco:roundingBorderWidth="2dp" />
+        android:layout_marginLeft="16dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/userPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            fresco:actualImageScaleType="centerInside"
+            fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
+            fresco:roundAsCircle="true"
+            fresco:roundingBorderColor="@color/gray"
+            fresco:roundingBorderWidth="1dp" />
+
+        <ProgressBar
+            android:id="@+id/loadingPhoto"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -50,7 +62,7 @@
 
         <TextView
             android:id="@+id/userName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
@@ -59,7 +71,7 @@
 
         <TextView
             android:id="@+id/userEmail"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="middle"
             android:fontFamily="sans-serif-light"

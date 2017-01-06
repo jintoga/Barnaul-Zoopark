@@ -31,6 +31,8 @@
     <string name="cancel">Cancel</string>
     <string name="dear_visitor">Dear visitor</string>
     <string name="welcome_to_our_zoo">Welcome to the zoo!</string>
+    <string name="edit_name">Edit username:</string>
+    <string name="edit_name_hint">Enter name</string>
 
     <string-array name="suggestions">
         <item>Apple</item>
