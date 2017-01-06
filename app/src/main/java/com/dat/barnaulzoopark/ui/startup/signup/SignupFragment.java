@@ -46,6 +46,7 @@ public class SignUpFragment
 
     private MaterialDialog progressDialog;
 
+    @NonNull
     @Override
     public SignUpContract.UserActionListener createPresenter() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
