@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-
 import com.dat.barnaulzoopark.R;
 
 /**
@@ -48,11 +47,11 @@ public class PasswordView extends FrameLayout {
         if (!password.getText().toString().isEmpty()) {
             int cursorPos = password.getSelectionStart();
             if (password.getInputType() == (InputType.TYPE_CLASS_TEXT
-                    | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
                 password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
             } else {
                 password.setInputType(
-                        InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             }
             password.setTypeface(Typeface.MONOSPACE);
             password.setSelection(cursorPos);
@@ -71,7 +70,7 @@ public class PasswordView extends FrameLayout {
                 public void run() {
                     //turn password back to * mask after 250ms
                     password.setInputType(
-                            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     password.setTypeface(Typeface.MONOSPACE);
                     if (cursorPos < password.getText().length()) {
                         password.setSelection(cursorPos);
@@ -82,5 +81,9 @@ public class PasswordView extends FrameLayout {
                 }
             }, 250);
         }
+    }
+
+    public String getPassword() {
+        return password.getText().toString();
     }
 }

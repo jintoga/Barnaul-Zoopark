@@ -1,23 +1,37 @@
 package com.dat.barnaulzoopark.ui.startup;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.BaseActivity;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.startup.login.LoginFragment;
-import com.dat.barnaulzoopark.ui.startup.signup.SignupFragment;
+import com.dat.barnaulzoopark.ui.startup.signup.SignUpFragment;
 
-public class StartupActivity extends BaseActivity implements ICallback {
+public class StartupActivity extends AppCompatActivity implements ICallback {
 
     public static final int SKIP_POS = 0;
     public static final int LOGIN_POS = 1;
     public static final int SIGNUP_POS = 2;
+
+    public static final String KEY_IS_LOGGED_IN = "IS_LOGGED_IN";
+    private static final String TAG = StartupActivity.class.getName();
+
+    public static void start(Context context) {
+        if (context instanceof StartupActivity) {
+            return;
+        }
+        Intent intent = new Intent(context, StartupActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +51,34 @@ public class StartupActivity extends BaseActivity implements ICallback {
 
     @Override
     public void selected(int position) {
+        Log.d(TAG, "selected " + position);
         changeFragment(position);
     }
 
     @Override
     public void back() {
         onBackPressed();
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+        Log.d(TAG, "onSignUpSuccess");
+        saveLoggedInStatus();
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        Log.d(TAG, "onLoginSuccess");
+        saveLoggedInStatus();
+    }
+
+    private void saveLoggedInStatus() {
+        Log.d(TAG, "saveLoggedInStatus");
+        SharedPreferences.Editor editor =
+            PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putBoolean(KEY_IS_LOGGED_IN, true);
+        editor.apply();
+        goToMain();
     }
 
     private void changeFragment(int position) {
@@ -56,7 +92,7 @@ public class StartupActivity extends BaseActivity implements ICallback {
                 fragment = new LoginFragment();
                 break;
             case SIGNUP_POS:
-                fragment = new SignupFragment();
+                fragment = new SignUpFragment();
                 break;
             default:
                 break;
@@ -69,9 +105,8 @@ public class StartupActivity extends BaseActivity implements ICallback {
     }
 
     private void goToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
         finish();
+        MainActivity.start(this);
     }
 
     @Override

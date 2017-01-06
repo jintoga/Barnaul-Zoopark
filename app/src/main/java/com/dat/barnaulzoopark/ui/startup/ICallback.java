@@ -7,4 +7,8 @@ public interface ICallback {
     void selected(int position);
 
     void back();
+
+    void onSignUpSuccess();
+
+    void onLoginSuccess();
 }

@@ -46,11 +46,29 @@
         tools:layout_width="match_parent">
 
         <EditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/custom_selector_edittext"
+            android:hint="@string/enter_name"
+            android:inputType="textPersonName"
+            android:lines="1"
+            android:padding="12dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/text_size_18"
+            android:theme="@style/EditText"
+            android:typeface="monospace" />
+
+        <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/custom_selector_edittext"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
@@ -75,13 +93,14 @@
 
 
     <LinearLayout
-        android:id="@+id/signup"
+        android:id="@+id/signUp"
         android:layout_width="@dimen/default_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/bg_rounded_corner_signup_btn"
+        android:clickable="true"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
@@ -91,7 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/create_acc"
+            android:text="@string/sign_up"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_24" />
     </LinearLayout>
