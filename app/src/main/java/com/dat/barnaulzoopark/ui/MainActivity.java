@@ -43,10 +43,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MainActivity extends AppCompatActivity
     implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
+    private static final int GALLERY_REQUEST = 1;
     private static final String KEY_IS_GUEST = "IS_GUEST";
     private static final String TAG = MainActivity.class.getName();
     @Bind(R.id.navigation_view)
@@ -125,11 +128,25 @@ public class MainActivity extends AppCompatActivity
         //Views in Drawer's header
         userPicture =
             (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPicture);
+        userPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "browsing image");
+                imageBrowse();
+            }
+        });
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
 
         setUserData();
+    }
+
+    private void imageBrowse() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/+");
+        startActivityForResult(intent, GALLERY_REQUEST);
     }
 
     private void setUserData() {
@@ -151,6 +168,7 @@ public class MainActivity extends AppCompatActivity
 
                 }
             });
+            userPicture.setImageURI(auth.getCurrentUser().getPhotoUrl());
             userEmail.setText(auth.getCurrentUser().getEmail());
             logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
             logButton.setOnClickListener(new View.OnClickListener() {
@@ -313,5 +331,33 @@ public class MainActivity extends AppCompatActivity
 
     public void setDrawerListener(DrawerListener drawerListener) {
         this.drawerListener = drawerListener;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+            CropImage.activity(data.getData())
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                userPicture.setImageURI(resultUri);
+                updateUserProfilePicture(resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.e(TAG, error.getLocalizedMessage());
+            }
+        }
+    }
+
+    private void updateUserProfilePicture(Uri resultUri) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            //ToDo: update user profile with FireBase Database and Storage
+        }
     }
 }
