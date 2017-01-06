@@ -25,7 +25,7 @@
         android:src="@drawable/img_logo" />
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/userPicture"
+        android:id="@+id/userPhoto"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="left|center_vertical"
@@ -36,7 +36,7 @@
         fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
         fresco:roundAsCircle="true"
         fresco:roundingBorderColor="@color/gray"
-        fresco:roundingBorderWidth="2dp" />
+        fresco:roundingBorderWidth="1dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"

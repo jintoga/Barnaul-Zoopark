@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,6 @@ import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
@@ -39,11 +39,7 @@ import com.dat.barnaulzoopark.ui.zoomap.ZooMapFragment;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -59,7 +55,7 @@ public class MainActivity
     protected NavigationView navigationView;
     @Bind(R.id.drawer)
     protected DrawerLayout drawerLayout;
-    protected SimpleDraweeView userPicture;
+    protected SimpleDraweeView userPhoto;
     protected TextView userName;
     protected TextView userEmail;
     protected ImageView logButton;
@@ -101,6 +97,53 @@ public class MainActivity
     }
 
     @Override
+    public void bindUserData(String name, String email, @Nullable String photoUrl) {
+        if (photoUrl != null) {
+            Uri photoUri = Uri.parse(photoUrl);
+            userPhoto.setImageURI(photoUri);
+        }
+        userName.setText(name);
+        userEmail.setText(email);
+        logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
+        logButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BZDialogBuilder.createVerifyLogoutDialog(MainActivity.this)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog,
+                            @NonNull DialogAction which) {
+                            FirebaseAuth.getInstance().signOut();
+                            SharedPreferences.Editor editor =
+                                PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                                    .edit();
+                            editor.putBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+                            editor.apply();
+                            goToStartUp();
+                        }
+                    })
+                    .show();
+            }
+        });
+    }
+
+    @Override
+    public void bindUserDataAsGuest() {
+        Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+            .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
+        userPhoto.setImageURI(uri);
+        userName.setText(getString(R.string.dear_visitor));
+        userEmail.setText(getString(R.string.welcome_to_our_zoo));
+        logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_login));
+        logButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToStartUp();
+            }
+        });
+    }
+
+    @Override
     public void showUpdateProfileError(@NonNull String error) {
 
     }
@@ -117,11 +160,16 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupNavDrawer();
-        setUserData();
         if (savedInstanceState == null) {
             addInitFragment(new AnimalsFragment());
             currentMenuItemID = R.id.ourAnimals;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.loadUserData();
     }
 
     @NonNull
@@ -148,9 +196,9 @@ public class MainActivity
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(this);
         //Views in Drawer's header
-        userPicture =
-            (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPicture);
-        userPicture.setOnClickListener(new View.OnClickListener() {
+        userPhoto =
+            (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPhoto);
+        userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
@@ -159,64 +207,6 @@ public class MainActivity
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
-    }
-
-    private void setUserData() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            DatabaseReference currentUser = FirebaseDatabase.getInstance()
-                .getReference()
-                .child(BZFireBaseApi.users)
-                .child(auth.getCurrentUser().getUid())
-                .child("name");
-            currentUser.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    userName.setText((String) dataSnapshot.getValue());
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-            userPicture.setImageURI(auth.getCurrentUser().getPhotoUrl());
-            userEmail.setText(auth.getCurrentUser().getEmail());
-            logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
-            logButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BZDialogBuilder.createVerifyLogoutDialog(MainActivity.this)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog,
-                                @NonNull DialogAction which) {
-                                FirebaseAuth.getInstance().signOut();
-                                SharedPreferences.Editor editor =
-                                    PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
-                                        .edit();
-                                editor.putBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
-                                editor.apply();
-                                goToStartUp();
-                            }
-                        })
-                        .show();
-                }
-            });
-        } else {
-            Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
-                .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
-            userPicture.setImageURI(uri);
-            userName.setText(getString(R.string.dear_visitor));
-            userEmail.setText(getString(R.string.welcome_to_our_zoo));
-            logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_login));
-            logButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    goToStartUp();
-                }
-            });
-        }
     }
 
     private void goToStartUp() {
@@ -357,7 +347,7 @@ public class MainActivity
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                userPicture.setImageURI(resultUri);
+                userPhoto.setImageURI(resultUri);
                 presenter.updateProfilePicture(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
