@@ -29,4 +29,6 @@
     <string name="cancel">Отмена</string>
     <string name="dear_visitor">Уважаемый посетитель</string>
     <string name="welcome_to_our_zoo">Добро пожаловать!</string>
+    <string name="edit_name">Редактировать имя пользователя:</string>
+    <string name="edit_name_hint">Введите имя</string>
 </resources>

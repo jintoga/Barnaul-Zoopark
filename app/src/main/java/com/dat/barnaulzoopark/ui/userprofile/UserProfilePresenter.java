@@ -121,4 +121,20 @@ public class UserProfilePresenter extends MvpBasePresenter<UserProfileContract.V
         intent.setType("image/+");
         activity.startActivityForResult(intent, request);
     }
+
+    @Override
+    public void updateUserName(@NonNull String userName) {
+        if ("".equals(userName)) {
+            if (getView() != null) {
+                getView().showUpdateProfileError("Username is empty!");
+            }
+            return;
+        }
+        if (auth.getCurrentUser() != null) {
+            DatabaseReference currentUser = database.getReference()
+                .child(BZFireBaseApi.users)
+                .child(auth.getCurrentUser().getUid());
+            currentUser.child("name").setValue(userName);
+        }
+    }
 }

@@ -220,6 +220,31 @@ public class MainActivity
             }
         });
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLoggedIn) {
+                    //Edit userName
+                    MaterialDialog dialog =
+                        BZDialogBuilder.createEditUserNameDialog(MainActivity.this,
+                            userName.getText().toString())
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog,
+                                    @NonNull DialogAction which) {
+                                    if (dialog.getInputEditText() != null) {
+                                        presenter.updateUserName(
+                                            dialog.getInputEditText().getText().toString());
+                                    }
+                                }
+                            })
+                            .build();
+                    View positive = dialog.getActionButton(DialogAction.POSITIVE);
+                    positive.setEnabled(false);
+                    dialog.show();
+                }
+            }
+        });
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
     }

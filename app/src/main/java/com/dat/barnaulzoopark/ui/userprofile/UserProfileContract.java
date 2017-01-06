@@ -30,5 +30,7 @@ public interface UserProfileContract {
         void updateProfilePicture(Uri uri);
 
         void browseProfilePicture(Activity activity, int request);
+
+        void updateUserName(String s);
     }
 }
