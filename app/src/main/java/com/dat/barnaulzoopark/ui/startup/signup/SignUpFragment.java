@@ -33,6 +33,7 @@ public class SignUpFragment
     implements SignUpContract.View {
 
     private static final String TAG = SignUpFragment.class.getName();
+    
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.userName)
