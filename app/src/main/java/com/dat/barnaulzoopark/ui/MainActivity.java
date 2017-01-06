@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +33,8 @@ import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
+import com.dat.barnaulzoopark.ui.userprofile.UserProfileContract;
+import com.dat.barnaulzoopark.ui.userprofile.UserProfilePresenter;
 import com.dat.barnaulzoopark.ui.zoomap.ZooMapFragment;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -46,8 +47,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-public class MainActivity extends AppCompatActivity
-    implements OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
+public class MainActivity
+    extends BaseMvpActivity<UserProfileContract.View, UserProfileContract.UserActionListener>
+    implements UserProfileContract.View, OnNavigationItemSelectedListener,
+    DrawerLayout.DrawerListener {
 
     private static final int GALLERY_REQUEST = 1;
     private static final String KEY_IS_GUEST = "IS_GUEST";
@@ -98,16 +101,35 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void showUpdateProfileError(@NonNull String error) {
+
+    }
+
+    @Override
+    public void showUpdateProfileSuccess() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         authenticate();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupNavDrawer();
+        setUserData();
         if (savedInstanceState == null) {
             addInitFragment(new AnimalsFragment());
             currentMenuItemID = R.id.ourAnimals;
         }
+    }
+
+    @NonNull
+    @Override
+    public UserProfileContract.UserActionListener createPresenter() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        return new UserProfilePresenter(auth, database);
     }
 
     private void authenticate() {
@@ -131,22 +153,12 @@ public class MainActivity extends AppCompatActivity
         userPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "browsing image");
-                imageBrowse();
+                presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
             }
         });
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
-
-        setUserData();
-    }
-
-    private void imageBrowse() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/+");
-        startActivityForResult(intent, GALLERY_REQUEST);
     }
 
     private void setUserData() {
@@ -346,18 +358,11 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 userPicture.setImageURI(resultUri);
-                updateUserProfilePicture(resultUri);
+                presenter.updateProfilePicture(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Log.e(TAG, error.getLocalizedMessage());
             }
-        }
-    }
-
-    private void updateUserProfilePicture(Uri resultUri) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            //ToDo: update user profile with FireBase Database and Storage
         }
     }
 }
