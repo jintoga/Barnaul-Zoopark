@@ -23,7 +23,9 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
@@ -40,6 +42,7 @@ import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -56,6 +59,7 @@ public class MainActivity
     @Bind(R.id.drawer)
     protected DrawerLayout drawerLayout;
     protected SimpleDraweeView userPhoto;
+    protected ProgressBar loadingPhoto;
     protected TextView userName;
     protected TextView userEmail;
     protected ImageView logButton;
@@ -63,6 +67,7 @@ public class MainActivity
     DrawerListener drawerListener;
 
     private static final String TAG_HOME_FRAGMENT = "HOME";
+    private boolean isLoggedIn = false;
 
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -145,12 +150,18 @@ public class MainActivity
 
     @Override
     public void showUpdateProfileError(@NonNull String error) {
+        loadingPhoto.setVisibility(View.GONE);
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void showUpdateProfileProgress() {
+        loadingPhoto.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showUpdateProfileSuccess() {
-
+        loadingPhoto.setVisibility(View.GONE);
     }
 
     @Override
@@ -177,12 +188,13 @@ public class MainActivity
     public UserProfileContract.UserActionListener createPresenter() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        return new UserProfilePresenter(auth, database);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        return new UserProfilePresenter(auth, database, storage);
     }
 
     private void authenticate() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isLoggedIn = sharedPreferences.getBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+        isLoggedIn = sharedPreferences.getBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
         if (isLoggedIn) {
             return;
         }
@@ -196,12 +208,15 @@ public class MainActivity
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout.addDrawerListener(this);
         //Views in Drawer's header
-        userPhoto =
-            (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPhoto);
+        userPhoto = (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPhoto);
+        loadingPhoto =
+            (ProgressBar) navigationView.getHeaderView(0).findViewById(R.id.loadingPhoto);
         userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
+                if (isLoggedIn) {
+                    presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
+                }
             }
         });
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
@@ -347,7 +362,6 @@ public class MainActivity
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                userPhoto.setImageURI(resultUri);
                 presenter.updateProfilePicture(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
