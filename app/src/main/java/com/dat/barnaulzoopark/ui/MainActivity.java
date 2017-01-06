@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity
             currentUser.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    userName.setVisibility(View.VISIBLE);
                     userName.setText((String) dataSnapshot.getValue());
                 }
 
@@ -178,7 +177,7 @@ public class MainActivity extends AppCompatActivity
             Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
                 .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
             userPicture.setImageURI(uri);
-            userName.setVisibility(View.GONE);
+            userName.setText(getString(R.string.dear_visitor));
             userEmail.setText(getString(R.string.welcome_to_our_zoo));
             logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_login));
             logButton.setOnClickListener(new View.OnClickListener() {

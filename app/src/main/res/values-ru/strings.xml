@@ -27,5 +27,6 @@
     <string name="verify_logout">Вы уверены, что хотите выйти?</string>
     <string name="logout">Выйти</string>
     <string name="cancel">Отмена</string>
-    <string name="welcome_to_our_zoo">Добро пожаловать в наш зоопарк!</string>
+    <string name="dear_visitor">Уважаемый посетитель</string>
+    <string name="welcome_to_our_zoo">Добро пожаловать!</string>
 </resources>

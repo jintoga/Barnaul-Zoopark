@@ -29,7 +29,8 @@
     <string name="verify_logout">Are you sure want to log out?</string>
     <string name="logout">Logout</string>
     <string name="cancel">Cancel</string>
-    <string name="welcome_to_our_zoo">Welcome to our zoo!</string>
+    <string name="dear_visitor">Dear visitor</string>
+    <string name="welcome_to_our_zoo">Welcome!</string>
 
     <string-array name="suggestions">
         <item>Apple</item>
