@@ -1,11 +1,17 @@
 package com.dat.barnaulzoopark.ui.news;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.ConverterUtil;
 import com.dat.barnaulzoopark.model.News;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
 
@@ -13,7 +19,7 @@ import com.google.firebase.database.Query;
  * Created by DAT on 1/2/2017.
  */
 
-class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewHolder> {
+public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewHolder> {
 
     private NewsAdapterListener listener;
 
@@ -33,44 +39,56 @@ class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewHolder> 
      * combination of {@code limit()}, {@code startAt()}, and {@code endAt()}.
      */
     NewsAdapter(Class<News> modelClass, int modelLayout, Class<ViewHolder> viewHolderClass,
-        Query ref) {
+        Query ref, NewsAdapterListener listener) {
         super(modelClass, modelLayout, viewHolderClass, ref);
         this.listener = listener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view =
-            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
-
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                listener.onNewsLongClicked(holder.getAdapterPosition());
-                return false;
+    protected void populateViewHolder(final ViewHolder viewHolder, News model, int position) {
+        if (model != null) {
+            viewHolder.title.setText(model.getTitle());
+            viewHolder.description.setText(model.getDescription());
+            viewHolder.time.setText(ConverterUtil.epochToString(model.getTime()));
+            Uri uri;
+            if (model.getThumbnail() != null && !"".equals(model.getThumbnail())) {
+                uri = Uri.parse(model.getThumbnail());
+            } else {
+                uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                    .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
             }
-        });
+            viewHolder.thumbnail.setImageURI(uri);
+            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    listener.onNewsLongClicked(viewHolder.getAdapterPosition());
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder viewHolder, News model, int position) {
-
+    public long getItemId(int position) {
+        return position;
     }
 
-    @Override
-    public int getItemCount() {
-        return 10;
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.title)
+        TextView title;
+        @Bind(R.id.description)
+        TextView description;
+        @Bind(R.id.thumbnail)
+        SimpleDraweeView thumbnail;
+        @Bind(R.id.time)
+        TextView time;
+        @Bind(R.id.favourite)
+        ImageView favourite;
 
-        ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

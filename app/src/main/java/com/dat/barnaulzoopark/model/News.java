@@ -12,14 +12,20 @@ public class News {
     private String uid;
     private String title;
     private String description;
+    private String thumbnail;
     private long time;
     private Map<String, String> photos = new HashMap<>();
     private Map<String, String> videos = new HashMap<>();
 
-    public News(String uid, String title, String description, long time) {
+    public News() {
+        // Default constructor required for calls to DataSnapshot.getValue(News.class)
+    }
+
+    public News(String uid, String title, String description, String thumbnail, long time) {
         this.uid = uid;
         this.title = title;
         this.description = description;
+        this.thumbnail = thumbnail;
         this.time = time;
     }
 
@@ -37,6 +43,10 @@ public class News {
 
     public long getTime() {
         return time;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
     }
 
     public Map<String, String> getPhotos() {

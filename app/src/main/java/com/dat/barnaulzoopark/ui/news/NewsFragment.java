@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import org.greenrobot.eventbus.EventBus;
@@ -96,8 +98,11 @@ public class NewsFragment
         recyclerViewNews.setLayoutManager(layoutManager);
         recyclerViewNews.addItemDecoration(new NewsItemDecoration(
             (int) getResources().getDimension(R.dimen.item_news_margin_bottom_decoration)));
-        adapter =
-            new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class, , this);
+
+        DatabaseReference newsReference =
+            FirebaseDatabase.getInstance().getReference(BZFireBaseApi.news);
+        adapter = new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class,
+            newsReference, this);
         recyclerViewNews.setAdapter(adapter);
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
