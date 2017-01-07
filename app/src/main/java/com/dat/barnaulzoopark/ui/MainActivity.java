@@ -102,10 +102,14 @@ public class MainActivity
     }
 
     @Override
-    public void bindUserData(String name, String email, @Nullable String photoUrl) {
+    public void bindUserData(boolean isAdmin, String name, String email,
+        @Nullable String photoUrl) {
         if (photoUrl != null) {
             Uri photoUri = Uri.parse(photoUrl);
             userPhoto.setImageURI(photoUri);
+        }
+        if (isAdmin) {
+            name += "(admin)";
         }
         userName.setText(name);
         userEmail.setText(email);

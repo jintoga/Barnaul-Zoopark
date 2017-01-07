@@ -13,7 +13,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 public interface UserProfileContract {
     interface View extends MvpView {
-        void bindUserData(String name, String email, @Nullable String photoUrl);
+        void bindUserData(boolean isAdmin, String name, String email, @Nullable String photoUrl);
 
         void bindUserDataAsGuest();
 
