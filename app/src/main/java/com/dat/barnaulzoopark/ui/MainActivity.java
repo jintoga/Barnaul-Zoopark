@@ -172,8 +172,8 @@ public class MainActivity
         ButterKnife.bind(this);
         setupNavDrawer();
         if (savedInstanceState == null) {
-            addInitFragment(new AnimalsFragment());
-            currentMenuItemID = R.id.ourAnimals;
+            addInitFragment(new NewsFragment());
+            currentMenuItemID = R.id.news;
         }
     }
 
@@ -284,16 +284,16 @@ public class MainActivity
         Fragment fragment = null;
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
-            case R.id.ourAnimals:
+            case R.id.news:
                 getSupportFragmentManager().popBackStack(null,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                addInitFragment(new AnimalsFragment());
+                addInitFragment(new NewsFragment());
                 return true;
+            case R.id.ourAnimals:
+                fragment = new AnimalsFragment();
+                break;
             case R.id.photoAndVideo:
                 fragment = new PhotoAndVideoFragment();
-                break;
-            case R.id.newsAndEvents:
-                fragment = new NewsFragment();
                 break;
             case R.id.zooMap:
                 Log.d(TAG, "ZOO MAP");
@@ -323,7 +323,7 @@ public class MainActivity
             drawerLayout.closeDrawer(Gravity.LEFT);
             return;
         }
-        if (currentMenuItemID == R.id.ourAnimals) {
+        if (currentMenuItemID == R.id.news) {
             finish();
             return;
         }
@@ -336,14 +336,14 @@ public class MainActivity
                 getSupportFragmentManager().popBackStack(null,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 navigationView.getMenu().getItem(0).setChecked(true);
-                currentMenuItemID = R.id.ourAnimals;
+                currentMenuItemID = R.id.news;
                 return;
             }
             getSupportFragmentManager().popBackStack(null,
                 FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            addInitFragment(new AnimalsFragment());
+            addInitFragment(new NewsFragment());
             navigationView.getMenu().getItem(0).setChecked(true);
-            currentMenuItemID = R.id.ourAnimals;
+            currentMenuItemID = R.id.news;
             return;
         }
         super.onBackPressed();

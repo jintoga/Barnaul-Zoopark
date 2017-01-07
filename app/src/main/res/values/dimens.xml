@@ -47,4 +47,8 @@
 
     <dimen name="material_view_pager_temp_margin_bottom">300dp</dimen>
 
+    <dimen name="item_news_title_text_size">17sp</dimen>
+    <dimen name="item_news_description_text_size">14sp</dimen>
+    <dimen name="item_news_time_text_size">12sp</dimen>
+    <dimen name="item_news_margin_bottom_decoration">-5dp</dimen>
 </resources>
