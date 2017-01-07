@@ -13,13 +13,19 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
-import com.dat.barnaulzoopark.ui.TempBaseFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Nguyen on 7/13/2016.
  */
-public class NewsFragment extends TempBaseFragment implements NewsAdapter.NewsAdapterListener {
+public class NewsFragment
+    extends BaseMvpFragment<NewsContract.View, NewsContract.UserActionListener>
+    implements NewsContract.View, NewsAdapter.NewsAdapterListener {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
@@ -30,6 +36,15 @@ public class NewsFragment extends TempBaseFragment implements NewsAdapter.NewsAd
     private NewsAdapter adapter;
 
     private int scrollFlags = -1;
+    private boolean isAdmin = false;
+
+    @Override
+    public NewsContract.UserActionListener createPresenter() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        return new NewPresenter(EventBus.getDefault(), auth, database, storage);
+    }
 
     @Nullable
     @Override
@@ -46,12 +61,22 @@ public class NewsFragment extends TempBaseFragment implements NewsAdapter.NewsAd
         return view;
     }
 
+    @Override
+    public void showAdminPrivilege(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+        enableCollapsingToolbar(isAdmin);
+        if (isAdmin) {
+            fabCreate.setVisibility(View.VISIBLE);
+        } else {
+            fabCreate.setVisibility(View.GONE);
+        }
+    }
+
     //Prevent toolbar from collapsing when user is ADMIN
-    //ToDo: check if user is ADMIN and use this method
-    private void disableCollapsing(boolean shouldDisable) {
+    private void enableCollapsingToolbar(boolean shouldEnable) {
         AppBarLayout.LayoutParams layoutParams =
             (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-        if (shouldDisable) {
+        if (shouldEnable) {
             layoutParams.setScrollFlags(0);
         } else {
             layoutParams.setScrollFlags(scrollFlags);
@@ -75,10 +100,12 @@ public class NewsFragment extends TempBaseFragment implements NewsAdapter.NewsAd
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && fabCreate.isShown()) {
-                    fabCreate.hide();
-                } else if (dy < 0) {
-                    fabCreate.show();
+                if (isAdmin) {
+                    if (dy > 0 && fabCreate.isShown()) {
+                        fabCreate.hide();
+                    } else if (dy < 0) {
+                        fabCreate.show();
+                    }
                 }
             }
         });

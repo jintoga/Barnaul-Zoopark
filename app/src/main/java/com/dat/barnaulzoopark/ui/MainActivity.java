@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -30,7 +29,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.events.LoggedIn;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
@@ -45,6 +46,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity
     extends BaseMvpActivity<UserProfileContract.View, UserProfileContract.UserActionListener>
@@ -111,6 +113,7 @@ public class MainActivity
         if (isAdmin) {
             name += "(admin)";
         }
+        EventBus.getDefault().post(new LoggedIn(isAdmin));
         userName.setText(name);
         userEmail.setText(email);
         logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
@@ -124,9 +127,9 @@ public class MainActivity
                             @NonNull DialogAction which) {
                             FirebaseAuth.getInstance().signOut();
                             SharedPreferences.Editor editor =
-                                PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                                getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE)
                                     .edit();
-                            editor.putBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+                            editor.putBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
                             editor.apply();
                             goToStartUp();
                         }
@@ -197,8 +200,9 @@ public class MainActivity
     }
 
     private void authenticate() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        isLoggedIn = sharedPreferences.getBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+        SharedPreferences sharedPreferences =
+            getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE);
+        isLoggedIn = sharedPreferences.getBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
         if (isLoggedIn) {
             return;
         }
