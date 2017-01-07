@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,7 +96,8 @@ public class NewsFragment
         recyclerViewNews.setLayoutManager(layoutManager);
         recyclerViewNews.addItemDecoration(new NewsItemDecoration(
             (int) getResources().getDimension(R.dimen.item_news_margin_bottom_decoration)));
-        adapter = new NewsAdapter(this);
+        adapter =
+            new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class, , this);
         recyclerViewNews.setAdapter(adapter);
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
