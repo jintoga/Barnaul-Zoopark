@@ -10,7 +10,13 @@ import com.dat.barnaulzoopark.R;
  * Created by DAT on 1/2/2017.
  */
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
+class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
+
+    private NewsAdapterListener listener;
+
+    NewsAdapter(NewsAdapterListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -21,8 +27,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                listener.onNewsLongClicked(holder.getAdapterPosition());
+                return false;
+            }
+        });
     }
 
     @Override
@@ -32,8 +44,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    interface NewsAdapterListener {
+        void onNewsLongClicked(int position);
     }
 }
