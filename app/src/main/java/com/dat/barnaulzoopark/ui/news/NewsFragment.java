@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.news;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,8 @@ public class NewsFragment extends TempBaseFragment
     protected Toolbar toolbar;
     @Bind(R.id.recyclerViewNews)
     protected RecyclerView recyclerViewNews;
+    @Bind(R.id.fabCreate)
+    protected FloatingActionButton fabCreate;
     private NewsAdapter adapter;
 
     @Nullable
@@ -52,6 +55,16 @@ public class NewsFragment extends TempBaseFragment
             (int) getResources().getDimension(R.dimen.item_news_margin_bottom_decoration)));
         adapter = new NewsAdapter();
         recyclerViewNews.setAdapter(adapter);
+        recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 && fabCreate.isShown()) {
+                    fabCreate.hide();
+                } else if (dy < 0) {
+                    fabCreate.show();
+                }
+            }
+        });
     }
 
     @Override
