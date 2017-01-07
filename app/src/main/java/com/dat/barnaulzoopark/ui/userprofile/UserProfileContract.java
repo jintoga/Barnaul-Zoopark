@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.dat.barnaulzoopark.model.User;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -13,7 +14,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 public interface UserProfileContract {
     interface View extends MvpView {
-        void bindUserData(boolean isAdmin, String name, String email, @Nullable String photoUrl);
+        void bindUserData(@NonNull User user);
 
         void bindUserDataAsGuest();
 

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
@@ -32,6 +31,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.events.LoggedIn;
+import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
@@ -104,18 +104,18 @@ public class MainActivity
     }
 
     @Override
-    public void bindUserData(boolean isAdmin, String name, String email,
-        @Nullable String photoUrl) {
-        if (photoUrl != null) {
-            Uri photoUri = Uri.parse(photoUrl);
+    public void bindUserData(@NonNull User user) {
+        if (user.getPhoto() != null) {
+            Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
         }
-        if (isAdmin) {
+        String name = user.getName();
+        if (user.isAdmin()) {
             name += "(admin)";
         }
-        EventBus.getDefault().post(new LoggedIn(isAdmin));
+        EventBus.getDefault().post(new LoggedIn(user.isAdmin()));
         userName.setText(name);
-        userEmail.setText(email);
+        userEmail.setText(user.getEmail());
         logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
