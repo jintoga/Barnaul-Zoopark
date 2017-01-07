@@ -50,7 +50,11 @@ public class UserProfilePresenter extends MvpBasePresenter<UserProfileContract.V
                     String name = null;
                     String photoUrl = null;
                     String email = null;
+                    boolean isAdmin = false;
                     for (DataSnapshot item : dataSnapshot.getChildren()) {
+                        if (item.getKey().equals("admin")) {
+                            isAdmin = true;
+                        }
                         if (item.getKey().equals("name")) {
                             name = (String) item.getValue();
                         }
@@ -62,7 +66,7 @@ public class UserProfilePresenter extends MvpBasePresenter<UserProfileContract.V
                         }
                     }
                     if (getView() != null) {
-                        getView().bindUserData(name, email, photoUrl);
+                        getView().bindUserData(isAdmin, name, email, photoUrl);
                     }
                 }
 
