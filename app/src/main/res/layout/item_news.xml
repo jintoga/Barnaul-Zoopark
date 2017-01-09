@@ -83,7 +83,7 @@
                 android:maxLines="3"
                 android:textColor="@color/black"
                 android:textSize="@dimen/item_news_title_text_size"
-                tools:text="РоссийскийДеенцию, где показал коллекцию посохов и угостил чаем с мёдом. Не остались без внимания и пушистых жителей Барнаульского зоопарка. Дедушки посетили Барн " />
+                tools:text="Выставка Петухов. Ул Взлетная 2-к, эко-ярмарка ВДНХ. Время работы: ежедневно с 10.00 до 20.00" />
 
             <TextView
                 android:id="@+id/time"

@@ -25,6 +25,7 @@
         <activity android:name=".ui.photoalbumsdetail.PhotoAlbumsDetailActivity" />
         <activity android:name=".ui.animalsdetail.AnimalsDetailActivity" />
         <activity android:name=".ui.photosdetail.PhotosDetailActivity" />
+        <activity android:name=".ui.newsdetail.NewsDetailActivity" />
     </application>
 
 </manifest>

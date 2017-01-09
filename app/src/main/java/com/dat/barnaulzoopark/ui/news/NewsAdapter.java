@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.ui.news;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,7 +46,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     }
 
     @Override
-    protected void populateViewHolder(final ViewHolder viewHolder, News model, int position) {
+    protected void populateViewHolder(final ViewHolder viewHolder, final News model, int position) {
         if (model != null) {
             viewHolder.title.setText(model.getTitle());
             viewHolder.description.setText(model.getDescription());
@@ -63,6 +64,12 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
                 public boolean onLongClick(View view) {
                     listener.onNewsLongClicked(viewHolder.getAdapterPosition());
                     return false;
+                }
+            });
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onClicked(model.getUid());
                 }
             });
         }
@@ -85,6 +92,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         TextView time;
         @Bind(R.id.favourite)
         ImageView favourite;
+        @Bind(R.id.share)
+        ImageView share;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +102,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     }
 
     interface NewsAdapterListener {
+        void onClicked(@NonNull String uid);
+
         void onNewsLongClicked(int position);
     }
 }

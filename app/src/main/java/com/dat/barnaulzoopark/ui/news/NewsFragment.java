@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.ui.news;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
+import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -85,6 +87,11 @@ public class NewsFragment
             layoutParams.setScrollFlags(scrollFlags);
         }
         toolbar.setLayoutParams(layoutParams);
+    }
+
+    @Override
+    public void onClicked(@NonNull String uid) {
+        NewsDetailActivity.startActivity(getActivity(), uid);
     }
 
     @Override
