@@ -20,7 +20,7 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/transparent"
+            app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed|enterAlways">
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -40,7 +40,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/transparent"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -55,6 +54,7 @@
         android:name="com.dat.barnaulzoopark.ui.newsdetail.NewsDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:behavior_overlapTop="50dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>
