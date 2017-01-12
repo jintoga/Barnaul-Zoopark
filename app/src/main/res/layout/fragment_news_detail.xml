@@ -1,56 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/AppTheme">
 
-    <LinearLayout
-        android:id="@+id/content_container"
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:elevation="6dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.CardView
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="16dp">
+            android:layout_height="match_parent"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|enterAlways">
 
-            <LinearLayout
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                app:layout_collapseMode="parallax"
+                fresco:actualImageScaleType="focusCrop"
+                fresco:fadeDuration="100"
+                fresco:failureImage="@android:drawable/stat_notify_error"
+                fresco:failureImageScaleType="centerInside"
+                fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
+                fresco:placeholderImageScaleType="centerCrop" />
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Выставка Петухов. Ул Взлетная 2-к, эко-ярмарка ВДНХ. Время работы: ежедневно с 10.00 до 20.00"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/item_news_detail_title_text_size" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif"
-                    android:text="30.11.2016"
-                    android:textSize="@dimen/item_news_detail_time_text_size" />
+        </android.support.design.widget.CollapsingToolbarLayout>
 
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="6dp"
-                    android:text="Сегодня барнаульский зоопарк посетил необычный сказочный гость. Главный Дед Мороз страны приехал в Лесную сказку, чтобы встретиться со своим алтайским тёзкой. Встреча двух Морозов получилась очень тёплой. Дедушки обменялись подарками, поводили хороводы с детьми. Алтайский Дед Мороз пригласил дорогого гостя в свою резиденцию, где показал коллекцию посохов и угостил чаем с мёдом. Не остались без внимания и пушистых жителей Барнаульского зоопарка. Дедушки посетили Барнаульский зоопарк, где покормили мёдом бурого медвежонка Осипа, познакомились с любознательным енотом Асей и маленькой львицей Аей.треча двух Морозов получилась очень тёплой. Дедушки обменялись подарками, поводили хороводы с детьми. Алтайский Дед Мороз пригласил дорогого гостя в свою резиденцию, где показал коллекцию посохов и угостил чаем с мёдом. Не остались без внимания и пушистых жителей Барнаульского зоопарка. Дедушки посетили Барнаульский зоопарк, где покормили мёдом бурого медвежонка Осипа, познакомились с любознательным енотом Асей и маленькой львицей Аей.треча двух Морозов получилась очень тёплой. Дедушки обменялись подарками, поводили хороводы с детьми. Алтайский Дед Мороз пригласил дорогого гостя в свою резиденцию, где показал коллекцию посохов и угостил чаем с мёдом. Не остались без внимания и пушистых жителей Барнаульского зоопарка. Дедушки посетили Барнаульский зоопарк, где покормили мёдом бурого медвежонка Осипа, познакомились с любознательным енотом Асей и маленькой львицей Аей.треча двух Морозов получилась очень тёплой. Дедушки обменялись подарками, поводили хороводы с детьми. Алтайский Дед Мороз пригласил дорогого гостя в свою резиденцию, где показал коллекцию посохов и угостил чаем с мёдом. Не остались без внимания и пушистых жителей Барнаульского зоопарка. Дедушки посетили Барнаульский зоопарк, где покормили мёдом бурого медвежонка Осипа, познакомились с любознательным енотом Асей и маленькой львицей Аей.треча двух Морозов получилась очень тёплой. Дедушки обменялись подарками, поводили хороводы с детьми. Алтайский Дед Мороз пригласил дорогого гостя в свою резиденцию, где показал коллекцию посохов и угостил чаем с мёдом. Не остались без внимания и пушистых жителей Барнаульского зоопарка. Дедушки посетили Барнаульский зоопарк, где покормили мёдом бурого медвежонка Осипа, познакомились с любознательным енотом Асей и маленькой львицей Аей.
-И дети, и взрослые, пришедшие в Лесную сказкуна встречу с главным Дедом морозом страны, были несказанно рады! "
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/item_news_detail_description_text_size" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/partial_news_detail_content" />
+
+</android.support.design.widget.CoordinatorLayout>
