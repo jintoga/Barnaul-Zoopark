@@ -146,7 +146,7 @@ public class MainActivity
         userPhoto.setImageURI(uri);
         userName.setText(getString(R.string.dear_visitor));
         userEmail.setText(getString(R.string.welcome_to_our_zoo));
-        logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_login));
+        logButton.setImageResource(R.drawable.ic_login);
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

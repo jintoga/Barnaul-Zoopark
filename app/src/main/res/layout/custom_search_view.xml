@@ -42,7 +42,7 @@
                         android:background="@null"
                         android:paddingLeft="@dimen/search_icon_padding"
                         android:paddingRight="@dimen/search_icon_padding"
-                        android:src="@drawable/ic_arrow_back_black" />
+                        app:srcCompat="@drawable/ic_arrow_back_black" />
 
                     <EditText
                         android:id="@+id/et_search"
@@ -67,7 +67,7 @@
                         android:background="@null"
                         android:paddingLeft="@dimen/search_icon_padding"
                         android:paddingRight="@dimen/search_icon_padding"
-                        android:src="@drawable/ic_close_black"
+                        app:srcCompat="@drawable/ic_close_black"
                         android:visibility="gone"
                         tools:visibility="visible" />
                 </LinearLayout>

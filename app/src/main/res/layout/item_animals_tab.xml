@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/layout"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +13,7 @@
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_owl"
+        app:srcCompat="@drawable/ic_owl"
         android:tint="@color/gray" />
 
     <TextView
