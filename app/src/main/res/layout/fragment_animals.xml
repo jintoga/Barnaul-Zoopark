@@ -22,7 +22,8 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="0dp">
 
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -52,17 +53,24 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingBottom="0.5dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:tabIndicatorColor="@color/white"
-            app:tabIndicatorHeight="2.5dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:layout_height="wrap_content"
+            app:contentScrim="@null"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:paddingBottom="0.5dp"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorHeight="2.5dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/white"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <View
