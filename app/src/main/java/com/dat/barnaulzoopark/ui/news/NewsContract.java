@@ -13,5 +13,6 @@ public interface NewsContract {
     }
 
     interface UserActionListener extends MvpPresenter<View> {
+        void checkAdminPrivilege();
     }
 }

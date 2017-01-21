@@ -48,7 +48,7 @@ public class NewsFragment
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        return new NewPresenter(EventBus.getDefault(), auth, database, storage);
+        return new NewsPresenter(EventBus.getDefault(), auth, database, storage);
     }
 
     @Nullable
@@ -75,6 +75,12 @@ public class NewsFragment
         } else {
             fabCreate.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.checkAdminPrivilege();
     }
 
     //Prevent toolbar from collapsing when user is ADMIN

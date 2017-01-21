@@ -14,7 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
  * Created by DAT on 1/7/2017.
  */
 
-class NewPresenter extends EventMvpPresenter<NewsContract.View>
+class NewsPresenter extends EventMvpPresenter<NewsContract.View>
     implements NewsContract.UserActionListener {
 
     private static final String TAG = UserProfilePresenter.class.getName();
@@ -23,12 +23,25 @@ class NewPresenter extends EventMvpPresenter<NewsContract.View>
     private FirebaseDatabase database;
     private FirebaseStorage storage;
 
-    NewPresenter(EventBus eventBus, FirebaseAuth auth, FirebaseDatabase database,
+    NewsPresenter(EventBus eventBus, FirebaseAuth auth, FirebaseDatabase database,
         FirebaseStorage storage) {
         super(eventBus);
         this.auth = auth;
         this.database = database;
         this.storage = storage;
+    }
+
+    @Override
+    public void checkAdminPrivilege() {
+        if (auth.getCurrentUser() != null) {
+            if (getView() != null) {
+                getView().showAdminPrivilege(true);
+            }
+        } else {
+            if (getView() != null) {
+                getView().showAdminPrivilege(false);
+            }
+        }
     }
 
     @Subscribe
