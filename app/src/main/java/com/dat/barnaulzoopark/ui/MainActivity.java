@@ -11,7 +11,6 @@ import android.support.design.widget.NavigationView.OnNavigationItemSelectedList
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -116,7 +115,7 @@ public class MainActivity
         EventBus.getDefault().post(new LoggedIn(user.isAdmin()));
         userName.setText(name);
         userEmail.setText(user.getEmail());
-        logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
+        logButton.setImageResource(R.drawable.ic_logout);
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
