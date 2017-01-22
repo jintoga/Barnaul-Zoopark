@@ -14,7 +14,7 @@
     app:viewpager_headerHeight="@dimen/expanded_banner_height"
     app:viewpager_hideToolbarAndTitle="true"
     app:viewpager_imageHeaderDarkLayerAlpha="0.0"
-    app:viewpager_pagerTitleStrip="@layout/material_view_pager_pagertitlestrip_newstand"
+    app:viewpager_pagerTitleStrip="@layout/custom_material_viewpager_title_strip"
     app:viewpager_parallaxHeaderFactor="1.5"
     app:viewpager_transparentToolbar="true"
     tools:context="com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity" />
