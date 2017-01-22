@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.News;
@@ -97,7 +98,9 @@ public class NewsFragment
 
     @Override
     public void onClicked(@NonNull String uid) {
-        NewsDetailActivity.startActivity(getActivity(), uid);
+        if (!BZApplication.isTabletLandscape(getContext())) {
+            NewsDetailActivity.startActivity(getActivity(), uid);
+        }
     }
 
     @Override

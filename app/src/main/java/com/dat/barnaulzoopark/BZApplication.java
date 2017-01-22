@@ -1,6 +1,8 @@
 package com.dat.barnaulzoopark;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.res.Configuration;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,5 +21,11 @@ public class BZApplication extends Application {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true); //FireBase offline capabilities
         Fresco.initialize(this);
         MaterialViewPagerAnimator.ENABLE_LOG = false;
+    }
+
+    public static boolean isTabletLandscape(Context context) {
+        return context.getResources().getBoolean(R.bool.isTablet)
+            && context.getResources().getConfiguration().orientation
+            == Configuration.ORIENTATION_LANDSCAPE;
     }
 }

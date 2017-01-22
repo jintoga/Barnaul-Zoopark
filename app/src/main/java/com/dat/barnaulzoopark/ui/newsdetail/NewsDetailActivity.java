@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.BaseActivity;
 
@@ -16,7 +17,7 @@ import com.dat.barnaulzoopark.ui.BaseActivity;
 
 public class NewsDetailActivity extends BaseActivity {
 
-    public static final String KEY_NEWS_UID = "NEWS_UID";
+    private static final String KEY_NEWS_UID = "NEWS_UID";
 
     public static void startActivity(Activity activity, @NonNull String uid) {
         Intent intent = new Intent(activity, NewsDetailActivity.class);
@@ -52,6 +53,14 @@ public class NewsDetailActivity extends BaseActivity {
                 return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (BZApplication.isTabletLandscape(this)) {
+            finish();
+        }
     }
 
     @Override

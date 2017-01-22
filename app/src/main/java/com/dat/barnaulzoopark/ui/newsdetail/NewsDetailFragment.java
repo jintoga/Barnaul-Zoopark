@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
@@ -29,6 +30,8 @@ import com.google.firebase.storage.FirebaseStorage;
 public class NewsDetailFragment
     extends BaseMvpFragment<NewsDetailContract.View, NewsDetailContract.UserActionListener>
     implements NewsDetailContract.View {
+
+    private static final String KEY_NEWS_UID = "NEWS_UID";
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
@@ -64,24 +67,30 @@ public class NewsDetailFragment
     @Override
     public void onStart() {
         super.onStart();
-        String newsUid = getArguments().getString(NewsDetailActivity.KEY_NEWS_UID);
-        if (newsUid != null) {
-            presenter.loadNewsDetail(newsUid);
+        if (getArguments() != null) {
+            String newsUid = getArguments().getString(KEY_NEWS_UID);
+            if (newsUid != null) {
+                presenter.loadNewsDetail(newsUid);
+            }
         }
     }
 
     private void init() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
+        if (BZApplication.isTabletLandscape(getContext())) {
+            toolbar.setVisibility(View.GONE);
+        } else {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("");
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeButtonEnabled(true);
+            }
+            CollapsingToolbarLayout.LayoutParams layoutParams =
+                (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
+            layoutParams.topMargin = getStatusBarHeight();
+            toolbar.setLayoutParams(layoutParams);
         }
-        CollapsingToolbarLayout.LayoutParams layoutParams =
-            (CollapsingToolbarLayout.LayoutParams) toolbar.getLayoutParams();
-        layoutParams.topMargin = getStatusBarHeight();
-        toolbar.setLayoutParams(layoutParams);
         contentContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
