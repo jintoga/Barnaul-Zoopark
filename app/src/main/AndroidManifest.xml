@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.startup.StartupActivity" />
+        <activity
+            android:name=".ui.startup.StartupActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.photoalbumsdetail.PhotoAlbumsDetailActivity" />
         <activity android:name=".ui.animalsdetail.AnimalsDetailActivity" />
         <activity android:name=".ui.photosdetail.PhotosDetailActivity" />
