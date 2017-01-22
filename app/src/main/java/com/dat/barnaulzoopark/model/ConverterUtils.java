@@ -8,7 +8,7 @@ import java.util.Locale;
  * Created by DAT on 1/8/2017.
  */
 
-public class ConverterUtil {
+public class ConverterUtils {
     public static String epochToString(long time) {
         Date date = new Date(time * 1000L);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.ConverterUtil;
+import com.dat.barnaulzoopark.model.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -50,7 +50,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         if (model != null) {
             viewHolder.title.setText(model.getTitle());
             viewHolder.description.setText(model.getDescription());
-            viewHolder.time.setText(ConverterUtil.epochToString(model.getTime()));
+            viewHolder.time.setText(ConverterUtils.epochToString(model.getTime()));
             Uri uri;
             if (model.getThumbnail() != null && !"".equals(model.getThumbnail())) {
                 uri = Uri.parse(model.getThumbnail());

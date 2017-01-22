@@ -16,8 +16,11 @@ import com.dat.barnaulzoopark.ui.BaseActivity;
 
 public class NewsDetailActivity extends BaseActivity {
 
+    public static final String KEY_NEWS_UID = "NEWS_UID";
+
     public static void startActivity(Activity activity, @NonNull String uid) {
         Intent intent = new Intent(activity, NewsDetailActivity.class);
+        intent.putExtra(KEY_NEWS_UID, uid);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
@@ -27,6 +30,16 @@ public class NewsDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
         ButterKnife.bind(this);
+        String newsUid = getIntent().getStringExtra(KEY_NEWS_UID);
+        if (newsUid != null) {
+            NewsDetailFragment newsDetailFragment = new NewsDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(KEY_NEWS_UID, newsUid);
+            newsDetailFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContainer, newsDetailFragment, "")
+                .commit();
+        }
     }
 
     @Override

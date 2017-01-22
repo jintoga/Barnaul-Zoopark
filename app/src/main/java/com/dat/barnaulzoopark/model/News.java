@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.model;
 
+import android.support.annotation.Nullable;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class News {
         return time;
     }
 
+    @Nullable
     public String getThumbnail() {
         return thumbnail;
     }
