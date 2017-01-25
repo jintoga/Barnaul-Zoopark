@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
@@ -23,6 +24,8 @@ import com.google.firebase.database.Query;
 public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewHolder> {
 
     private NewsAdapterListener listener;
+
+    private int selectedPosition = 0;
 
     /**
      * @param modelClass Firebase will marshall the data at a location into an instance of a class
@@ -47,6 +50,17 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
 
     @Override
     protected void populateViewHolder(final ViewHolder viewHolder, final News model, int position) {
+
+        boolean isSelectedItem = false;
+        if (position == getSelectedPosition() && BZApplication.isTabletLandscape(
+            viewHolder.itemView.getContext())) {
+            isSelectedItem = true;
+        }
+        if (isSelectedItem) {
+            viewHolder.indicator.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.indicator.setVisibility(View.GONE);
+        }
         if (model != null) {
             viewHolder.title.setText(model.getTitle());
             viewHolder.description.setText(model.getDescription());
@@ -69,7 +83,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onClicked(model.getUid());
+                    listener.onClicked(model.getUid(), viewHolder.getAdapterPosition());
                 }
             });
         }
@@ -79,6 +93,19 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     public long getItemId(int position) {
         return position;
     }
+
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+
+    public void setSelectedPosition(int selectedPosition) {
+        this.selectedPosition = selectedPosition;
+    }
+
+    public News getSelectedItem() {
+        return getItem(selectedPosition);
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -94,6 +121,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         ImageView favourite;
         @Bind(R.id.share)
         ImageView share;
+        @Bind(R.id.indicator)
+        View indicator;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -102,7 +131,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     }
 
     interface NewsAdapterListener {
-        void onClicked(@NonNull String uid);
+        void onClicked(@NonNull String uid, int selectedPosition);
 
         void onNewsLongClicked(int position);
     }

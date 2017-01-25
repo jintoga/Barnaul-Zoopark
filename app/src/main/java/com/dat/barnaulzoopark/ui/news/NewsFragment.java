@@ -97,9 +97,12 @@ public class NewsFragment
     }
 
     @Override
-    public void onClicked(@NonNull String uid) {
+    public void onClicked(@NonNull String uid, int selectedPosition) {
         if (!BZApplication.isTabletLandscape(getContext())) {
             NewsDetailActivity.startActivity(getActivity(), uid);
+        } else {
+            adapter.setSelectedPosition(selectedPosition);
+            adapter.notifyDataSetChanged();
         }
     }
 
