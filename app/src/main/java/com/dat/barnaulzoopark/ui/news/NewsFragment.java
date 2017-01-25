@@ -20,9 +20,13 @@ import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailActivity;
+import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,6 +47,8 @@ public class NewsFragment
 
     private int scrollFlags = -1;
     private boolean isAdmin = false;
+
+    private DatabaseReference newsReference;
 
     @Override
     public NewsContract.UserActionListener createPresenter() {
@@ -82,6 +88,27 @@ public class NewsFragment
     public void onStart() {
         super.onStart();
         presenter.checkAdminPrivilege();
+        if (BZApplication.isTabletLandscape(getContext()) && newsReference != null) {
+            newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (adapter != null && adapter.getItemCount() > 0) {
+                        adapter.setSelectedPosition(0);
+                        NewsDetailFragment newsDetailFragment =
+                            (NewsDetailFragment) getChildFragmentManager().findFragmentById(
+                                R.id.fragmentNewsDetail);
+                        if (newsDetailFragment != null) {
+                            newsDetailFragment.showNews(adapter.getSelectedItem());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     //Prevent toolbar from collapsing when user is ADMIN
@@ -102,14 +129,19 @@ public class NewsFragment
             NewsDetailActivity.startActivity(getActivity(), uid);
         } else {
             adapter.setSelectedPosition(selectedPosition);
-            adapter.notifyDataSetChanged();
+            adapter.notifySelectedItem();
+            NewsDetailFragment articleDetailFragment =
+                (NewsDetailFragment) getChildFragmentManager().findFragmentById(
+                    R.id.fragmentNewsDetail);
+            if (articleDetailFragment != null) {
+                articleDetailFragment.showNews(adapter.getSelectedItem());
+            }
         }
     }
 
     @Override
     public void onNewsLongClicked(int position) {
         //ToDo: display Edit, Delete Buttons on Toolbar
-
     }
 
     private void init() {
@@ -118,10 +150,10 @@ public class NewsFragment
         recyclerViewNews.addItemDecoration(new NewsItemDecoration(
             (int) getResources().getDimension(R.dimen.item_news_margin_bottom_decoration)));
 
-        DatabaseReference newsReference =
-            FirebaseDatabase.getInstance().getReference(BZFireBaseApi.news);
+        newsReference = FirebaseDatabase.getInstance().getReference(BZFireBaseApi.news);
         adapter = new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class,
             newsReference, this);
+
         recyclerViewNews.setAdapter(adapter);
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

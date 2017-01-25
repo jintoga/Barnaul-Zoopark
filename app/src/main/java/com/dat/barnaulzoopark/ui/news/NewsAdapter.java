@@ -106,6 +106,16 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         return getItem(selectedPosition);
     }
 
+    public void notifySelectedItem() {
+        //1st notify for only Selected Item to keep ripple effect
+        notifyItemChanged(selectedPosition);
+        //then notify all other items to hide Indicator
+        for (int i = 0; i < getItemCount(); i++) {
+            if (i != selectedPosition) {
+                notifyItemChanged(i);
+            }
+        }
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
