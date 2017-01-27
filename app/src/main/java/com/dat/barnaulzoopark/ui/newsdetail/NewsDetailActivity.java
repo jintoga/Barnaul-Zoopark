@@ -32,7 +32,7 @@ public class NewsDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_news_detail);
         ButterKnife.bind(this);
         String newsUid = getIntent().getStringExtra(KEY_NEWS_UID);
-        if (newsUid != null) {
+        if (savedInstanceState == null && newsUid != null) {
             NewsDetailFragment newsDetailFragment = new NewsDetailFragment();
             Bundle bundle = new Bundle();
             bundle.putString(KEY_NEWS_UID, newsUid);
