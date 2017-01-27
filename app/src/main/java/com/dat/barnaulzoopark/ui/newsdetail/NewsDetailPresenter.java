@@ -35,7 +35,7 @@ class NewsDetailPresenter extends MvpBasePresenter<NewsDetailContract.View>
             public void onDataChange(DataSnapshot dataSnapshot) {
                 News news = dataSnapshot.getValue(News.class);
                 if (getView() != null) {
-                    getView().showNews(news);
+                    getView().showNewsDetail(news);
                 }
             }
 

@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class NewsDetailFragment
 
     private static final String KEY_NEWS_UID = "NEWS_UID";
 
+    @Bind(R.id.app_bar_layout)
+    protected AppBarLayout appBarLayout;
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.content_container)
@@ -100,12 +103,13 @@ public class NewsDetailFragment
     }
 
     @Override
-    public void showNews(@NonNull News news) {
+    public void showNewsDetail(@NonNull News news) {
         if (news.getThumbnail() != null) {
             thumbnail.setImageURI(Uri.parse(news.getThumbnail()));
         }
         title.setText(news.getTitle());
         description.setText(news.getDescription());
         time.setText(ConverterUtils.epochToString(news.getTime()));
+        appBarLayout.setExpanded(true, false);
     }
 }

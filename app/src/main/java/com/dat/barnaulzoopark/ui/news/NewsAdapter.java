@@ -83,7 +83,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onClicked(model.getUid(), viewHolder.getAdapterPosition());
+                    listener.onItemClicked(model.getUid(), viewHolder.getAdapterPosition());
                 }
             });
         }
@@ -141,7 +141,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     }
 
     interface NewsAdapterListener {
-        void onClicked(@NonNull String uid, int selectedPosition);
+        void onItemClicked(@NonNull String uid, int selectedPosition);
 
         void onNewsLongClicked(int position);
     }

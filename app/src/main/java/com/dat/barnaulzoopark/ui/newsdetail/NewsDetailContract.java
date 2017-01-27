@@ -11,7 +11,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 interface NewsDetailContract {
     interface View extends MvpView {
-        void showNews(@NonNull News news);
+        void showNewsDetail(@NonNull News news);
     }
 
     interface UserActionListener extends MvpPresenter<NewsDetailContract.View> {

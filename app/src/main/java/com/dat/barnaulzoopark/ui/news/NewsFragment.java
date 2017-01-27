@@ -98,7 +98,7 @@ public class NewsFragment
                             (NewsDetailFragment) getChildFragmentManager().findFragmentById(
                                 R.id.fragmentNewsDetail);
                         if (newsDetailFragment != null) {
-                            newsDetailFragment.showNews(adapter.getSelectedItem());
+                            newsDetailFragment.showNewsDetail(adapter.getSelectedItem());
                         }
                     }
                 }
@@ -124,17 +124,19 @@ public class NewsFragment
     }
 
     @Override
-    public void onClicked(@NonNull String uid, int selectedPosition) {
+    public void onItemClicked(@NonNull String uid, int selectedPosition) {
         if (!BZApplication.isTabletLandscape(getContext())) {
             NewsDetailActivity.startActivity(getActivity(), uid);
         } else {
-            adapter.setSelectedPosition(selectedPosition);
-            adapter.notifySelectedItem();
-            NewsDetailFragment articleDetailFragment =
-                (NewsDetailFragment) getChildFragmentManager().findFragmentById(
-                    R.id.fragmentNewsDetail);
-            if (articleDetailFragment != null) {
-                articleDetailFragment.showNews(adapter.getSelectedItem());
+            if (adapter.getSelectedPosition() != selectedPosition) {
+                adapter.setSelectedPosition(selectedPosition);
+                adapter.notifySelectedItem();
+                NewsDetailFragment articleDetailFragment =
+                    (NewsDetailFragment) getChildFragmentManager().findFragmentById(
+                        R.id.fragmentNewsDetail);
+                if (articleDetailFragment != null) {
+                    articleDetailFragment.showNewsDetail(adapter.getSelectedItem());
+                }
             }
         }
     }
