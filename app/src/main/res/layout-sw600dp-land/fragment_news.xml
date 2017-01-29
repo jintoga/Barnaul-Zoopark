@@ -36,9 +36,8 @@
             android:layout_width="320dp"
             android:layout_height="match_parent" />
 
-        <fragment
-            android:id="@+id/fragmentNewsDetail"
-            android:name="com.dat.barnaulzoopark.ui.newsdetail.NewsDetailFragment"
+        <FrameLayout
+            android:id="@+id/newsDetailFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

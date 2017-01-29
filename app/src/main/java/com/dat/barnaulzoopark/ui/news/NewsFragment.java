@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +38,8 @@ public class NewsFragment
     extends BaseMvpFragment<NewsContract.View, NewsContract.UserActionListener>
     implements NewsContract.View, NewsAdapter.NewsAdapterListener {
 
+    private static final String KEY_NEWS_DETAIL_FRAGMENT = "NEWS_DETAIL_FRAGMENT";
+
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.recyclerViewNews)
@@ -49,6 +52,8 @@ public class NewsFragment
     private boolean isAdmin = false;
 
     private DatabaseReference newsReference;
+
+    private int selectedNewsPosition = 0;
 
     @Override
     public NewsContract.UserActionListener createPresenter() {
@@ -70,6 +75,13 @@ public class NewsFragment
             (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         scrollFlags = layoutParams.getScrollFlags();
 
+        if (savedInstanceState == null && BZApplication.isTabletLandscape(getContext())) {
+            NewsDetailFragment newsDetailFragment = new NewsDetailFragment();
+            FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.newsDetailFragmentContainer, newsDetailFragment,
+                KEY_NEWS_DETAIL_FRAGMENT);
+            fragmentTransaction.commit();
+        }
         return view;
     }
 
@@ -93,10 +105,10 @@ public class NewsFragment
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (adapter != null && adapter.getItemCount() > 0) {
-                        adapter.setSelectedPosition(0);
+                        adapter.setSelectedPosition(selectedNewsPosition);
                         NewsDetailFragment newsDetailFragment =
-                            (NewsDetailFragment) getChildFragmentManager().findFragmentById(
-                                R.id.fragmentNewsDetail);
+                            (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
+                                KEY_NEWS_DETAIL_FRAGMENT);
                         if (newsDetailFragment != null) {
                             newsDetailFragment.showNewsDetail(adapter.getSelectedItem());
                         }
@@ -129,11 +141,12 @@ public class NewsFragment
             NewsDetailActivity.startActivity(getActivity(), uid);
         } else {
             if (adapter.getSelectedPosition() != selectedPosition) {
+                this.selectedNewsPosition = selectedPosition;
                 adapter.setSelectedPosition(selectedPosition);
                 adapter.notifySelectedItem();
                 NewsDetailFragment articleDetailFragment =
-                    (NewsDetailFragment) getChildFragmentManager().findFragmentById(
-                        R.id.fragmentNewsDetail);
+                    (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
+                        KEY_NEWS_DETAIL_FRAGMENT);
                 if (articleDetailFragment != null) {
                     articleDetailFragment.showNewsDetail(adapter.getSelectedItem());
                 }
