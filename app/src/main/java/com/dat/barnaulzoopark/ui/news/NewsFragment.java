@@ -24,6 +24,7 @@ import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailFragment;
 import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
+import com.dat.barnaulzoopark.ui.recyclerviewdecorations.NewsItemDecoration;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

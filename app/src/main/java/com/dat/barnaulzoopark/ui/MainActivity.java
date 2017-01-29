@@ -385,7 +385,7 @@ public class MainActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             CropImage.activity(data.getData())
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);

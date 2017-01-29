@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="0.35"
+        android:background="@color/avatar_bg_color">
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/news_detail_banner_height"
-            android:background="@color/avatar_bg_color">
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
 
-            <ImageView
-                android:id="@+id/thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+        <ImageButton
+            android:id="@+id/thumbnailBrowse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:foreground="?android:selectableItemBackground"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_add_a_photo" />
+    </FrameLayout>
 
-            <ImageButton
-                android:id="@+id/thumbnailBrowse"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:foreground="?android:selectableItemBackground"
-                android:tint="@color/white"
-                app:srcCompat="@drawable/ic_add_a_photo" />
-        </FrameLayout>
 
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.65">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,5 +111,5 @@
                     android:layout_height="100dp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
