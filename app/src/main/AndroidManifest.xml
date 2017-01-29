@@ -28,6 +28,7 @@
         <activity android:name=".ui.animalsdetail.AnimalsDetailActivity" />
         <activity android:name=".ui.photosdetail.PhotosDetailActivity" />
         <activity android:name=".ui.newsdetail.NewsDetailActivity" />
+        <activity android:name=".ui.newseditor.NewsItemEditorActivity" />
     </application>
 
 </manifest>
