@@ -10,25 +10,28 @@
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/thumbnailBrowse"
             android:layout_width="match_parent"
             android:layout_height="@dimen/news_detail_banner_height"
-            android:background="@color/avatar_bg_color">
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground">
 
             <ImageView
                 android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_photo_gallery_placeholder" />
 
-            <ImageButton
-                android:id="@+id/thumbnailBrowse"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="right|bottom"
+                android:layout_margin="16dp"
                 android:background="@null"
-                android:foreground="?android:selectableItemBackground"
                 android:tint="@color/white"
-                app:srcCompat="@drawable/ic_add_a_photo" />
+                app:srcCompat="@drawable/ic_photo_camera" />
         </FrameLayout>
 
 
