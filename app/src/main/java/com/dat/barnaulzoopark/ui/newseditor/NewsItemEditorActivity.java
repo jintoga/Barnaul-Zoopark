@@ -10,32 +10,26 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.Attachment;
-import com.dat.barnaulzoopark.ui.BZDialogBuilder;
-import com.dat.barnaulzoopark.ui.BaseMvpActivity;
+import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 /**
  * Created by DAT on 1/29/2017.
  */
 
-public class NewsItemEditorActivity
-    extends BaseMvpActivity<NewsItemEditorContract.View, NewsItemEditorContract.UserActionListener>
-    implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener {
+public class NewsItemEditorActivity extends
+    BaseMvpPhotoEditActivity<NewsItemEditorContract.View, NewsItemEditorContract.UserActionListener>
+    implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
+    BaseMvpPhotoEditActivity.Listener {
 
     private static final String TAG = NewsItemEditorActivity.class.getName();
     @Bind(R.id.toolbar)
@@ -52,7 +46,6 @@ public class NewsItemEditorActivity
 
     private int counter = 0;
     private int currentAttachmentPosition = 0;
-    private final int REQUEST_BROWSE_IMAGE = 1;
     private boolean isThumbnailRequest = false;
 
     public static void start(Context context) {
@@ -72,6 +65,26 @@ public class NewsItemEditorActivity
     }
 
     @Override
+    public void onTakePhotoClicked() {
+        Log.d(TAG, "onTakePhotoClicked");
+    }
+
+    @Override
+    public void onChoosePhotoClicked() {
+        Log.d(TAG, "onChoosePhotoClicked");
+    }
+
+    @Override
+    public void onRemovedPhotoClicked() {
+        Log.d(TAG, "onRemovedPhotoClicked");
+    }
+
+    @Override
+    public void onResultUriSuccess(@NonNull Uri uri) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_item_editor);
@@ -83,6 +96,7 @@ public class NewsItemEditorActivity
             getSupportActionBar().setHomeButtonEnabled(true);
         }
         init();
+        setListener(this);
     }
 
     private void init() {
@@ -128,21 +142,10 @@ public class NewsItemEditorActivity
 
     @OnClick(R.id.thumbnailContainer)
     protected void thumbnailContainerClicked() {
-        changePhoto();
-        /*Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/+");
-        isThumbnailRequest = true;
-        startActivityForResult(intent, REQUEST_BROWSE_IMAGE);*/
+        createChangePhotoDialog();
     }
 
-    private void changePhoto() {
-        MaterialDialog dialog = BZDialogBuilder.createChangePhotoDialog(this);
-        View rootView = dialog.getCustomView();
-
-    }
-
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_BROWSE_IMAGE && data != null) {
             CropImage.activity(data.getData())
@@ -156,6 +159,7 @@ public class NewsItemEditorActivity
                 if (isThumbnailRequest) {
                     isThumbnailRequest = false;
                     Glide.with(this).load(resultUri).into(thumbnail);
+                    currentPhoto = resultUri;
                     return;
                 } else {
                     counter++;
@@ -170,5 +174,5 @@ public class NewsItemEditorActivity
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 }
