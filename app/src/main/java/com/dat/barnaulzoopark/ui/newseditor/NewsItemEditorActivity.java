@@ -10,15 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.google.firebase.database.FirebaseDatabase;
@@ -123,13 +126,20 @@ public class NewsItemEditorActivity
         startActivityForResult(intent, REQUEST_BROWSE_IMAGE);
     }
 
-    @OnClick(R.id.thumbnailBrowse)
-    protected void thumbnailBrowseClicked() {
-        Intent intent = new Intent();
+    @OnClick(R.id.thumbnailContainer)
+    protected void thumbnailContainerClicked() {
+        changePhoto();
+        /*Intent intent = new Intent();
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.setType("image/+");
         isThumbnailRequest = true;
-        startActivityForResult(intent, REQUEST_BROWSE_IMAGE);
+        startActivityForResult(intent, REQUEST_BROWSE_IMAGE);*/
+    }
+
+    private void changePhoto() {
+        MaterialDialog dialog = BZDialogBuilder.createChangePhotoDialog(this);
+        View rootView = dialog.getCustomView();
+
     }
 
     @Override

@@ -79,4 +79,19 @@ public class BZDialogBuilder {
             })
             .alwaysCallInputCallback();
     }
+
+    public static MaterialDialog createChangePhotoDialog(@NonNull Context context) {
+        return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
+            .title("Change photo")
+            .titleColorRes(R.color.black)
+            .customView(R.layout.item_change_photo_dialog, false)
+            .negativeText(context.getString(R.string.cancel))
+            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                }
+            })
+            .show();
+    }
 }

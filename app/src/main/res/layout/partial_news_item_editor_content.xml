@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:id="@+id/thumbnailBrowse"
+            android:id="@+id/thumbnailContainer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/news_detail_banner_height"
             android:clickable="true"
