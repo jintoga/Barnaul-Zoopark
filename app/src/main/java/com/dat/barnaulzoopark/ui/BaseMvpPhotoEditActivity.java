@@ -20,28 +20,33 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpPresenter<V>>
     extends BaseMvpActivity<V, P> {
 
-    protected static final int REQUEST_BROWSE_IMAGE = 1;
     private final String TAG = getClass().getName();
 
     protected Uri oldPhoto, currentPhoto;
 
+    private int originalRequestCode;
+
     private Listener listener;
 
     public interface Listener {
+
         void onTakePhotoClicked();
 
         void onChoosePhotoClicked();
 
         void onRemovedPhotoClicked();
 
-        void onResultUriSuccess(@NonNull Uri uri);
+        void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode);
+
+        void onCropError(@NonNull String errorMsg);
     }
 
     protected void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    protected void createChangePhotoDialog() {
+    protected void createChangePhotoDialog(final int requestCode) {
+        originalRequestCode = requestCode;
         final MaterialDialog dialog = BZDialogBuilder.createChangePhotoDialog(this);
         View rootView = dialog.getCustomView();
         if (rootView == null) {
@@ -59,6 +64,7 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
                 if (listener != null) {
                     listener.onRemovedPhotoClicked();
                 }
+                dialog.dismiss();
             }
         });
         takePhoto.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +85,7 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/+");
-                startActivityForResult(intent, REQUEST_BROWSE_IMAGE);
+                startActivityForResult(intent, requestCode);
                 dialog.dismiss();
             }
         });
@@ -87,21 +93,26 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_BROWSE_IMAGE && data != null) {
+        if (requestCode == originalRequestCode && resultCode == RESULT_OK && data != null) {
             CropImage.activity(data.getData())
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);
+            originalRequestCode = requestCode;
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && result != null) {
                 Uri resultUri = result.getUri();
                 if (listener != null) {
-                    listener.onResultUriSuccess(resultUri);
+                    listener.onResultUriSuccess(resultUri, originalRequestCode);
                 }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE
+                && result != null) {
                 Exception error = result.getError();
                 Log.e(TAG, error.getLocalizedMessage());
+                if (listener != null) {
+                    listener.onCropError(error.getLocalizedMessage());
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

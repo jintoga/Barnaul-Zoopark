@@ -31,6 +31,9 @@ public class NewsItemEditorActivity extends
     implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
     BaseMvpPhotoEditActivity.Listener {
 
+    private static final int REQUEST_BROWSE_IMAGE_THUMBNAIL = 1;
+    private static final int REQUEST_BROWSE_IMAGE_ATTACHMENT = 2;
+
     private static final String TAG = NewsItemEditorActivity.class.getName();
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
@@ -46,7 +49,6 @@ public class NewsItemEditorActivity extends
 
     private int counter = 0;
     private int currentAttachmentPosition = 0;
-    private boolean isThumbnailRequest = false;
 
     public static void start(Context context) {
         if (context instanceof NewsItemEditorActivity) {
@@ -80,8 +82,22 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onResultUriSuccess(@NonNull Uri uri) {
+    public void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode) {
+        switch (originalRequestCode) {
+            case REQUEST_BROWSE_IMAGE_THUMBNAIL:
+                Log.d(TAG, "REQUEST_BROWSE_IMAGE_THUMBNAIL");
+                break;
+            case REQUEST_BROWSE_IMAGE_ATTACHMENT:
+                Log.d(TAG, "REQUEST_BROWSE_IMAGE_ATTACHMENT");
+                break;
+            default:
+                break;
+        }
+    }
 
+    @Override
+    public void onCropError(@NonNull String errorMsg) {
+        Log.d(TAG, errorMsg);
     }
 
     @Override
@@ -134,15 +150,12 @@ public class NewsItemEditorActivity extends
             return;
         }
         currentAttachmentPosition = position;
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/+");
-        startActivityForResult(intent, REQUEST_BROWSE_IMAGE);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT);
     }
 
     @OnClick(R.id.thumbnailContainer)
     protected void thumbnailContainerClicked() {
-        createChangePhotoDialog();
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL);
     }
 
     /*@Override
