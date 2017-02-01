@@ -16,7 +16,9 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.google.firebase.database.FirebaseDatabase;
@@ -86,9 +88,15 @@ public class NewsItemEditorActivity extends
         switch (originalRequestCode) {
             case REQUEST_BROWSE_IMAGE_THUMBNAIL:
                 Log.d(TAG, "REQUEST_BROWSE_IMAGE_THUMBNAIL");
+                Glide.with(this).load(uri).into(thumbnail);
                 break;
             case REQUEST_BROWSE_IMAGE_ATTACHMENT:
                 Log.d(TAG, "REQUEST_BROWSE_IMAGE_ATTACHMENT");
+                counter++;
+                Attachment attachment = new Attachment(true, uri.getPath());
+                attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
+                attachmentAdapter.addEmptySlot();
+                album.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
                 break;
             default:
                 break;
@@ -157,35 +165,4 @@ public class NewsItemEditorActivity extends
     protected void thumbnailContainerClicked() {
         createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL);
     }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_BROWSE_IMAGE && data != null) {
-            CropImage.activity(data.getData())
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this);
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                if (isThumbnailRequest) {
-                    isThumbnailRequest = false;
-                    Glide.with(this).load(resultUri).into(thumbnail);
-                    currentPhoto = resultUri;
-                    return;
-                } else {
-                    counter++;
-                    Attachment attachment = new Attachment(true, resultUri.getPath());
-                    attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
-                    attachmentAdapter.addEmptySlot();
-                    album.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-                Log.e(TAG, error.getLocalizedMessage());
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }*/
 }
