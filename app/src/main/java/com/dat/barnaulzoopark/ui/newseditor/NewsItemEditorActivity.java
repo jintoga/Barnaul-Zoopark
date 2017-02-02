@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +50,8 @@ public class NewsItemEditorActivity extends
     protected RecyclerView album;
     private MultiFileAttachmentAdapter attachmentAdapter;
 
+    private Uri thumbnailUri;
+
     private int counter = 0;
     private int currentAttachmentPosition = 0;
 
@@ -69,18 +72,11 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onTakePhotoClicked() {
-        Log.d(TAG, "onTakePhotoClicked");
-    }
-
-    @Override
-    public void onChoosePhotoClicked() {
-        Log.d(TAG, "onChoosePhotoClicked");
-    }
-
-    @Override
     public void onRemovedPhotoClicked() {
         Log.d(TAG, "onRemovedPhotoClicked");
+        thumbnailUri = null;
+        thumbnail.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.img_photo_gallery_placeholder));
     }
 
     @Override
@@ -88,6 +84,7 @@ public class NewsItemEditorActivity extends
         switch (originalRequestCode) {
             case REQUEST_BROWSE_IMAGE_THUMBNAIL:
                 Log.d(TAG, "REQUEST_BROWSE_IMAGE_THUMBNAIL");
+                thumbnailUri = uri;
                 Glide.with(this).load(uri).into(thumbnail);
                 break;
             case REQUEST_BROWSE_IMAGE_ATTACHMENT:
@@ -158,11 +155,11 @@ public class NewsItemEditorActivity extends
             return;
         }
         currentAttachmentPosition = position;
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT, false);
     }
 
     @OnClick(R.id.thumbnailContainer)
     protected void thumbnailContainerClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL, true);
     }
 }

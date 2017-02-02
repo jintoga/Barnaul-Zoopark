@@ -31,21 +31,17 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
 
     private static final String TAG = "PhotoEditA";
 
-    protected Uri oldPhoto, currentPhoto;
+    private boolean isFilledWithPhoto = false;
 
     private int originalRequestCode;
     private boolean isCapturePhoto = false;
     private static final int REQUEST_CODE_PERMISSIONS = 200;
     private Listener listener;
-
     private static final String TEMP_IMAGE_NAME = "temporary_image";
 
+    private boolean withRemoveItem = false;
+
     public interface Listener {
-
-        void onTakePhotoClicked();
-
-        void onChoosePhotoClicked();
-
         void onRemovedPhotoClicked();
 
         void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode);
@@ -57,8 +53,9 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
         this.listener = listener;
     }
 
-    protected void createChangePhotoDialog(final int requestCode) {
+    protected void createChangePhotoDialog(final int requestCode, boolean withRemoveItem) {
         originalRequestCode = requestCode;
+        this.withRemoveItem = withRemoveItem;
         final MaterialDialog dialog = BZDialogBuilder.createChangePhotoDialog(this);
         View rootView = dialog.getCustomView();
         if (rootView == null) {
@@ -67,12 +64,19 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
         TextView removePhoto = (TextView) rootView.findViewById(R.id.removePhoto);
         TextView takePhoto = (TextView) rootView.findViewById(R.id.takePhoto);
         final TextView choosePhoto = (TextView) rootView.findViewById(R.id.choosePhoto);
-        if (oldPhoto == null && currentPhoto == null) {
+        if (withRemoveItem) {
+            if (!isFilledWithPhoto) {
+                removePhoto.setVisibility(View.GONE);
+            } else {
+                removePhoto.setVisibility(View.VISIBLE);
+            }
+        } else {
             removePhoto.setVisibility(View.GONE);
         }
         removePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isFilledWithPhoto = false;
                 if (listener != null) {
                     listener.onRemovedPhotoClicked();
                 }
@@ -83,9 +87,7 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
             @Override
             public void onClick(View view) {
                 isCapturePhoto = true;
-                if (listener != null) {
-                    listener.onTakePhotoClicked();
-                }
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ActivityCompat.checkSelfPermission(BaseMvpPhotoEditActivity.this,
                         Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -102,9 +104,7 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
             @Override
             public void onClick(View view) {
                 isCapturePhoto = false;
-                if (listener != null) {
-                    listener.onChoosePhotoClicked();
-                }
+
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/+");
@@ -131,6 +131,9 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK && result != null) {
                 Uri resultUri = result.getUri();
+                if (withRemoveItem) {
+                    isFilledWithPhoto = true;
+                }
                 if (listener != null) {
                     listener.onResultUriSuccess(resultUri, originalRequestCode);
                 }
