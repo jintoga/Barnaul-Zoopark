@@ -24,6 +24,10 @@ import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Created by DAT on 1/29/2017.
@@ -34,6 +38,8 @@ public class NewsItemEditorActivity extends
     implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
     BaseMvpPhotoEditActivity.Listener {
 
+    private static final String KEY_SAVED_ATTACHMENTS = "SAVED_ATTACHMENTS";
+    private static final String KEY_SAVED_THUMBNAIL_URI = "SAVED_THUMBNAIL_URI";
     private static final int REQUEST_BROWSE_IMAGE_THUMBNAIL = 1;
     private static final int REQUEST_BROWSE_IMAGE_ATTACHMENT = 2;
 
@@ -161,5 +167,37 @@ public class NewsItemEditorActivity extends
     @OnClick(R.id.thumbnailContainer)
     protected void thumbnailContainerClicked() {
         createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL, true);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(KEY_SAVED_THUMBNAIL_URI)) {
+            thumbnailUri = Uri.parse(savedInstanceState.getString(KEY_SAVED_THUMBNAIL_URI));
+            Glide.with(this).load(thumbnailUri).into(thumbnail);
+        }
+        if (savedInstanceState.containsKey(KEY_SAVED_ATTACHMENTS)) {
+            String dataInJson = savedInstanceState.getString(KEY_SAVED_ATTACHMENTS);
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Attachment>>() {
+            }.getType();
+            List<Attachment> savedData = gson.fromJson(dataInJson, type);
+            if (attachmentAdapter != null) {
+                attachmentAdapter.setData(savedData);
+            }
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (thumbnailUri != null) {
+            outState.putString(KEY_SAVED_THUMBNAIL_URI, thumbnailUri.toString());
+        }
+        if (attachmentAdapter.getData() != null && !attachmentAdapter.getData().isEmpty()) {
+            Gson gson = new Gson();
+            String dataInJson = gson.toJson(attachmentAdapter.getData());
+            outState.putString(KEY_SAVED_ATTACHMENTS, dataInJson);
+        }
+        super.onSaveInstanceState(outState);
     }
 }

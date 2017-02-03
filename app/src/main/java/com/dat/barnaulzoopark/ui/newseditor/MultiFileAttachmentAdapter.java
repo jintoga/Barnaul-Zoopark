@@ -111,6 +111,16 @@ class MultiFileAttachmentAdapter
         return mimeType != null && mimeType.indexOf("image") == 0;
     }
 
+    public List<Attachment> getData() {
+        return data;
+    }
+
+    public void setData(List<Attachment> data) {
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.attach)
         ImageButton attach;
