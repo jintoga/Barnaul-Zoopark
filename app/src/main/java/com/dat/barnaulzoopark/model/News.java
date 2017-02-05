@@ -50,6 +50,10 @@ public class News {
         return thumbnail;
     }
 
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     public Map<String, String> getPhotos() {
         return photos;
     }

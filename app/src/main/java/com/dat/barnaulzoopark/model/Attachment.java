@@ -1,18 +1,20 @@
 package com.dat.barnaulzoopark.model;
 
+import android.net.Uri;
+
 /**
  * Created by Nguyen on 9/22/2016.
  */
 public class Attachment {
     private boolean isFilled;
-    private String filePath;
+    private Uri uri;
 
     public Attachment() {
     }
 
-    public Attachment(boolean isFilled, String filePath) {
+    public Attachment(boolean isFilled, Uri uri) {
         this.isFilled = isFilled;
-        this.filePath = filePath;
+        this.uri = uri;
     }
 
     public boolean isFilled() {
@@ -23,11 +25,11 @@ public class Attachment {
         isFilled = filled;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public Uri getUri() {
+        return uri;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 }

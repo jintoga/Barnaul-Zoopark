@@ -54,19 +54,28 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         }
     }
 
-    private void uploadThumbnail(@NonNull final String uid, @NonNull Uri thumbnailUri) {
+    private void uploadImage(final boolean isAttachment, @Nullable final String attachmentUid,
+        @NonNull final String uid, @NonNull Uri uri) {
         if (getView() != null) {
             getView().showUploadThumbnailProgress();
         }
-        StorageReference newsStorageReference =
-            storage.getReference().child(BZFireBaseApi.news + "/" + uid);
-        UploadTask uploadTask = newsStorageReference.putFile(thumbnailUri);
+        StorageReference newsStorageReference;
+        if (!isAttachment) {
+            newsStorageReference =
+                storage.getReference().child(BZFireBaseApi.news + "/" + uid + "/" + "thumbnail");
+        } else {
+            newsStorageReference = storage.getReference()
+                .child(BZFireBaseApi.news + "/" + uid + "/photos/" + attachmentUid);
+        }
+        UploadTask uploadTask = newsStorageReference.putFile(uri);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri thumbnailUploadedUri = taskSnapshot.getDownloadUrl();
-                if (thumbnailUploadedUri != null) {
-                    setThumbnailToNewsItem(uid, thumbnailUploadedUri);
+                Uri uploadedUri = taskSnapshot.getDownloadUrl();
+                if (!isAttachment && uploadedUri != null) {
+                    setThumbnailToNewsItem(uid, uploadedUri);
+                } else if (uploadedUri != null) {
+                    addAttachmentToNewsItem(uid, uploadedUri, attachmentUid);
                 }
                 if (getView() != null) {
                     getView().onUploadSuccess();
@@ -82,6 +91,14 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         });
     }
 
+    private void addAttachmentToNewsItem(@NonNull String uid, @NonNull Uri uploadedUri,
+        String attachmentUid) {
+        DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
+        DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
+        DatabaseReference newsItemPhotoReference = newsItemReference.child("photos");
+        newsItemPhotoReference.child(attachmentUid).setValue(uploadedUri.toString());
+    }
+
     private void setThumbnailToNewsItem(@NonNull String uid, @NonNull Uri thumbnailUploadedUri) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
         DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
@@ -89,7 +106,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     }
 
     private void createNewsItem(@NonNull String title, @NonNull String description,
-        @Nullable final Uri thumbnailUri, @NonNull List<Attachment> attachments) {
+        @Nullable final Uri thumbnailUri, @NonNull final List<Attachment> attachments) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
         final String uid = newsDatabaseReference.push().getKey();
         DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
@@ -97,11 +114,16 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         newsItemReference.setValue(news).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                if (thumbnailUri != null) {
-                    uploadThumbnail(uid, thumbnailUri);
-                } else {
+                if (thumbnailUri == null && attachments.isEmpty()) {
                     if (getView() != null) {
                         getView().onUploadSuccess();
+                    }
+                } else {
+                    if (thumbnailUri != null) {
+                        uploadImage(false, null, uid, thumbnailUri);
+                    }
+                    if (!attachments.isEmpty()) {
+                        uploadAttachments(uid, attachments);
                     }
                 }
             }
@@ -113,6 +135,16 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                 }
             }
         });
+    }
+
+    private void uploadAttachments(@NonNull String uid, @NonNull List<Attachment> attachments) {
+        int i = 0;
+        for (Attachment attachment : attachments) {
+            if (attachment.isFilled()) {
+                uploadImage(true, uid + String.valueOf(i), uid, attachment.getUri());
+                i++;
+            }
+        }
     }
 
     private void updateNewsItem(@NonNull String newsUID, @NonNull String title,
