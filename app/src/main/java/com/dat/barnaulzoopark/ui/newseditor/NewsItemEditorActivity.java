@@ -118,11 +118,14 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onThumbnailUploadSuccess() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
+    public void highlightRequiredFields() {
+        Log.d(TAG, "highlightRequiredFields");
+        if (title.getText().toString().isEmpty()) {
+            title.setError("Input required");
         }
-        finish();
+        if (description.getText().toString().isEmpty()) {
+            description.setError("Input required");
+        }
     }
 
     @Override
@@ -140,6 +143,7 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+        finish();
     }
 
     @Override
@@ -150,8 +154,7 @@ public class NewsItemEditorActivity extends
 
     @Override
     public void showUploadThumbnailProgress() {
-        Log.d(TAG, "showSigningUpProgress");
-        progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Uploading thumbnail...");
+        Log.d(TAG, "showUploadThumbnailProgress");
     }
 
     @Override
@@ -192,7 +195,7 @@ public class NewsItemEditorActivity extends
                 showDiscardConfirm();
                 break;
             case R.id.save:
-                //ToDo: // FIXME: 2/5/2017
+                //ToDo: // FIXME: 2/5/2017 add edit function
                 presenter.updateOrCreateNewsItem(null, title.getText().toString(),
                     description.getText().toString(), thumbnailUri, attachmentAdapter.getData());
                 break;

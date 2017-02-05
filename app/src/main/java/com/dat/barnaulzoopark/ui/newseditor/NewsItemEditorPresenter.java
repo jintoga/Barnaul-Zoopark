@@ -47,6 +47,10 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
             } else {
                 updateNewsItem(newsUID, title, description, thumbnailUri, attachments);
             }
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
         }
     }
 
@@ -65,7 +69,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                     setThumbnailToNewsItem(uid, thumbnailUploadedUri);
                 }
                 if (getView() != null) {
-                    getView().onThumbnailUploadSuccess();
+                    getView().onUploadSuccess();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -93,11 +97,12 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         newsItemReference.setValue(news).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                if (getView() != null) {
-                    getView().onUploadSuccess();
-                }
                 if (thumbnailUri != null) {
                     uploadThumbnail(uid, thumbnailUri);
+                } else {
+                    if (getView() != null) {
+                        getView().onUploadSuccess();
+                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

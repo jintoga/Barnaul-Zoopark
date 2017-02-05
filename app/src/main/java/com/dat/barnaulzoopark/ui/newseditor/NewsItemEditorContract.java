@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface NewsItemEditorContract {
     interface View extends MvpView {
-        void onThumbnailUploadSuccess();
+        void highlightRequiredFields();
 
         void onUploadFailure(@NonNull String errorMsg);
 
