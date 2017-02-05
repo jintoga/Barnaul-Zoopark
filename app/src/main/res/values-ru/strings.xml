@@ -31,4 +31,6 @@
     <string name="welcome_to_our_zoo">Добро пожаловать!</string>
     <string name="edit_name">Редактировать имя пользователя:</string>
     <string name="edit_name_hint">Введите имя</string>
+    <string name="discard_your_changes">Отменить изменения?</string>
+    <string name="discard">Отменить</string>
 </resources>

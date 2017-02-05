@@ -111,6 +111,7 @@ class MultiFileAttachmentAdapter
         return mimeType != null && mimeType.indexOf("image") == 0;
     }
 
+    @NonNull
     public List<Attachment> getData() {
         return data;
     }
@@ -119,6 +120,10 @@ class MultiFileAttachmentAdapter
         this.data.clear();
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public boolean hasAttachment() {
+        return data.get(0).isFilled();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -29,7 +29,7 @@ import java.io.File;
 public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpPresenter<V>>
     extends BaseMvpActivity<V, P> {
 
-    private static final String TAG = "PhotoEditA";
+    private static final String TAG = BaseMvpPhotoEditActivity.class.getName();
 
     private boolean isFilledWithPhoto = false;
 
@@ -181,7 +181,7 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
         File imageFile = new File(this.getExternalCacheDir(), TEMP_IMAGE_NAME);
         boolean directoryCreated = imageFile.getParentFile().mkdirs();
         if (!directoryCreated && !imageFile.getParentFile().exists()) {
-            Log.i("TAG", "Failed to create directory for temp file:  " + imageFile.getParentFile());
+            Log.i(TAG, "Failed to create directory for temp file:  " + imageFile.getParentFile());
         }
         return imageFile;
     }

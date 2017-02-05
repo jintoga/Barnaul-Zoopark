@@ -94,4 +94,13 @@ public class BZDialogBuilder {
             })
             .show();
     }
+
+    public static MaterialDialog.Builder createConfirmDialog(@NonNull Context context,
+        @NonNull String title, @NonNull String btnPositiveText) {
+        return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
+            .title(title)
+            .titleColorRes(R.color.black)
+            .negativeText(context.getString(R.string.cancel))
+            .positiveText(btnPositiveText);
+    }
 }

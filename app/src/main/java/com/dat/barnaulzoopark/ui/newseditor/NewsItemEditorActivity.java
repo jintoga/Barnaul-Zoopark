@@ -11,15 +11,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.google.firebase.database.FirebaseDatabase;
@@ -74,7 +78,7 @@ public class NewsItemEditorActivity extends
     public NewsItemEditorContract.UserActionListener createPresenter() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        return new NewsItemEditorPresenter(database, storage);
+        return new NewsItemEditorPresenter(this, database, storage);
     }
 
     @Override
@@ -140,6 +144,50 @@ public class NewsItemEditorActivity extends
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.news_item_editor, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                showDiscardConfirm();
+                break;
+            case R.id.save:
+                presenter.updateOrCreateNewsItem(title.getText().toString(),
+                    description.getText().toString(), thumbnailUri, attachmentAdapter.getData());
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showDiscardConfirm();
+    }
+
+    private void showDiscardConfirm() {
+        if (!"".equals(title.getText().toString())
+            || !"".equals(description.getText().toString())
+            || thumbnailUri != null
+            || attachmentAdapter.hasAttachment()) {
+            BZDialogBuilder.createConfirmDialog(this, getString(R.string.discard_your_changes),
+                getString(R.string.discard)).onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                }
+            }).onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            }).show();
+        } else {
+            finish();
+        }
     }
 
     @Override
