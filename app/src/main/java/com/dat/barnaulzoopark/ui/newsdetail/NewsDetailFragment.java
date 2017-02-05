@@ -20,6 +20,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
+import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -106,6 +107,10 @@ public class NewsDetailFragment
     public void showNewsDetail(@NonNull News news) {
         if (news.getThumbnail() != null) {
             thumbnail.setImageURI(Uri.parse(news.getThumbnail()));
+        } else {
+            Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
+            thumbnail.setImageURI(uri);
         }
         title.setText(news.getTitle());
         description.setText(news.getDescription());
