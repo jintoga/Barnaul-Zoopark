@@ -89,7 +89,7 @@ public class LoginFragment
     @Override
     public void showLoginProgress() {
         Log.d(TAG, "showLoginProgress");
-        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext());
+        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(), null);
     }
 
     private void initToolbar() {

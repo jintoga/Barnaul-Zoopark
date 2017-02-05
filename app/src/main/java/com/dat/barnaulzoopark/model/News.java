@@ -22,11 +22,10 @@ public class News {
         // Default constructor required for calls to DataSnapshot.getValue(News.class)
     }
 
-    public News(String uid, String title, String description, String thumbnail, long time) {
+    public News(String uid, String title, String description, long time) {
         this.uid = uid;
         this.title = title;
         this.description = description;
-        this.thumbnail = thumbnail;
         this.time = time;
     }
 

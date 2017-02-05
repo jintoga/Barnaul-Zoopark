@@ -33,7 +33,7 @@ public class SignUpFragment
     implements SignUpContract.View {
 
     private static final String TAG = SignUpFragment.class.getName();
-    
+
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.userName)
@@ -100,7 +100,7 @@ public class SignUpFragment
     @Override
     public void showSigningUpProgress() {
         Log.d(TAG, "showSigningUpProgress");
-        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext());
+        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(), null);
     }
 
     private void initToolbar() {

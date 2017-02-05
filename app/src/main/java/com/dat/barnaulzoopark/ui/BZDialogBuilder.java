@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.InputType;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -29,10 +30,11 @@ public class BZDialogBuilder {
             .show();
     }
 
-    public static MaterialDialog createSimpleProgressDialog(@NonNull Context context) {
+    public static MaterialDialog createSimpleProgressDialog(@NonNull Context context,
+        @Nullable String message) {
         return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
             .contentColorRes(R.color.black)
-            .content("Loading...")
+            .content(message == null ? "Loading..." : message)
             .progress(true, 0)
             .show();
     }

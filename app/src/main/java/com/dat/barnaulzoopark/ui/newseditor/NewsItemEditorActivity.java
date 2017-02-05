@@ -65,6 +65,8 @@ public class NewsItemEditorActivity extends
     private int counter = 0;
     private int currentAttachmentPosition = 0;
 
+    private MaterialDialog progressDialog;
+
     public static void start(Context context) {
         if (context instanceof NewsItemEditorActivity) {
             return;
@@ -116,6 +118,43 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
+    public void onThumbnailUploadSuccess() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        finish();
+    }
+
+    @Override
+    public void onUploadFailure(@NonNull String errorMsg) {
+        Log.d(TAG, errorMsg);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUploadSuccess() {
+        Log.d(TAG, "onUploadSuccess");
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showUploadNewsItemProgress() {
+        Log.d(TAG, "showSigningUpProgress");
+        progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, null);
+    }
+
+    @Override
+    public void showUploadThumbnailProgress() {
+        Log.d(TAG, "showSigningUpProgress");
+        progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Uploading thumbnail...");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_item_editor);
@@ -153,7 +192,8 @@ public class NewsItemEditorActivity extends
                 showDiscardConfirm();
                 break;
             case R.id.save:
-                presenter.updateOrCreateNewsItem(title.getText().toString(),
+                //ToDo: // FIXME: 2/5/2017
+                presenter.updateOrCreateNewsItem(null, title.getText().toString(),
                     description.getText().toString(), thumbnailUri, attachmentAdapter.getData());
                 break;
             default:
@@ -241,7 +281,7 @@ public class NewsItemEditorActivity extends
         if (thumbnailUri != null) {
             outState.putString(KEY_SAVED_THUMBNAIL_URI, thumbnailUri.toString());
         }
-        if (attachmentAdapter.getData() != null && !attachmentAdapter.getData().isEmpty()) {
+        if (!attachmentAdapter.getData().isEmpty()) {
             Gson gson = new Gson();
             String dataInJson = gson.toJson(attachmentAdapter.getData());
             outState.putString(KEY_SAVED_ATTACHMENTS, dataInJson);
