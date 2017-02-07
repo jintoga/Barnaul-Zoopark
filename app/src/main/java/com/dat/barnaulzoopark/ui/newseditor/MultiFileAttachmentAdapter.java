@@ -52,7 +52,8 @@ class MultiFileAttachmentAdapter
         if (attachment != null) {
             holder.thumbnail.setImageDrawable(null);
             if (attachment.isFilled()) {
-                holder.bindData(attachment.getUri());
+                Uri uri = Uri.parse(attachment.getUrl());
+                holder.bindData(uri);
                 holder.hideAddBtnAndShowRemoveBtn(true);
             } else {
                 holder.bindEmptyData();
@@ -82,7 +83,7 @@ class MultiFileAttachmentAdapter
     void addEmptySlot() {
         if (data.size() < MAX_NUMBER_ATTACHMENT) {
             Attachment attachment = new Attachment();
-            attachment.setUri(null);
+            attachment.setUrl(null);
             attachment.setFilled(false);
             data.add(attachment);
         }
@@ -90,7 +91,7 @@ class MultiFileAttachmentAdapter
     }
 
     void emptySlot(int position) {
-        Log.d("removed", "removed:" + data.get(position).getUri());
+        Log.d("removed", "removed:" + data.get(position).getUrl());
         data.remove(position);
         notifyDataSetChanged();
     }

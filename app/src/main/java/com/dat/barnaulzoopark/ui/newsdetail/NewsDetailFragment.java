@@ -8,6 +8,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +22,13 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
+import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by DAT on 1/9/2017.
@@ -49,6 +54,9 @@ public class NewsDetailFragment
     protected TextView description;
     @Bind(R.id.time)
     protected TextView time;
+    @Bind(R.id.photos)
+    protected RecyclerView photos;
+    private NewsDetailPhotosAdapter photosAdapter;
 
     @NonNull
     @Override
@@ -101,10 +109,21 @@ public class NewsDetailFragment
                 int viewId = view.getId();
             }
         });
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        photos.setLayoutManager(linearLayoutManager);
+        photos.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
+        if (photosAdapter == null) {
+            photosAdapter = new NewsDetailPhotosAdapter();
+        }
+        photos.setAdapter(photosAdapter);
     }
 
     @Override
     public void showNewsDetail(@NonNull News news) {
+        appBarLayout.setExpanded(true, false);
+
         if (news.getThumbnail() != null) {
             thumbnail.setImageURI(Uri.parse(news.getThumbnail()));
         } else {
@@ -115,6 +134,9 @@ public class NewsDetailFragment
         title.setText(news.getTitle());
         description.setText(news.getDescription());
         time.setText(ConverterUtils.epochToString(news.getTime()));
-        appBarLayout.setExpanded(true, false);
+        if (news.getPhotos() != null && !news.getPhotos().isEmpty()) {
+            List<String> urls = new ArrayList<>(news.getPhotos().values());
+            photosAdapter.setData(urls);
+        }
     }
 }

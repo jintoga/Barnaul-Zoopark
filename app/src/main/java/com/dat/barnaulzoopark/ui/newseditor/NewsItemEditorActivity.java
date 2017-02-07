@@ -102,7 +102,7 @@ public class NewsItemEditorActivity extends
             case REQUEST_BROWSE_IMAGE_ATTACHMENT:
                 Log.d(TAG, "REQUEST_BROWSE_IMAGE_ATTACHMENT");
                 counter++;
-                Attachment attachment = new Attachment(true, uri);
+                Attachment attachment = new Attachment(true, uri.toString());
                 attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
                 attachmentAdapter.addEmptySlot();
                 album.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);

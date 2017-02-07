@@ -141,7 +141,8 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         int i = 0;
         for (Attachment attachment : attachments) {
             if (attachment.isFilled()) {
-                uploadImage(true, uid + String.valueOf(i), uid, attachment.getUri());
+                Uri uri = Uri.parse(attachment.getUrl());
+                uploadImage(true, uid + "-" + String.valueOf(i), uid, uri);
                 i++;
             }
         }
