@@ -8,7 +8,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 /**
@@ -19,11 +18,9 @@ class NewsDetailPresenter extends MvpBasePresenter<NewsDetailContract.View>
     implements NewsDetailContract.UserActionListener {
 
     private FirebaseDatabase database;
-    private FirebaseStorage storage;
 
-    NewsDetailPresenter(FirebaseDatabase database, FirebaseStorage storage) {
+    NewsDetailPresenter(FirebaseDatabase database) {
         this.database = database;
-        this.storage = storage;
     }
 
     @Override

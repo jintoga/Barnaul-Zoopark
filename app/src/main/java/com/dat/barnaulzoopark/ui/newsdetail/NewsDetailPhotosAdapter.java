@@ -19,6 +19,7 @@ import java.util.List;
 public class NewsDetailPhotosAdapter
     extends RecyclerView.Adapter<NewsDetailPhotosAdapter.ViewHolder> {
     private List<String> data = new ArrayList<>();
+    private ItemClickListener itemClickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,9 +29,17 @@ public class NewsDetailPhotosAdapter
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if (data.get(position) != null) {
             holder.bindData(data.get(position));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClicked(holder.getAdapterPosition());
+                    }
+                }
+            });
         }
     }
 
@@ -48,6 +57,14 @@ public class NewsDetailPhotosAdapter
         data.clear();
         data.addAll(photoUrls);
         notifyDataSetChanged();
+    }
+
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    interface ItemClickListener {
+        void onItemClicked(int adapterPosition);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -76,6 +76,6 @@ public class PhotoAlbumsDetailFragment extends Fragment
         for (Photo photo : adapter.getData()) {
             urls.add(photo.getUrl());
         }
-        PhotosDetailActivity.startActivity(getActivity(), urls, position);
+        PhotosDetailActivity.start(getActivity(), urls, position,true);
     }
 }

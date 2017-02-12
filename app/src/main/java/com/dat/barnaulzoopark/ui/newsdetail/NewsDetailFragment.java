@@ -22,11 +22,11 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
+import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ import java.util.List;
 
 public class NewsDetailFragment
     extends BaseMvpFragment<NewsDetailContract.View, NewsDetailContract.UserActionListener>
-    implements NewsDetailContract.View {
+    implements NewsDetailContract.View, NewsDetailPhotosAdapter.ItemClickListener {
 
     private static final String KEY_NEWS_UID = "NEWS_UID";
 
@@ -58,12 +58,13 @@ public class NewsDetailFragment
     protected RecyclerView photos;
     private NewsDetailPhotosAdapter photosAdapter;
 
+    private News currentNews;
+
     @NonNull
     @Override
     public NewsDetailContract.UserActionListener createPresenter() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        return new NewsDetailPresenter(database, storage);
+        return new NewsDetailPresenter(database);
     }
 
     @Nullable
@@ -74,6 +75,14 @@ public class NewsDetailFragment
         ButterKnife.bind(this, view);
         init();
         return view;
+    }
+
+    @Override
+    public void onItemClicked(int adapterPosition) {
+        if (currentNews != null) {
+            List<String> albumUrls = new ArrayList<>(currentNews.getPhotos().values());
+            PhotosDetailActivity.start(getActivity(), albumUrls, adapterPosition, false);
+        }
     }
 
     @Override
@@ -116,12 +125,14 @@ public class NewsDetailFragment
         photos.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
         if (photosAdapter == null) {
             photosAdapter = new NewsDetailPhotosAdapter();
+            photosAdapter.setItemClickListener(this);
         }
         photos.setAdapter(photosAdapter);
     }
 
     @Override
     public void showNewsDetail(@NonNull News news) {
+        currentNews = news;
         appBarLayout.setExpanded(true, false);
 
         if (news.getThumbnail() != null) {
