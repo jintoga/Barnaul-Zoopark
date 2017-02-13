@@ -176,7 +176,7 @@ public class NewsFragment
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (isAdmin) {
+                if (isAdmin && !BZApplication.isTabletLandscape(getContext())) {
                     if (dy > 0 && fabCreate.isShown()) {
                         fabCreate.hide();
                     } else if (dy < 0) {
