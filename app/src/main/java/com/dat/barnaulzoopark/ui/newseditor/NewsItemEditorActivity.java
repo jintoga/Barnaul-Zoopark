@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
@@ -31,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +45,7 @@ public class NewsItemEditorActivity extends
     implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
     BaseMvpPhotoEditActivity.Listener {
 
+    private static final String EXTAR_SELECTED_NEWS_UID = "SELECTED_NEWS_UID";
     private static final String KEY_SAVED_ATTACHMENTS = "SAVED_ATTACHMENTS";
     private static final String KEY_SAVED_THUMBNAIL_URI = "SAVED_THUMBNAIL_URI";
     private static final int REQUEST_BROWSE_IMAGE_THUMBNAIL = 1;
@@ -67,11 +71,14 @@ public class NewsItemEditorActivity extends
 
     private MaterialDialog progressDialog;
 
-    public static void start(Context context) {
+    public static void start(Context context, @Nullable String uid) {
         if (context instanceof NewsItemEditorActivity) {
             return;
         }
         Intent intent = new Intent(context, NewsItemEditorActivity.class);
+        if (uid != null) {
+            intent.putExtra(EXTAR_SELECTED_NEWS_UID, uid);
+        }
         context.startActivity(intent);
     }
 
@@ -115,6 +122,24 @@ public class NewsItemEditorActivity extends
     @Override
     public void onCropError(@NonNull String errorMsg) {
         Log.d(TAG, errorMsg);
+    }
+
+    @Override
+    public void bindSelectedNews(@NonNull News selectedNews) {
+        title.setText(selectedNews.getTitle());
+        description.setText(selectedNews.getDescription());
+        if (selectedNews.getThumbnail() != null && !"".equals(selectedNews.getThumbnail())) {
+            Glide.with(this).load(Uri.parse(selectedNews.getThumbnail())).into(thumbnail);
+        }
+        if (selectedNews.getPhotos() != null && !selectedNews.getPhotos().isEmpty()) {
+            List<Attachment> attachments = new ArrayList<>();
+            for (String url : selectedNews.getPhotos().values()) {
+                Attachment attachment = new Attachment(true, url);
+                attachments.add(attachment);
+            }
+            attachmentAdapter.setData(attachments);
+            attachmentAdapter.addEmptySlot();
+        }
     }
 
     @Override
@@ -179,7 +204,16 @@ public class NewsItemEditorActivity extends
             (int) getResources().getDimension(R.dimen.item_file_attachment_decoration)));
         attachmentAdapter = new MultiFileAttachmentAdapter(this);
         album.setAdapter(attachmentAdapter);
-        attachmentAdapter.addEmptySlot();
+        String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
+        if (selectedNewsUid != null) {
+            loadSelectedNews(selectedNewsUid);
+        } else {
+            attachmentAdapter.addEmptySlot();
+        }
+    }
+
+    private void loadSelectedNews(@NonNull String selectedNewsUid) {
+        presenter.loadSelectedNews(selectedNewsUid);
     }
 
     @Override

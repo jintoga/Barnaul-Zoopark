@@ -76,7 +76,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
             viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    listener.onNewsLongClicked(viewHolder.getAdapterPosition());
+                    listener.onNewsLongClicked(model.getUid());
                     return false;
                 }
             });
@@ -143,6 +143,6 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     interface NewsAdapterListener {
         void onItemClicked(@NonNull String uid, int selectedPosition);
 
-        void onNewsLongClicked(int position);
+        void onNewsLongClicked(String uid);
     }
 }

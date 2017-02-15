@@ -9,8 +9,11 @@ import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -32,6 +35,28 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         FirebaseStorage storage) {
         this.database = database;
         this.storage = storage;
+    }
+
+    @Override
+    public void loadSelectedNews(String selectedNewsUid) {
+        DatabaseReference newsReference =
+            FirebaseDatabase.getInstance().getReference(BZFireBaseApi.news).child(selectedNewsUid);
+        newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                News selectedNews = dataSnapshot.getValue(News.class);
+                if (selectedNews != null) {
+                    if (getView() != null) {
+                        getView().bindSelectedNews(selectedNews);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

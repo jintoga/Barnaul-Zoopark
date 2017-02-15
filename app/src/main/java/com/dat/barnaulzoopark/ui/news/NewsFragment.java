@@ -158,8 +158,9 @@ public class NewsFragment
     }
 
     @Override
-    public void onNewsLongClicked(int position) {
+    public void onNewsLongClicked(String uid) {
         //ToDo: display Edit, Delete Buttons on Toolbar
+        NewsItemEditorActivity.start(getActivity(), uid);
     }
 
     private void init() {
@@ -189,6 +190,6 @@ public class NewsFragment
 
     @OnClick(R.id.fabCreate)
     protected void fabCreateClicked() {
-        NewsItemEditorActivity.start(getContext());
+        NewsItemEditorActivity.start(getContext(), null);
     }
 }
