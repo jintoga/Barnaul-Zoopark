@@ -71,6 +71,8 @@ public class NewsItemEditorActivity extends
 
     private MaterialDialog progressDialog;
 
+    private News selectedNews;
+
     public static void start(Context context, @Nullable String uid) {
         if (context instanceof NewsItemEditorActivity) {
             return;
@@ -126,6 +128,7 @@ public class NewsItemEditorActivity extends
 
     @Override
     public void bindSelectedNews(@NonNull News selectedNews) {
+        this.selectedNews = selectedNews;
         title.setText(selectedNews.getTitle());
         description.setText(selectedNews.getDescription());
         if (selectedNews.getThumbnail() != null && !"".equals(selectedNews.getThumbnail())) {
@@ -138,8 +141,8 @@ public class NewsItemEditorActivity extends
                 attachments.add(attachment);
             }
             attachmentAdapter.setData(attachments);
-            attachmentAdapter.addEmptySlot();
         }
+        attachmentAdapter.addEmptySlot();
     }
 
     @Override
@@ -229,8 +232,8 @@ public class NewsItemEditorActivity extends
                 showDiscardConfirm();
                 break;
             case R.id.save:
-                //ToDo: // FIXME: 2/5/2017 add edit function
-                presenter.updateOrCreateNewsItem(null, title.getText().toString(),
+                presenter.updateOrCreateNewsItem(
+                    selectedNews != null ? selectedNews.getUid() : null, title.getText().toString(),
                     description.getText().toString(), thumbnailUri, attachmentAdapter.getData());
                 break;
             default:

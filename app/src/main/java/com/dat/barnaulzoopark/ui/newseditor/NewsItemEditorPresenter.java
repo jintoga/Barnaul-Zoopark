@@ -67,11 +67,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
             if (getView() != null) {
                 getView().showUploadNewsItemProgress();
             }
-            if (newsUID == null) {
-                createNewsItem(title, description, thumbnailUri, attachments);
-            } else {
-                updateNewsItem(newsUID, title, description, thumbnailUri, attachments);
-            }
+            createOrUpdateNewsItem(newsUID, title, description, thumbnailUri, attachments);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -130,12 +126,17 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         newsItemReference.child("thumbnail").setValue(thumbnailUploadedUri.toString());
     }
 
-    private void createNewsItem(@NonNull String title, @NonNull String description,
-        @Nullable final Uri thumbnailUri, @NonNull final List<Attachment> attachments) {
+    private void createOrUpdateNewsItem(@Nullable String selectedUid, @NonNull String title,
+        @NonNull String description, @Nullable final Uri thumbnailUri,
+        @NonNull final List<Attachment> attachments) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
-        final String uid = newsDatabaseReference.push().getKey();
+        String uid = selectedUid;
+        if (uid == null) {
+            uid = newsDatabaseReference.push().getKey();
+        }
         DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
         News news = new News(uid, title, description, Calendar.getInstance().getTimeInMillis());
+        final String finalUid = uid;
         newsItemReference.setValue(news).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -145,10 +146,10 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                     }
                 } else {
                     if (thumbnailUri != null) {
-                        uploadImage(false, null, uid, thumbnailUri);
+                        uploadImage(false, null, finalUid, thumbnailUri);
                     }
                     if (!attachments.isEmpty()) {
-                        uploadAttachments(uid, attachments);
+                        uploadAttachments(finalUid, attachments);
                     }
                 }
             }
@@ -171,11 +172,5 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                 i++;
             }
         }
-    }
-
-    private void updateNewsItem(@NonNull String newsUID, @NonNull String title,
-        @NonNull String description, @Nullable Uri thumbnailUri,
-        @NonNull List<Attachment> attachments) {
-
     }
 }
