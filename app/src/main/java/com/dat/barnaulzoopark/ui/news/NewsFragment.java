@@ -6,6 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +28,6 @@ import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailFragment;
 import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
-import com.dat.barnaulzoopark.ui.recyclerviewdecorations.NewsItemDecoration;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -166,13 +169,28 @@ public class NewsFragment
     private void init() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewNews.setLayoutManager(layoutManager);
-        recyclerViewNews.addItemDecoration(new NewsItemDecoration(
-            (int) getResources().getDimension(R.dimen.item_news_margin_bottom_decoration)));
+        recyclerViewNews.addItemDecoration(
+            new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        setCardViewBackgroundToRecyclerView(recyclerViewNews);
 
         newsReference = FirebaseDatabase.getInstance().getReference(BZFireBaseApi.news);
         adapter = new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class,
             newsReference, this);
+        newsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (adapter.getItemCount() == 0) {
+                    recyclerViewNews.setVisibility(View.INVISIBLE);
+                } else {
+                    recyclerViewNews.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         recyclerViewNews.setAdapter(adapter);
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -186,6 +204,21 @@ public class NewsFragment
                 }
             }
         });
+    }
+
+    private void setCardViewBackgroundToRecyclerView(RecyclerView recyclerView) {
+        CardView cardView = new CardView(getContext());
+        cardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+        cardView.setUseCompatPadding(true);
+        cardView.setPreventCornerOverlap(false);
+        cardView.setRadius(0);
+        int cardShadow = (int) cardView.getCardElevation();
+        recyclerView.setPadding(cardView.getContentPaddingLeft() + cardShadow,
+            cardView.getContentPaddingTop() + cardShadow + 3,
+            cardView.getContentPaddingRight() + cardShadow,
+            cardView.getContentPaddingBottom() + cardShadow + 3);
+        ViewCompat.setElevation(recyclerView, cardView.getCardElevation());
+        recyclerView.setBackground(cardView.getBackground());
     }
 
     @OnClick(R.id.fabCreate)

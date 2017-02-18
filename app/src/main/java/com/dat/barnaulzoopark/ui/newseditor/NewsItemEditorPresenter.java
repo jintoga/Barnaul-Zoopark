@@ -140,7 +140,8 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         newsItemReference.setValue(news).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                if (thumbnailUri == null && attachments.isEmpty()) {
+                if (thumbnailUri == null && (attachments.isEmpty()
+                    || attachments.size() == 1 && !attachments.get(0).isFilled())) {
                     if (getView() != null) {
                         getView().onUploadSuccess();
                     }
