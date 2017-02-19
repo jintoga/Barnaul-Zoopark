@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui.news;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -119,6 +120,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.cardView)
+        CardView cardView;
         @Bind(R.id.title)
         TextView title;
         @Bind(R.id.description)
@@ -137,6 +140,13 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            RecyclerView.LayoutParams layoutParams =
+                (RecyclerView.LayoutParams) itemView.getLayoutParams();
+            int insetShadow = (int) itemView.getResources()
+                .getDimension(android.support.v7.cardview.R.dimen.cardview_compat_inset_shadow);
+            layoutParams.topMargin = (int) -((cardView.getContentPaddingTop()
+                + cardView.getContentPaddingBottom()
+                + 2 * cardView.getCardElevation()) + insetShadow);
         }
     }
 
