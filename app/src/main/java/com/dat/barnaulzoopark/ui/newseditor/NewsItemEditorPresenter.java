@@ -1,6 +1,5 @@
 package com.dat.barnaulzoopark.ui.newseditor;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,8 +30,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     private FirebaseDatabase database;
     private FirebaseStorage storage;
 
-    public NewsItemEditorPresenter(@NonNull Context context, FirebaseDatabase database,
-        FirebaseStorage storage) {
+    public NewsItemEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
         this.database = database;
         this.storage = storage;
     }
@@ -126,39 +124,62 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         newsItemReference.child("thumbnail").setValue(thumbnailUploadedUri.toString());
     }
 
-    private void createOrUpdateNewsItem(@Nullable String selectedUid, @NonNull String title,
-        @NonNull String description, @Nullable final Uri thumbnailUri,
+    private void createOrUpdateNewsItem(@Nullable String selectedUid, @NonNull final String title,
+        @NonNull final String description, @Nullable final Uri thumbnailUri,
         @NonNull final List<Attachment> attachments) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
-        String uid = selectedUid;
-        if (uid == null) {
+        final String uid;
+        if (selectedUid == null) {
             uid = newsDatabaseReference.push().getKey();
+        } else {
+            uid = selectedUid;
         }
-        DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
-        News news = new News(uid, title, description, Calendar.getInstance().getTimeInMillis());
-        final String finalUid = uid;
+        final DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
+        newsItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                News news = dataSnapshot.getValue(News.class);
+                if (news == null) {
+                    news =
+                        new News(uid, title, description, Calendar.getInstance().getTimeInMillis());
+                } else {
+                    news.update(title, description);
+                }
+                NewsItemEditorPresenter.this.updateOrCreateNews(newsItemReference, news,
+                    thumbnailUri, attachments);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void updateOrCreateNews(DatabaseReference newsItemReference, @NonNull final News news,
+        @Nullable final Uri thumbnailUri, @Nullable final List<Attachment> attachments) {
         newsItemReference.setValue(news).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                if (thumbnailUri == null && (attachments.isEmpty()
+                if (thumbnailUri == null && (attachments == null
                     || attachments.size() == 1 && !attachments.get(0).isFilled())) {
-                    if (getView() != null) {
-                        getView().onUploadSuccess();
+                    if (NewsItemEditorPresenter.this.getView() != null) {
+                        NewsItemEditorPresenter.this.getView().onUploadSuccess();
                     }
                 } else {
                     if (thumbnailUri != null) {
-                        uploadImage(false, null, finalUid, thumbnailUri);
+                        NewsItemEditorPresenter.this.uploadImage(false, null, news.getUid(),
+                            thumbnailUri);
                     }
-                    if (!attachments.isEmpty()) {
-                        uploadAttachments(finalUid, attachments);
+                    if (attachments != null && !attachments.isEmpty()) {
+                        NewsItemEditorPresenter.this.uploadAttachments(news.getUid(), attachments);
                     }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                if (getView() != null) {
-                    getView().onUploadFailure(e.getLocalizedMessage());
+                if (NewsItemEditorPresenter.this.getView() != null) {
+                    NewsItemEditorPresenter.this.getView().onUploadFailure(e.getLocalizedMessage());
                 }
             }
         });

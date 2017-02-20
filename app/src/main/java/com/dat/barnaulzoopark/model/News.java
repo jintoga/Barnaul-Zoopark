@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.model;
 
 import android.support.annotation.Nullable;
 import com.google.firebase.database.IgnoreExtraProperties;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,5 +61,11 @@ public class News {
 
     public Map<String, String> getVideos() {
         return videos;
+    }
+
+    public void update(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.time = Calendar.getInstance().getTimeInMillis();
     }
 }

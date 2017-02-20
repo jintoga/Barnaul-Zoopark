@@ -10,8 +10,8 @@ import java.util.Locale;
 
 public class ConverterUtils {
     public static String epochToString(long time) {
-        Date date = new Date(time * 1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        Date date = new Date(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy", Locale.getDefault());
         return sdf.format(date);
     }
 }

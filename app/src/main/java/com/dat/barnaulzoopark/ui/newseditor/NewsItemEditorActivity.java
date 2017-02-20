@@ -89,7 +89,7 @@ public class NewsItemEditorActivity extends
     public NewsItemEditorContract.UserActionListener createPresenter() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        return new NewsItemEditorPresenter(this, database, storage);
+        return new NewsItemEditorPresenter(database, storage);
     }
 
     @Override
@@ -128,6 +128,9 @@ public class NewsItemEditorActivity extends
 
     @Override
     public void bindSelectedNews(@NonNull News selectedNews) {
+        if (selectedNews.getThumbnail() != null && !"".equals(selectedNews.getThumbnail())) {
+            setFilledWithPhoto(true);
+        }
         this.selectedNews = selectedNews;
         title.setText(selectedNews.getTitle());
         description.setText(selectedNews.getDescription());

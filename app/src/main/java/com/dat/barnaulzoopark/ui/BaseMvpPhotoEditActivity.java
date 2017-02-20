@@ -38,7 +38,6 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
     private static final int REQUEST_CODE_PERMISSIONS = 200;
     private Listener listener;
     private static final String TEMP_IMAGE_NAME = "temporary_image";
-
     private boolean withRemoveItem = false;
 
     public interface Listener {
@@ -112,6 +111,10 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
                 dialog.dismiss();
             }
         });
+    }
+
+    public void setFilledWithPhoto(boolean filledWithPhoto) {
+        isFilledWithPhoto = filledWithPhoto;
     }
 
     @Override
