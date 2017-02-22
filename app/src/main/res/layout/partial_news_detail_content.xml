@@ -55,6 +55,7 @@
                     android:textSize="@dimen/item_news_detail_description_text_size" />
 
                 <TextView
+                    android:id="@+id/photosLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

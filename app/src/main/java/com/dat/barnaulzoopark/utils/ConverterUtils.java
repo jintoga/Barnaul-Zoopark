@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.model;
+package com.dat.barnaulzoopark.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

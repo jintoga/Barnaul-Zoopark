@@ -19,11 +19,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
+import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.FirebaseDatabase;
@@ -54,6 +54,8 @@ public class NewsDetailFragment
     protected TextView description;
     @Bind(R.id.time)
     protected TextView time;
+    @Bind(R.id.photosLabel)
+    protected TextView photosLabel;
     @Bind(R.id.photos)
     protected RecyclerView photos;
     private NewsDetailPhotosAdapter photosAdapter;
@@ -148,6 +150,11 @@ public class NewsDetailFragment
         if (news.getPhotos() != null && !news.getPhotos().isEmpty()) {
             List<String> urls = new ArrayList<>(news.getPhotos().values());
             photosAdapter.setData(urls);
+            photos.setVisibility(View.VISIBLE);
+            photosLabel.setVisibility(View.VISIBLE);
+        } else {
+            photos.setVisibility(View.GONE);
+            photosLabel.setVisibility(View.GONE);
         }
     }
 }

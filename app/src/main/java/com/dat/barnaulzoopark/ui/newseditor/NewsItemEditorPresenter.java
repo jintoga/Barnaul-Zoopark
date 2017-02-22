@@ -3,9 +3,11 @@ package com.dat.barnaulzoopark.ui.newseditor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
+import com.dat.barnaulzoopark.utils.UriUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,8 +19,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import java.util.Calendar;
 import java.util.List;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by DAT on 1/29/2017.
@@ -73,8 +79,8 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         }
     }
 
-    private void uploadImage(final boolean isAttachment, @Nullable final String attachmentUid,
-        @NonNull final String uid, @NonNull Uri uri) {
+    private Observable<Boolean> uploadImage(final boolean isAttachment,
+        @Nullable final String attachmentUid, @NonNull final String uid, @NonNull Uri uri) {
         if (getView() != null) {
             getView().showUploadThumbnailProgress();
         }
@@ -86,28 +92,22 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
             newsStorageReference = storage.getReference()
                 .child(BZFireBaseApi.news + "/" + uid + "/photos/" + attachmentUid);
         }
-        UploadTask uploadTask = newsStorageReference.putFile(uri);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri uploadedUri = taskSnapshot.getDownloadUrl();
-                if (!isAttachment && uploadedUri != null) {
-                    setThumbnailToNewsItem(uid, uploadedUri);
-                } else if (uploadedUri != null) {
-                    addAttachmentToNewsItem(uid, uploadedUri, attachmentUid);
+        return RxFirebaseStorage.putFile(newsStorageReference, uri)
+            .flatMap(new Func1<UploadTask.TaskSnapshot, Observable<Boolean>>() {
+                @Override
+                public Observable<Boolean> call(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri uploadedUri = taskSnapshot.getDownloadUrl();
+                    if (!isAttachment && uploadedUri != null) {
+                        setThumbnailToNewsItem(uid, uploadedUri);
+                    } else if (uploadedUri != null) {
+                        addAttachmentToNewsItem(uid, uploadedUri, attachmentUid);
+                    }
+                    if (getView() != null) {
+                        getView().onUploadSuccess();
+                    }
+                    return Observable.just(true);
                 }
-                if (getView() != null) {
-                    getView().onUploadSuccess();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (getView() != null) {
-                    getView().onUploadFailure(e.getLocalizedMessage());
-                }
-            }
-        });
+            });
     }
 
     private void addAttachmentToNewsItem(@NonNull String uid, @NonNull Uri uploadedUri,
@@ -168,10 +168,49 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                 } else {
                     if (thumbnailUri != null) {
                         NewsItemEditorPresenter.this.uploadImage(false, null, news.getUid(),
-                            thumbnailUri);
+                            thumbnailUri).subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean uploaded) {
+                                if (uploaded) {
+                                    if (getView() != null) {
+                                        getView().onUploadSuccess();
+                                    }
+                                }
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Log.e(TAG, throwable.getLocalizedMessage());
+                                if (getView() != null) {
+                                    getView().onUploadFailure(throwable.getLocalizedMessage());
+                                }
+                            }
+                        });
                     }
                     if (attachments != null && !attachments.isEmpty()) {
-                        NewsItemEditorPresenter.this.uploadAttachments(news.getUid(), attachments);
+                        NewsItemEditorPresenter.this.uploadAttachments(news.getUid(), attachments)
+                            .subscribe(new Action1<Boolean>() {
+                                @Override
+                                public void call(Boolean isUploadedSomething) {
+                                    if (isUploadedSomething) {
+                                        if (getView() != null) {
+                                            getView().onUploadSuccess();
+                                        }
+                                    } else {
+                                        if (getView() != null) {
+                                            getView().onUploadFailure("DID NOT UPLOAD");
+                                        }
+                                    }
+                                }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    Log.e(TAG, throwable.getLocalizedMessage());
+                                    if (getView() != null) {
+                                        getView().onUploadFailure(throwable.getLocalizedMessage());
+                                    }
+                                }
+                            });
                     }
                 }
             }
@@ -185,14 +224,18 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         });
     }
 
-    private void uploadAttachments(@NonNull String uid, @NonNull List<Attachment> attachments) {
+    private Observable<Boolean> uploadAttachments(@NonNull final String uid,
+        @NonNull final List<Attachment> attachments) {
         int i = 0;
+        boolean isUploadedSomething = false;
         for (Attachment attachment : attachments) {
-            if (attachment.isFilled()) {
+            if (attachment.isFilled() && UriUtil.isLocalFile(attachment.getUrl())) {
                 Uri uri = Uri.parse(attachment.getUrl());
                 uploadImage(true, uid + "-" + String.valueOf(i), uid, uri);
                 i++;
+                isUploadedSomething = true;
             }
         }
+        return Observable.just(isUploadedSomething);
     }
 }

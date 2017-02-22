@@ -47,4 +47,5 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:9.8.0'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.firebaseui:firebase-ui-database:1.0.0'
+    compile 'com.kelvinapps:rxfirebase:0.0.15'
 }
