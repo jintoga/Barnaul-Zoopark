@@ -146,6 +146,7 @@ public class NewsItemEditorActivity extends
             attachmentAdapter.setData(attachments);
         }
         attachmentAdapter.addEmptySlot();
+        counter = attachmentAdapter.getItemCount();
     }
 
     @Override
