@@ -161,8 +161,18 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
+    public void onDeleteImageError(@NonNull String errorMsg) {
+        Log.d(TAG, "onDeleteImageError " + errorMsg);
+    }
+
+    @Override
+    public void onDeleteImageSuccessful() {
+        Log.d(TAG, "onDeleteImageSuccessful");
+    }
+
+    @Override
     public void onUploadFailure(@NonNull String errorMsg) {
-        Log.d(TAG, errorMsg);
+        Log.d(TAG, "onUploadFailure" + errorMsg);
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
@@ -187,6 +197,11 @@ public class NewsItemEditorActivity extends
     @Override
     public void showUploadThumbnailProgress() {
         Log.d(TAG, "showUploadThumbnailProgress");
+    }
+
+    @Override
+    public void showDeleteImageProgress() {
+        Log.d(TAG, "showDeleteImageProgress");
     }
 
     @Override
@@ -236,8 +251,7 @@ public class NewsItemEditorActivity extends
                 showDiscardConfirm();
                 break;
             case R.id.save:
-                presenter.updateOrCreateNewsItem(
-                    selectedNews != null ? selectedNews.getUid() : null, title.getText().toString(),
+                presenter.createNewsItem(title.getText().toString(),
                     description.getText().toString(), thumbnailUri, attachmentAdapter.getData());
                 break;
             default:

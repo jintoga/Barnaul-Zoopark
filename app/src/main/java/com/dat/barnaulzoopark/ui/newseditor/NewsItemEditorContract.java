@@ -2,7 +2,6 @@ package com.dat.barnaulzoopark.ui.newseditor;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
@@ -19,6 +18,10 @@ public interface NewsItemEditorContract {
 
         void highlightRequiredFields();
 
+        void onDeleteImageError(@NonNull String errorMsg);
+
+        void onDeleteImageSuccessful();
+
         void onUploadFailure(@NonNull String errorMsg);
 
         void onUploadSuccess();
@@ -26,13 +29,15 @@ public interface NewsItemEditorContract {
         void showUploadNewsItemProgress();
 
         void showUploadThumbnailProgress();
+
+        void showDeleteImageProgress();
     }
 
     interface UserActionListener extends MvpPresenter<NewsItemEditorContract.View> {
 
         void loadSelectedNews(String selectedNewsUid);
 
-        void updateOrCreateNewsItem(@Nullable String newsUID, String title, String description,
-            Uri thumbnailUri, List<Attachment> attachments);
+        void createNewsItem(String title, String description, Uri thumbnailUri,
+            List<Attachment> attachments);
     }
 }
