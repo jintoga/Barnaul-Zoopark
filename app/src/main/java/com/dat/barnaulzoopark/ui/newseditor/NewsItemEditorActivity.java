@@ -161,16 +161,6 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onDeleteImageError(@NonNull String errorMsg) {
-        Log.d(TAG, "onDeleteImageError " + errorMsg);
-    }
-
-    @Override
-    public void onDeleteImageSuccessful() {
-        Log.d(TAG, "onDeleteImageSuccessful");
-    }
-
-    @Override
     public void onUploadFailure(@NonNull String errorMsg) {
         Log.d(TAG, "onUploadFailure" + errorMsg);
         if (progressDialog != null) {
@@ -180,28 +170,44 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onUploadSuccess() {
-        Log.d(TAG, "onUploadSuccess");
-        if (progressDialog != null) {
+    public void onAllComplete() {
+        Log.d(TAG, "onAllComplete");
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         finish();
     }
 
     @Override
-    public void showUploadNewsItemProgress() {
-        Log.d(TAG, "showSigningUpProgress");
-        progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, null);
+    public void creatingNewsItemProgress() {
+        Log.d(TAG, "creatingNewsItemProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Creating News Item");
+        }
     }
 
     @Override
-    public void showUploadThumbnailProgress() {
-        Log.d(TAG, "showUploadThumbnailProgress");
+    public void onCreatingNewsItemSuccess() {
+        Log.d(TAG, "onCreatingNewsItemSuccess");
     }
 
     @Override
-    public void showDeleteImageProgress() {
-        Log.d(TAG, "showDeleteImageProgress");
+    public void onCreatingNewsItemFailure(@NonNull String errorMsg) {
+        Log.d(TAG, "onCreatingNewsItemFailure " + errorMsg);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void uploadingAttachments() {
+        Log.d(TAG, "uploadingAttachments");
+    }
+
+    @Override
+    public void uploadingThumbnailProgress() {
+        Log.d(TAG, "uploadingThumbnailProgress");
     }
 
     @Override

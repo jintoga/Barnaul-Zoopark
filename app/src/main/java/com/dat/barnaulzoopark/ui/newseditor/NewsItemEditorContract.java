@@ -18,19 +18,19 @@ public interface NewsItemEditorContract {
 
         void highlightRequiredFields();
 
-        void onDeleteImageError(@NonNull String errorMsg);
-
-        void onDeleteImageSuccessful();
-
         void onUploadFailure(@NonNull String errorMsg);
 
-        void onUploadSuccess();
+        void onAllComplete();
 
-        void showUploadNewsItemProgress();
+        void creatingNewsItemProgress();
 
-        void showUploadThumbnailProgress();
+        void onCreatingNewsItemSuccess();
 
-        void showDeleteImageProgress();
+        void onCreatingNewsItemFailure(@NonNull String errorMsg);
+
+        void uploadingAttachments();
+
+        void uploadingThumbnailProgress();
     }
 
     interface UserActionListener extends MvpPresenter<NewsItemEditorContract.View> {

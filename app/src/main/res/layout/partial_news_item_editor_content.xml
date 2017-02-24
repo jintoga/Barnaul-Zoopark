@@ -60,7 +60,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:hint="title"
-                    android:inputType="textMultiLine"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:textColor="@color/black" />
             </LinearLayout>
 

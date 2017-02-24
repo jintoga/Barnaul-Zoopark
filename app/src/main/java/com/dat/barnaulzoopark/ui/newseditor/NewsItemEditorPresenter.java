@@ -20,6 +20,7 @@ import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import java.util.Calendar;
 import java.util.List;
 import rx.Observable;
+import rx.Observer;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
@@ -65,7 +66,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         @Nullable Uri thumbnailUri, @NonNull List<Attachment> attachments) {
         if (!"".equals(title) && !"".equals(description)) {
             if (getView() != null) {
-                getView().showUploadNewsItemProgress();
+                getView().creatingNewsItemProgress();
             }
             createNews(title, description, thumbnailUri, attachments);
         } else {
@@ -87,18 +88,21 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
             });
     }
 
-    private void addAttachmentToNewsItem(@NonNull String uid, @NonNull Uri uploadedUri,
+    private Observable<News> addAttachmentToNewsItem(@NonNull String uid, @NonNull Uri uploadedUri,
         String attachmentUid) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
         DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
         DatabaseReference newsItemPhotoReference = newsItemReference.child("photos");
         newsItemPhotoReference.child(attachmentUid).setValue(uploadedUri.toString());
+        return RxFirebaseDatabase.observeSingleValueEvent(newsDatabaseReference, News.class);
     }
 
-    private void setThumbnailToNewsItem(@NonNull String uid, @NonNull Uri thumbnailUploadedUri) {
+    private Observable<News> setThumbnailToNewsItem(@NonNull String uid,
+        @NonNull Uri thumbnailUploadedUri) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
         DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
         newsItemReference.child("thumbnail").setValue(thumbnailUploadedUri.toString());
+        return RxFirebaseDatabase.observeSingleValueEvent(newsDatabaseReference, News.class);
     }
 
     private void createNews(@NonNull final String title, @NonNull final String description,
@@ -109,25 +113,21 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         News news = new News(uid, title, description, Calendar.getInstance().getTimeInMillis());
         newsItemReference.setValue(news);
         RxFirebaseDatabase.observeSingleValueEvent(newsItemReference, News.class)
-            .flatMap(new Func1<News, Observable<News>>() {
-                @Override
-                public Observable<News> call(News news) {
-                    if (news != null) {
-                        uploadImages(news, thumbnailUri, attachments);
-                    }
-                    return Observable.just(news);
-                }
-            })
             .subscribe(new Action1<News>() {
                 @Override
                 public void call(News news) {
-
+                    if (getView() != null) {
+                        getView().onCreatingNewsItemSuccess();
+                    }
+                    if (news != null) {
+                        uploadImages(news, thumbnailUri, attachments);
+                    }
                 }
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
                     if (getView() != null) {
-                        getView().onUploadFailure(throwable.getLocalizedMessage());
+                        getView().onCreatingNewsItemFailure(throwable.getLocalizedMessage());
                     }
                 }
             });
@@ -137,68 +137,98 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         @NonNull List<Attachment> attachments) {
         if (thumbnailUri == null && (attachments.size() == 1 && !attachments.get(0).isFilled())) {
             if (NewsItemEditorPresenter.this.getView() != null) {
-                NewsItemEditorPresenter.this.getView().onUploadSuccess();
+                NewsItemEditorPresenter.this.getView().onAllComplete();
             }
         } else {
-            if (thumbnailUri != null) {
-                uploadThumbnail(news, thumbnailUri);
-            }
-            if (!attachments.isEmpty()) {
-                uploadAttachments(news, attachments);
+            if (thumbnailUri == null) {
+                uploadAttachments(news, attachments).subscribe(new Observer<News>() {
+                    @Override
+                    public void onCompleted() {
+                        if (getView() != null) {
+                            getView().onAllComplete();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (getView() != null) {
+                            getView().onUploadFailure(e.getLocalizedMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onNext(News news) {
+
+                    }
+                });
+            } else {
+                Observable.concat(uploadThumbnail(news, thumbnailUri),
+                    uploadAttachments(news, attachments)).subscribe(new Observer<News>() {
+                    @Override
+                    public void onCompleted() {
+                        if (getView() != null) {
+                            getView().onAllComplete();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (getView() != null) {
+                            getView().onUploadFailure(e.getLocalizedMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onNext(News news) {
+
+                    }
+                });
             }
         }
     }
 
-    private void uploadThumbnail(@NonNull final News news, @NonNull Uri uri) {
-        String filePath = BZFireBaseApi.news + "/" + news.getUid() + "/" + "thumbnail";
+    private Observable<News> uploadThumbnail(@NonNull final News news, @NonNull Uri uri) {
         if (getView() != null) {
-            getView().showUploadThumbnailProgress();
+            getView().uploadingThumbnailProgress();
         }
-        uploadImage(filePath, uri).subscribe(new Action1<Uri>() {
+        String filePath = BZFireBaseApi.news + "/" + news.getUid() + "/" + "thumbnail";
+        return uploadImage(filePath, uri).flatMap(new Func1<Uri, Observable<News>>() {
             @Override
-            public void call(Uri uploadedUri) {
-                if (getView() != null) {
-                    getView().onUploadSuccess();
-                }
-                setThumbnailToNewsItem(news.getUid(), uploadedUri);
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                if (getView() != null) {
-                    getView().onUploadFailure(throwable.getLocalizedMessage());
-                }
+            public Observable<News> call(Uri uploadedUri) {
+                return setThumbnailToNewsItem(news.getUid(), uploadedUri);
             }
         });
     }
 
-    private void uploadAttachments(@NonNull final News news,
+    private Observable<News> uploadAttachments(@NonNull final News news,
         @NonNull final List<Attachment> attachments) {
-        int i = 0;
-        for (Attachment attachment : attachments) {
-            if (attachment.isFilled()) {
-                Uri uri = Uri.parse(attachment.getUrl());
-                final String attachmentUid = news.getUid() + "-" + String.valueOf(i);
-                final String attachmentPath =
-                    BZFireBaseApi.news + "/" + news.getUid() + "/photos/" + attachmentUid;
-                uploadImage(attachmentPath, uri).subscribe(new Action1<Uri>() {
-                    @Override
-                    public void call(Uri uploadedUri) {
-                        if (getView() != null) {
-                            getView().onUploadSuccess();
-                        }
-                        addAttachmentToNewsItem(news.getUid(), uploadedUri, attachmentUid);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        if (getView() != null) {
-                            getView().onUploadFailure(throwable.getLocalizedMessage());
-                        }
-                    }
-                });
-                i++;
-            }
+        if (getView() != null) {
+            getView().uploadingAttachments();
         }
+        final int[] i = { 0 };
+        return Observable.from(attachments).filter(new Func1<Attachment, Boolean>() {
+            @Override
+            public Boolean call(Attachment attachment) {
+                return attachment.isFilled();
+            }
+        }).flatMap(new Func1<Attachment, Observable<News>>() {
+            @Override
+            public Observable<News> call(Attachment attachment) {
+                return uploadAttachmentItem(news, attachment, i[0]++);
+            }
+        });
+    }
+
+    private Observable<News> uploadAttachmentItem(final News news, Attachment attachment, int i) {
+        Uri uri = Uri.parse(attachment.getUrl());
+        final String attachmentUid = news.getUid() + "-" + String.valueOf(i);
+        final String attachmentPath =
+            BZFireBaseApi.news + "/" + news.getUid() + "/photos/" + attachmentUid;
+        return uploadImage(attachmentPath, uri).flatMap(new Func1<Uri, Observable<News>>() {
+            @Override
+            public Observable<News> call(Uri uploadedUri) {
+                return addAttachmentToNewsItem(news.getUid(), uploadedUri, attachmentUid);
+            }
+        });
     }
 }
