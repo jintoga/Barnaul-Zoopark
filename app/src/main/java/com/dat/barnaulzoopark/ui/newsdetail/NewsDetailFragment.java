@@ -133,10 +133,20 @@ public class NewsDetailFragment
     }
 
     @Override
-    public void showNewsDetail(@NonNull News news) {
+    public void showNewsDetail(@Nullable News news) {
         currentNews = news;
         appBarLayout.setExpanded(true, false);
-
+        if (news == null) {
+            Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
+            thumbnail.setImageURI(uri);
+            title.setText("");
+            description.setText("");
+            time.setText("");
+            photos.setVisibility(View.GONE);
+            photosLabel.setVisibility(View.GONE);
+            return;
+        }
         if (news.getThumbnail() != null) {
             thumbnail.setImageURI(Uri.parse(news.getThumbnail()));
         } else {

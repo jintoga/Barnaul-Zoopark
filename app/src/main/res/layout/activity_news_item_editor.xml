@@ -20,8 +20,7 @@
             android:layout_marginTop="@dimen/status_bar_height"
             android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            app:layout_collapseMode="pin" />
 
     </android.support.design.widget.AppBarLayout>
 

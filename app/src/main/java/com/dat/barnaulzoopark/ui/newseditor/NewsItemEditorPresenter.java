@@ -18,6 +18,7 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
@@ -37,6 +38,96 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     public NewsItemEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
         this.database = database;
         this.storage = storage;
+    }
+
+    @Override
+    public void deleteNewsItem(@Nullable final String selectedNewsUid) {
+        if (selectedNewsUid != null) {
+            final DatabaseReference newsReference = FirebaseDatabase.getInstance()
+                .getReference(BZFireBaseApi.news)
+                .child(selectedNewsUid);
+            RxFirebaseDatabase.observeSingleValueEvent(newsReference, News.class)
+                .subscribe(new Action1<News>() {
+                    @Override
+                    public void call(News news) {
+                        if (getView() != null) {
+                            getView().deletingNewsItem();
+                        }
+                        if (news.getThumbnail() == null) {
+                            deleteNewsItemAttachments(news.getUid(),
+                                news.getPhotos().values()).subscribe(new Observer<Void>() {
+                                @Override
+                                public void onCompleted() {
+                                    newsReference.removeValue();
+                                    if (getView() != null) {
+                                        getView().onDeleteNewsItemSuccessful();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(Void aVoid) {
+
+                                }
+                            });
+                        }
+                        if (news.getThumbnail() != null && news.getPhotos() != null) {
+                            String thumbnailPath =
+                                BZFireBaseApi.news + "/" + news.getUid() + "/" + "thumbnail";
+                            Observable.concat(deleteNewsItemFile(thumbnailPath),
+                                deleteNewsItemAttachments(news.getUid(), news.getPhotos().values()))
+                                .subscribe(new Observer<Void>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        newsReference.removeValue();
+                                        if (getView() != null) {
+                                            getView().onDeleteNewsItemSuccessful();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Void aVoid) {
+
+                                    }
+                                });
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        if (getView() != null) {
+                            getView().onDeleteNewsItemFailure(throwable.getLocalizedMessage());
+                        }
+                    }
+                });
+        }
+    }
+
+    private Observable<Void> deleteNewsItemAttachments(final String uid,
+        Collection<String> attachmentPaths) {
+        final int[] i = { 0 };
+        return Observable.from(attachmentPaths).flatMap(new Func1<String, Observable<Void>>() {
+            @Override
+            public Observable<Void> call(String s) {
+                String attachmentUid = uid + "-" + String.valueOf(i[0]++);
+                String attachmentPath = BZFireBaseApi.news + "/" + uid + "/photos/" + attachmentUid;
+                return deleteNewsItemFile(attachmentPath);
+            }
+        });
+    }
+
+    private Observable<Void> deleteNewsItemFile(@NonNull String filePath) {
+        StorageReference newsStorageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(newsStorageReference);
     }
 
     @Override
@@ -137,7 +228,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         @NonNull List<Attachment> attachments) {
         if (thumbnailUri == null && (attachments.size() == 1 && !attachments.get(0).isFilled())) {
             if (NewsItemEditorPresenter.this.getView() != null) {
-                NewsItemEditorPresenter.this.getView().onAllComplete();
+                NewsItemEditorPresenter.this.getView().onCreatingComplete();
             }
         } else {
             if (thumbnailUri == null) {
@@ -145,7 +236,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                     @Override
                     public void onCompleted() {
                         if (getView() != null) {
-                            getView().onAllComplete();
+                            getView().onCreatingComplete();
                         }
                     }
 
@@ -167,7 +258,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                     @Override
                     public void onCompleted() {
                         if (getView() != null) {
-                            getView().onAllComplete();
+                            getView().onCreatingComplete();
                         }
                     }
 

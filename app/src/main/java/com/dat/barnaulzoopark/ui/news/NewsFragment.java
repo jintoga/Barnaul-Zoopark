@@ -106,13 +106,18 @@ public class NewsFragment
             newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    NewsDetailFragment newsDetailFragment =
+                        (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
+                            KEY_NEWS_DETAIL_FRAGMENT);
                     if (adapter != null && adapter.getItemCount() > 0) {
                         adapter.setSelectedPosition(selectedNewsPosition);
-                        NewsDetailFragment newsDetailFragment =
-                            (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
-                                KEY_NEWS_DETAIL_FRAGMENT);
+                        adapter.notifyDataSetChanged();
                         if (newsDetailFragment != null) {
                             newsDetailFragment.showNewsDetail(adapter.getSelectedItem());
+                        }
+                    } else {
+                        if (newsDetailFragment != null) {
+                            newsDetailFragment.showNewsDetail(null);
                         }
                     }
                 }

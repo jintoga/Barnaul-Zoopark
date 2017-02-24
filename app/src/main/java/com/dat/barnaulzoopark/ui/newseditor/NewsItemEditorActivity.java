@@ -161,6 +161,32 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
+    public void deletingNewsItem() {
+        Log.d(TAG, "deletingNewsItem");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Deleting News Item");
+        }
+    }
+
+    @Override
+    public void onDeleteNewsItemFailure(@NonNull String errorMsg) {
+        Log.d(TAG, "onDeleteNewsItemFailure" + errorMsg);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteNewsItemSuccessful() {
+        Log.d(TAG, "onDeleteNewsItemSuccessful");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        finish();
+    }
+
+    @Override
     public void onUploadFailure(@NonNull String errorMsg) {
         Log.d(TAG, "onUploadFailure" + errorMsg);
         if (progressDialog != null) {
@@ -170,8 +196,8 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onAllComplete() {
-        Log.d(TAG, "onAllComplete");
+    public void onCreatingComplete() {
+        Log.d(TAG, "onCreatingComplete");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -259,6 +285,10 @@ public class NewsItemEditorActivity extends
             case R.id.save:
                 presenter.createNewsItem(title.getText().toString(),
                     description.getText().toString(), thumbnailUri, attachmentAdapter.getData());
+                break;
+            case R.id.delete:
+                String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
+                presenter.deleteNewsItem(selectedNewsUid);
                 break;
             default:
                 break;

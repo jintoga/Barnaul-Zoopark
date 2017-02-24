@@ -11,8 +11,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.dat.barnaulzoopark.model.News;
+import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -96,7 +96,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     }
 
     public int getSelectedPosition() {
-        return selectedPosition;
+        return selectedPosition < getItemCount() ? selectedPosition : 0;
     }
 
     public void setSelectedPosition(int selectedPosition) {
@@ -104,7 +104,7 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     }
 
     public News getSelectedItem() {
-        return getItem(selectedPosition);
+        return getItem(getSelectedPosition());
     }
 
     public void notifySelectedItem() {
