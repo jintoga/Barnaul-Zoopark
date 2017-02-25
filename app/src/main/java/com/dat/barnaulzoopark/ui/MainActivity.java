@@ -192,9 +192,11 @@ public class MainActivity
     @NonNull
     @Override
     public UserProfileContract.UserActionListener createPresenter() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
+        FirebaseAuth auth = BZApplication.get(this).getApplicationComponent().firebaseAuth();
+        FirebaseDatabase database =
+            BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
+        FirebaseStorage storage =
+            BZApplication.get(this).getApplicationComponent().fireBaseStorage();
         return new UserProfilePresenter(auth, database, storage);
     }
 

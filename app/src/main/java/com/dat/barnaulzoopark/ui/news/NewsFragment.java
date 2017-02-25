@@ -59,10 +59,14 @@ public class NewsFragment
 
     @Override
     public NewsContract.UserActionListener createPresenter() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        return new NewsPresenter(EventBus.getDefault(), auth, database, storage);
+        FirebaseAuth auth =
+            BZApplication.get(getContext()).getApplicationComponent().firebaseAuth();
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
+        FirebaseStorage storage =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseStorage();
+        EventBus eventBus = BZApplication.get(getContext()).getApplicationComponent().eventBus();
+        return new NewsPresenter(eventBus, auth, database, storage);
     }
 
     @Nullable

@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
@@ -87,8 +88,10 @@ public class NewsItemEditorActivity extends
     @NonNull
     @Override
     public NewsItemEditorContract.UserActionListener createPresenter() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
+        FirebaseDatabase database =
+            BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
+        FirebaseStorage storage =
+            BZApplication.get(this).getApplicationComponent().fireBaseStorage();
         return new NewsItemEditorPresenter(database, storage);
     }
 

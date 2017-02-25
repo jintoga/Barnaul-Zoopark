@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
@@ -50,8 +51,10 @@ public class LoginFragment
     @NonNull
     @Override
     public LoginContract.UserActionListener createPresenter() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseAuth auth =
+            BZApplication.get(getContext()).getApplicationComponent().firebaseAuth();
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
         return new LoginPresenter(auth, database);
     }
 
