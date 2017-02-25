@@ -1,8 +1,5 @@
 package com.dat.barnaulzoopark;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -24,24 +21,6 @@ public class ApplicationModule {
     @Singleton
     public BZApplication provideApplication() {
         return application;
-    }
-
-    @Provides
-    @Singleton
-    public FirebaseDatabase provideFireBaseDatabase() {
-        return FirebaseDatabase.getInstance();
-    }
-
-    @Provides
-    @Singleton
-    public FirebaseStorage provideFireBaseStorage() {
-        return FirebaseStorage.getInstance();
-    }
-
-    @Provides
-    @Singleton
-    public FirebaseAuth provideFireBaseAuth() {
-        return FirebaseAuth.getInstance();
     }
 
     @Provides

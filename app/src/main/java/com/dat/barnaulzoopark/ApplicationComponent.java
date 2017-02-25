@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark;
 
 import android.support.annotation.NonNull;
+import com.dat.barnaulzoopark.api.FirebaseModule;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -13,7 +14,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 @Singleton
 @Component(modules = {
-    ApplicationModule.class
+    ApplicationModule.class, FirebaseModule.class
 })
 public interface ApplicationComponent {
     @NonNull

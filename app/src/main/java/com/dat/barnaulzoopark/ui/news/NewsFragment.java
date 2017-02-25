@@ -174,8 +174,9 @@ public class NewsFragment
     private void init() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewNews.setLayoutManager(layoutManager);
-
-        newsReference = FirebaseDatabase.getInstance().getReference(BZFireBaseApi.news);
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
+        newsReference = database.getReference(BZFireBaseApi.news);
         adapter = new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class,
             newsReference, this);
         newsReference.addValueEventListener(new ValueEventListener() {
