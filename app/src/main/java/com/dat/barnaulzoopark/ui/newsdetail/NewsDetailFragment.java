@@ -65,7 +65,8 @@ public class NewsDetailFragment
     @NonNull
     @Override
     public NewsDetailContract.UserActionListener createPresenter() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
         return new NewsDetailPresenter(database);
     }
 

@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by DAT on 03-May-16.
@@ -30,7 +29,8 @@ public class BZApplication extends Application {
             .applicationModule(new ApplicationModule(this))
             .build();
         applicationComponent.inject(this);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true); //FireBase offline capabilities
+        applicationComponent.fireBaseDatabase()
+            .setPersistenceEnabled(true); //FireBase offline capabilities
         Fresco.initialize(this);
         MaterialViewPagerAnimator.ENABLE_LOG = false;
     }

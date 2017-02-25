@@ -43,9 +43,8 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     @Override
     public void deleteNewsItem(@Nullable final String selectedNewsUid) {
         if (selectedNewsUid != null) {
-            final DatabaseReference newsReference = FirebaseDatabase.getInstance()
-                .getReference(BZFireBaseApi.news)
-                .child(selectedNewsUid);
+            final DatabaseReference newsReference =
+                database.getReference(BZFireBaseApi.news).child(selectedNewsUid);
             RxFirebaseDatabase.observeSingleValueEvent(newsReference, News.class)
                 .subscribe(new Action1<News>() {
                     @Override
@@ -133,7 +132,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     @Override
     public void loadSelectedNews(String selectedNewsUid) {
         DatabaseReference newsReference =
-            FirebaseDatabase.getInstance().getReference(BZFireBaseApi.news).child(selectedNewsUid);
+            database.getReference(BZFireBaseApi.news).child(selectedNewsUid);
         newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
