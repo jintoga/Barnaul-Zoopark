@@ -25,6 +25,12 @@ public interface NewsItemEditorContract {
 
         void onDeleteNewsItemSuccessful();
 
+        void onUpdatingComplete();
+
+        void onUpdatingNewsFailure(@NonNull String errorMsg);
+
+        void onUpdatingNewsSuccess();
+
         void onUploadFailure(@NonNull String errorMsg);
 
         void onCreatingComplete();
@@ -35,6 +41,8 @@ public interface NewsItemEditorContract {
 
         void onCreatingNewsItemFailure(@NonNull String errorMsg);
 
+        void updatingNewsItemProgress();
+
         void uploadingAttachments();
 
         void uploadingThumbnailProgress();
@@ -44,9 +52,13 @@ public interface NewsItemEditorContract {
 
         void deleteNewsItem(@Nullable String selectedNewsUid);
 
-        void loadSelectedNews(String selectedNewsUid);
+        void loadSelectedNews(@NonNull String selectedNewsUid);
 
-        void createNewsItem(String title, String description, Uri thumbnailUri,
-            List<Attachment> attachments);
+        void createNewsItem(@NonNull String title, @NonNull String description,
+            @Nullable Uri thumbnailUri, @NonNull List<Attachment> attachments);
+
+        void updateSelectedNewsItem(@NonNull News selectedNews, @NonNull String title,
+            @NonNull String description, @Nullable Uri thumbnailUri,
+            @NonNull List<Attachment> attachments);
     }
 }

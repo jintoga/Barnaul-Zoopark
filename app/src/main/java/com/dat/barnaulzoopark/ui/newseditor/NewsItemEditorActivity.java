@@ -193,6 +193,29 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
+    public void onUpdatingComplete() {
+        Log.d(TAG, "onUpdatingComplete");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        finish();
+    }
+
+    @Override
+    public void onUpdatingNewsFailure(@NonNull String errorMsg) {
+        Log.d(TAG, "onCreatingNewsItemFailure " + errorMsg);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUpdatingNewsSuccess() {
+        Log.d(TAG, "onUpdatingNewsSuccess");
+    }
+
+    @Override
     public void onUploadFailure(@NonNull String errorMsg) {
         Log.d(TAG, "onUploadFailure" + errorMsg);
         if (progressDialog != null) {
@@ -230,6 +253,14 @@ public class NewsItemEditorActivity extends
             progressDialog.dismiss();
         }
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updatingNewsItemProgress() {
+        Log.d(TAG, "updatingNewsItemProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Updating News Item");
+        }
     }
 
     @Override
@@ -296,6 +327,9 @@ public class NewsItemEditorActivity extends
                 } else {
                     if (isModified()) {
                         Log.d(TAG, "UPDATING");
+                        presenter.updateSelectedNewsItem(selectedNews, title.getText().toString(),
+                            description.getText().toString(), thumbnailUri,
+                            attachmentAdapter.getData());
                     } else {
                         finish();
                     }

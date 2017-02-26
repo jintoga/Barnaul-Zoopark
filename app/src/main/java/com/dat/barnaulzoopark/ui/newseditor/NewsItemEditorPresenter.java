@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.newseditor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.webkit.URLUtil;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
@@ -130,7 +131,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     }
 
     @Override
-    public void loadSelectedNews(String selectedNewsUid) {
+    public void loadSelectedNews(@NonNull String selectedNewsUid) {
         DatabaseReference newsReference =
             database.getReference(BZFireBaseApi.news).child(selectedNewsUid);
         newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,6 +165,115 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                 getView().highlightRequiredFields();
             }
         }
+    }
+
+    @Override
+    public void updateSelectedNewsItem(@NonNull News selectedNews, @NonNull String title,
+        @NonNull String description, @Nullable Uri thumbnailUri,
+        @NonNull List<Attachment> attachments) {
+        if (!"".equals(title) && !"".equals(description)) {
+            if (getView() != null) {
+                getView().updatingNewsItemProgress();
+            }
+            updateNews(selectedNews, title, description, thumbnailUri, attachments);
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
+        }
+    }
+
+    private void updateNews(@NonNull News selectedNews, @NonNull final String title,
+        @NonNull final String description, @Nullable final Uri thumbnailUri,
+        @NonNull final List<Attachment> attachments) {
+        DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
+        final DatabaseReference newsItemReference =
+            newsDatabaseReference.child(selectedNews.getUid());
+        selectedNews.update(title, description);
+        newsItemReference.setValue(selectedNews);
+        RxFirebaseDatabase.observeSingleValueEvent(newsItemReference, News.class)
+            .subscribe(new Action1<News>() {
+                @Override
+                public void call(News news) {
+                    if (getView() != null) {
+                        getView().onUpdatingNewsSuccess();
+                    }
+                    if (news != null) {
+                        Observable.concat(updateThumbnail(newsItemReference, news, thumbnailUri),
+                            updateAttachments(newsItemReference, news, attachments))
+                            .subscribe(new Observer<News>() {
+                                @Override
+                                public void onCompleted() {
+                                    if (getView() != null) {
+                                        getView().onUpdatingComplete();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    if (getView() != null) {
+                                        getView().onUpdatingNewsFailure(e.getLocalizedMessage());
+                                    }
+                                }
+
+                                @Override
+                                public void onNext(News news) {
+
+                                }
+                            });
+                    }
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    if (getView() != null) {
+                        getView().onUpdatingNewsFailure(throwable.getLocalizedMessage());
+                    }
+                }
+            });
+    }
+
+    private Observable<? extends News> updateAttachments(DatabaseReference newsItemReference,
+        News news, List<Attachment> attachments) {
+        //ToDO: implement
+        return null;
+    }
+
+    private Observable<News> updateThumbnail(final DatabaseReference newsItemReference,
+        final News news, Uri thumbnailUri) {
+        String thumbnailPath = BZFireBaseApi.news + "/" + news.getUid() + "/" + "thumbnail";
+        if ((thumbnailUri == null && news.getThumbnail() != null)) {
+            //delete
+            return deleteNewsItemFile(thumbnailPath).flatMap(new Func1<Void, Observable<News>>() {
+                @Override
+                public Observable<News> call(Void aVoid) {
+                    //set thumbnail Value in news to null
+                    news.setThumbnail(null);
+                    newsItemReference.setValue(news);
+                    return Observable.just(news);
+                }
+            });
+        } else if ((thumbnailUri != null
+            && isLocalFile(thumbnailUri)
+            && news.getThumbnail() == null) || (thumbnailUri != null
+            && isLocalFile(thumbnailUri)
+            && news.getThumbnail() != null)) {
+            //update
+            return uploadImage(thumbnailPath, thumbnailUri).flatMap(
+                new Func1<Uri, Observable<News>>() {
+                    @Override
+                    public Observable<News> call(Uri uploadedUri) {
+                        //set thumbnail Value in news
+                        return setThumbnailToNewsItem(news.getUid(), uploadedUri);
+                    }
+                });
+        } else {
+            return Observable.just(news);
+        }
+    }
+
+    private boolean isLocalFile(@NonNull Uri uri) {
+        return URLUtil.isFileUrl(uri.toString());
     }
 
     private Observable<Uri> uploadImage(@NonNull final String fileName, @NonNull Uri uri) {
