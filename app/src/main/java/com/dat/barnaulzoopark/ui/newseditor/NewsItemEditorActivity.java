@@ -293,8 +293,12 @@ public class NewsItemEditorActivity extends
                     presenter.createNewsItem(title.getText().toString(),
                         description.getText().toString(), thumbnailUri,
                         attachmentAdapter.getData());
-                } else if (isModified()) {
-                    Log.d(TAG, "UPDATING");
+                } else {
+                    if (isModified()) {
+                        Log.d(TAG, "UPDATING");
+                    } else {
+                        finish();
+                    }
                 }
                 break;
             case R.id.delete:
