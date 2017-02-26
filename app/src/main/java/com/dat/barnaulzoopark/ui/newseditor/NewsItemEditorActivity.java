@@ -135,6 +135,9 @@ public class NewsItemEditorActivity extends
             setFilledWithPhoto(true);
         }
         this.selectedNews = selectedNews;
+        if (selectedNews.getThumbnail() != null) {
+            thumbnailUri = Uri.parse(selectedNews.getThumbnail());
+        }
         title.setText(selectedNews.getTitle());
         description.setText(selectedNews.getDescription());
         if (selectedNews.getThumbnail() != null && !"".equals(selectedNews.getThumbnail())) {
@@ -283,11 +286,16 @@ public class NewsItemEditorActivity extends
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                showDiscardConfirm();
+                checkDiscardConfirmRequirement();
                 break;
             case R.id.save:
-                presenter.createNewsItem(title.getText().toString(),
-                    description.getText().toString(), thumbnailUri, attachmentAdapter.getData());
+                if (selectedNews == null) {
+                    presenter.createNewsItem(title.getText().toString(),
+                        description.getText().toString(), thumbnailUri,
+                        attachmentAdapter.getData());
+                } else if (isModified()) {
+                    Log.d(TAG, "UPDATING");
+                }
                 break;
             case R.id.delete:
                 String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
@@ -299,31 +307,64 @@ public class NewsItemEditorActivity extends
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean isModified() {
+        if (!title.getText().toString().equals(selectedNews.getTitle())) {
+            return true;
+        }
+        if (!description.getText().toString().equals(selectedNews.getDescription())) {
+            return true;
+        }
+        if (selectedNews.getThumbnail() != null) {
+            if (thumbnailUri == null || !thumbnailUri.toString()
+                .equals(selectedNews.getThumbnail())) {
+                return true;
+            }
+        } else if (thumbnailUri != null) {
+            return true;
+        }
+        if (attachmentAdapter.isModified(selectedNews)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onBackPressed() {
-        showDiscardConfirm();
+        checkDiscardConfirmRequirement();
     }
 
     private void showDiscardConfirm() {
-        if (!"".equals(title.getText().toString())
-            || !"".equals(description.getText().toString())
-            || thumbnailUri != null
-            || attachmentAdapter.hasAttachment()) {
-            BZDialogBuilder.createConfirmDialog(this, getString(R.string.discard_your_changes),
-                getString(R.string.discard)).onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                }
-            }).onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    dialog.dismiss();
-                    finish();
-                }
-            }).show();
+        BZDialogBuilder.createConfirmDialog(this, getString(R.string.discard_your_changes),
+            getString(R.string.discard)).onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+            }
+        }).onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                dialog.dismiss();
+                finish();
+            }
+        }).show();
+    }
+
+    private void checkDiscardConfirmRequirement() {
+        if (selectedNews != null) {
+            if (isModified()) {
+                showDiscardConfirm();
+            } else {
+                finish();
+            }
         } else {
-            finish();
+            if (!"".equals(title.getText().toString())
+                || !"".equals(description.getText().toString())
+                || thumbnailUri != null
+                || attachmentAdapter.hasAttachment()) {
+                showDiscardConfirm();
+            } else {
+                finish();
+            }
         }
     }
 

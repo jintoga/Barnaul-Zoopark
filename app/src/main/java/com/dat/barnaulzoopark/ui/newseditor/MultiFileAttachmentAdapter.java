@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.model.News;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,21 @@ class MultiFileAttachmentAdapter
 
     public static final int MAX_NUMBER_ATTACHMENT = 5;
     private List<Attachment> data = new ArrayList<>();
+
+    public boolean isModified(News selectedNews) {
+        List<String> selectedNewsPhotos = new ArrayList<>(selectedNews.getPhotos().values());
+        if (selectedNewsPhotos.size() != data.size() - 1) {
+            return true;
+        }
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).isFilled()) {
+                if (!data.get(i).getUrl().equals(selectedNewsPhotos.get(i))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     interface AttachmentListener {
         void onRemoved(int position);
