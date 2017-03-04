@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.newseditor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.webkit.URLUtil;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
@@ -217,7 +218,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
 
                                 @Override
                                 public void onNext(News news) {
-
+                                    Log.e(TAG, news.toString());
                                 }
                             });
                     }
@@ -232,10 +233,49 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
             });
     }
 
-    private Observable<? extends News> updateAttachments(DatabaseReference newsItemReference,
-        News news, @NonNull List<Attachment> itemsToAdd, @NonNull List<Attachment> itemsToDelete) {
-        //ToDO: implement
-        return null;
+    private Observable<News> updateAttachments(final DatabaseReference newsItemReference,
+        final News news, @NonNull List<Attachment> itemsToAdd,
+        @NonNull List<Attachment> itemsToDelete) {
+        //Delete attachments
+        Observable<News> deleteObservable =
+            Observable.from(itemsToDelete).filter(new Func1<Attachment, Boolean>() {
+                @Override
+                public Boolean call(Attachment attachment) {
+                    return attachment.getAttachmentUid() != null;
+                }
+            }).flatMap(new Func1<Attachment, Observable<News>>() {
+                @Override
+                public Observable<News> call(final Attachment attachment) {
+                    final String attachmentPath = BZFireBaseApi.news
+                        + "/"
+                        + news.getUid()
+                        + "/photos/"
+                        + attachment.getAttachmentUid();
+                    return deleteNewsItemFile(attachmentPath).flatMap(
+                        new Func1<Void, Observable<News>>() {
+                            @Override
+                            public Observable<News> call(Void aVoid) {
+                                news.getPhotos().remove(attachment.getAttachmentUid());
+                                newsItemReference.setValue(news);
+                                return Observable.just(news);
+                            }
+                        });
+                }
+            });
+        //Upload new attachments(those don't have uid yet)
+        Observable<News> uploadObservable =
+            Observable.from(itemsToAdd).filter(new Func1<Attachment, Boolean>() {
+                @Override
+                public Boolean call(Attachment attachment) {
+                    return attachment.getAttachmentUid() == null;
+                }
+            }).flatMap(new Func1<Attachment, Observable<News>>() {
+                @Override
+                public Observable<News> call(Attachment attachment) {
+                    return uploadAttachmentItem(news, attachment);
+                }
+            });
+        return Observable.concat(deleteObservable, uploadObservable);
     }
 
     private Observable<News> updateThumbnail(final DatabaseReference newsItemReference,

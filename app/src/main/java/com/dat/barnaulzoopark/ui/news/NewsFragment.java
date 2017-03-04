@@ -168,7 +168,9 @@ public class NewsFragment
     @Override
     public void onNewsLongClicked(String uid) {
         //ToDo: display Edit, Delete Buttons on Toolbar
-        NewsItemEditorActivity.start(getActivity(), uid);
+        if (isAdmin) {
+            NewsItemEditorActivity.start(getActivity(), uid);
+        }
     }
 
     private void init() {

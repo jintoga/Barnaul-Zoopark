@@ -124,8 +124,10 @@ class MultiFileAttachmentAdapter
         if (isEditingMode) {
             final Attachment attachment = data.get(position);
             itemsToDelete.add(attachment);
+            itemsToAdd.remove(position);
         }
         data.remove(position);
+
         notifyDataSetChanged();
     }
 
@@ -153,6 +155,9 @@ class MultiFileAttachmentAdapter
     public void setData(List<Attachment> data) {
         this.data.clear();
         this.data.addAll(data);
+        if (isEditingMode) {
+            itemsToAdd.addAll(data);
+        }
         notifyDataSetChanged();
     }
 
