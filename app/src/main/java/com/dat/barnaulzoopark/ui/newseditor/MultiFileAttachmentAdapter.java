@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
-import com.dat.barnaulzoopark.model.News;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +32,13 @@ class MultiFileAttachmentAdapter
 
     private boolean isEditingMode = false;
 
-    public boolean isModified(News selectedNews) {
-        List<String> selectedNewsPhotos = new ArrayList<>(selectedNews.getPhotos().values());
-        if (selectedNewsPhotos.size() != data.size() - 1) {
+    public boolean isModified() {
+        if (itemsToDelete.size() > 0) {
             return true;
         }
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).isFilled()) {
-                if (!data.get(i).getUrl().equals(selectedNewsPhotos.get(i))) {
-                    return true;
-                }
+        for (Attachment attachment : itemsToAdd) {
+            if (attachment.getAttachmentUid() == null) {
+                return true;
             }
         }
         return false;

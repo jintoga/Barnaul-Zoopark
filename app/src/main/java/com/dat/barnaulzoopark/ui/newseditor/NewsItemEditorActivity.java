@@ -154,7 +154,11 @@ public class NewsItemEditorActivity extends
             attachmentAdapter.setData(attachments);
         }
         attachmentAdapter.addEmptySlot();
-        counter = attachmentAdapter.getItemCount();
+        if (attachmentAdapter.getItemCount() == MultiFileAttachmentAdapter.MAX_NUMBER_ATTACHMENT) {
+            counter = attachmentAdapter.getItemCount();
+        } else {
+            counter = attachmentAdapter.getItemCount() - 1;
+        }
     }
 
     @Override
@@ -364,7 +368,7 @@ public class NewsItemEditorActivity extends
         } else if (thumbnailUri != null) {
             return true;
         }
-        if (attachmentAdapter.isModified(selectedNews)) {
+        if (attachmentAdapter.isModified()) {
             return true;
         }
         return false;
