@@ -28,6 +28,11 @@ class MultiFileAttachmentAdapter
     public static final int MAX_NUMBER_ATTACHMENT = 5;
     private List<Attachment> data = new ArrayList<>();
 
+    private List<Attachment> itemsToDelete = new ArrayList<>();
+    private List<Attachment> itemsToAdd = new ArrayList<>();
+
+    private boolean isEditingMode = false;
+
     public boolean isModified(News selectedNews) {
         List<String> selectedNewsPhotos = new ArrayList<>(selectedNews.getPhotos().values());
         if (selectedNewsPhotos.size() != data.size() - 1) {
@@ -41,6 +46,14 @@ class MultiFileAttachmentAdapter
             }
         }
         return false;
+    }
+
+    public boolean isEditingMode() {
+        return isEditingMode;
+    }
+
+    public void setEditingMode(boolean editingMode) {
+        isEditingMode = editingMode;
     }
 
     interface AttachmentListener {
@@ -108,18 +121,33 @@ class MultiFileAttachmentAdapter
 
     void emptySlot(int position) {
         Log.d("removed", "removed:" + data.get(position).getUrl());
+        if (isEditingMode) {
+            final Attachment attachment = data.get(position);
+            itemsToDelete.add(attachment);
+        }
         data.remove(position);
         notifyDataSetChanged();
     }
 
     void fillSlot(int position, Attachment attachment) {
         data.set(position, attachment);
+        if (isEditingMode) {
+            itemsToAdd.add(attachment);
+        }
         notifyDataSetChanged();
     }
 
     @NonNull
     public List<Attachment> getData() {
         return data;
+    }
+
+    public List<Attachment> getItemsToDelete() {
+        return itemsToDelete;
+    }
+
+    public List<Attachment> getItemsToAdd() {
+        return itemsToAdd;
     }
 
     public void setData(List<Attachment> data) {

@@ -169,12 +169,12 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     @Override
     public void updateSelectedNewsItem(@NonNull News selectedNews, @NonNull String title,
         @NonNull String description, @Nullable Uri thumbnailUri,
-        @NonNull List<Attachment> attachments) {
+        @NonNull List<Attachment> itemsToAdd, @NonNull List<Attachment> itemsToDelete) {
         if (!"".equals(title) && !"".equals(description)) {
             if (getView() != null) {
                 getView().updatingNewsItemProgress();
             }
-            updateNews(selectedNews, title, description, thumbnailUri, attachments);
+            updateNews(selectedNews, title, description, thumbnailUri, itemsToAdd, itemsToDelete);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -184,7 +184,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
 
     private void updateNews(@NonNull News selectedNews, @NonNull final String title,
         @NonNull final String description, @Nullable final Uri thumbnailUri,
-        @NonNull final List<Attachment> attachments) {
+        @NonNull final List<Attachment> itemsToAdd, @NonNull final List<Attachment> itemsToDelete) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
         final DatabaseReference newsItemReference =
             newsDatabaseReference.child(selectedNews.getUid());
@@ -199,7 +199,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                     }
                     if (news != null) {
                         Observable.concat(updateThumbnail(newsItemReference, news, thumbnailUri),
-                            updateAttachments(newsItemReference, news, attachments))
+                            updateAttachments(newsItemReference, news, itemsToAdd, itemsToDelete))
                             .subscribe(new Observer<News>() {
                                 @Override
                                 public void onCompleted() {
@@ -233,7 +233,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     }
 
     private Observable<? extends News> updateAttachments(DatabaseReference newsItemReference,
-        News news, List<Attachment> attachments) {
+        News news, @NonNull List<Attachment> itemsToAdd, @NonNull List<Attachment> itemsToDelete) {
         //ToDO: implement
         return null;
     }

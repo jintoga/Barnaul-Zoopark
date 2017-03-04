@@ -36,6 +36,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by DAT on 1/29/2017.
@@ -145,8 +146,9 @@ public class NewsItemEditorActivity extends
         }
         if (selectedNews.getPhotos() != null && !selectedNews.getPhotos().isEmpty()) {
             List<Attachment> attachments = new ArrayList<>();
-            for (String url : selectedNews.getPhotos().values()) {
-                Attachment attachment = new Attachment(true, url);
+            for (Map.Entry<String, String> entry : selectedNews.getPhotos().entrySet()) {
+                Attachment attachment = new Attachment(true, entry.getValue());
+                attachment.setAttachmentUid(entry.getKey());
                 attachments.add(attachment);
             }
             attachmentAdapter.setData(attachments);
@@ -298,6 +300,7 @@ public class NewsItemEditorActivity extends
         String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
         if (selectedNewsUid != null) {
             loadSelectedNews(selectedNewsUid);
+            attachmentAdapter.setEditingMode(true);
         } else {
             attachmentAdapter.addEmptySlot();
         }
@@ -329,7 +332,8 @@ public class NewsItemEditorActivity extends
                         Log.d(TAG, "UPDATING");
                         presenter.updateSelectedNewsItem(selectedNews, title.getText().toString(),
                             description.getText().toString(), thumbnailUri,
-                            attachmentAdapter.getData());
+                            attachmentAdapter.getItemsToAdd(),
+                            attachmentAdapter.getItemsToDelete());
                     } else {
                         finish();
                     }
