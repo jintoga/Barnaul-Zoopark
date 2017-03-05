@@ -17,7 +17,7 @@ public class News {
     private String thumbnail;
     private long time;
     private Map<String, String> photos = new HashMap<>();
-    private Map<String, String> videos = new HashMap<>();
+    private String video;
 
     public News() {
         // Default constructor required for calls to DataSnapshot.getValue(News.class)
@@ -59,8 +59,12 @@ public class News {
         return photos;
     }
 
-    public Map<String, String> getVideos() {
-        return videos;
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     public void update(String title, String description) {
