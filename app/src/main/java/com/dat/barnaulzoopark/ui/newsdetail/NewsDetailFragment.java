@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,6 +22,7 @@ import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
+import com.dat.barnaulzoopark.ui.YoutubeVideoFragment;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
@@ -59,6 +61,10 @@ public class NewsDetailFragment
     @Bind(R.id.photos)
     protected RecyclerView photos;
     private NewsDetailPhotosAdapter photosAdapter;
+
+    @Bind(R.id.youtubeContainer)
+    protected FrameLayout youtubeContainer;
+    // private YoutubeVideoFragment youTubePlayerFragment;
 
     private News currentNews;
 
@@ -166,6 +172,16 @@ public class NewsDetailFragment
         } else {
             photos.setVisibility(View.GONE);
             photosLabel.setVisibility(View.GONE);
+        }
+        if (news.getVideo() != null && !news.getVideo().isEmpty()) {
+            YoutubeVideoFragment youtubeVideoFragment =
+                YoutubeVideoFragment.newInstance(news.getVideo());
+            getChildFragmentManager().beginTransaction()
+                .replace(R.id.youtubeContainer, youtubeVideoFragment)
+                .commit();
+            youtubeContainer.setVisibility(View.VISIBLE);
+        } else {
+            youtubeContainer.setVisibility(View.GONE);
         }
     }
 }

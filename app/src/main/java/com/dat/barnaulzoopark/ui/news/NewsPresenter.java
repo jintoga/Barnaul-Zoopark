@@ -2,7 +2,7 @@ package com.dat.barnaulzoopark.ui.news;
 
 import android.util.Log;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
-import com.dat.barnaulzoopark.events.LoggedIn;
+import com.dat.barnaulzoopark.events.LoggedInEvent;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.EventMvpPresenter;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfilePresenter;
@@ -73,7 +73,7 @@ class NewsPresenter extends EventMvpPresenter<NewsContract.View>
     }
 
     @Subscribe
-    public void onEvent(LoggedIn loggedIn) {
+    public void onEvent(LoggedInEvent loggedIn) {
         Log.d(TAG, "is admin: " + loggedIn.isAdmin());
         if (getView() != null) {
             getView().showAdminPrivilege(loggedIn.isAdmin());

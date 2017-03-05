@@ -29,7 +29,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.events.LoggedIn;
+import com.dat.barnaulzoopark.events.LoggedInEvent;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
@@ -112,7 +112,7 @@ public class MainActivity
         if (user.isAdmin()) {
             name += "(admin)";
         }
-        EventBus.getDefault().post(new LoggedIn(user.isAdmin()));
+        EventBus.getDefault().post(new LoggedInEvent(user.isAdmin()));
         userName.setText(name);
         userEmail.setText(user.getEmail());
         logButton.setImageResource(R.drawable.ic_logout);

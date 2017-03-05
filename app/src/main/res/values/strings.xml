@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Barnaul Zoopark</string>
+    <string name="api_key">AIzaSyCcXXhw8Ztu-yfwxX7aNWd5qTp8gTAeWhI</string>
 
     <string name="nav_drawer_open">nav drawer open</string>
     <string name="nav_drawer_closed">nav drawer closed</string>

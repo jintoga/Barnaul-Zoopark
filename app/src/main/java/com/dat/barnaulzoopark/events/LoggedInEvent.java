@@ -4,11 +4,11 @@ package com.dat.barnaulzoopark.events;
  * Created by DAT on 1/7/2017.
  */
 
-public class LoggedIn {
+public class LoggedInEvent {
 
     private boolean isAdmin;
 
-    public LoggedIn(boolean isAdmin) {
+    public LoggedInEvent(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 
