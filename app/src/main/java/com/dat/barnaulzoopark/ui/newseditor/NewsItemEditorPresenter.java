@@ -154,12 +154,12 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
 
     @Override
     public void createNewsItem(@NonNull String title, @NonNull String description,
-        @Nullable Uri thumbnailUri, @NonNull List<Attachment> attachments) {
+        @Nullable Uri thumbnailUri, @NonNull List<Attachment> attachments, @NonNull String video) {
         if (!"".equals(title) && !"".equals(description)) {
             if (getView() != null) {
                 getView().creatingNewsItemProgress();
             }
-            createNews(title, description, thumbnailUri, attachments);
+            createNews(title, description, thumbnailUri, attachments, video);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -170,12 +170,14 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     @Override
     public void updateSelectedNewsItem(@NonNull News selectedNews, @NonNull String title,
         @NonNull String description, @Nullable Uri thumbnailUri,
-        @NonNull List<Attachment> itemsToAdd, @NonNull List<Attachment> itemsToDelete) {
+        @NonNull List<Attachment> itemsToAdd, @NonNull List<Attachment> itemsToDelete,
+        @NonNull String video) {
         if (!"".equals(title) && !"".equals(description)) {
             if (getView() != null) {
                 getView().updatingNewsItemProgress();
             }
-            updateNews(selectedNews, title, description, thumbnailUri, itemsToAdd, itemsToDelete);
+            updateNews(selectedNews, title, description, thumbnailUri, itemsToAdd, itemsToDelete,
+                video);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -185,11 +187,15 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
 
     private void updateNews(@NonNull News selectedNews, @NonNull final String title,
         @NonNull final String description, @Nullable final Uri thumbnailUri,
-        @NonNull final List<Attachment> itemsToAdd, @NonNull final List<Attachment> itemsToDelete) {
+        @NonNull final List<Attachment> itemsToAdd, @NonNull final List<Attachment> itemsToDelete,
+        @NonNull String video) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
         final DatabaseReference newsItemReference =
             newsDatabaseReference.child(selectedNews.getUid());
         selectedNews.update(title, description);
+        if (!"".equals(video)) {
+            selectedNews.setVideo(video);
+        }
         newsItemReference.setValue(selectedNews);
         RxFirebaseDatabase.observeSingleValueEvent(newsItemReference, News.class)
             .subscribe(new Action1<News>() {
@@ -345,11 +351,15 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     }
 
     private void createNews(@NonNull final String title, @NonNull final String description,
-        @Nullable final Uri thumbnailUri, @NonNull final List<Attachment> attachments) {
+        @Nullable final Uri thumbnailUri, @NonNull final List<Attachment> attachments,
+        @NonNull String video) {
         DatabaseReference newsDatabaseReference = database.getReference().child(BZFireBaseApi.news);
         final String uid = newsDatabaseReference.push().getKey();
         final DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
         News news = new News(uid, title, description, Calendar.getInstance().getTimeInMillis());
+        if (!"".equals(video)) {
+            news.setVideo(video);
+        }
         newsItemReference.setValue(news);
         RxFirebaseDatabase.observeSingleValueEvent(newsItemReference, News.class)
             .subscribe(new Action1<News>() {

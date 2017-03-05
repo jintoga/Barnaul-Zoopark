@@ -55,10 +55,12 @@ public interface NewsItemEditorContract {
         void loadSelectedNews(@NonNull String selectedNewsUid);
 
         void createNewsItem(@NonNull String title, @NonNull String description,
-            @Nullable Uri thumbnailUri, @NonNull List<Attachment> attachments);
+            @Nullable Uri thumbnailUri, @NonNull List<Attachment> attachments,
+            @NonNull String video);
 
         void updateSelectedNewsItem(@NonNull News selectedNews, @NonNull String title,
             @NonNull String description, @Nullable Uri thumbnailUri,
-            @NonNull List<Attachment> itemsToAdd, @NonNull List<Attachment> itemsToDelete);
+            @NonNull List<Attachment> itemsToAdd, @NonNull List<Attachment> itemsToDelete,
+            @NonNull String video);
     }
 }

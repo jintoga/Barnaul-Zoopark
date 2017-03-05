@@ -136,8 +136,9 @@
                     android:fontFamily="sans-serif"
                     android:gravity="top"
                     android:hint="youtube video URL"
-                    android:inputType="textMultiLine"
+                    android:inputType="textUri"
                     android:lineSpacingExtra="6dp"
+                    android:maxLines="1"
                     android:textColor="@color/black" />
 
             </LinearLayout>

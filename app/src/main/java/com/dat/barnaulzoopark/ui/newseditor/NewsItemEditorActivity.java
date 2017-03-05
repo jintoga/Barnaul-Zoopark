@@ -65,6 +65,8 @@ public class NewsItemEditorActivity extends
     @Bind(R.id.album)
     protected RecyclerView album;
     private MultiFileAttachmentAdapter attachmentAdapter;
+    @Bind(R.id.video)
+    protected EditText video;
 
     private Uri thumbnailUri;
 
@@ -141,6 +143,7 @@ public class NewsItemEditorActivity extends
         }
         title.setText(selectedNews.getTitle());
         description.setText(selectedNews.getDescription());
+        video.setText(selectedNews.getVideo());
         if (selectedNews.getThumbnail() != null && !"".equals(selectedNews.getThumbnail())) {
             Glide.with(this).load(Uri.parse(selectedNews.getThumbnail())).into(thumbnail);
         }
@@ -329,15 +332,15 @@ public class NewsItemEditorActivity extends
             case R.id.save:
                 if (selectedNews == null) {
                     presenter.createNewsItem(title.getText().toString(),
-                        description.getText().toString(), thumbnailUri,
-                        attachmentAdapter.getData());
+                        description.getText().toString(), thumbnailUri, attachmentAdapter.getData(),
+                        video.getText().toString());
                 } else {
                     if (isModified()) {
                         Log.d(TAG, "UPDATING");
                         presenter.updateSelectedNewsItem(selectedNews, title.getText().toString(),
                             description.getText().toString(), thumbnailUri,
-                            attachmentAdapter.getItemsToAdd(),
-                            attachmentAdapter.getItemsToDelete());
+                            attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete(),
+                            video.getText().toString());
                     } else {
                         finish();
                     }
@@ -369,6 +372,9 @@ public class NewsItemEditorActivity extends
             return true;
         }
         if (attachmentAdapter.isModified()) {
+            return true;
+        }
+        if (!video.getText().toString().equals(selectedNews.getVideo())) {
             return true;
         }
         return false;

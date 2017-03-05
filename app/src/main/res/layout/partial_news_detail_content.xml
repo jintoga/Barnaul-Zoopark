@@ -24,6 +24,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -32,7 +34,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/item_news_detail_title_text_size"
                     tools:text="Выставка Петухов. Ул Взлетная 2-к, эко-ярмарка ВДНХ. Время работы: ежедневно с 10.00 до 20.00" />
@@ -84,7 +85,6 @@
                     android:id="@+id/photos"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="8dp"
