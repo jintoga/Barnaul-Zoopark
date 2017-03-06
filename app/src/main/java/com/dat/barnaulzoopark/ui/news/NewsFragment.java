@@ -92,20 +92,12 @@ public class NewsFragment
     }
 
     @Override
-    public void showAdminPrivilege(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-        enableCollapsingToolbar(isAdmin);
-        if (isAdmin) {
-            fabCreate.setVisibility(View.VISIBLE);
-        } else {
-            fabCreate.setVisibility(View.GONE);
-        }
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadData();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.checkAdminPrivilege();
+    private void loadData() {
         if (BZApplication.isTabletLandscape(getContext()) && newsReference != null) {
             newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -132,6 +124,23 @@ public class NewsFragment
                 }
             });
         }
+    }
+
+    @Override
+    public void showAdminPrivilege(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+        enableCollapsingToolbar(isAdmin);
+        if (isAdmin) {
+            fabCreate.setVisibility(View.VISIBLE);
+        } else {
+            fabCreate.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.checkAdminPrivilege();
     }
 
     //Prevent toolbar from collapsing when user is ADMIN

@@ -142,7 +142,7 @@ public class NewsDetailFragment
     @Override
     public void showNewsDetail(@Nullable News news) {
         currentNews = news;
-        appBarLayout.setExpanded(true, false);
+        //appBarLayout.setExpanded(true, false);
         if (news == null) {
             Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
                 .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
