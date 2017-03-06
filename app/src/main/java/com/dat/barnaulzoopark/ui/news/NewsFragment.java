@@ -57,6 +57,7 @@ public class NewsFragment
 
     private int selectedNewsPosition = 0;
 
+    @NonNull
     @Override
     public NewsContract.UserActionListener createPresenter() {
         FirebaseAuth auth =
@@ -82,7 +83,7 @@ public class NewsFragment
         scrollFlags = layoutParams.getScrollFlags();
 
         if (savedInstanceState == null && BZApplication.isTabletLandscape(getContext())) {
-            NewsDetailFragment newsDetailFragment = new NewsDetailFragment();
+            NewsDetailFragment newsDetailFragment = NewsDetailFragment.newInstance(null);
             FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.newsDetailFragmentContainer, newsDetailFragment,
                 KEY_NEWS_DETAIL_FRAGMENT);
@@ -164,13 +165,17 @@ public class NewsFragment
                 this.selectedNewsPosition = selectedPosition;
                 adapter.setSelectedPosition(selectedPosition);
                 adapter.notifySelectedItem();
-                NewsDetailFragment articleDetailFragment =
-                    (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
-                        KEY_NEWS_DETAIL_FRAGMENT);
-                if (articleDetailFragment != null) {
-                    articleDetailFragment.showNewsDetail(adapter.getSelectedItem());
-                }
+                showNewsDetail();
             }
+        }
+    }
+
+    private void showNewsDetail() {
+        NewsDetailFragment articleDetailFragment =
+            (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
+                KEY_NEWS_DETAIL_FRAGMENT);
+        if (articleDetailFragment != null) {
+            articleDetailFragment.showNewsDetail(adapter.getSelectedItem());
         }
     }
 
@@ -197,6 +202,7 @@ public class NewsFragment
                     recyclerViewNews.setVisibility(View.INVISIBLE);
                 } else {
                     recyclerViewNews.setVisibility(View.VISIBLE);
+                    showNewsDetail();
                 }
             }
 

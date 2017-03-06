@@ -62,4 +62,5 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.firebaseui:firebase-ui-database:1.0.0'
     compile 'com.kelvinapps:rxfirebase:0.0.15'
+    compile "me.henrytao:smooth-app-bar-layout:25.1.0.0"
 }

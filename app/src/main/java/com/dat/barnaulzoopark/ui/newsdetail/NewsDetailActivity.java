@@ -33,10 +33,7 @@ public class NewsDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         String newsUid = getIntent().getStringExtra(KEY_NEWS_UID);
         if (savedInstanceState == null && newsUid != null) {
-            NewsDetailFragment newsDetailFragment = new NewsDetailFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString(KEY_NEWS_UID, newsUid);
-            newsDetailFragment.setArguments(bundle);
+            NewsDetailFragment newsDetailFragment = NewsDetailFragment.newInstance(newsUid);
             getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragmentContainer, newsDetailFragment, "")
                 .commit();

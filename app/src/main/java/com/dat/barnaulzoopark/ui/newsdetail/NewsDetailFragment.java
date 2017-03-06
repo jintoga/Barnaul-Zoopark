@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +30,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
+import me.henrytao.smoothappbarlayout.SmoothAppBarLayout;
 
 /**
  * Created by DAT on 1/9/2017.
@@ -43,7 +43,7 @@ public class NewsDetailFragment
     private static final String KEY_NEWS_UID = "NEWS_UID";
 
     @Bind(R.id.app_bar_layout)
-    protected AppBarLayout appBarLayout;
+    protected SmoothAppBarLayout appBarLayout;
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.content_container)
@@ -64,9 +64,18 @@ public class NewsDetailFragment
 
     @Bind(R.id.youtubeContainer)
     protected FrameLayout youtubeContainer;
-    // private YoutubeVideoFragment youTubePlayerFragment;
 
     private News currentNews;
+
+    public static NewsDetailFragment newInstance(@Nullable String newsUid) {
+        Bundle args = new Bundle();
+        if (newsUid != null) {
+            args.putString(KEY_NEWS_UID, newsUid);
+        }
+        NewsDetailFragment fragment = new NewsDetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @NonNull
     @Override
