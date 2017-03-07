@@ -29,6 +29,7 @@ import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
+import com.dat.barnaulzoopark.widget.PrefixEditText;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
@@ -66,7 +67,7 @@ public class NewsItemEditorActivity extends
     protected RecyclerView album;
     private MultiFileAttachmentAdapter attachmentAdapter;
     @Bind(R.id.video)
-    protected EditText video;
+    protected PrefixEditText video;
 
     private Uri thumbnailUri;
 
@@ -311,6 +312,8 @@ public class NewsItemEditorActivity extends
         } else {
             attachmentAdapter.addEmptySlot();
         }
+
+        video.setPrefix("https://www.youtube.com/watch?v=");
     }
 
     private void loadSelectedNews(@NonNull String selectedNewsUid) {

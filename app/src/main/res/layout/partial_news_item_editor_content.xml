@@ -125,16 +125,17 @@
                     android:tint="@color/colorTextSecondary"
                     app:srcCompat="@drawable/ic_youtube_play" />
 
-                <EditText
+                <com.dat.barnaulzoopark.widget.PrefixEditText
                     android:id="@+id/video"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:gravity="top"
-                    android:hint="youtube video URL"
+                    android:hint="VIDEO_ID"
                     android:inputType="textUri"
-                    android:maxLines="1"
                     android:lineSpacingExtra="6dp"
+                    android:maxLength="11"
+                    android:maxLines="1"
                     android:textColor="@color/black" />
 
             </LinearLayout>

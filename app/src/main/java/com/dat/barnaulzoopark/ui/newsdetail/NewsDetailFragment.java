@@ -187,7 +187,7 @@ public class NewsDetailFragment
                 YoutubeVideoFragment.newInstance(news.getVideo());
             getChildFragmentManager().beginTransaction()
                 .replace(R.id.youtubeContainer, youtubeVideoFragment)
-                .commit();
+                .commitAllowingStateLoss();
             youtubeContainer.setVisibility(View.VISIBLE);
         } else {
             youtubeContainer.setVisibility(View.GONE);
