@@ -195,6 +195,8 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         selectedNews.update(title, description);
         if (!"".equals(video)) {
             selectedNews.setVideo(video);
+        } else {
+            selectedNews.setVideo(null);
         }
         newsItemReference.setValue(selectedNews);
         RxFirebaseDatabase.observeSingleValueEvent(newsItemReference, News.class)
