@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class NewsFragment
     implements NewsContract.View, NewsAdapter.NewsAdapterListener {
 
     private static final String KEY_NEWS_DETAIL_FRAGMENT = "NEWS_DETAIL_FRAGMENT";
+    private static final String KEY_SELECTED_POSITION = "SELECTED_POSITION";
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
@@ -82,7 +84,7 @@ public class NewsFragment
             (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         scrollFlags = layoutParams.getScrollFlags();
 
-        if (savedInstanceState == null && BZApplication.isTabletLandscape(getContext())) {
+        if (/*savedInstanceState == null &&*/ BZApplication.isTabletLandscape(getContext())) {
             NewsDetailFragment newsDetailFragment = NewsDetailFragment.newInstance(null);
             FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.newsDetailFragmentContainer, newsDetailFragment,
@@ -158,15 +160,33 @@ public class NewsFragment
 
     @Override
     public void onItemClicked(@NonNull String uid, int selectedPosition) {
+        if (adapter.getSelectedPosition() != selectedPosition) {
+            this.selectedNewsPosition = selectedPosition;
+            adapter.setSelectedPosition(selectedPosition);
+            adapter.notifySelectedItem();
+        }
         if (!BZApplication.isTabletLandscape(getContext())) {
             NewsDetailActivity.startActivity(getActivity(), uid);
         } else {
-            if (adapter.getSelectedPosition() != selectedPosition) {
-                this.selectedNewsPosition = selectedPosition;
-                adapter.setSelectedPosition(selectedPosition);
-                adapter.notifySelectedItem();
-                showNewsDetail();
-            }
+            showNewsDetail();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SELECTED_POSITION, adapter.getSelectedPosition());
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            int selectedPosition = savedInstanceState.getInt(KEY_SELECTED_POSITION);
+            Log.e("TAG", selectedPosition + "");
+            this.selectedNewsPosition = selectedPosition;
+            adapter.setSelectedPosition(selectedPosition);
+            adapter.notifySelectedItem();
         }
     }
 

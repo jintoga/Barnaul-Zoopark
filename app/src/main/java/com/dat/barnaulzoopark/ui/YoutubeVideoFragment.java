@@ -1,9 +1,8 @@
 package com.dat.barnaulzoopark.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 import com.dat.barnaulzoopark.R;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -30,10 +29,16 @@ public class YoutubeVideoFragment extends YouTubePlayerSupportFragment
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
         boolean wasRestored) {
-        player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+        initPlayer(player);
         if (!wasRestored) {
             player.cueVideo(getArguments().getString(KEY_URL));
+        } else {
+            player.release();
         }
+    }
+
+    private void initPlayer(@NonNull final YouTubePlayer player) {
+        player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
     }
 
     @Override
@@ -45,8 +50,14 @@ public class YoutubeVideoFragment extends YouTubePlayerSupportFragment
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        setRetainInstance(false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         initialize(getString(R.string.api_key), this);
     }
 }
