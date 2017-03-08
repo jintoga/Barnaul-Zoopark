@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 import me.henrytao.smoothappbarlayout.SmoothAppBarLayout;
+import me.henrytao.smoothappbarlayout.widget.NestedScrollView;
 
 /**
  * Created by DAT on 1/9/2017.
@@ -64,6 +65,8 @@ public class NewsDetailFragment
 
     @Bind(R.id.youtubeContainer)
     protected FrameLayout youtubeContainer;
+    @Bind(R.id.nestedScrollView)
+    protected NestedScrollView nestedScrollView;
 
     private News currentNews;
 
@@ -151,7 +154,7 @@ public class NewsDetailFragment
     @Override
     public void showNewsDetail(@Nullable News news) {
         currentNews = news;
-        //appBarLayout.setExpanded(true, false);
+        nestedScrollView.scrollTo(0, 0);
         if (news == null) {
             Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
                 .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
