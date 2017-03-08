@@ -71,7 +71,7 @@ public class NewsItemEditorActivity extends
 
     private Uri thumbnailUri;
 
-    private int counter = 0;
+    private int filledAttachmentCounter = 0;
     private int currentAttachmentPosition = 0;
 
     private MaterialDialog progressDialog;
@@ -117,7 +117,7 @@ public class NewsItemEditorActivity extends
                 break;
             case REQUEST_BROWSE_IMAGE_ATTACHMENT:
                 Log.d(TAG, "REQUEST_BROWSE_IMAGE_ATTACHMENT");
-                counter++;
+                filledAttachmentCounter++;
                 Attachment attachment = new Attachment(true, uri.toString());
                 attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
                 attachmentAdapter.addEmptySlot();
@@ -156,13 +156,9 @@ public class NewsItemEditorActivity extends
                 attachments.add(attachment);
             }
             attachmentAdapter.setData(attachments);
+            filledAttachmentCounter = attachments.size();
         }
         attachmentAdapter.addEmptySlot();
-        if (attachmentAdapter.getItemCount() == MultiFileAttachmentAdapter.MAX_NUMBER_ATTACHMENT) {
-            counter = attachmentAdapter.getItemCount();
-        } else {
-            counter = attachmentAdapter.getItemCount() - 1;
-        }
     }
 
     @Override
@@ -425,18 +421,20 @@ public class NewsItemEditorActivity extends
 
     @Override
     public void onRemoved(int position) {
-        if (counter == MultiFileAttachmentAdapter.MAX_NUMBER_ATTACHMENT) {
+        album.requestFocus();
+        if (filledAttachmentCounter == MultiFileAttachmentAdapter.MAX_NUMBER_ATTACHMENT) {
             attachmentAdapter.emptySlot(position);
             attachmentAdapter.addEmptySlot();
         } else {
             attachmentAdapter.emptySlot(position);
         }
-        counter--;
+        filledAttachmentCounter--;
     }
 
     @Override
     public void onSlotSelected(int position) {
-        if (counter == MultiFileAttachmentAdapter.MAX_NUMBER_ATTACHMENT) {
+        album.requestFocus();
+        if (filledAttachmentCounter == MultiFileAttachmentAdapter.MAX_NUMBER_ATTACHMENT) {
             Toast.makeText(this, "Выбрано максимальное количество файлов", Toast.LENGTH_LONG)
                 .show();
             return;
