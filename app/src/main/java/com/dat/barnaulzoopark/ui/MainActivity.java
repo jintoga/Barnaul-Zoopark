@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,7 +27,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.events.LoggedInEvent;
+import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
@@ -45,6 +45,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity
     extends BaseMvpActivity<UserProfileContract.View, UserProfileContract.UserActionListener>
@@ -102,18 +103,19 @@ public class MainActivity
     }
 
     @Override
-    public void bindUserData(boolean isAdmin, String name, String email,
-        @Nullable String photoUrl) {
-        if (photoUrl != null) {
-            Uri photoUri = Uri.parse(photoUrl);
+    public void bindUserData(@NonNull User user) {
+        if (user.getPhoto() != null) {
+            Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
         }
-        if (isAdmin) {
+        String name = user.getName();
+        if (user.isAdmin()) {
             name += "(admin)";
         }
+        EventBus.getDefault().post(new LoggedInEvent(user.isAdmin()));
         userName.setText(name);
-        userEmail.setText(email);
-        logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_logout));
+        userEmail.setText(user.getEmail());
+        logButton.setImageResource(R.drawable.ic_logout);
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,9 +126,9 @@ public class MainActivity
                             @NonNull DialogAction which) {
                             FirebaseAuth.getInstance().signOut();
                             SharedPreferences.Editor editor =
-                                PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                                getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE)
                                     .edit();
-                            editor.putBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+                            editor.putBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
                             editor.apply();
                             goToStartUp();
                         }
@@ -143,7 +145,7 @@ public class MainActivity
         userPhoto.setImageURI(uri);
         userName.setText(getString(R.string.dear_visitor));
         userEmail.setText(getString(R.string.welcome_to_our_zoo));
-        logButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_login));
+        logButton.setImageResource(R.drawable.ic_login);
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,15 +192,18 @@ public class MainActivity
     @NonNull
     @Override
     public UserProfileContract.UserActionListener createPresenter() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
+        FirebaseAuth auth = BZApplication.get(this).getApplicationComponent().firebaseAuth();
+        FirebaseDatabase database =
+            BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
+        FirebaseStorage storage =
+            BZApplication.get(this).getApplicationComponent().fireBaseStorage();
         return new UserProfilePresenter(auth, database, storage);
     }
 
     private void authenticate() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        isLoggedIn = sharedPreferences.getBoolean(StartupActivity.KEY_IS_LOGGED_IN, false);
+        SharedPreferences sharedPreferences =
+            getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE);
+        isLoggedIn = sharedPreferences.getBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
         if (isLoggedIn) {
             return;
         }
@@ -382,7 +387,7 @@ public class MainActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             CropImage.activity(data.getData())
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);

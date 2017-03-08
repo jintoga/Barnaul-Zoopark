@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/removePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="@dimen/md_listitem_vertical_margin"
+        android:paddingEnd="@dimen/md_listitem_margin_left"
+        android:paddingLeft="@dimen/md_listitem_margin_left"
+        android:paddingRight="@dimen/md_listitem_margin_left"
+        android:paddingStart="@dimen/md_listitem_margin_left"
+        android:paddingTop="@dimen/md_listitem_vertical_margin"
+        android:text="@string/remove_photo"
+        android:textColor="@color/black"
+        android:textSize="@dimen/md_listitem_textsize" />
+
+    <TextView
+        android:id="@+id/takePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="@dimen/md_listitem_vertical_margin"
+        android:paddingEnd="@dimen/md_listitem_margin_left"
+        android:paddingLeft="@dimen/md_listitem_margin_left"
+        android:paddingRight="@dimen/md_listitem_margin_left"
+        android:paddingStart="@dimen/md_listitem_margin_left"
+        android:paddingTop="@dimen/md_listitem_vertical_margin"
+        android:text="@string/take_photo"
+        android:textColor="@color/black"
+        android:textSize="@dimen/md_listitem_textsize" />
+
+    <TextView
+        android:id="@+id/choosePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingBottom="@dimen/md_listitem_vertical_margin"
+        android:paddingEnd="@dimen/md_listitem_margin_left"
+        android:paddingLeft="@dimen/md_listitem_margin_left"
+        android:paddingRight="@dimen/md_listitem_margin_left"
+        android:paddingStart="@dimen/md_listitem_margin_left"
+        android:paddingTop="@dimen/md_listitem_vertical_margin"
+        android:text="@string/choose_photo"
+        android:textColor="@color/black"
+        android:textSize="@dimen/md_listitem_textsize" />
+</LinearLayout>

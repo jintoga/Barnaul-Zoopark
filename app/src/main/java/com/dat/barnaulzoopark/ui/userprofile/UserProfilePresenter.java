@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
+import com.dat.barnaulzoopark.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,26 +48,15 @@ public class UserProfilePresenter extends MvpBasePresenter<UserProfileContract.V
             currentUserDatabaseRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    String name = null;
-                    String photoUrl = null;
-                    String email = null;
-                    boolean isAdmin = false;
-                    for (DataSnapshot item : dataSnapshot.getChildren()) {
-                        if (item.getKey().equals("admin")) {
-                            isAdmin = true;
+                    User user = dataSnapshot.getValue(User.class);
+                    if (user != null) {
+                        if (getView() != null) {
+                            getView().bindUserData(user);
                         }
-                        if (item.getKey().equals("name")) {
-                            name = (String) item.getValue();
+                    } else {
+                        if (getView() != null) {
+                            getView().bindUserDataAsGuest();
                         }
-                        if (item.getKey().equals("email")) {
-                            email = (String) item.getValue();
-                        }
-                        if (item.getKey().equals("photo")) {
-                            photoUrl = (String) item.getValue();
-                        }
-                    }
-                    if (getView() != null) {
-                        getView().bindUserData(isAdmin, name, email, photoUrl);
                     }
                 }
 

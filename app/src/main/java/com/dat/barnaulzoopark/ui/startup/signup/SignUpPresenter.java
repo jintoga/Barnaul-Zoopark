@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.startup.signup;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
+import com.dat.barnaulzoopark.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -62,7 +63,7 @@ class SignUpPresenter extends MvpBasePresenter<SignUpContract.View>
         @NonNull String email) {
         DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.users);
         DatabaseReference currentUserReference = databaseReference.child(userUID);
-        currentUserReference.child("name").setValue(name);
-        currentUserReference.child("email").setValue(email);
+        User user = new User(name, email, "", false);
+        currentUserReference.setValue(user);
     }
 }

@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
@@ -33,7 +34,7 @@ public class SignUpFragment
     implements SignUpContract.View {
 
     private static final String TAG = SignUpFragment.class.getName();
-    
+
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.userName)
@@ -50,8 +51,10 @@ public class SignUpFragment
     @NonNull
     @Override
     public SignUpContract.UserActionListener createPresenter() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseAuth auth =
+            BZApplication.get(getContext()).getApplicationComponent().firebaseAuth();
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
         return new SignUpPresenter(auth, database);
     }
 
@@ -100,7 +103,7 @@ public class SignUpFragment
     @Override
     public void showSigningUpProgress() {
         Log.d(TAG, "showSigningUpProgress");
-        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext());
+        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(), null);
     }
 
     private void initToolbar() {

@@ -46,4 +46,6 @@
     <color name="animals_detail_background">#256829</color>
 
     <color name="primary_90">#E64CAF50</color>
+
+    <color name="avatar_bg_color">#e9eef1</color>
 </resources>

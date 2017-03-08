@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.startup.login.LoginFragment;
@@ -22,7 +22,6 @@ public class StartupActivity extends AppCompatActivity implements ICallback {
     public static final int LOGIN_POS = 1;
     public static final int SIGNUP_POS = 2;
 
-    public static final String KEY_IS_LOGGED_IN = "IS_LOGGED_IN";
     private static final String TAG = StartupActivity.class.getName();
 
     public static void start(Context context) {
@@ -75,8 +74,8 @@ public class StartupActivity extends AppCompatActivity implements ICallback {
     private void saveLoggedInStatus() {
         Log.d(TAG, "saveLoggedInStatus");
         SharedPreferences.Editor editor =
-            PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putBoolean(KEY_IS_LOGGED_IN, true);
+            getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE).edit();
+        editor.putBoolean(BZApplication.KEY_IS_LOGGED_IN, true);
         editor.apply();
         goToMain();
     }

@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.InputType;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -29,10 +30,11 @@ public class BZDialogBuilder {
             .show();
     }
 
-    public static MaterialDialog createSimpleProgressDialog(@NonNull Context context) {
+    public static MaterialDialog createSimpleProgressDialog(@NonNull Context context,
+        @Nullable String message) {
         return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
             .contentColorRes(R.color.black)
-            .content("Loading...")
+            .content(message == null ? "Loading..." : message)
             .progress(true, 0)
             .show();
     }
@@ -78,5 +80,29 @@ public class BZDialogBuilder {
                 }
             })
             .alwaysCallInputCallback();
+    }
+
+    public static MaterialDialog createChangePhotoDialog(@NonNull Context context) {
+        return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
+            .title("Change photo")
+            .titleColorRes(R.color.black)
+            .customView(R.layout.item_change_photo_dialog, false)
+            .negativeText(context.getString(R.string.cancel))
+            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    dialog.dismiss();
+                }
+            })
+            .show();
+    }
+
+    public static MaterialDialog.Builder createConfirmDialog(@NonNull Context context,
+        @NonNull String title, @NonNull String btnPositiveText) {
+        return new MaterialDialog.Builder(context).backgroundColorRes(R.color.white)
+            .title(title)
+            .titleColorRes(R.color.black)
+            .negativeText(context.getString(R.string.cancel))
+            .positiveText(btnPositiveText);
     }
 }

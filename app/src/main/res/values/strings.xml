@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Barnaul Zoopark</string>
+    <string name="api_key">AIzaSyCcXXhw8Ztu-yfwxX7aNWd5qTp8gTAeWhI</string>
 
     <string name="nav_drawer_open">nav drawer open</string>
     <string name="nav_drawer_closed">nav drawer closed</string>
@@ -61,6 +62,9 @@
         <item>Strawberry</item>
     </string-array>
 
+    <string name="take_photo">Take photo</string>
+    <string name="choose_photo">Choose photo</string>
+    <string name="remove_photo">Remove photo</string>
 
     <string name="test_text">Амир, наряду с дальневосточным леопардом Елисеем, является одним из первых представителей кошек в нашем зоопарке. Он нелюдим, замкнут, но ночью ведет себя, как маленький кот. В прошлом году к нему привезли самку Миру. У него уже был негативный опыт общения с самками. Но в этот раз они соседствуют уже на протяжении полугода. Амир и Мира привыкли друг к другу, и самое интересное, что общаются только ночью.
     </string>
@@ -79,4 +83,6 @@
      - Соболь легко приручается и своим поведением в домашних условиях похож на кошку.
     \n- Ученые и охотоведы вовремя пришли на помощь зверьку, которого убивали ради шкур в промышленных масштабах. Сейчас соболиной популяции ничто не угрожает.
  </string>
+    <string name="discard_your_changes">Discard your changes?</string>
+    <string name="discard">Discard</string>
 </resources>
