@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
-    android:minHeight="600dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="8dp">
 
@@ -14,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,6 +50,7 @@
             android:lineSpacingExtra="8dp"
             android:textSize="@dimen/text_size_14"
             tools:text="@string/test_text3" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +68,6 @@
             android:lineSpacingExtra="8dp"
             android:textSize="@dimen/text_size_14"
             tools:text="@string/test_text" />
-
 
 
     </LinearLayout>

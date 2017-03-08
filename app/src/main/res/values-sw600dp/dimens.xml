@@ -9,5 +9,6 @@
 
     <dimen name="search_view_margin_top_not_fully_expanded">0dp</dimen>
     <dimen name="search_view_margin_bottom_not_fully_expanded">0dp</dimen>
+    <dimen name="news_detail_banner_height">300dp</dimen>
 </resources>
 

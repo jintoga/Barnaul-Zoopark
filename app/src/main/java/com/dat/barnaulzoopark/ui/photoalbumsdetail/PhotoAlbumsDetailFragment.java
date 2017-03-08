@@ -17,6 +17,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.model.Photo;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
+import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +76,6 @@ public class PhotoAlbumsDetailFragment extends Fragment
         for (Photo photo : adapter.getData()) {
             urls.add(photo.getUrl());
         }
-        PhotosDetailActivity.startActivity(getActivity(), urls, position);
+        PhotosDetailActivity.start(getActivity(), urls, position,true);
     }
 }

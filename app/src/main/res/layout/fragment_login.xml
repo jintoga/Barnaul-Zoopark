@@ -15,68 +15,75 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="36dp"
-        android:text="@string/welcome_back"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_18"
-        android:textStyle="italic" />
 
-
-    <Space
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1" />
-
-
-    <LinearLayout
-        android:layout_width="@dimen/default_width"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        tools:layout_width="match_parent">
+        android:layout_weight="1">
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="@dimen/default_width"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/custom_selector_edittext"
-            android:hint="@string/enter_email"
-            android:inputType="textEmailAddress"
-            android:lines="1"
-            android:padding="12dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="@dimen/text_size_18"
-            android:theme="@style/EditText"
-            android:typeface="monospace" />
+            android:layout_gravity="center|top"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            tools:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="center"
+                android:text="@string/welcome_back"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_18"
+                android:textStyle="italic" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/custom_selector_edittext"
+                android:hint="@string/enter_email"
+                android:inputType="textEmailAddress"
+                android:lines="1"
+                android:padding="12dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/text_size_18"
+                android:theme="@style/EditText"
+                android:typeface="monospace" />
 
 
-        <com.dat.barnaulzoopark.widget.PasswordView
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="24dp" />
+            <com.dat.barnaulzoopark.widget.PasswordView
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="36dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="24dp" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/login"
         android:layout_width="@dimen/default_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+        android:layout_weight="0.01"
         android:background="@drawable/bg_rounded_corner_login_btn"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
@@ -88,13 +95,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/sign_in"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_24" />
     </LinearLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3" />
 </LinearLayout>

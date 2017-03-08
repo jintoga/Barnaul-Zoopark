@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:background="@drawable/img_drawer_header_bg_banner"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <ImageView
+        android:id="@+id/headerBackground"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_margin="16dp"
-        android:background="@null"
-        android:src="@drawable/ic_menu_down"
-        android:tint="@color/colorText" />
+        android:layout_height="170dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_drawer_header_bg_banner" />
+
 
     <ImageView
         android:layout_width="130dp"
@@ -26,33 +24,68 @@
         android:scaleType="fitXY"
         android:src="@drawable/img_logo" />
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/imageViewProfile"
+    <FrameLayout
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="left|center_vertical"
-        android:layout_marginLeft="16dp"
-        fresco:actualImageScaleType="centerInside"
-        fresco:overlayImage="@color/gray"
-        fresco:roundAsCircle="true"
-        fresco:roundingBorderColor="@color/gray"
-        fresco:roundingBorderWidth="2dp" />
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="16dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/userPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            fresco:actualImageScaleType="centerInside"
+            fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
+            fresco:roundAsCircle="true"
+            fresco:roundingBorderColor="@color/gray"
+            fresco:roundingBorderWidth="1dp" />
+
+        <ProgressBar
+            android:id="@+id/loadingPhoto"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="left|bottom"
+        android:layout_marginBottom="14dp"
         android:layout_marginLeft="16dp"
-        android:gravity="center"
+        android:layout_marginRight="60dp"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Nguyen Quoc Dat"
-            android:textColor="@color/colorText"
-            android:textStyle="bold" />
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/white"
+            tools:text="Nguyen Quoc Dat" />
+
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:fontFamily="sans-serif-light"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            tools:text="jintjintoga123jintoga123jintoga123jintoga123oga123@yahoo.com" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/logButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="16dp"
+        android:tint="@color/white"
+        app:srcCompat="@drawable/ic_login" />
 </FrameLayout>

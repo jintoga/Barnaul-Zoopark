@@ -4,28 +4,39 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.widget.PasswordView;
-import com.dat.barnaulzoopark.ui.startup.ICallback;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
+import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
+import com.dat.barnaulzoopark.ui.BaseMvpFragment;
+import com.dat.barnaulzoopark.ui.startup.ICallback;
+import com.dat.barnaulzoopark.widget.PasswordView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by DAT on 20-Mar-16.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment
+    extends BaseMvpFragment<LoginContract.View, LoginContract.UserActionListener>
+    implements LoginContract.View {
+
+    private static final String TAG = LoginFragment.class.getName();
+
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.email)
@@ -35,10 +46,22 @@ public class LoginFragment extends Fragment {
     private View view;
     private ICallback callback;
 
+    private MaterialDialog progressDialog;
+
+    @NonNull
+    @Override
+    public LoginContract.UserActionListener createPresenter() {
+        FirebaseAuth auth =
+            BZApplication.get(getContext()).getApplicationComponent().firebaseAuth();
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
+        return new LoginPresenter(auth, database);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
@@ -48,12 +71,38 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void showLoginError(@NonNull String error) {
+        Log.d(TAG, "showLoginError: " + error);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        BZDialogBuilder.createSimpleErrorDialog(getContext(), error);
+    }
+
+    @Override
+    public void showLoginSuccess() {
+        Log.d(TAG, "showLoginProgress");
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        callback.onLoginSuccess();
+    }
+
+    @Override
+    public void showLoginProgress() {
+        Log.d(TAG, "showLoginProgress");
+        progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(), null);
+    }
+
     private void initToolbar() {
         if (toolbar != null) {
             toolbar.setTitle("");
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black);
             if (toolbar.getNavigationIcon() != null) {
-                toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+                toolbar.getNavigationIcon()
+                    .setColorFilter(getResources().getColor(R.color.white),
+                        PorterDuff.Mode.SRC_ATOP);
             }
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         }
@@ -65,8 +114,8 @@ public class LoginFragment extends Fragment {
         try {
             callback = (ICallback) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(
+                context.toString() + " must implement OnHeadlineSelectedListener");
         }
     }
 
@@ -74,5 +123,11 @@ public class LoginFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.login, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @OnClick(R.id.login)
+    protected void loginClicked() {
+        Log.d(TAG, "loginClicked");
+        getPresenter().loginClicked(email.getText().toString(), password.getPassword());
     }
 }

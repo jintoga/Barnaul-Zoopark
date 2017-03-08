@@ -47,4 +47,14 @@
 
     <dimen name="material_view_pager_temp_margin_bottom">300dp</dimen>
 
+    <dimen name="item_news_title_text_size">17sp</dimen>
+    <dimen name="item_news_description_text_size">14sp</dimen>
+    <dimen name="item_news_time_text_size">13sp</dimen>
+
+    <dimen name="item_news_detail_title_text_size">26sp</dimen>
+    <dimen name="item_news_detail_description_text_size">19sp</dimen>
+    <dimen name="item_news_detail_time_text_size">16sp</dimen>
+    <dimen name="news_detail_banner_height">250dp</dimen>
+
+    <dimen name="item_file_attachment_decoration">6dp</dimen>
 </resources>

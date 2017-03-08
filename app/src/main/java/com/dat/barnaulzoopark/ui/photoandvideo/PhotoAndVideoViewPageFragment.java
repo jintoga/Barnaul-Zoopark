@@ -13,7 +13,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
-import com.dat.barnaulzoopark.ui.photoalbumsdetail.GridSpacingItemDecoration;
+import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.PhotoAlbumsAdapter;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.VideoAlbumsAdapter;
 

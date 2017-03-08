@@ -20,30 +20,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhotosDetailActivity extends BaseActivity {
-
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.page)
     protected TextView page;
     private MyCountDownTimer countDownTimer; //to hide toolbar
-    private final long startTime = 2000; // 2.5 SECONDS IDLE TIME
-    private final long interval = 1000;
+    private final static long startTime = 2000; // 2.5 SECONDS IDLE TIME
+    private final static long interval = 1000;
 
     @Bind(R.id.photo_view_pager)
     protected ViewPager photoViewPager;
     private PhotosDetailViewPagerAdapter photosDetailViewPagerAdapter;
 
-    private static final String KEY_PHOTO_POSITION = "PHOTO_POSITION";
-    private static final String KEY_PHOTO_ALBUM = "PHOTO_ALBUM";
+    private static final String EXTRA_PHOTO_POSITION = "PHOTO_POSITION";
+    private static final String EXTRA_PHOTO_ALBUM = "PHOTO_ALBUM";
+    private static final String EXTRA_WITH_ANIMATION = "WITH_ANIMATION";
     private List<String> albums;
     private int currentPosition = -1;
 
-    public static void startActivity(Activity activity, List<String> albums, int photo_position) {
+    public static void start(Activity activity, List<String> albums, int photo_position,
+        boolean withAnimation) {
         Intent intent = new Intent(activity, PhotosDetailActivity.class);
-        intent.putStringArrayListExtra(KEY_PHOTO_ALBUM, new ArrayList<String>(albums));
-        intent.putExtra(KEY_PHOTO_POSITION, photo_position);
+        intent.putStringArrayListExtra(EXTRA_PHOTO_ALBUM, new ArrayList<>(albums));
+        intent.putExtra(EXTRA_PHOTO_POSITION, photo_position);
+        intent.putExtra(EXTRA_WITH_ANIMATION, withAnimation);
         activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+        if (withAnimation) {
+            activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+        }
     }
 
     @Override
@@ -62,7 +66,7 @@ public class PhotosDetailActivity extends BaseActivity {
     }
 
     private void initViewPager() {
-        albums = getIntent().getStringArrayListExtra(KEY_PHOTO_ALBUM);
+        albums = getIntent().getStringArrayListExtra(EXTRA_PHOTO_ALBUM);
         if (albums == null) {
             return;
         }
@@ -92,7 +96,7 @@ public class PhotosDetailActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        currentPosition = getIntent().getIntExtra(KEY_PHOTO_POSITION, -1);
+        currentPosition = getIntent().getIntExtra(EXTRA_PHOTO_POSITION, -1);
         if (currentPosition != -1) {
             photoViewPager.setCurrentItem(currentPosition);
         }
@@ -117,7 +121,12 @@ public class PhotosDetailActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finishWithTransition(true);
+                boolean withAnimation = getIntent().getBooleanExtra(EXTRA_WITH_ANIMATION, false);
+                if (withAnimation) {
+                    finishWithTransition(true);
+                } else {
+                    finish();
+                }
                 break;
             default:
                 return false;
