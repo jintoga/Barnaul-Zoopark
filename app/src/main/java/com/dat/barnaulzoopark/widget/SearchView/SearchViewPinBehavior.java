@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import com.dat.barnaulzoopark.R;
@@ -39,56 +40,32 @@ public class SearchViewPinBehavior extends CoordinatorLayout.Behavior<FloatingSe
     public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingSearchView child,
         View dependency) {
         shouldInitProperties(child, dependency);
-
         float diff = dependency.getY() - dependencyOldY;
+        Log.e("TAG", " diff: " + diff);
         float childPosition = child.getY();
-
-        if (childPosition <= -(childHeight + childInitY + cardViewShadow)) {
-            child.setVisibility(View.GONE);
-            //Log.d("Hide", "Hide: " + -(childHeight + childInitY + cardViewShadow));
-        } else {
-            child.setVisibility(View.VISIBLE);
-            //Log.d("SHOW", "SHOW: " + -(childHeight + childInitY + cardViewShadow));
-        }
 
         if (diff < 0) {//********Collapsing
             if (dependencyY - childHeight - childMarginBottom - cardViewShadow < offset) {
-                childPosition = childPosition + diff;
-                if (Math.abs(childPosition) > childHeight) {
-                    childPosition = -childHeight - childMarginBottom - cardViewShadow;
-                }
+                float percentageOldY = 1 - dependencyOldY / dependencyHeight;
+                float percentageCurrentY = 1 - dependency.getY() / dependencyHeight;
+
+                float newDiff = (percentageOldY - percentageCurrentY) * 100;
+                childPosition = childPosition + newDiff * 8;
+                Log.e("TAG", "GO TOP");
             }
-        } else {//**********Expanding
-            if (Math.abs(dependencyY + childPosition) + childMarginBottom + cardViewShadow
-                <= dependency.getHeight()) {
-                childPosition = 0;
-                child.setVisibility(View.VISIBLE);
-            }
+        } else { //**********Expanding
             if (dependencyY - childHeight - childMarginBottom - cardViewShadow >= offset
                 && childPosition < 0) {
-                childPosition = childPosition + diff;
-                if (dependencyY - childHeight - cardViewShadow <= -dependencyHeight) {
-                    childPosition = childInitY;
-                }
+                float percentageOldY = 1 - dependencyOldY / dependencyHeight;
+                float percentageCurrentY = 1 - dependency.getY() / dependencyHeight;
+
+                float newDiff = (percentageOldY - percentageCurrentY) * 100;
+                childPosition = childPosition + newDiff * 8;
             } else if (dependencyY - childHeight - childMarginBottom - cardViewShadow > offset) {
                 childPosition = childInitY;
             }
         }
-        /*Log.d("else", "else"
-            + " dependencyOldY:"
-            + dependencyOldY
-            + " dependencyY:"
-            + dependencyY
-            + "  childPosition:"
-            + childPosition
-            + "  dependency.getHeight():"
-            + dependency.getHeight()
-            + " childInitYToSave:"
-            + childInitY
-            + " childMarginBottom:"
-            + childMarginBottom
-            + " cardViewShadow:"
-            + cardViewShadow);*/
+        Log.e("TAG", "offset: " + offset);
         child.setY(childPosition);
         dependencyOldY = dependency.getY();
         return true;
