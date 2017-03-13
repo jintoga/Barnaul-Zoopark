@@ -43,6 +43,9 @@
         <activity
             android:name=".ui.newseditor.NewsItemEditorActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.animaleditor.AnimalEditorActivity"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

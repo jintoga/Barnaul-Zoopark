@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.newseditor;
+package com.dat.barnaulzoopark.adapters;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -21,7 +21,7 @@ import java.util.List;
  * Created by DAT on 1/29/2017.
  */
 
-class MultiFileAttachmentAdapter
+public class MultiFileAttachmentAdapter
     extends RecyclerView.Adapter<MultiFileAttachmentAdapter.ViewHolder> {
 
     public static final int MAX_NUMBER_ATTACHMENT = 5;
@@ -52,7 +52,7 @@ class MultiFileAttachmentAdapter
         isEditingMode = editingMode;
     }
 
-    interface AttachmentListener {
+    public interface AttachmentListener {
         void onRemoved(int position);
 
         void onSlotSelected(int position);
@@ -105,7 +105,7 @@ class MultiFileAttachmentAdapter
         return data.size();
     }
 
-    void addEmptySlot() {
+    public void addEmptySlot() {
         if (data.size() < MAX_NUMBER_ATTACHMENT) {
             Attachment attachment = new Attachment();
             attachment.setUrl(null);
@@ -115,7 +115,7 @@ class MultiFileAttachmentAdapter
         notifyDataSetChanged();
     }
 
-    void emptySlot(int position) {
+    public void emptySlot(int position) {
         Log.d("removed", "removed:" + data.get(position).getUrl());
         if (isEditingMode) {
             final Attachment attachment = data.get(position);
@@ -127,7 +127,7 @@ class MultiFileAttachmentAdapter
         notifyDataSetChanged();
     }
 
-    void fillSlot(int position, Attachment attachment) {
+    public void fillSlot(int position, Attachment attachment) {
         data.set(position, attachment);
         if (isEditingMode) {
             itemsToAdd.add(attachment);

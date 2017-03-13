@@ -24,6 +24,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
@@ -48,7 +49,7 @@ public class NewsItemEditorActivity extends
     implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
     BaseMvpPhotoEditActivity.Listener {
 
-    private static final String EXTAR_SELECTED_NEWS_UID = "SELECTED_NEWS_UID";
+    private static final String EXTRA_SELECTED_NEWS_UID = "SELECTED_NEWS_UID";
     private static final String KEY_SAVED_ATTACHMENTS = "SAVED_ATTACHMENTS";
     private static final String KEY_SAVED_THUMBNAIL_URI = "SAVED_THUMBNAIL_URI";
     private static final int REQUEST_BROWSE_IMAGE_THUMBNAIL = 1;
@@ -84,7 +85,7 @@ public class NewsItemEditorActivity extends
         }
         Intent intent = new Intent(context, NewsItemEditorActivity.class);
         if (uid != null) {
-            intent.putExtra(EXTAR_SELECTED_NEWS_UID, uid);
+            intent.putExtra(EXTRA_SELECTED_NEWS_UID, uid);
         }
         context.startActivity(intent);
     }
@@ -301,7 +302,7 @@ public class NewsItemEditorActivity extends
             (int) getResources().getDimension(R.dimen.item_file_attachment_decoration)));
         attachmentAdapter = new MultiFileAttachmentAdapter(this);
         album.setAdapter(attachmentAdapter);
-        String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
+        String selectedNewsUid = getIntent().getStringExtra(EXTRA_SELECTED_NEWS_UID);
         if (selectedNewsUid != null) {
             loadSelectedNews(selectedNewsUid);
             attachmentAdapter.setEditingMode(true);
@@ -346,7 +347,7 @@ public class NewsItemEditorActivity extends
                 }
                 break;
             case R.id.delete:
-                String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
+                String selectedNewsUid = getIntent().getStringExtra(EXTRA_SELECTED_NEWS_UID);
                 presenter.deleteNewsItem(selectedNewsUid);
                 break;
             default:

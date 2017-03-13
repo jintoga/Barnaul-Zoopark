@@ -189,7 +189,7 @@ public class AnimalsFragment extends TempBaseFragment
                 }
             }
         }
-        tabLayout.setOnTabSelectedListener(
+        tabLayout.addOnTabSelectedListener(
             new TabLayout.ViewPagerOnTabSelectedListener(animalsViewPager) {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
