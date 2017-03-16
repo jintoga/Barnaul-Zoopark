@@ -7,15 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.Photo;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.Photo;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Nguyen on 6/20/2016.
@@ -32,7 +29,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_animals, parent, false);
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_animals, parent, false);
         return new ViewHolder(view);
     }
 

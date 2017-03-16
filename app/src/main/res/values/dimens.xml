@@ -36,16 +36,13 @@
     <dimen name="search_view_cardview_shadow">24dp</dimen>
 
     <dimen name="search_view_collapse_margin_bottom">0dp</dimen>
-    <dimen name="search_view_margin_top">1dp</dimen>
+    <dimen name="search_view_margin_top">8dp</dimen>
 
     <dimen name="animals_viewpager_margin_top">0dp</dimen>
     <dimen name="status_bar_height">0dp</dimen>
 
     <dimen name="search_view_margin_top_not_fully_expanded">0dp</dimen>
     <dimen name="search_view_margin_bottom_not_fully_expanded">10dp</dimen>
-
-
-    <dimen name="material_view_pager_temp_margin_bottom">300dp</dimen>
 
     <dimen name="item_news_title_text_size">17sp</dimen>
     <dimen name="item_news_description_text_size">14sp</dimen>

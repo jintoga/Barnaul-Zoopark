@@ -1,17 +1,13 @@
 package com.dat.barnaulzoopark.ui.animals;
 
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
@@ -19,28 +15,20 @@ import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
-import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsBannerFragmentPagerAdapter;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.CircularIndicator;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfinitePagerAdapter;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfiniteViewPager;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.PagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import me.henrytao.smoothappbarlayout.SmoothAppBarLayout;
 
 /**
  * Created by Nguyen on 6/17/2016.
  */
 public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener,
-    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
+    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener,
+    AnimalsViewPageFragment.RecyclerScrollTopListener {
 
-    @Bind(R.id.app_bar_layout)
-    protected AppBarLayout appBarLayout;
-    @Bind(R.id.collapsing_toolbar_layout_banner)
-    protected CollapsingToolbarLayout collapsingToolbarLayoutBanner;
+    @Bind(R.id.appBarLayout)
+    protected SmoothAppBarLayout appBarLayout;
     @Bind(R.id.tabLayout)
     protected TabLayout tabLayout;
     @Bind(R.id.search_view)
@@ -48,17 +36,12 @@ public class AnimalsFragment extends TempBaseFragment
     @Bind(R.id.transparent_view)
     protected View backgroundView;
 
-    @Bind(R.id.infiniteViewPager)
-    protected InfiniteViewPager infiniteViewPager;
-    @Bind(R.id.indicatorObject)
-    protected CircularIndicator indicatorObject;
-
     @Bind(R.id.viewpagerAnimals)
     protected ViewPager animalsViewPager;
     private AnimalsViewPagerAdapter animalsViewPagerAdapter;
-    private AnimalsBannerFragmentPagerAdapter fragmentPagerAdapter;
 
     private View view;
+    private boolean isAppBarLayoutExpanded = true;
 
     @Nullable
     @Override
@@ -69,6 +52,13 @@ public class AnimalsFragment extends TempBaseFragment
         init();
         initAnimalsViewPager();
         return view;
+    }
+
+    @Override
+    public void onScrollTop() {
+        if (!isAppBarLayoutExpanded) {
+            appBarLayout.setExpanded(true, true);
+        }
     }
 
     @Override
@@ -106,10 +96,6 @@ public class AnimalsFragment extends TempBaseFragment
     }
 
     private void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
-            appBarLayout.setNestedScrollingEnabled(false);
-        }
 
         CoordinatorLayout.LayoutParams layoutParams =
             (CoordinatorLayout.LayoutParams) backgroundView.getLayoutParams();
@@ -120,42 +106,6 @@ public class AnimalsFragment extends TempBaseFragment
         searchView.setSearchViewDrawerListener(this);
         //Listener to help close SearchView when NavDrawer is open
         ((MainActivity) getActivity()).setDrawerListener(this);
-
-        final String[] images = new String[] {
-            "https://s31.postimg.org/lzogm934b/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
-            "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-            "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
-            "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
-            "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png",
-            "https://s32.postimg.org/qdg1ceg9x/unnamed.jpg"
-        };
-        List<String> data = multiplyItems(images, 2);
-        fragmentPagerAdapter =
-            new AnimalsBannerFragmentPagerAdapter(getChildFragmentManager(), getContext(), data);
-        final PagerAdapter wrappedFragmentPagerAdapter =
-            new InfinitePagerAdapter(fragmentPagerAdapter);
-
-        infiniteViewPager.setAdapter(wrappedFragmentPagerAdapter);
-        indicatorObject.setViewPager(infiniteViewPager);
-        //infiniteViewPager.setOffscreenPageLimit(2);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            fragmentPagerAdapter.setShouldShowChildren(true);
-            infiniteViewPager.setPageMargin(-1);
-        } else {
-            fragmentPagerAdapter.setShouldShowChildren(false);
-            infiniteViewPager.setPageMargin(0);
-        }
-        infiniteViewPager.setClipToPadding(false);
-        infiniteViewPager.enableCenterLockOfChilds();
-        infiniteViewPager.setCurrentItemInCenter(0);
-        infiniteViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                //fully expand the appBar
-                appBarLayout.setExpanded(true, true);
-                return false;
-            }
-        });
     }
 
     @Override
@@ -173,9 +123,12 @@ public class AnimalsFragment extends TempBaseFragment
     private void initAnimalsViewPager() {
         animalsViewPagerAdapter =
             new AnimalsViewPagerAdapter(getChildFragmentManager(), getContext());
-        animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(),
-            "Млекопитающие".toUpperCase());
-        animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(), "Птицы".toUpperCase());
+        AnimalsViewPageFragment frag1 = new AnimalsViewPageFragment();
+        frag1.setScrollTopListener(this);
+        animalsViewPagerAdapter.addFragment(frag1, "Млекопитающие".toUpperCase());
+        AnimalsViewPageFragment frag2 = new AnimalsViewPageFragment();
+        frag2.setScrollTopListener(this);
+        animalsViewPagerAdapter.addFragment(frag2, "Птицы".toUpperCase());
         animalsViewPager.setAdapter(animalsViewPagerAdapter);
         tabLayout.setupWithViewPager(animalsViewPager);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -197,11 +150,16 @@ public class AnimalsFragment extends TempBaseFragment
                     animalsViewPager.setCurrentItem(tab.getPosition());
                     View view = tab.getCustomView();
                     animalsViewPagerAdapter.highlightSelectedView(view, true);
-                    AnimalsViewPageFragment fragment =
+                    /*AnimalsViewPageFragment fragment =
                         (AnimalsViewPageFragment) animalsViewPagerAdapter.getCurrentFragment();
                     if (fragment != null) {
                         fragment.moveToFirst();
                     }
+                    appBarLayout.setExpanded(true);*/
+                    if (!isAppBarLayoutExpanded) {
+                        appBarLayout.setExpanded(true, true);
+                    }
+
                 }
 
                 @Override
@@ -223,6 +181,12 @@ public class AnimalsFragment extends TempBaseFragment
                 animalsViewPagerAdapter.highlightSelectedView(view, true);
             }
         }
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                isAppBarLayoutExpanded = verticalOffset == 0;
+            }
+        });
     }
 
     @Override
@@ -234,13 +198,5 @@ public class AnimalsFragment extends TempBaseFragment
     public void onSearchViewEditTextLostFocus() {
         Log.d("Lost Focus", "Lost Focus on searchView");
         searchView.clearSearchView();
-    }
-
-    private List<String> multiplyItems(String[] images, int n) {
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            result.addAll(Arrays.asList(images));
-        }
-        return result;
     }
 }
