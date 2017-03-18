@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -402,5 +403,24 @@ public class MainActivity
                 Log.e(TAG, error.getLocalizedMessage());
             }
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (dispatchTouchEventListener != null) {
+            dispatchTouchEventListener.dispatchTouchEvent(event);
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    private DispatchTouchEventListener dispatchTouchEventListener;
+
+    public void setDispatchTouchEventListener(
+        DispatchTouchEventListener dispatchTouchEventListener) {
+        this.dispatchTouchEventListener = dispatchTouchEventListener;
+    }
+
+    public interface DispatchTouchEventListener {
+        void dispatchTouchEvent(MotionEvent ev);
     }
 }

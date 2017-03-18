@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.animals;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -8,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
@@ -17,18 +19,18 @@ import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.TempBaseFragment;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
-import me.henrytao.smoothappbarlayout.SmoothAppBarLayout;
+import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 
 /**
  * Created by Nguyen on 6/17/2016.
  */
 public class AnimalsFragment extends TempBaseFragment
     implements FloatingSearchView.SearchViewFocusedListener,
-    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener,
-    AnimalsViewPageFragment.RecyclerScrollTopListener {
+    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener, AppBarManager,
+    MainActivity.DispatchTouchEventListener {
 
     @Bind(R.id.appBarLayout)
-    protected SmoothAppBarLayout appBarLayout;
+    protected AppBarLayout appBarLayout;
     @Bind(R.id.tabLayout)
     protected TabLayout tabLayout;
     @Bind(R.id.search_view)
@@ -41,7 +43,6 @@ public class AnimalsFragment extends TempBaseFragment
     private AnimalsViewPagerAdapter animalsViewPagerAdapter;
 
     private View view;
-    private boolean isAppBarLayoutExpanded = true;
 
     @Nullable
     @Override
@@ -52,13 +53,6 @@ public class AnimalsFragment extends TempBaseFragment
         init();
         initAnimalsViewPager();
         return view;
-    }
-
-    @Override
-    public void onScrollTop() {
-        if (!isAppBarLayoutExpanded) {
-            appBarLayout.setExpanded(true, true);
-        }
     }
 
     @Override
@@ -123,12 +117,9 @@ public class AnimalsFragment extends TempBaseFragment
     private void initAnimalsViewPager() {
         animalsViewPagerAdapter =
             new AnimalsViewPagerAdapter(getChildFragmentManager(), getContext());
-        AnimalsViewPageFragment frag1 = new AnimalsViewPageFragment();
-        frag1.setScrollTopListener(this);
-        animalsViewPagerAdapter.addFragment(frag1, "Млекопитающие".toUpperCase());
-        AnimalsViewPageFragment frag2 = new AnimalsViewPageFragment();
-        frag2.setScrollTopListener(this);
-        animalsViewPagerAdapter.addFragment(frag2, "Птицы".toUpperCase());
+        animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(),
+            "Млекопитающие".toUpperCase());
+        animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(), "Птицы".toUpperCase());
         animalsViewPager.setAdapter(animalsViewPagerAdapter);
         tabLayout.setupWithViewPager(animalsViewPager);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -156,10 +147,6 @@ public class AnimalsFragment extends TempBaseFragment
                         fragment.moveToFirst();
                     }
                     appBarLayout.setExpanded(true);*/
-                    if (!isAppBarLayoutExpanded) {
-                        appBarLayout.setExpanded(true, true);
-                    }
-
                 }
 
                 @Override
@@ -181,12 +168,6 @@ public class AnimalsFragment extends TempBaseFragment
                 animalsViewPagerAdapter.highlightSelectedView(view, true);
             }
         }
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                isAppBarLayoutExpanded = verticalOffset == 0;
-            }
-        });
     }
 
     @Override
@@ -198,5 +179,37 @@ public class AnimalsFragment extends TempBaseFragment
     public void onSearchViewEditTextLostFocus() {
         Log.d("Lost Focus", "Lost Focus on searchView");
         searchView.clearSearchView();
+    }
+
+    @Override
+    public void collapseAppBar() {
+        appBarLayout.setExpanded(false, true);
+    }
+
+    @Override
+    public void expandAppBar() {
+        appBarLayout.setExpanded(true, true);
+    }
+
+    @Override
+    public int getVisibleHeightForRecyclerViewInPx() {
+        int windowHeight, appBarHeight;
+        windowHeight = getActivity().getWindow().getDecorView().getHeight();
+        appBarHeight = appBarLayout.getHeight();
+        return windowHeight - appBarHeight;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity) getActivity()).setDispatchTouchEventListener(this);
+    }
+
+    public void dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            float per = Math.abs(appBarLayout.getY()) / appBarLayout.getTotalScrollRange();
+            boolean setExpanded = (per <= 0.5F);
+            appBarLayout.setExpanded(setExpanded, true);
+        }
     }
 }

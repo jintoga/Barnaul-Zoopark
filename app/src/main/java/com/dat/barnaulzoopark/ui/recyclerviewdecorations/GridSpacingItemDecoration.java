@@ -22,24 +22,6 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
         RecyclerView.State state) {
         int position = parent.getChildAdapterPosition(view); // item position
-        if (position < spanCount) {
-            TypedValue tv = new TypedValue();
-            int actionBarHeight = 0;
-            if (view.getContext()
-                .getTheme()
-                .resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,
-                    view.getContext().getResources().getDisplayMetrics());
-            }
-            float marginTop = view.getContext()
-                .getResources()
-                .getDimension(R.dimen.search_view_margin_top_not_fully_expanded);
-            float marginBottom = view.getContext()
-                .getResources()
-                .getDimension(R.dimen.search_view_margin_bottom_not_fully_expanded);
-            outRect.top = (int) (actionBarHeight * 2 + marginTop + marginBottom);
-            return;
-        }
         int column = position % spanCount; // item column
         if (includeEdge) {
             outRect.left = spacing
