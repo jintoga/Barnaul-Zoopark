@@ -14,7 +14,8 @@ public class Animal {
     private String photoSmall;
     private String photoBig;
     private String aboutOurAnimal;
+    private boolean gender;
     private long timeEnter;
-    private long timeOfBirth;
+    private long dateOfBirth;
     private Map<String, String> photos = new HashMap<>();
 }
