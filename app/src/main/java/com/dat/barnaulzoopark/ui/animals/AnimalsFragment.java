@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui.animals;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,8 +16,8 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
-import com.dat.barnaulzoopark.ui.TempBaseFragment;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
@@ -24,8 +25,9 @@ import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 /**
  * Created by Nguyen on 6/17/2016.
  */
-public class AnimalsFragment extends TempBaseFragment
-    implements FloatingSearchView.SearchViewFocusedListener,
+public class AnimalsFragment
+    extends BaseMvpFragment<AnimalsContract.View, AnimalsContract.UserActionListener>
+    implements AnimalsContract.View, FloatingSearchView.SearchViewFocusedListener,
     FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener, AppBarManager,
     MainActivity.DispatchTouchEventListener {
 
@@ -90,7 +92,6 @@ public class AnimalsFragment extends TempBaseFragment
     }
 
     private void init() {
-
         CoordinatorLayout.LayoutParams layoutParams =
             (CoordinatorLayout.LayoutParams) backgroundView.getLayoutParams();
         layoutParams.topMargin = getStatusBarHeight();
@@ -106,6 +107,12 @@ public class AnimalsFragment extends TempBaseFragment
     public void onStart() {
         super.onStart();
         Log.d("Start", "Start");
+    }
+
+    @NonNull
+    @Override
+    public AnimalsContract.UserActionListener createPresenter() {
+        return new AnimalsPresenter();
     }
 
     @Override
