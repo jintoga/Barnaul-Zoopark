@@ -1,11 +1,10 @@
 package com.dat.barnaulzoopark.ui.animals;
 
-import android.content.res.Configuration;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -17,30 +16,23 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
-import com.dat.barnaulzoopark.ui.TempBaseFragment;
-import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsBannerFragmentPagerAdapter;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.CircularIndicator;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfinitePagerAdapter;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.InfiniteViewPager.InfiniteViewPager;
-import com.dat.barnaulzoopark.widget.InfiniteViewPagerWithCircularIndicator.PagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 
 /**
  * Created by Nguyen on 6/17/2016.
  */
-public class AnimalsFragment extends TempBaseFragment
-    implements FloatingSearchView.SearchViewFocusedListener,
-    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
+public class AnimalsFragment
+    extends BaseMvpFragment<AnimalsContract.View, AnimalsContract.UserActionListener>
+    implements AnimalsContract.View, FloatingSearchView.SearchViewFocusedListener,
+    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener, AppBarManager,
+    MainActivity.DispatchTouchEventListener {
 
-    @Bind(R.id.app_bar_layout)
+    @Bind(R.id.appBarLayout)
     protected AppBarLayout appBarLayout;
-    @Bind(R.id.collapsing_toolbar_layout_banner)
-    protected CollapsingToolbarLayout collapsingToolbarLayoutBanner;
     @Bind(R.id.tabLayout)
     protected TabLayout tabLayout;
     @Bind(R.id.search_view)
@@ -48,15 +40,9 @@ public class AnimalsFragment extends TempBaseFragment
     @Bind(R.id.transparent_view)
     protected View backgroundView;
 
-    @Bind(R.id.infiniteViewPager)
-    protected InfiniteViewPager infiniteViewPager;
-    @Bind(R.id.indicatorObject)
-    protected CircularIndicator indicatorObject;
-
     @Bind(R.id.viewpagerAnimals)
     protected ViewPager animalsViewPager;
     private AnimalsViewPagerAdapter animalsViewPagerAdapter;
-    private AnimalsBannerFragmentPagerAdapter fragmentPagerAdapter;
 
     private View view;
 
@@ -106,11 +92,6 @@ public class AnimalsFragment extends TempBaseFragment
     }
 
     private void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            collapsingToolbarLayoutBanner.setNestedScrollingEnabled(false);
-            appBarLayout.setNestedScrollingEnabled(false);
-        }
-
         CoordinatorLayout.LayoutParams layoutParams =
             (CoordinatorLayout.LayoutParams) backgroundView.getLayoutParams();
         layoutParams.topMargin = getStatusBarHeight();
@@ -120,48 +101,18 @@ public class AnimalsFragment extends TempBaseFragment
         searchView.setSearchViewDrawerListener(this);
         //Listener to help close SearchView when NavDrawer is open
         ((MainActivity) getActivity()).setDrawerListener(this);
-
-        final String[] images = new String[] {
-            "https://s31.postimg.org/lzogm934b/dog_how_to_select_your_new_best_friend_thinkstoc.jpg",
-            "http://s22.postimg.org/3ydo64c3l/cutest_cat_ever_snoopy_face_2.jpg",
-            "http://www.zoo22.ru/upload/iblock/05a/05ab85cdf16792f2efeb1a279ba399b0.jpg",
-            "http://www.zoo22.ru/upload/iblock/024/024d113a2d4b8f44554eef348fc9affb.png",
-            "http://www.zoo22.ru/upload/iblock/e55/e55f7897ac7a6f628900f1ef41558f26.png",
-            "https://s32.postimg.org/qdg1ceg9x/unnamed.jpg"
-        };
-        List<String> data = multiplyItems(images, 2);
-        fragmentPagerAdapter =
-            new AnimalsBannerFragmentPagerAdapter(getChildFragmentManager(), getContext(), data);
-        final PagerAdapter wrappedFragmentPagerAdapter =
-            new InfinitePagerAdapter(fragmentPagerAdapter);
-
-        infiniteViewPager.setAdapter(wrappedFragmentPagerAdapter);
-        indicatorObject.setViewPager(infiniteViewPager);
-        //infiniteViewPager.setOffscreenPageLimit(2);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            fragmentPagerAdapter.setShouldShowChildren(true);
-            infiniteViewPager.setPageMargin(-1);
-        } else {
-            fragmentPagerAdapter.setShouldShowChildren(false);
-            infiniteViewPager.setPageMargin(0);
-        }
-        infiniteViewPager.setClipToPadding(false);
-        infiniteViewPager.enableCenterLockOfChilds();
-        infiniteViewPager.setCurrentItemInCenter(0);
-        infiniteViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                //fully expand the appBar
-                appBarLayout.setExpanded(true, true);
-                return false;
-            }
-        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
         Log.d("Start", "Start");
+    }
+
+    @NonNull
+    @Override
+    public AnimalsContract.UserActionListener createPresenter() {
+        return new AnimalsPresenter();
     }
 
     @Override
@@ -197,11 +148,12 @@ public class AnimalsFragment extends TempBaseFragment
                     animalsViewPager.setCurrentItem(tab.getPosition());
                     View view = tab.getCustomView();
                     animalsViewPagerAdapter.highlightSelectedView(view, true);
-                    AnimalsViewPageFragment fragment =
+                    /*AnimalsViewPageFragment fragment =
                         (AnimalsViewPageFragment) animalsViewPagerAdapter.getCurrentFragment();
                     if (fragment != null) {
                         fragment.moveToFirst();
                     }
+                    appBarLayout.setExpanded(true);*/
                 }
 
                 @Override
@@ -236,11 +188,35 @@ public class AnimalsFragment extends TempBaseFragment
         searchView.clearSearchView();
     }
 
-    private List<String> multiplyItems(String[] images, int n) {
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            result.addAll(Arrays.asList(images));
+    @Override
+    public void collapseAppBar() {
+        appBarLayout.setExpanded(false, true);
+    }
+
+    @Override
+    public void expandAppBar() {
+        appBarLayout.setExpanded(true, true);
+    }
+
+    @Override
+    public int getVisibleHeightForRecyclerViewInPx() {
+        int windowHeight, appBarHeight;
+        windowHeight = getActivity().getWindow().getDecorView().getHeight();
+        appBarHeight = appBarLayout.getHeight();
+        return windowHeight - appBarHeight;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity) getActivity()).setDispatchTouchEventListener(this);
+    }
+
+    public void dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            float per = Math.abs(appBarLayout.getY()) / appBarLayout.getTotalScrollRange();
+            boolean setExpanded = (per <= 0.5F);
+            appBarLayout.setExpanded(setExpanded, true);
         }
-        return result;
     }
 }

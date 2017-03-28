@@ -3,12 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.ConfigurableRecyclerView
         android:id="@+id/animals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:fitsSystemWindows="true"
         android:scrollbarSize="3dp"
         android:scrollbarThumbVertical="@color/white"
         android:scrollbars="vertical" />
