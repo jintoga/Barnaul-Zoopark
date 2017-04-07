@@ -1,7 +1,9 @@
 package com.dat.barnaulzoopark.ui.animals.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.animal.Category;
+import com.dat.barnaulzoopark.ui.animals.AnimalsViewPageFragment;
+import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +24,17 @@ import java.util.List;
  */
 public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
-    private final List<String> mFragmentTitleList = new ArrayList<>();
-    Context context;
+    private Context context;
     private Fragment mCurrentFragment;
+    private List<Category> categories;
 
-    public AnimalsViewPagerAdapter(FragmentManager fm, Context context) {
+    public AnimalsViewPagerAdapter(FragmentManager fm, Context context, List<Category> categories) {
         super(fm);
         this.context = context;
+        this.categories = categories;
+        for (Category category : categories) {
+            mFragmentList.add(new AnimalsViewPageFragment());
+        }
     }
 
     @Override
@@ -38,14 +47,9 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentList.size();
     }
 
-    public void addFragment(Fragment fragment, String title) {
-        mFragmentList.add(fragment);
-        mFragmentTitleList.add(title);
-    }
-
     @Override
     public CharSequence getPageTitle(int position) {
-        return mFragmentTitleList.get(position);
+        return categories.get(position).getName();
     }
 
     public Fragment getCurrentFragment() {
@@ -64,19 +68,24 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
     public View getTabView(int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_animals_tab, null);
         TextView tabItemName = (TextView) view.findViewById(R.id.textViewTabItemName);
-        ImageView tabItemAvatar = (ImageView) view.findViewById(R.id.imageViewTabItemAvatar);
+        SimpleDraweeView tabItemAvatar =
+            (SimpleDraweeView) view.findViewById(R.id.imageViewTabItemAvatar);
 
-        tabItemName.setText(mFragmentTitleList.get(position));
-        if (mFragmentTitleList.get(position).toLowerCase().equals("Млекопитающие".toLowerCase())) {
-            tabItemAvatar.setImageResource(R.drawable.ic_bear);
+        Category category = categories.get(position);
+        tabItemName.setText(category.getName());
+        if (category.getIcon() != null) {
+            tabItemAvatar.setImageURI(Uri.parse(category.getIcon()));
+            tabItemAvatar.setVisibility(View.VISIBLE);
         } else {
-            tabItemAvatar.setImageResource(R.drawable.ic_bird);
+            tabItemAvatar.setVisibility(View.GONE);
         }
-
         return view;
     }
 
-    public void highlightSelectedView(View view, boolean shouldHighLight) {
+    public void highlightSelectedView(@Nullable View view, boolean shouldHighLight) {
+        if (view == null) {
+            return;
+        }
         TextView tabItemName = (TextView) view.findViewById(R.id.textViewTabItemName);
         ImageView tabItemAvatar = (ImageView) view.findViewById(R.id.imageViewTabItemAvatar);
 

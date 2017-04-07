@@ -7,4 +7,5 @@ package com.dat.barnaulzoopark.api;
 public class BZFireBaseApi {
     public static final String users = "users";
     public static final String news = "news";
+    public static final String animal_categories = "animal_categories";
 }

@@ -15,12 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import java.util.List;
 
 /**
  * Created by Nguyen on 6/17/2016.
@@ -46,6 +52,11 @@ public class AnimalsFragment
 
     private View view;
 
+    @Override
+    public void bindCategories(@NonNull List<Category> categories) {
+        initAnimalsViewPager(categories);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -53,7 +64,6 @@ public class AnimalsFragment
         view = inflater.inflate(R.layout.fragment_animals, container, false);
         ButterKnife.bind(this, view);
         init();
-        initAnimalsViewPager();
         return view;
     }
 
@@ -106,13 +116,19 @@ public class AnimalsFragment
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("Start", "Start");
+        presenter.loadCategories();
     }
 
     @NonNull
     @Override
     public AnimalsContract.UserActionListener createPresenter() {
-        return new AnimalsPresenter();
+        FirebaseAuth auth =
+            BZApplication.get(getContext()).getApplicationComponent().firebaseAuth();
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
+        FirebaseStorage storage =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseStorage();
+        return new AnimalsPresenter(auth, database, storage);
     }
 
     @Override
@@ -121,12 +137,9 @@ public class AnimalsFragment
         Log.d("onResume", "onResume");
     }
 
-    private void initAnimalsViewPager() {
+    private void initAnimalsViewPager(@NonNull List<Category> categories) {
         animalsViewPagerAdapter =
-            new AnimalsViewPagerAdapter(getChildFragmentManager(), getContext());
-        animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(),
-            "Млекопитающие".toUpperCase());
-        animalsViewPagerAdapter.addFragment(new AnimalsViewPageFragment(), "Птицы".toUpperCase());
+            new AnimalsViewPagerAdapter(getChildFragmentManager(), getContext(), categories);
         animalsViewPager.setAdapter(animalsViewPagerAdapter);
         tabLayout.setupWithViewPager(animalsViewPager);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
