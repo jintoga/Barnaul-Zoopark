@@ -32,7 +32,7 @@ import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.events.LoggedInEvent;
 import com.dat.barnaulzoopark.model.User;
-import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
+import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;

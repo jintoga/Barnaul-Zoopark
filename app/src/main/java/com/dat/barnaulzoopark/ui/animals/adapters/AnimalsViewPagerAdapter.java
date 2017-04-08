@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
-import com.dat.barnaulzoopark.ui.animals.AnimalsViewPageFragment;
+import com.dat.barnaulzoopark.ui.animals.animalsviewpagefragment.AnimalsViewPageFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +28,13 @@ public class AnimalsViewPagerAdapter extends FragmentPagerAdapter {
     private Fragment mCurrentFragment;
     private List<Category> categories;
 
-    public AnimalsViewPagerAdapter(FragmentManager fm, Context context, List<Category> categories) {
+    public AnimalsViewPagerAdapter(@NonNull FragmentManager fm, @NonNull Context context,
+        @NonNull List<Category> categories) {
         super(fm);
         this.context = context;
         this.categories = categories;
         for (Category category : categories) {
-            mFragmentList.add(new AnimalsViewPageFragment());
+            mFragmentList.add(AnimalsViewPageFragment.create(category.getUid()));
         }
     }
 
