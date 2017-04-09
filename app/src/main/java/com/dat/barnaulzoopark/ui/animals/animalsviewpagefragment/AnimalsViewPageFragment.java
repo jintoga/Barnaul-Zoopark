@@ -13,7 +13,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.Photo;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
@@ -62,11 +61,11 @@ public class AnimalsViewPageFragment extends
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new SmoothGridLayoutManager(getContext(), 3);
             animals.addItemDecoration(new GridSpacingItemDecoration(3, getContext().getResources()
-                .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), false));
+                .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), true));
         } else {
             layoutManager = new SmoothGridLayoutManager(getContext(), 2);
             animals.addItemDecoration(new GridSpacingItemDecoration(2, getContext().getResources()
-                .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), false));
+                .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), true));
         }
         animals.setLayoutManager(layoutManager);
         layoutManager.setAppBarManager((AppBarManager) getParentFragment());
@@ -103,8 +102,8 @@ public class AnimalsViewPageFragment extends
     }
 
     @Override
-    public void bindSpecies(@NonNull List<Species> categories) {
-
+    public void bindSpecies(@NonNull List<Species> speciesList) {
+        animalsAdapter.setData(speciesList);
         animalsAdapter.notifyDataSetChanged();
     }
 
@@ -115,8 +114,8 @@ public class AnimalsViewPageFragment extends
     }
 
     @Override
-    public void onPhotoSelected(@NonNull Photo photo, int position) {
-        Log.d("Click Animals", photo.getUrl());
+    public void onSpeciesSelected(@NonNull Species species, int position) {
+        Log.d("Click Animals", species.getUid());
         AnimalsDetailActivity.startActivity(getActivity(), position);
     }
 }

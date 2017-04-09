@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.dat.barnaulzoopark.widget.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+<com.dat.barnaulzoopark.widget.SquareCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?selectableItemBackground"
-    android:clickable="true">
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
 
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -12,27 +13,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        fresco:actualImageScaleType="focusCrop"
-        fresco:fadeDuration="100"
-        fresco:failureImage="@android:drawable/stat_notify_error"
-        fresco:failureImageScaleType="centerInside"
-        fresco:placeholderImage="@drawable/img_photo_gallery_placeholder"
-        fresco:placeholderImageScaleType="centerCrop" />
+        app:actualImageScaleType="focusCrop"
+        app:fadeDuration="100"
+        app:failureImage="@android:drawable/stat_notify_error"
+        app:failureImageScaleType="centerInside"
+        app:placeholderImage="@drawable/img_photo_gallery_placeholder"
+        app:placeholderImageScaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/black_transparent_35">
+        android:background="@color/black_transparent_35"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/species"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="12dp"
-            android:text="Tiger"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_16" />
+            android:textSize="@dimen/text_size_16"
+            tools:text="Tiger" />
     </LinearLayout>
-</com.dat.barnaulzoopark.widget.SquareFrameLayout>
+
+    <View
+        android:id="@+id/clickable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackground"
+        android:clickable="true" />
+</com.dat.barnaulzoopark.widget.SquareCardView>
