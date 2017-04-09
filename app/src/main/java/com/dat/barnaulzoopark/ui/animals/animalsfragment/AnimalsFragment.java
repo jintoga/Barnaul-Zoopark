@@ -21,8 +21,6 @@ import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
-import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsContract;
-import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsPresenter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -116,8 +114,8 @@ public class AnimalsFragment
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         presenter.loadCategories();
     }
 

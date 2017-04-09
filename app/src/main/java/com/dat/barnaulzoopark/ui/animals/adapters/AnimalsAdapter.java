@@ -42,7 +42,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
             holder.clickable.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onSpeciesSelected(species, holder.getAdapterPosition());
+                    listener.onSpeciesSelected(species);
                 }
             });
         }
@@ -65,7 +65,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     }
 
     public interface AnimalsAdapterListener {
-        void onSpeciesSelected(@NonNull Species species, int position);
+        void onSpeciesSelected(@NonNull Species species);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

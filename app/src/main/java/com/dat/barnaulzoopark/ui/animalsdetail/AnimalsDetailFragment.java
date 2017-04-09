@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui.animalsdetail;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
+import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -42,9 +44,7 @@ public class AnimalsDetailFragment extends Fragment {
     @Bind(R.id.factsAboutAnimal)
     protected TextView factsAboutAnimal;
 
-    private View view;
-
-    public static AnimalsDetailFragment newInstance() {
+    public static AnimalsDetailFragment newInstance(@NonNull Animal animal) {
         return new AnimalsDetailFragment();
     }
 
@@ -52,7 +52,7 @@ public class AnimalsDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_animals_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_animals_detail, container, false);
         ButterKnife.bind(this, view);
 
         initRecyclerView();

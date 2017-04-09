@@ -10,6 +10,7 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class Animal {
     private String uid;
+    private String name;
     private String speciesUid;
     private String photoSmall;
     private String photoBig;
@@ -29,6 +30,10 @@ public class Animal {
 
     public String getSpeciesUid() {
         return speciesUid;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getPhotoSmall() {
