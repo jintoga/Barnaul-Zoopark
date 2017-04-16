@@ -17,7 +17,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
-import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
+import com.dat.barnaulzoopark.ui.animalspecies.AnimalSpeciesActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.ConfigurableRecyclerView;
@@ -118,11 +118,18 @@ public class AnimalsViewPageFragment extends
     public void onSpeciesSelected(@NonNull Species species) {
         Log.d("onSpeciesSelected", species.getUid());
         if (species.getAnimals() != null && !species.getAnimals().isEmpty()) {
-            AnimalsDetailActivity.start(getActivity(), species.getUid());
+            AnimalSpeciesActivity.start(getActivity(), species);
         } else {
             Toast.makeText(getContext(),
                 String.format("Selected species(%s) has no animal", species.getName()),
                 Toast.LENGTH_SHORT).show();
         }
+        /*if (species.getAnimals() != null && !species.getAnimals().isEmpty()) {
+            AnimalsDetailActivity.start(getActivity(), species.getUid());
+        } else {
+            Toast.makeText(getContext(),
+                String.format("Selected species(%s) has no animal", species.getName()),
+                Toast.LENGTH_SHORT).show();
+        }*/
     }
 }

@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -108,7 +107,6 @@ public class AnimalsDetailActivity extends
             @Override
             public HeaderDesign getHeaderDesign(int page) {
                 String url = animals.get(page).getPhotoBig();
-                Log.d("URL", url);
                 if (url == null || url.equals("")) {
                     return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
                         getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));

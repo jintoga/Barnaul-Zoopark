@@ -1,16 +1,16 @@
 package com.dat.barnaulzoopark;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDexApplication;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
 
 /**
  * Created by DAT on 03-May-16.
  */
-public class BZApplication extends Application {
+public class BZApplication extends MultiDexApplication {
 
     public static final String BZSharedPreference = "BZSharedPreference";
     public static final String KEY_IS_LOGGED_IN = "IS_LOGGED_IN";

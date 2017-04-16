@@ -21,11 +21,14 @@ import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.google.gson.Gson;
 
 /**
  * Created by DAT on 10-Jul-16.
  */
 public class AnimalsDetailFragment extends Fragment {
+
+    private static final String KEY_ANIMAL = "ANIMAL";
 
     @Bind(R.id.scrollView)
     protected ObservableScrollView mScrollView;
@@ -45,7 +48,13 @@ public class AnimalsDetailFragment extends Fragment {
     protected TextView factsAboutAnimal;
 
     public static AnimalsDetailFragment newInstance(@NonNull Animal animal) {
-        return new AnimalsDetailFragment();
+        Gson gson = new Gson();
+        String animalJson = gson.toJson(animal);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ANIMAL, animalJson);
+        AnimalsDetailFragment fragment = new AnimalsDetailFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Nullable
@@ -87,10 +96,16 @@ public class AnimalsDetailFragment extends Fragment {
     }
 
     private void bindData() {
-        aboutOurAnimal.setText(getString(R.string.test_text));
-        aboutSpecies.setText(getString(R.string.test_text2));
-        aboutCharacteristics.setText(getString(R.string.test_text3));
-        factsAboutAnimal.setText(getString(R.string.test_text4));
+        if (getArguments() == null) {
+            return;
+        }
+        String animalJson = getArguments().getString(KEY_ANIMAL);
+        Gson gson = new Gson();
+        Animal animal = gson.fromJson(animalJson, Animal.class);
+        aboutOurAnimal.setText(animal.getAboutOurAnimal());
+        aboutSpecies.setText(animal.getSpeciesUid());
+        aboutCharacteristics.setText("");
+        factsAboutAnimal.setText("");
     }
 
     private void initRecyclerView() {

@@ -30,7 +30,7 @@
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="8dp"
             android:textSize="@dimen/text_size_14"
-            tools:text="@string/test_text2" />
+            tools:text="aboutSpecies" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="8dp"
             android:textSize="@dimen/text_size_14"
-            tools:text="@string/test_text3" />
+            tools:text="aboutCharacteristics" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="8dp"
             android:textSize="@dimen/text_size_14"
-            tools:text="@string/test_text" />
+            tools:text="aboutOurAnimal" />
 
 
     </LinearLayout>

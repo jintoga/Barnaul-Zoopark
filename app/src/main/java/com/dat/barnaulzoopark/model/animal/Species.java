@@ -13,6 +13,7 @@ public class Species {
     private String categoryUid;
     private String name;
     private String icon;
+    private String thumbnail;
     private String description;
     private Map<String, String> animals = new HashMap<>();
 
@@ -38,6 +39,10 @@ public class Species {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
     }
 
     public Map<String, String> getAnimals() {
