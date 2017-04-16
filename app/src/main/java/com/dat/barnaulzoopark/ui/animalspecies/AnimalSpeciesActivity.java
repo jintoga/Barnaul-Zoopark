@@ -8,7 +8,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -22,6 +21,8 @@ import com.dat.barnaulzoopark.ui.animalspecies.adapters.AnimalSpeciesHeaderAdapt
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import java.util.List;
 
@@ -31,7 +32,9 @@ import java.util.List;
 
 public class AnimalSpeciesActivity
     extends BaseMvpActivity<AnimalSpeciesContract.View, AnimalSpeciesContract.UserActionListener>
-    implements AnimalSpeciesContract.View, AnimalSpeciesExpandableAdapter.ItemClickListener {
+    implements AnimalSpeciesContract.View, AnimalSpeciesExpandableAdapter.ItemClickListener,
+    RecyclerViewExpandableItemManager.OnGroupCollapseListener,
+    RecyclerViewExpandableItemManager.OnGroupExpandListener {
 
     public static final String KEY_SPECIES = "KEY_SPECIES";
 
@@ -40,6 +43,7 @@ public class AnimalSpeciesActivity
     @Bind(R.id.speciesContent)
     protected RecyclerView speciesContent;
     private AnimalSpeciesExpandableAdapter expandableAdapter;
+    private RecyclerViewExpandableItemManager expandableItemManager;
 
     public static void start(Context context, @NonNull Species species) {
         if (context instanceof AnimalSpeciesActivity) {
@@ -96,20 +100,47 @@ public class AnimalSpeciesActivity
     }
 
     private void init(@NonNull Species species) {
+
         // Setup expandable feature and RecyclerView
-        RecyclerViewExpandableItemManager expandableItemManager =
-            new RecyclerViewExpandableItemManager(null);
+        expandableItemManager = new RecyclerViewExpandableItemManager(null);
         expandableItemManager.setDefaultGroupsExpandedState(true);
+        expandableItemManager.setOnGroupExpandListener(this);
+        expandableItemManager.setOnGroupCollapseListener(this);
+
         RecyclerView.Adapter adapter;
         adapter = expandableAdapter = new AnimalSpeciesExpandableAdapter();
         adapter = expandableItemManager.createWrappedAdapter(adapter);
         adapter = new AnimalSpeciesHeaderAdapter(adapter, species);
+        final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
+        // Change animations are enabled by default since support-v7-recyclerview v22.
+        // Need to disable them when using animation indicator.
+        animator.setSupportsChangeAnimations(false);
 
-        speciesContent.setAdapter(adapter);
         speciesContent.setLayoutManager(new LinearLayoutManager(this));
-        // NOTE: need to disable change animations to ripple effect work properly
-        ((SimpleItemAnimator) speciesContent.getItemAnimator()).setSupportsChangeAnimations(false);
+        speciesContent.setAdapter(adapter);
+        speciesContent.setItemAnimator(animator);
+        speciesContent.setHasFixedSize(false);
+
         expandableItemManager.attachRecyclerView(speciesContent);
+    }
+
+    @Override
+    public void onGroupCollapse(int groupPosition, boolean fromUser, Object payload) {
+    }
+
+    @Override
+    public void onGroupExpand(int groupPosition, boolean fromUser, Object payload) {
+        if (fromUser) {
+            adjustScrollPositionOnGroupExpanded(groupPosition);
+        }
+    }
+
+    private void adjustScrollPositionOnGroupExpanded(int groupPosition) {
+        int childItemHeight = 53;
+        int topMargin =
+            (int) (getResources().getDisplayMetrics().density * 16); // top-spacing: 16dp
+
+        expandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, topMargin);
     }
 
     @Override

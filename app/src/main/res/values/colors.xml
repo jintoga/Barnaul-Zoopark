@@ -48,4 +48,5 @@
     <color name="primary_90">#E64CAF50</color>
 
     <color name="avatar_bg_color">#e9eef1</color>
+    <color name="expandable_item_indicator_color">@color/black</color>
 </resources>

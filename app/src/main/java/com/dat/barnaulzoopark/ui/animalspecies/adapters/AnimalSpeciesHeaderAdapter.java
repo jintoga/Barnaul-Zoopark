@@ -37,7 +37,9 @@ public class AnimalSpeciesHeaderAdapter extends
 
     @Override
     public FooterViewHolder onCreateFooterItemViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_animal_species_footer, parent, false);
+        return new FooterViewHolder(view);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class AnimalSpeciesHeaderAdapter extends
 
     @Override
     public int getFooterItemCount() {
-        return 0;
+        return 1;
     }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {

@@ -11,8 +11,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.widget.ExpandableItemIndicator.ExpandableItemIndicator;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ import java.util.List;
 
 public class AnimalSpeciesExpandableAdapter extends
     AbstractExpandableItemAdapter<AnimalSpeciesExpandableAdapter.GroupViewHolder, AnimalSpeciesExpandableAdapter.ChildViewHolder> {
+    // NOTE: Make accessible with short name
+    private interface Expandable extends ExpandableItemConstants {
+    }
 
     private List<Animal> data = new ArrayList<>();
 
@@ -70,7 +75,20 @@ public class AnimalSpeciesExpandableAdapter extends
     @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition,
         @IntRange(from = -8388608L, to = 8388607L) int viewType) {
-        holder.name.setText("Animals");
+        holder.name.setText("Animals");// mark as clickable
+        holder.itemView.setClickable(true);
+
+        final int expandState = holder.getExpandStateFlags();
+
+        if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+            boolean isExpanded;
+            boolean animateIndicator =
+                ((expandState & Expandable.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
+
+            isExpanded = (expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0;
+
+            holder.indicator.setExpandedState(isExpanded, animateIndicator);
+        }
     }
 
     @Override
@@ -98,6 +116,8 @@ public class AnimalSpeciesExpandableAdapter extends
     static class GroupViewHolder extends AbstractExpandableItemViewHolder {
         @Bind(R.id.name)
         protected TextView name;
+        @Bind(R.id.indicator)
+        protected ExpandableItemIndicator indicator;
 
         GroupViewHolder(View itemView) {
             super(itemView);

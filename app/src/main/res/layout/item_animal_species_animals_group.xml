@@ -15,8 +15,14 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="32dp"
         android:textColor="@color/black"
         android:textSize="@dimen/item_news_detail_title_text_size"
         tools:text="Выставка Петухов. Ул Взлетная 2-к, эко-ярмарка ВДНХ. Время работы: ежедневно с 10.00 до 20.00" />
 
+    <com.dat.barnaulzoopark.widget.ExpandableItemIndicator.ExpandableItemIndicator
+        android:id="@+id/indicator"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="right|center_vertical" />
 </android.support.v7.widget.CardView>
