@@ -191,11 +191,13 @@ public class NewsFragment
     }
 
     private void showNewsDetail() {
-        NewsDetailFragment articleDetailFragment =
-            (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
-                KEY_NEWS_DETAIL_FRAGMENT);
-        if (articleDetailFragment != null) {
-            articleDetailFragment.showNewsDetail(adapter.getSelectedItem());
+        if (isAdded()) {
+            NewsDetailFragment articleDetailFragment =
+                (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
+                    KEY_NEWS_DETAIL_FRAGMENT);
+            if (articleDetailFragment != null) {
+                articleDetailFragment.showNewsDetail(adapter.getSelectedItem());
+            }
         }
     }
 

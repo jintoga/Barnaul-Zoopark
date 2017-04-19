@@ -136,11 +136,21 @@ public class AnimalSpeciesActivity
     }
 
     private void adjustScrollPositionOnGroupExpanded(int groupPosition) {
-        int childItemHeight = 53;
-        int topMargin =
-            (int) (getResources().getDisplayMetrics().density * 16); // top-spacing: 16dp
+        int childItemHeight = (int) getResources().getDimension(R.dimen.item_species_animals_child_height);
 
-        expandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, topMargin);
+        int childPosition = expandableAdapter.getChildCount(groupPosition) - 1;
+
+        int recyclerViewHeight = speciesContent.getHeight();
+
+        int offset = ((recyclerViewHeight - childItemHeight) / 2);
+
+        long packedPosition =
+            RecyclerViewExpandableItemManager.getPackedPositionForChild(groupPosition,
+                childPosition);
+        int flatPosition = expandableItemManager.getFlatPosition(packedPosition);
+
+        ((LinearLayoutManager) speciesContent.getLayoutManager()).scrollToPositionWithOffset(
+            flatPosition, offset);
     }
 
     @Override

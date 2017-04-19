@@ -100,7 +100,8 @@ public class AnimalSpeciesExpandableAdapter extends
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x,
         int y, boolean expand) {
-        return true;
+        // check is enabled
+        return holder.itemView.isEnabled() && holder.itemView.isClickable();
     }
 
     public void setData(List<Animal> animals) {
