@@ -32,8 +32,11 @@ public class AnimalSpeciesExpandableAdapter extends
 
     private List<Animal> data = new ArrayList<>();
 
-    public AnimalSpeciesExpandableAdapter() {
+    private ItemClickListener itemClickListener;
+
+    public AnimalSpeciesExpandableAdapter(ItemClickListener itemClickListener) {
         setHasStableIds(true); // this is required for expandable feature.
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
@@ -92,9 +95,18 @@ public class AnimalSpeciesExpandableAdapter extends
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition,
-        @IntRange(from = -8388608L, to = 8388607L) int viewType) {
-        holder.bindAnimalData(data.get(childPosition));
+    public void onBindChildViewHolder(final ChildViewHolder holder, int groupPosition,
+        final int childPosition, @IntRange(from = -8388608L, to = 8388607L) int viewType) {
+        final Animal animal = data.get(childPosition);
+        if (animal != null) {
+            holder.bindAnimalData(data.get(childPosition));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onAnimalClicked(childPosition);
+                }
+            });
+        }
     }
 
     @Override
@@ -111,7 +123,7 @@ public class AnimalSpeciesExpandableAdapter extends
     }
 
     interface ItemClickListener {
-        void onAnimalClicked(@NonNull Animal animal);
+        void onAnimalClicked(int selectedAnimalPosition);
     }
 
     static class GroupViewHolder extends AbstractExpandableItemViewHolder {

@@ -25,13 +25,16 @@ public class AnimalsDetailActivity extends
     BaseActivityWithAnimation<AnimalsDetailContract.View, AnimalsDetailContract.UserActionListener>
     implements AnimalsDetailContract.View {
     public static final String KEY_SPECIES_UID = "KEY_SPECIES_UID";
+    private static final String KEY_SELECTED_ANIMAL_POSITION = "KEY_SELECTED_ANIMAL_POSITION";
 
-    public static void start(Activity activity, @NonNull String speciesUid) {
+    public static void start(Activity activity, @NonNull String speciesUid,
+        int selectedAnimalPosition) {
         if (activity instanceof AnimalsDetailActivity) {
             return;
         }
         Intent intent = new Intent(activity, AnimalsDetailActivity.class);
         intent.putExtra(KEY_SPECIES_UID, speciesUid);
+        intent.putExtra(KEY_SELECTED_ANIMAL_POSITION, selectedAnimalPosition);
 
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
@@ -118,6 +121,16 @@ public class AnimalsDetailActivity extends
         materialViewPager.getViewPager()
             .setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
         materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
+
+        //Move to selected animal
+        final int selectedAnimalPosition = getIntent().getIntExtra(KEY_SELECTED_ANIMAL_POSITION, 0);
+        materialViewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                materialViewPager.getViewPager().setCurrentItem(selectedAnimalPosition);
+                materialViewPager.onPageSelected(selectedAnimalPosition);
+            }
+        });
     }
 
     @Override

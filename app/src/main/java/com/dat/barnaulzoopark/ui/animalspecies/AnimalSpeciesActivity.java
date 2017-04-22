@@ -17,6 +17,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
+import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
 import com.dat.barnaulzoopark.ui.animalspecies.adapters.AnimalSpeciesHeaderAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,6 +45,8 @@ public class AnimalSpeciesActivity
     protected RecyclerView speciesContent;
     private AnimalSpeciesExpandableAdapter expandableAdapter;
     private RecyclerViewExpandableItemManager expandableItemManager;
+
+    private Species species;
 
     public static void start(Context context, @NonNull Species species) {
         if (context instanceof AnimalSpeciesActivity) {
@@ -88,7 +91,7 @@ public class AnimalSpeciesActivity
             finish();
             return;
         }
-        Species species = new Gson().fromJson(speciesJson, Species.class);
+        species = new Gson().fromJson(speciesJson, Species.class);
         init(species);
         presenter.loadAnimals(species.getUid());
     }
@@ -108,7 +111,7 @@ public class AnimalSpeciesActivity
         expandableItemManager.setOnGroupCollapseListener(this);
 
         RecyclerView.Adapter adapter;
-        adapter = expandableAdapter = new AnimalSpeciesExpandableAdapter();
+        adapter = expandableAdapter = new AnimalSpeciesExpandableAdapter(this);
         adapter = expandableItemManager.createWrappedAdapter(adapter);
         adapter = new AnimalSpeciesHeaderAdapter(adapter, species);
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
@@ -136,7 +139,8 @@ public class AnimalSpeciesActivity
     }
 
     private void adjustScrollPositionOnGroupExpanded(int groupPosition) {
-        int childItemHeight = (int) getResources().getDimension(R.dimen.item_species_animals_child_height);
+        int childItemHeight =
+            (int) getResources().getDimension(R.dimen.item_species_animals_child_height);
 
         int childPosition = expandableAdapter.getChildCount(groupPosition) - 1;
 
@@ -154,7 +158,7 @@ public class AnimalSpeciesActivity
     }
 
     @Override
-    public void onAnimalClicked(@NonNull Animal animal) {
-
+    public void onAnimalClicked(int selectedAnimalPosition) {
+        AnimalsDetailActivity.start(this, species.getUid(), selectedAnimalPosition);
     }
 }
