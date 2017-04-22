@@ -76,16 +76,17 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
             @Override
             public void onClick(View view) {
                 isFilledWithPhoto = false;
+                dialog.dismiss();
                 if (listener != null) {
                     listener.onRemovedPhotoClicked();
                 }
-                dialog.dismiss();
             }
         });
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isCapturePhoto = true;
+                dialog.dismiss();
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ActivityCompat.checkSelfPermission(BaseMvpPhotoEditActivity.this,
@@ -96,7 +97,6 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
                     }
                 }
                 startCapturePhoto(requestCode);
-                dialog.dismiss();
             }
         });
         choosePhoto.setOnClickListener(new View.OnClickListener() {
