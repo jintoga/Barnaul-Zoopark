@@ -84,7 +84,7 @@ public class NewsFragment
             (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         scrollFlags = layoutParams.getScrollFlags();
 
-        if (/*savedInstanceState == null &&*/ BZApplication.isTabletLandscape(getContext())) {
+        if (/*savedInstanceState == null &&*/ BZApplication.get(getContext()).isTabletLandscape()) {
             NewsDetailFragment newsDetailFragment = NewsDetailFragment.newInstance(null);
             FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.newsDetailFragmentContainer, newsDetailFragment,
@@ -101,7 +101,7 @@ public class NewsFragment
     }
 
     private void loadData() {
-        if (BZApplication.isTabletLandscape(getContext()) && newsReference != null) {
+        if (BZApplication.get(getContext()).isTabletLandscape() && newsReference != null) {
             newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -165,7 +165,7 @@ public class NewsFragment
             adapter.setSelectedPosition(selectedPosition);
             adapter.notifySelectedItem();
         }
-        if (!BZApplication.isTabletLandscape(getContext())) {
+        if (!BZApplication.get(getContext()).isTabletLandscape()) {
             NewsDetailActivity.startActivity(getActivity(), uid);
         } else {
             showNewsDetail();
@@ -237,7 +237,7 @@ public class NewsFragment
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (isAdmin && !BZApplication.isTabletLandscape(getContext())) {
+                if (isAdmin && !BZApplication.get(getContext()).isTabletLandscape()) {
                     if (dy > 0 && fabCreate.isShown()) {
                         fabCreate.hide();
                     } else if (dy < 0) {

@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark;
 
+import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -18,6 +19,11 @@ public class ApplicationModule {
     }
 
     @Provides
+    Context provideContext() {
+        return application;
+    }
+
+    @Provides
     @Singleton
     public BZApplication provideApplication() {
         return application;
@@ -27,5 +33,11 @@ public class ApplicationModule {
     @Singleton
     EventBus provideEventBus() {
         return EventBus.getDefault();
+    }
+
+    @Provides
+    @Singleton
+    PreferenceHelper providePreferenceHelper() {
+        return new PreferenceHelper(application.getApplicationComponent().context());
     }
 }

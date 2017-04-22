@@ -55,7 +55,7 @@ public class NewsDetailActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (BZApplication.isTabletLandscape(this)) {
+        if (BZApplication.get(this).isTabletLandscape()) {
             finish();
         }
     }

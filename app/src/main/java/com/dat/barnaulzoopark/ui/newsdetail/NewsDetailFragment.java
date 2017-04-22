@@ -118,7 +118,7 @@ public class NewsDetailFragment
     }
 
     private void init() {
-        if (BZApplication.isTabletLandscape(getContext())) {
+        if (BZApplication.get(getContext()).isTabletLandscape()) {
             toolbar.setVisibility(View.GONE);
         } else {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);

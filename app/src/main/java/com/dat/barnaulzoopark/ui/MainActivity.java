@@ -2,7 +2,6 @@ package com.dat.barnaulzoopark.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -54,7 +53,7 @@ public class MainActivity
     DrawerLayout.DrawerListener {
 
     private static final int GALLERY_REQUEST = 1;
-    private static final String KEY_IS_GUEST = "IS_GUEST";
+    private static final String EXTRA_IS_GUEST = "IS_GUEST";
     private static final String TAG = MainActivity.class.getName();
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
@@ -99,7 +98,7 @@ public class MainActivity
             return;
         }
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(KEY_IS_GUEST, true);
+        intent.putExtra(EXTRA_IS_GUEST, true);
         context.startActivity(intent);
     }
 
@@ -126,11 +125,10 @@ public class MainActivity
                         public void onClick(@NonNull MaterialDialog dialog,
                             @NonNull DialogAction which) {
                             FirebaseAuth.getInstance().signOut();
-                            SharedPreferences.Editor editor =
-                                getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE)
-                                    .edit();
-                            editor.putBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
-                            editor.apply();
+                            BZApplication.get(MainActivity.this)
+                                .getApplicationComponent()
+                                .preferencesHelper()
+                                .setIsLoggedIn(false);
                             goToStartUp();
                         }
                     })
@@ -202,13 +200,12 @@ public class MainActivity
     }
 
     private void authenticate() {
-        SharedPreferences sharedPreferences =
-            getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE);
-        isLoggedIn = sharedPreferences.getBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
+        isLoggedIn =
+            BZApplication.get(this).getApplicationComponent().preferencesHelper().isLoggedIn();
         if (isLoggedIn) {
             return;
         }
-        boolean isGuest = getIntent().getBooleanExtra(KEY_IS_GUEST, false);
+        boolean isGuest = getIntent().getBooleanExtra(EXTRA_IS_GUEST, false);
         if (!isGuest) {
             goToStartUp();
         }

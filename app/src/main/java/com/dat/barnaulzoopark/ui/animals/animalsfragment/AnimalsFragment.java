@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -15,12 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
+import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +48,9 @@ public class AnimalsFragment
     protected FloatingSearchView searchView;
     @Bind(R.id.transparent_view)
     protected View backgroundView;
+
+    @Bind(R.id.fabCreate)
+    protected FloatingActionButton fabCreate;
 
     @Bind(R.id.viewpagerAnimals)
     protected ViewPager animalsViewPager;
@@ -231,5 +237,10 @@ public class AnimalsFragment
             boolean setExpanded = (per <= 0.5F);
             appBarLayout.setExpanded(setExpanded, true);
         }
+    }
+
+    @OnClick(R.id.fabCreate)
+    protected void fabCreateClicked() {
+
     }
 }

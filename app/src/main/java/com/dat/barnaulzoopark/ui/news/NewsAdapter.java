@@ -53,8 +53,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     protected void populateViewHolder(final ViewHolder viewHolder, final News model, int position) {
 
         boolean isSelectedItem = false;
-        if (position == getSelectedPosition() && BZApplication.isTabletLandscape(
-            viewHolder.itemView.getContext())) {
+        if (position == getSelectedPosition() && BZApplication.get(viewHolder.itemView.getContext())
+            .isTabletLandscape()) {
             isSelectedItem = true;
         }
         if (isSelectedItem) {

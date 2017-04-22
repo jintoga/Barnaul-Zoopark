@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import com.dat.barnaulzoopark.api.FirebaseModule;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,4 +34,9 @@ public interface ApplicationComponent {
     EventBus eventBus();
 
     void inject(BZApplication application);
+
+    @NonNull
+    PreferenceHelper preferencesHelper();
+
+    Context context();
 }

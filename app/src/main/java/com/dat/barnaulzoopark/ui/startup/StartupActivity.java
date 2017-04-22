@@ -2,7 +2,6 @@ package com.dat.barnaulzoopark.ui.startup;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -73,10 +72,7 @@ public class StartupActivity extends AppCompatActivity implements ICallback {
 
     private void saveLoggedInStatus() {
         Log.d(TAG, "saveLoggedInStatus");
-        SharedPreferences.Editor editor =
-            getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE).edit();
-        editor.putBoolean(BZApplication.KEY_IS_LOGGED_IN, true);
-        editor.apply();
+        BZApplication.get(this).getApplicationComponent().preferencesHelper().setIsLoggedIn(true);
         goToMain();
     }
 

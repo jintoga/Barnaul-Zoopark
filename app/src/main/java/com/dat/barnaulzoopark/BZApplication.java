@@ -12,9 +12,6 @@ import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
  */
 public class BZApplication extends MultiDexApplication {
 
-    public static final String BZSharedPreference = "BZSharedPreference";
-    public static final String KEY_IS_LOGGED_IN = "IS_LOGGED_IN";
-
     @NonNull
     private ApplicationComponent applicationComponent;
 
@@ -40,9 +37,9 @@ public class BZApplication extends MultiDexApplication {
         return applicationComponent;
     }
 
-    public static boolean isTabletLandscape(Context context) {
-        return context.getResources().getBoolean(R.bool.isTablet)
-            && context.getResources().getConfiguration().orientation
+    public boolean isTabletLandscape() {
+        return applicationComponent.context().getResources().getBoolean(R.bool.isTablet)
+            && applicationComponent.context().getResources().getConfiguration().orientation
             == Configuration.ORIENTATION_LANDSCAPE;
     }
 }
