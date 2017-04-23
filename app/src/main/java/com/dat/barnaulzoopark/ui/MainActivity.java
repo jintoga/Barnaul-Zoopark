@@ -96,6 +96,7 @@ public class MainActivity
             return;
         }
         Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_IS_GUEST, true);
         context.startActivity(intent);
     }
@@ -186,7 +187,11 @@ public class MainActivity
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.loadUserData();
+        if (BZApplication.get(this).getApplicationComponent().preferencesHelper().isLoggedIn()) {
+            presenter.loadUserData();
+        } else {
+            bindUserDataAsGuest();
+        }
     }
 
     @NonNull

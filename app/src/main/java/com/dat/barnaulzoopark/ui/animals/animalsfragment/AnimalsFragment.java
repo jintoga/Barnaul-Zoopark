@@ -23,7 +23,6 @@ import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
-import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -138,9 +137,17 @@ public class AnimalsFragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("onResume", "onResume");
+    public void onStart() {
+        super.onStart();
+        updateAdminPrivilege();
+    }
+
+    private void updateAdminPrivilege() {
+        if (BZApplication.get(getContext()).isAdmin()) {
+            fabCreate.setVisibility(View.VISIBLE);
+        } else {
+            fabCreate.setVisibility(View.GONE);
+        }
     }
 
     private void initAnimalsViewPager(@NonNull List<Category> categories) {
