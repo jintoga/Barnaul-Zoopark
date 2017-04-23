@@ -47,6 +47,7 @@
             android:name=".ui.animaleditor.AnimalEditorActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.animalspecies.AnimalSpeciesActivity" />
+        <activity android:name=".ui.animalcategoryeditor.CategoryEditorActivity" />
     </application>
 
 </manifest>

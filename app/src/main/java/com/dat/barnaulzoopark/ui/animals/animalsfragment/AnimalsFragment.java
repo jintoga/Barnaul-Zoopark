@@ -22,6 +22,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
+import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
@@ -248,6 +249,6 @@ public class AnimalsFragment
 
     @OnClick(R.id.fabCreate)
     protected void fabCreateClicked() {
-
+        CategoryEditorActivity.start(getContext());
     }
 }

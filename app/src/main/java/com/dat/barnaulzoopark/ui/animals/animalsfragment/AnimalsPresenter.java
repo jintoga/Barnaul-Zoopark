@@ -33,7 +33,7 @@ class AnimalsPresenter extends MvpBasePresenter<AnimalsContract.View>
     public void loadCategories() {
         DatabaseReference databaseReference =
             database.getReference().child(BZFireBaseApi.animal_categories);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Category> categories = new ArrayList<>();
