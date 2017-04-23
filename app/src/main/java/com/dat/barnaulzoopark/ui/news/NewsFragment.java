@@ -18,21 +18,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailFragment;
 import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Nguyen on 7/13/2016.
@@ -53,23 +48,15 @@ public class NewsFragment
     private NewsAdapter adapter;
 
     private int scrollFlags = -1;
-    private boolean isAdmin = false;
-
-    private DatabaseReference newsReference;
 
     private int selectedNewsPosition = 0;
 
     @NonNull
     @Override
     public NewsContract.UserActionListener createPresenter() {
-        FirebaseAuth auth =
-            BZApplication.get(getContext()).getApplicationComponent().firebaseAuth();
         FirebaseDatabase database =
             BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
-        FirebaseStorage storage =
-            BZApplication.get(getContext()).getApplicationComponent().fireBaseStorage();
-        EventBus eventBus = BZApplication.get(getContext()).getApplicationComponent().eventBus();
-        return new NewsPresenter(eventBus, auth, database, storage);
+        return new NewsPresenter(database);
     }
 
     @Nullable
@@ -79,7 +66,6 @@ public class NewsFragment
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         ButterKnife.bind(this, view);
         ((MainActivity) getActivity()).setupNavDrawerWithToolbar(toolbar, getString(R.string.news));
-        init();
         AppBarLayout.LayoutParams layoutParams =
             (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         scrollFlags = layoutParams.getScrollFlags();
@@ -97,53 +83,25 @@ public class NewsFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadData();
-    }
-
-    private void loadData() {
-        if (BZApplication.get(getContext()).isTabletLandscape() && newsReference != null) {
-            newsReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    NewsDetailFragment newsDetailFragment =
-                        (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
-                            KEY_NEWS_DETAIL_FRAGMENT);
-                    if (adapter != null && adapter.getItemCount() > 0) {
-                        adapter.setSelectedPosition(selectedNewsPosition);
-                        adapter.notifyDataSetChanged();
-                        if (newsDetailFragment != null) {
-                            newsDetailFragment.showNewsDetail(adapter.getSelectedItem());
-                        }
-                    } else {
-                        if (newsDetailFragment != null) {
-                            newsDetailFragment.showNewsDetail(null);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
-
-    @Override
-    public void showAdminPrivilege(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-        enableCollapsingToolbar(isAdmin);
-        if (isAdmin) {
-            fabCreate.setVisibility(View.VISIBLE);
-        } else {
-            fabCreate.setVisibility(View.GONE);
+        initRecyclerView();
+        if (BZApplication.get(getContext()).isTabletLandscape()) {
+            presenter.loadData();
         }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter.checkAdminPrivilege();
+        updateAdminPrivilege();
+    }
+
+    private void updateAdminPrivilege() {
+        enableCollapsingToolbar(BZApplication.get(getContext()).isAdmin());
+        if (BZApplication.get(getContext()).isAdmin()) {
+            fabCreate.setVisibility(View.VISIBLE);
+        } else {
+            fabCreate.setVisibility(View.GONE);
+        }
     }
 
     //Prevent toolbar from collapsing when user is ADMIN
@@ -190,6 +148,24 @@ public class NewsFragment
         }
     }
 
+    @Override
+    public void bindNewsDetail() {
+        NewsDetailFragment newsDetailFragment =
+            (NewsDetailFragment) getChildFragmentManager().findFragmentByTag(
+                KEY_NEWS_DETAIL_FRAGMENT);
+        if (adapter != null && adapter.getItemCount() > 0) {
+            adapter.setSelectedPosition(selectedNewsPosition);
+            adapter.notifyDataSetChanged();
+            if (newsDetailFragment != null) {
+                newsDetailFragment.showNewsDetail(adapter.getSelectedItem());
+            }
+        } else {
+            if (newsDetailFragment != null) {
+                newsDetailFragment.showNewsDetail(null);
+            }
+        }
+    }
+
     private void showNewsDetail() {
         if (isAdded()) {
             NewsDetailFragment articleDetailFragment =
@@ -204,20 +180,17 @@ public class NewsFragment
     @Override
     public void onNewsLongClicked(String uid) {
         //ToDo: display Edit, Delete Buttons on Toolbar
-        if (isAdmin) {
+        if (BZApplication.get(getContext()).isAdmin()) {
             NewsItemEditorActivity.start(getActivity(), uid);
         }
     }
 
-    private void init() {
+    private void initRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewNews.setLayoutManager(layoutManager);
-        FirebaseDatabase database =
-            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
-        newsReference = database.getReference(BZFireBaseApi.news);
         adapter = new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class,
-            newsReference, this);
-        newsReference.addValueEventListener(new ValueEventListener() {
+            presenter.getNewsReference(), this);
+        presenter.getNewsReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (adapter.getItemCount() == 0) {
@@ -237,7 +210,8 @@ public class NewsFragment
         recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (isAdmin && !BZApplication.get(getContext()).isTabletLandscape()) {
+                if (BZApplication.get(getContext()).isAdmin() && !BZApplication.get(getContext())
+                    .isTabletLandscape()) {
                     if (dy > 0 && fabCreate.isShown()) {
                         fabCreate.hide();
                     } else if (dy < 0) {

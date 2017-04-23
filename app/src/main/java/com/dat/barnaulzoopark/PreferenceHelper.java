@@ -13,7 +13,8 @@ public class PreferenceHelper {
 
     public static final String PREF_FILE_NAME = "BZSharedPreference";
 
-    public static final String KEY_IS_LOGGED_IN = "IS_LOGGED_IN";
+    public static final String KEY_IS_LOGGED_IN = "KEY_IS_LOGGED_IN";
+    public static final String KEY_IS_ADMIN = "KEY_IS_ADMIN";
 
     private final SharedPreferences preferences;
 
@@ -32,5 +33,13 @@ public class PreferenceHelper {
 
     public boolean isLoggedIn() {
         return preferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        preferences.edit().putBoolean(KEY_IS_ADMIN, isAdmin).apply();
+    }
+
+    public boolean isAdmin() {
+        return preferences.getBoolean(KEY_IS_ADMIN, false);
     }
 }

@@ -42,4 +42,8 @@ public class BZApplication extends MultiDexApplication {
             && applicationComponent.context().getResources().getConfiguration().orientation
             == Configuration.ORIENTATION_LANDSCAPE;
     }
+
+    public boolean isAdmin(){
+        return applicationComponent.preferencesHelper().isAdmin();
+    }
 }

@@ -29,7 +29,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.events.LoggedInEvent;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
@@ -45,7 +44,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity
     extends BaseMvpActivity<UserProfileContract.View, UserProfileContract.UserActionListener>
@@ -112,7 +110,10 @@ public class MainActivity
         if (user.isAdmin()) {
             name += "(admin)";
         }
-        EventBus.getDefault().post(new LoggedInEvent(user.isAdmin()));
+        BZApplication.get(this)
+            .getApplicationComponent()
+            .preferencesHelper()
+            .setIsAdmin(user.isAdmin());
         userName.setText(name);
         userEmail.setText(user.getEmail());
         logButton.setImageResource(R.drawable.ic_logout);
@@ -128,7 +129,7 @@ public class MainActivity
                             BZApplication.get(MainActivity.this)
                                 .getApplicationComponent()
                                 .preferencesHelper()
-                                .setIsLoggedIn(false);
+                                .clear();
                             goToStartUp();
                         }
                     })
