@@ -144,7 +144,7 @@ public class AnimalSpeciesExpandableAdapter extends
         @Bind(R.id.photo)
         protected SimpleDraweeView photo;
 
-        public ChildViewHolder(View itemView) {
+        ChildViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
