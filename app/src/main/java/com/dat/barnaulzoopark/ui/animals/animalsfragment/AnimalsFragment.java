@@ -49,9 +49,6 @@ public class AnimalsFragment
     @Bind(R.id.transparent_view)
     protected View backgroundView;
 
-    @Bind(R.id.fabCreate)
-    protected FloatingActionButton fabCreate;
-
     @Bind(R.id.viewpagerAnimals)
     protected ViewPager animalsViewPager;
     private AnimalsViewPagerAdapter animalsViewPagerAdapter;
@@ -135,20 +132,6 @@ public class AnimalsFragment
         FirebaseStorage storage =
             BZApplication.get(getContext()).getApplicationComponent().fireBaseStorage();
         return new AnimalsPresenter(auth, database, storage);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateAdminPrivilege();
-    }
-
-    private void updateAdminPrivilege() {
-        if (BZApplication.get(getContext()).isAdmin()) {
-            fabCreate.setVisibility(View.VISIBLE);
-        } else {
-            fabCreate.setVisibility(View.GONE);
-        }
     }
 
     private void initAnimalsViewPager(@NonNull List<Category> categories) {
@@ -247,8 +230,4 @@ public class AnimalsFragment
         }
     }
 
-    @OnClick(R.id.fabCreate)
-    protected void fabCreateClicked() {
-        CategoryEditorActivity.start(getContext());
-    }
 }

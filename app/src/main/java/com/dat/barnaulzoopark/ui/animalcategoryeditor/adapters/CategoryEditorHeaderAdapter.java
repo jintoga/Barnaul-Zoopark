@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.animalcategoryeditor;
+package com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFoot
  * Created by DAT on 4/23/2017.
  */
 
-public class CategoryEditorContentHeaderAdapter extends
-    AbstractHeaderFooterWrapperAdapter<RecyclerView.ViewHolder, CategoryEditorContentHeaderAdapter.FooterViewHolder> {
+public class CategoryEditorHeaderAdapter extends
+    AbstractHeaderFooterWrapperAdapter<RecyclerView.ViewHolder, CategoryEditorHeaderAdapter.FooterViewHolder> {
 
-    public CategoryEditorContentHeaderAdapter(RecyclerView.Adapter adapter) {
+    public CategoryEditorHeaderAdapter(RecyclerView.Adapter adapter) {
         setAdapter(adapter);
     }
 

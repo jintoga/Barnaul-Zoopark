@@ -73,16 +73,4 @@
         app:layout_behavior="com.dat.barnaulzoopark.widget.SearchView.SearchViewPinBehavior"
         tools:visibility="visible" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:tint="@color/white"
-        android:visibility="gone"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_create"
-        tools:visibility="visible" />
 </android.support.design.widget.CoordinatorLayout>

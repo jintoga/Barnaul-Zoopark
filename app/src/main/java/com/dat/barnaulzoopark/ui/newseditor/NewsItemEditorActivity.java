@@ -320,6 +320,12 @@ public class NewsItemEditorActivity extends
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.news_item_editor, menu);
+        if (selectedNews == null) {
+            MenuItem deleteMenuItem = menu.findItem(R.id.delete);
+            if (deleteMenuItem != null) {
+                deleteMenuItem.setVisible(false);
+            }
+        }
         return true;
     }
 
