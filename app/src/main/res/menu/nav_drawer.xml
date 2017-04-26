@@ -49,7 +49,18 @@
             </group>
         </menu>
     </item>
-
+    <item
+        android:id="@+id/admin"
+        android:title="Admin">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/dataControl"
+                    android:icon="@drawable/ic_create"
+                    android:title="@string/dataControl" />
+            </group>
+        </menu>
+    </item>
 
     <group
         android:id="@+id/about_group"

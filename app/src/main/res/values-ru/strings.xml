@@ -33,4 +33,5 @@
     <string name="edit_name_hint">Введите имя</string>
     <string name="discard_your_changes">Отменить изменения?</string>
     <string name="discard">Отменить</string>
+    <string name="dataControl">Управление данных</string>
 </resources>

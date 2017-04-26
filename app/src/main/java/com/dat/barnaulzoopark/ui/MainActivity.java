@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,6 +61,7 @@ public class MainActivity
     protected SimpleDraweeView userPhoto;
     protected ProgressBar loadingPhoto;
     protected TextView userName;
+    protected TextView role;
     protected TextView userEmail;
     protected ImageView logButton;
     private int currentMenuItemID = -1;
@@ -107,15 +109,12 @@ public class MainActivity
             Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
         }
-        String name = user.getName();
-        if (user.isAdmin()) {
-            name += "(admin)";
-        }
+        setAdminPrivilege(user);
         BZApplication.get(this)
             .getApplicationComponent()
             .preferencesHelper()
             .setIsAdmin(user.isAdmin());
-        userName.setText(name);
+        userName.setText(user.getName());
         userEmail.setText(user.getEmail());
         logButton.setImageResource(R.drawable.ic_logout);
         logButton.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +138,27 @@ public class MainActivity
         });
     }
 
+    private void setAdminPrivilege(@NonNull User user) {
+        if (user.isAdmin()) {
+            role.setText("(admin)"); //ToDO :// FIXME: 4/26/2017
+            role.setVisibility(View.VISIBLE);
+        } else {
+            role.setVisibility(View.GONE);
+            hideAdminControl();
+        }
+    }
+
+    private void hideAdminControl() {
+        Menu menu = navigationView.getMenu();
+        MenuItem adminMenuItem = menu.findItem(R.id.admin);
+        if (adminMenuItem != null) {
+            adminMenuItem.setVisible(false);
+        }
+    }
+
     @Override
     public void bindUserDataAsGuest() {
+        hideAdminControl();
         Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
             .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
         userPhoto.setImageURI(uri);
@@ -237,29 +255,29 @@ public class MainActivity
             @Override
             public void onClick(View v) {
                 if (isLoggedIn) {
-                    //Edit userName
-                    MaterialDialog dialog =
-                        BZDialogBuilder.createEditUserNameDialog(MainActivity.this,
-                            userName.getText().toString())
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog,
-                                    @NonNull DialogAction which) {
-                                    if (dialog.getInputEditText() != null) {
-                                        presenter.updateUserName(
-                                            dialog.getInputEditText().getText().toString());
-                                    }
-                                }
-                            })
-                            .build();
-                    View positive = dialog.getActionButton(DialogAction.POSITIVE);
-                    positive.setEnabled(false);
-                    dialog.show();
+                    showEditUserNameDialog();
                 }
             }
         });
+        role = (TextView) navigationView.getHeaderView(0).findViewById(R.id.role);
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
+    }
+
+    private void showEditUserNameDialog() {
+        //Edit userName
+        MaterialDialog dialog = BZDialogBuilder.createEditUserNameDialog(MainActivity.this,
+            userName.getText().toString()).onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                if (dialog.getInputEditText() != null) {
+                    presenter.updateUserName(dialog.getInputEditText().getText().toString());
+                }
+            }
+        }).build();
+        View positive = dialog.getActionButton(DialogAction.POSITIVE);
+        positive.setEnabled(false);
+        dialog.show();
     }
 
     private void goToStartUp() {
