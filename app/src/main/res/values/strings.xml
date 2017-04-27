@@ -69,4 +69,7 @@
     <string name="discard_your_changes">Discard your changes?</string>
     <string name="discard">Discard</string>
     <string name="dataControl">Data control</string>
+    <string name="data_management_animal_species">Animal species</string>
+    <string name="data_management_animal_categories">Animal categories</string>
+    <string name="data_management_animals">Animals</string>
 </resources>

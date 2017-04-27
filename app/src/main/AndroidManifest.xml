@@ -48,6 +48,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.animalspecies.AnimalSpeciesActivity" />
         <activity android:name=".ui.animalcategoryeditor.CategoryEditorActivity" />
+        <activity android:name=".ui.admindatamanagement.DataManagementActivity" />
     </application>
 
 </manifest>

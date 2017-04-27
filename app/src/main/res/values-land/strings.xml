@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_management_animal_species">Animal species</string>
+    <string name="data_management_animal_categories">Animal categories</string>
+    <string name="data_management_animals">Animals</string>
+</resources>

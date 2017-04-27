@@ -1,14 +1,16 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
         <item name="actionBarTheme">@style/ToolbarTheme</item>
+        <item name="preferenceTheme">@style/ToolbarPreferenceTheme</item>
     </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="BaseAppTheme" />
 
     <style name="TransparentText" parent="@android:style/TextAppearance">
         <item name="android:textColor">#00000000</item>
@@ -34,4 +36,9 @@
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">@color/white</item>
     </style>
+
+    <style name="ToolbarPreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:layout">@layout/fragment_toolbar_preference</item>
+    </style>
+
 </resources>
