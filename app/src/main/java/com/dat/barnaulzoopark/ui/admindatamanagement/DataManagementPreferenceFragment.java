@@ -3,9 +3,7 @@ package com.dat.barnaulzoopark.ui.admindatamanagement;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.animal.Animal;
-import com.dat.barnaulzoopark.model.animal.Category;
-import com.dat.barnaulzoopark.model.animal.Species;
+import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.ui.BasePreferenceFragment;
 
 /**
@@ -28,13 +26,13 @@ public class DataManagementPreferenceFragment extends BasePreferenceFragment {
     public boolean onPreferenceTreeClick(Preference preference) {
         switch (preference.getKey()) {
             case KEY_ANIMAL_CATEGORIES:
-                DataManagementActivity.start(getContext(), Category.class);
+                DataManagementActivity.start(getContext(), BZFireBaseApi.animal_categories);
                 break;
             case KEY_ANIMAL_SPECIES:
-                DataManagementActivity.start(getContext(), Species.class);
+                DataManagementActivity.start(getContext(), BZFireBaseApi.animal_species);
                 break;
             case KEY_ANIMALS:
-                DataManagementActivity.start(getContext(), Animal.class);
+                DataManagementActivity.start(getContext(), BZFireBaseApi.animal);
                 break;
         }
         return super.onPreferenceTreeClick(preference);

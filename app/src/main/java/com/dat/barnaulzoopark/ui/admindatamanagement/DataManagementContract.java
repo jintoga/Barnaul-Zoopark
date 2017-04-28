@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.admindatamanagement;
 
+import com.google.firebase.database.DatabaseReference;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -12,6 +13,6 @@ public interface DataManagementContract {
     }
 
     interface UserActionListener extends MvpPresenter<DataManagementContract.View> {
-
+        DatabaseReference getDataReference(String referenceName);
     }
 }

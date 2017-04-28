@@ -1,5 +1,7 @@
 package com.dat.barnaulzoopark.ui.admindatamanagement;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 /**
@@ -8,4 +10,15 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 public class DataManagementPresenter extends MvpBasePresenter<DataManagementContract.View>
     implements DataManagementContract.UserActionListener {
+
+    private FirebaseDatabase database;
+
+    DataManagementPresenter(FirebaseDatabase database) {
+        this.database = database;
+    }
+
+    @Override
+    public DatabaseReference getDataReference(String referenceName) {
+        return database.getReference(referenceName);
+    }
 }

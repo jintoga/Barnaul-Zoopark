@@ -2,9 +2,11 @@ package com.dat.barnaulzoopark.ui.animalspecies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import java.util.List;
 
@@ -121,10 +124,13 @@ public class AnimalSpeciesActivity
         animator.setSupportsChangeAnimations(false);
 
         speciesContent.setLayoutManager(new LinearLayoutManager(this));
+
         speciesContent.setAdapter(adapter);
         speciesContent.setItemAnimator(animator);
         speciesContent.setHasFixedSize(false);
 
+        speciesContent.addItemDecoration(new ItemShadowDecorator(
+            (NinePatchDrawable) ContextCompat.getDrawable(this, R.drawable.material_shadow_z1)));
         expandableItemManager.attachRecyclerView(speciesContent);
     }
 

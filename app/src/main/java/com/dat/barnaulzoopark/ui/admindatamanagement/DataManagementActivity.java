@@ -2,15 +2,28 @@ package com.dat.barnaulzoopark.ui.admindatamanagement;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.api.BZFireBaseApi;
+import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.model.animal.Category;
+import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
+import com.google.firebase.database.FirebaseDatabase;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
+import rx.functions.Func1;
 
 /**
  * Created by DAT on 4/28/2017.
@@ -19,19 +32,19 @@ import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 public class DataManagementActivity extends
     BaseMvpActivity<DataManagementContract.View, DataManagementContract.UserActionListener> {
 
-    private static final String EXTRA_DATA_TYPE = "EXTRA_DATA_TYPE";
+    private static final String EXTRA_REFERENCE_NAME = "EXTRA_REFERENCE_NAME";
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.list)
     protected RecyclerView list;
 
-    public static <T> void start(Context context, @NonNull Class<T> clazz) {
+    public static void start(Context context, @NonNull String referenceName) {
         if (context instanceof DataManagementActivity) {
             return;
         }
         Intent intent = new Intent(context, DataManagementActivity.class);
-        intent.putExtra(EXTRA_DATA_TYPE, clazz);
+        intent.putExtra(EXTRA_REFERENCE_NAME, referenceName);
         context.startActivity(intent);
     }
 
@@ -42,7 +55,6 @@ public class DataManagementActivity extends
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
@@ -51,12 +63,85 @@ public class DataManagementActivity extends
 
     private void init() {
         list.setLayoutManager(new LinearLayoutManager(this));
-        
+        list.addItemDecoration(new SimpleListDividerDecorator(
+            ContextCompat.getDrawable(this, R.drawable.preference_list_divider_material), true));
+        list.addItemDecoration(new ItemShadowDecorator(
+            (NinePatchDrawable) ContextCompat.getDrawable(this, R.drawable.material_shadow_z1)));
+        String referenceName = getIntent().getStringExtra(EXTRA_REFERENCE_NAME);
+        if (referenceName != null) {
+            DataManagementAdapter adapter = getAdapter(referenceName);
+            if (adapter != null) {
+                list.setAdapter(adapter);
+            } else {
+                finish();
+            }
+        } else {
+            finish();
+        }
+    }
+
+    @Nullable
+    private DataManagementAdapter getAdapter(String referenceName) {
+        String title = "";
+        DataManagementAdapter adapter = null;
+        switch (referenceName) {
+            case BZFireBaseApi.animal_categories:
+                title = getString(R.string.data_management_animal_categories);
+                adapter = getAdapter(Category.class, referenceName, new Func1<Category, String>() {
+                    @Override
+                    public String call(Category category) {
+                        return category.getName();
+                    }
+                });
+                break;
+            case BZFireBaseApi.animal_species:
+                title = getString(R.string.data_management_animal_species);
+                adapter = getAdapter(Species.class, referenceName, new Func1<Species, String>() {
+                    @Override
+                    public String call(Species species) {
+                        return species.getName();
+                    }
+                });
+                break;
+            case BZFireBaseApi.animal:
+                title = getString(R.string.data_management_animals);
+                adapter = getAdapter(Animal.class, referenceName, new Func1<Animal, String>() {
+                    @Override
+                    public String call(Animal animal) {
+                        return animal.getName();
+                    }
+                });
+                break;
+        }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+        return adapter;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> DataManagementAdapter getAdapter(Class<T> clzz, String referenceName,
+        Func1<T, String> func1) {
+        return new DataManagementAdapter(clzz, R.layout.item_data_management,
+            DataManagementAdapter.ViewHolder.class, presenter.getDataReference(referenceName),
+            func1);
     }
 
     @NonNull
     @Override
     public DataManagementContract.UserActionListener createPresenter() {
-        return new DataManagementPresenter();
+        FirebaseDatabase database =
+            BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
+        return new DataManagementPresenter(database);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

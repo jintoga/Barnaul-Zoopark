@@ -1,11 +1,13 @@
 package com.dat.barnaulzoopark.ui.news;
 
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +30,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 
 /**
  * Created by Nguyen on 7/13/2016.
@@ -188,6 +192,13 @@ public class NewsFragment
     private void initRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewNews.setLayoutManager(layoutManager);
+        recyclerViewNews.addItemDecoration(new SimpleListDividerDecorator(
+            ContextCompat.getDrawable(getContext(), R.drawable.preference_list_divider_material),
+            true));
+        recyclerViewNews.addItemDecoration(new ItemShadowDecorator(
+            (NinePatchDrawable) ContextCompat.getDrawable(getContext(),
+                R.drawable.material_shadow_z1)));
+
         adapter = new NewsAdapter(News.class, R.layout.item_news, NewsAdapter.ViewHolder.class,
             presenter.getNewsReference(), this);
         presenter.getNewsReference().addValueEventListener(new ValueEventListener() {
