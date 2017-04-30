@@ -12,6 +12,8 @@
 
     <color name="black">#000000</color>
     <color name="gray">#dfdfdf</color>
+    <color name="gray_light">#f2f2f2</color>
+    <color name="default_icon_color">#737070</color>
     <color name="white">#ffffff</color>
 
     <color name="transparent">#00000000</color>
@@ -34,6 +36,7 @@
     <color name="primary_transparent_00">#002196F3</color>
 
     <color name="gray_transparent_70">#b3dfdfdf</color>
+    <color name="gray_transparent_55">#8Cdfdfdf</color>
     <color name="fb_transparent_70">#a63e5c9a</color>
     <color name="vk_transparent_85">#d954769a</color>
     <color name="green_transparent_70">#9923c257</color>

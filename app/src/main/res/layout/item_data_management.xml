@@ -7,34 +7,56 @@
     android:background="@android:color/transparent">
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/behindViews"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/red"
-        android:visibility="gone"
+        android:layout_height="140dp"
+        android:layout_gravity="center"
+        android:background="@color/transparent"
         tools:visibility="visible">
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="wrap_content"
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:text="Remove" />
+            android:layout_weight="0.7" />
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:background="@color/gray_light"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_create"
+                android:tint="@color/default_icon_color" />
+
+            <ImageView
+                android:id="@+id/remove"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/default_icon_color" />
+
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/swipeableContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_species_animals_child_height"
+        android:layout_height="140dp"
         android:background="@color/white"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:visibility="visible"
+        tools:visibility="gone">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/photo"

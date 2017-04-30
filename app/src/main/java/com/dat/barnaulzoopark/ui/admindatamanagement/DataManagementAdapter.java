@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.admindatamanagement;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class DataManagementAdapter<T extends AbstractData>
     extends FirebaseRecyclerAdapter<T, DataManagementAdapter.ViewHolder>
     implements SwipeableItemAdapter<DataManagementAdapter.ViewHolder> {
 
-    private int pinnedItem = -1;
+    private int pinnedPosition = -1;
 
     DataManagementAdapter(Class<T> modelClass, int modelLayout, Class<ViewHolder> viewHolderClass,
         Query ref) {
@@ -48,7 +49,7 @@ public class DataManagementAdapter<T extends AbstractData>
         // set swiping properties
         viewHolder.setMaxLeftSwipeAmount(-0.3f);
         viewHolder.setMaxRightSwipeAmount(0);
-        viewHolder.setSwipeItemHorizontalSlideAmount(getPinnedItem() == position ? -0.3f : 0);
+        viewHolder.setSwipeItemHorizontalSlideAmount(getPinnedPosition() == position ? -0.3f : 0);
     }
 
     @Override
@@ -91,6 +92,10 @@ public class DataManagementAdapter<T extends AbstractData>
         ViewGroup swipeableContainer;
         @Bind(R.id.behindViews)
         ViewGroup behindViews;
+        @Bind(R.id.remove)
+        ImageView remove;
+        @Bind(R.id.edit)
+        ImageView edit;
         @Bind(R.id.photo)
         ImageView photo;
         @Bind(R.id.name)
@@ -99,6 +104,10 @@ public class DataManagementAdapter<T extends AbstractData>
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            remove.setColorFilter(
+                ContextCompat.getColor(itemView.getContext(), R.color.default_icon_color));
+            edit.setColorFilter(
+                ContextCompat.getColor(itemView.getContext(), R.color.default_icon_color));
         }
 
         @Override
@@ -107,12 +116,12 @@ public class DataManagementAdapter<T extends AbstractData>
         }
     }
 
-    private void setPinnedItem(int pinnedItem) {
-        this.pinnedItem = pinnedItem;
+    private void setPinnedPosition(int pinnedPosition) {
+        this.pinnedPosition = pinnedPosition;
     }
 
-    private int getPinnedItem() {
-        return pinnedItem;
+    private int getPinnedPosition() {
+        return pinnedPosition;
     }
 
     private static class SwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
@@ -128,8 +137,8 @@ public class DataManagementAdapter<T extends AbstractData>
         protected void onPerformAction() {
             super.onPerformAction();
 
-            if (adapter.getPinnedItem() != position) {
-                adapter.setPinnedItem(position);
+            if (adapter.getPinnedPosition() != position) {
+                adapter.setPinnedPosition(position);
                 adapter.notifyItemChanged(position);
             }
         }
@@ -159,8 +168,8 @@ public class DataManagementAdapter<T extends AbstractData>
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
-            if (adapter.getPinnedItem() == position) {
-                adapter.setPinnedItem(-1);
+            if (adapter.getPinnedPosition() == position) {
+                adapter.setPinnedPosition(-1);
                 adapter.notifyItemChanged(position);
             }
         }
