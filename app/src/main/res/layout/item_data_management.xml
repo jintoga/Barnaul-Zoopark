@@ -7,7 +7,27 @@
     android:background="@android:color/transparent">
 
 
+    <RelativeLayout
+        android:id="@+id/behindViews"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:text="Remove" />
+
+    </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/swipeableContainer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_species_animals_child_height"
         android:background="@color/white"

@@ -16,14 +16,18 @@ import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
+import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 import com.google.firebase.database.FirebaseDatabase;
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
-import rx.functions.Func1;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
+import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 
 /**
  * Created by DAT on 4/28/2017.
@@ -62,19 +66,52 @@ public class DataManagementActivity extends
     }
 
     private void init() {
-        list.setLayoutManager(new LinearLayoutManager(this));
-        list.addItemDecoration(new SimpleListDividerDecorator(
-            ContextCompat.getDrawable(this, R.drawable.preference_list_divider_material), true));
-        list.addItemDecoration(new ItemShadowDecorator(
-            (NinePatchDrawable) ContextCompat.getDrawable(this, R.drawable.material_shadow_z1)));
         String referenceName = getIntent().getStringExtra(EXTRA_REFERENCE_NAME);
         if (referenceName != null) {
-            DataManagementAdapter adapter = getAdapter(referenceName);
-            if (adapter != null) {
-                list.setAdapter(adapter);
-            } else {
-                finish();
-            }
+            initAdapter(referenceName);
+        } else {
+            finish();
+        }
+    }
+
+    private void initAdapter(@NonNull String referenceName) {
+        DataManagementAdapter adapter = getAdapter(referenceName);
+        if (adapter != null) {
+            // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
+            RecyclerViewTouchActionGuardManager recyclerViewTouchActionGuardManager =
+                new RecyclerViewTouchActionGuardManager();
+            recyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(
+                true);
+            recyclerViewTouchActionGuardManager.setEnabled(true);
+
+            // swipe manager
+            RecyclerViewSwipeManager recyclerViewSwipeManager = new RecyclerViewSwipeManager();
+
+            RecyclerView.Adapter wrappedAdapter =
+                recyclerViewSwipeManager.createWrappedAdapter(adapter);
+
+            final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
+
+            // Change animations are enabled by default since support-v7-recyclerview v22.
+            // Disable the change animation in order to make turning back animation of swiped item works properly.
+            animator.setSupportsChangeAnimations(false);
+
+            list.setLayoutManager(new LinearLayoutManager(this));
+            list.setAdapter(wrappedAdapter);
+            list.setItemAnimator(animator);
+            list.addItemDecoration(new SimpleListDividerDecorator(
+                ContextCompat.getDrawable(this, R.drawable.preference_list_divider_material),
+                true));
+            list.addItemDecoration(new ItemShadowDecorator(
+                (NinePatchDrawable) ContextCompat.getDrawable(this,
+                    R.drawable.material_shadow_z1)));
+
+            // NOTE:
+            // The initialization order is very important! This order determines the priority of touch event handling.
+            //
+            // priority: TouchActionGuard > Swipe > DragAndDrop
+            recyclerViewTouchActionGuardManager.attachRecyclerView(list);
+            recyclerViewSwipeManager.attachRecyclerView(list);
         } else {
             finish();
         }
@@ -87,30 +124,15 @@ public class DataManagementActivity extends
         switch (referenceName) {
             case BZFireBaseApi.animal_categories:
                 title = getString(R.string.data_management_animal_categories);
-                adapter = getAdapter(Category.class, referenceName, new Func1<Category, String>() {
-                    @Override
-                    public String call(Category category) {
-                        return category.getName();
-                    }
-                });
+                adapter = getAdapter(Category.class, referenceName);
                 break;
             case BZFireBaseApi.animal_species:
                 title = getString(R.string.data_management_animal_species);
-                adapter = getAdapter(Species.class, referenceName, new Func1<Species, String>() {
-                    @Override
-                    public String call(Species species) {
-                        return species.getName();
-                    }
-                });
+                adapter = getAdapter(Species.class, referenceName);
                 break;
             case BZFireBaseApi.animal:
                 title = getString(R.string.data_management_animals);
-                adapter = getAdapter(Animal.class, referenceName, new Func1<Animal, String>() {
-                    @Override
-                    public String call(Animal animal) {
-                        return animal.getName();
-                    }
-                });
+                adapter = getAdapter(Animal.class, referenceName);
                 break;
         }
         if (getSupportActionBar() != null) {
@@ -120,11 +142,10 @@ public class DataManagementActivity extends
     }
 
     @SuppressWarnings("unchecked")
-    private <T> DataManagementAdapter getAdapter(Class<T> clzz, String referenceName,
-        Func1<T, String> func1) {
+    private <T extends AbstractData> DataManagementAdapter getAdapter(Class<T> clzz,
+        String referenceName) {
         return new DataManagementAdapter(clzz, R.layout.item_data_management,
-            DataManagementAdapter.ViewHolder.class, presenter.getDataReference(referenceName),
-            func1);
+            DataManagementAdapter.ViewHolder.class, presenter.getDataReference(referenceName));
     }
 
     @NonNull

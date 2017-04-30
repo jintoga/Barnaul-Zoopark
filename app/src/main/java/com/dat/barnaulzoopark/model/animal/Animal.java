@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.model.animal;
 
+import com.dat.barnaulzoopark.model.AbstractData;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
  * Created by DAT on 3/10/2017.
  */
 @IgnoreExtraProperties
-public class Animal {
+public class Animal extends AbstractData {
     private String uid;
     private String name;
     private String speciesUid;
@@ -62,5 +63,10 @@ public class Animal {
 
     public Map<String, String> getPhotos() {
         return photos;
+    }
+
+    @Override
+    public String getText() {
+        return getName();
     }
 }

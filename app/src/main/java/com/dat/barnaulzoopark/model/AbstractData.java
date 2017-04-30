@@ -1,0 +1,9 @@
+package com.dat.barnaulzoopark.model;
+
+/**
+ * Created by DAT on 4/30/2017.
+ */
+
+public abstract class AbstractData {
+    public abstract String getText();
+}
