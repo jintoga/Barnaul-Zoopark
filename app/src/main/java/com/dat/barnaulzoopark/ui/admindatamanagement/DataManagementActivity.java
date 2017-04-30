@@ -6,6 +6,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -106,6 +107,18 @@ public class DataManagementActivity extends
                 (NinePatchDrawable) ContextCompat.getDrawable(this,
                     R.drawable.material_shadow_z1)));
 
+            adapter.setActionListener(new DataManagementAdapter.ActionListener() {
+                @Override
+                public void onEditClicked(AbstractData data) {
+                    handleEditClicked(data);
+                }
+
+                @Override
+                public void onRemoveClicked(AbstractData data) {
+                    handleRemoveClicked(data);
+                }
+            });
+
             // NOTE:
             // The initialization order is very important! This order determines the priority of touch event handling.
             //
@@ -115,6 +128,37 @@ public class DataManagementActivity extends
         } else {
             finish();
         }
+    }
+
+    private void handleEditClicked(AbstractData data) {
+        //ToDo: implement
+        String res = "";
+        if (data instanceof Animal) {
+            res += "Edit Animal: " + ((Animal) data).getName();
+        } else if (data instanceof Species) {
+            res += "Edit Species: " + ((Species) data).getName();
+        } else if (data instanceof Category) {
+            res += "Edit Category: " + ((Category) data).getName();
+        }
+        showSnackBar(res);
+    }
+
+    private void handleRemoveClicked(AbstractData data) {
+        //ToDo: implement
+        String res = "";
+        if (data instanceof Animal) {
+            res += "Remove Animal: " + ((Animal) data).getName();
+        } else if (data instanceof Species) {
+            res += "Remove Species: " + ((Species) data).getName();
+        } else if (data instanceof Category) {
+            res += "Remove Category: " + ((Category) data).getName();
+        }
+        showSnackBar(res);
+    }
+
+    private void showSnackBar(String msg) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.container), msg, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     @Nullable

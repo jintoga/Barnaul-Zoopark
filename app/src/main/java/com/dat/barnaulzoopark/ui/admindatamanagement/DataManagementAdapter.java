@@ -29,10 +29,13 @@ public class DataManagementAdapter<T extends AbstractData>
 
     private int pinnedPosition = -1;
 
+    private ActionListener actionListener;
+
     DataManagementAdapter(Class<T> modelClass, int modelLayout, Class<ViewHolder> viewHolderClass,
         Query ref) {
 
         super(modelClass, modelLayout, viewHolderClass, ref);
+
         // SwipeableItemAdapter requires stable ID, and also
         // have to implement the getItemId() method appropriately.
         setHasStableIds(true);
@@ -42,9 +45,28 @@ public class DataManagementAdapter<T extends AbstractData>
     private interface Swipeable extends SwipeableItemConstants {
     }
 
+    interface ActionListener {
+        void onEditClicked(AbstractData data);
+
+        void onRemoveClicked(AbstractData data);
+    }
+
     @Override
-    protected void populateViewHolder(ViewHolder viewHolder, AbstractData item, int position) {
+    protected void populateViewHolder(ViewHolder viewHolder, final AbstractData item,
+        int position) {
         viewHolder.name.setText(item.getText());
+        viewHolder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEditButtonClick(item);
+            }
+        });
+        viewHolder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRemoveButtonClick(item);
+            }
+        });
 
         // set swiping properties
         viewHolder.setMaxLeftSwipeAmount(-0.3f);
@@ -84,6 +106,22 @@ public class DataManagementAdapter<T extends AbstractData>
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    void setActionListener(ActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
+    private void onEditButtonClick(AbstractData data) {
+        if (actionListener != null) {
+            actionListener.onEditClicked(data);
+        }
+    }
+
+    private void onRemoveButtonClick(AbstractData data) {
+        if (actionListener != null) {
+            actionListener.onRemoveClicked(data);
+        }
     }
 
     public static class ViewHolder extends AbstractSwipeableItemViewHolder {

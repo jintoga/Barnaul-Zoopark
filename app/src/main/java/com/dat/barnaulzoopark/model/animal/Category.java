@@ -44,4 +44,9 @@ public class Category extends AbstractData {
     public String getText() {
         return getName();
     }
+
+    @Override
+    public String getId() {
+        return getUid();
+    }
 }
