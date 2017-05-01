@@ -51,6 +51,10 @@ public class Species extends AbstractData {
         return animals;
     }
 
+    public void setCategoryUid(String categoryUid) {
+        this.categoryUid = categoryUid;
+    }
+
     @Exclude
     @Override
     public String getPhotoUrl() {

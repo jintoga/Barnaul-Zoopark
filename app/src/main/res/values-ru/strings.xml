@@ -39,4 +39,5 @@
     <string name="created_successful">Created successful</string>
     <string name="remove_category_title">Удалить категорию?</string>
     <string name="remove">Удалить</string>
+    <string name="remove_success">Removed successful</string>
 </resources>

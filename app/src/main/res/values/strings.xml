@@ -77,4 +77,5 @@
     <string name="created_successful">Created successful</string>
     <string name="remove_category_title">Remove category?</string>
     <string name="remove">Remove</string>
+    <string name="remove_success">Removed successful</string>
 </resources>

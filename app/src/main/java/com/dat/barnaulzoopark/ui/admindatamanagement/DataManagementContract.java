@@ -13,6 +13,10 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface DataManagementContract {
     interface View extends MvpView {
         void onRemoveError(@NonNull String errorMsg);
+
+        void showRemoveSuccess();
+
+        void showRemoveProgress();
     }
 
     interface UserActionListener extends MvpPresenter<DataManagementContract.View> {

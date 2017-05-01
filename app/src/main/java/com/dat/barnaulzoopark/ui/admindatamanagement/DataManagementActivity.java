@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,6 +30,7 @@ import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 import com.dat.barnaulzoopark.ui.NonPredictiveItemAnimationsLinearLayoutManager;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
@@ -44,6 +46,7 @@ public class DataManagementActivity
     extends BaseMvpActivity<DataManagementContract.View, DataManagementContract.UserActionListener>
     implements DataManagementContract.View {
 
+    private static final String TAG = DataManagementActivity.class.getName();
     private static final String EXTRA_REFERENCE_NAME = "EXTRA_REFERENCE_NAME";
 
     @Bind(R.id.toolbar)
@@ -53,6 +56,8 @@ public class DataManagementActivity
 
     @Bind(R.id.fabCreate)
     protected FloatingActionButton fabCreate;
+
+    private MaterialDialog progressDialog;
 
     public static void start(Context context, @NonNull String referenceName) {
         if (context instanceof DataManagementActivity) {
@@ -65,7 +70,28 @@ public class DataManagementActivity
 
     @Override
     public void onRemoveError(@NonNull String errorMsg) {
+        Log.d(TAG, "onRemoveError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         showSnackBar(errorMsg);
+    }
+
+    @Override
+    public void showRemoveSuccess() {
+        Log.d(TAG, "showRemoveSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(getString(R.string.remove_success));
+    }
+
+    @Override
+    public void showRemoveProgress() {
+        Log.d(TAG, "showRemoveProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Removing...");
+        }
     }
 
     @Override
@@ -209,7 +235,9 @@ public class DataManagementActivity
     public DataManagementContract.UserActionListener createPresenter() {
         FirebaseDatabase database =
             BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
-        return new DataManagementPresenter(database);
+        FirebaseStorage storage =
+            BZApplication.get(this).getApplicationComponent().fireBaseStorage();
+        return new DataManagementPresenter(database, storage);
     }
 
     @OnClick(R.id.fabCreate)

@@ -33,7 +33,7 @@ class AnimalsViewPagePresenter extends MvpBasePresenter<AnimalsViewPageContract.
         DatabaseReference databaseReference =
             database.getReference().child(BZFireBaseApi.animal_species);
         Query query = databaseReference.orderByChild("categoryUid").equalTo(categoryUid);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Species> speciesList = new ArrayList<>();
