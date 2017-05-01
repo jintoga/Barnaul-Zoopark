@@ -65,7 +65,6 @@ public class CategoryEditorHeaderAdapter extends
 
     @Override
     public void onBindFooterItemViewHolder(FooterViewHolder holder, int localPosition) {
-
     }
 
     @Override

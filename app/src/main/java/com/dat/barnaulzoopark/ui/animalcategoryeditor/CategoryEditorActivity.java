@@ -6,15 +6,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -22,6 +25,8 @@ import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorAdapter;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorHeaderAdapter;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 
 /**
@@ -69,6 +74,44 @@ public class CategoryEditorActivity extends
     }
 
     @Override
+    public void onCreatingCategoryFailure(@NonNull String msg) {
+        Log.d(TAG, "onCreatingCategoryFailure");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Override
+    public void onCreatingCategorySuccess() {
+        Log.d(TAG, "onCreatingCategorySuccess");
+    }
+
+    @Override
+    public void onCreatingComplete() {
+        Log.d(TAG, "onCreatingComplete");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.created_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onUploadFailure(@NonNull String msg) {
+        Log.d(TAG, "onUploadFailure" + msg);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    private void showSnackBar(@NonNull String msg) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.container), msg, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
+    @Override
     public void onAttachIconClicked() {
         createChangePhotoDialog(REQUEST_BROWSE_IMAGE, false);
     }
@@ -89,6 +132,11 @@ public class CategoryEditorActivity extends
             progressDialog =
                 BZDialogBuilder.createSimpleProgressDialog(this, "Creating animal category...");
         }
+    }
+
+    @Override
+    public void uploadingIconProgress() {
+
     }
 
     @Override
@@ -132,7 +180,11 @@ public class CategoryEditorActivity extends
     @NonNull
     @Override
     public CategoryEditorPresenter createPresenter() {
-        return new CategoryEditorPresenter();
+        FirebaseDatabase database =
+            BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
+        FirebaseStorage storage =
+            BZApplication.get(this).getApplicationComponent().fireBaseStorage();
+        return new CategoryEditorPresenter(database, storage);
     }
 
     @Override

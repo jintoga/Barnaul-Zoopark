@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.model.animal;
 
 import com.dat.barnaulzoopark.model.AbstractData;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,11 +51,13 @@ public class Species extends AbstractData {
         return animals;
     }
 
+    @Exclude
     @Override
     public String getText() {
         return getName();
     }
 
+    @Exclude
     @Override
     public String getId() {
         return getUid();

@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.model.animal;
 
 import com.dat.barnaulzoopark.model.AbstractData;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,12 @@ public class Category extends AbstractData {
 
     public Category() {
         // Default constructor required for calls to DataSnapshot.getValue(Category.class)
+    }
+
+    public Category(String uid, String name, String description) {
+        this.uid = uid;
+        this.name = name;
+        this.description = description;
     }
 
     public String getUid() {
@@ -40,11 +47,13 @@ public class Category extends AbstractData {
         return species;
     }
 
+    @Exclude
     @Override
     public String getText() {
         return getName();
     }
 
+    @Exclude
     @Override
     public String getId() {
         return getUid();

@@ -36,4 +36,5 @@
     <string name="dataControl">Управление данных</string>
     <string name="create_category">Create category</string>
     <string name="edit_category">Edit category</string>
+    <string name="created_successful">Created successful</string>
 </resources>

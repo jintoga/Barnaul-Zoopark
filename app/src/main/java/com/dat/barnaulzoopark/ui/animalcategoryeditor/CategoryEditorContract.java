@@ -14,7 +14,17 @@ public interface CategoryEditorContract {
     interface View extends MvpView {
         void highlightRequiredFields();
 
+        void onCreatingCategoryFailure(@NonNull String localizedMessage);
+
+        void onCreatingCategorySuccess();
+
+        void onCreatingComplete();
+
+        void onUploadFailure(@NonNull String localizedMessage);
+
         void showCreatingProgress();
+
+        void uploadingIconProgress();
     }
 
     interface UserActionListener extends MvpPresenter<CategoryEditorContract.View> {
