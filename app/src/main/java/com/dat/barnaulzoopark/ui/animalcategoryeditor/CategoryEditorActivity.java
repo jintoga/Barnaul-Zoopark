@@ -30,7 +30,9 @@ import java.util.ArrayList;
 
 public class CategoryEditorActivity extends
     BaseMvpPhotoEditActivity<CategoryEditorContract.View, CategoryEditorContract.UserActionListener>
-    implements CategoryEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener {
+    implements CategoryEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener,
+    CategoryEditorHeaderAdapter.IconClickListener {
+    private static final int REQUEST_BROWSE_IMAGE = 111;
     private static final String TAG = CategoryEditorActivity.class.getName();
 
     private static final String EXTRA_SELECTED_CATEGORY_UID = "EXTRA_SELECTED_CATEGORY_UID";
@@ -63,6 +65,20 @@ public class CategoryEditorActivity extends
             categoryEditorContent.findViewHolderForAdapterPosition(0);
         if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
             ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).highlightRequiredFields();
+        }
+    }
+
+    @Override
+    public void onAttachIconClicked() {
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE, false);
+    }
+
+    @Override
+    public void onRemoveIconClicked() {
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).clearIcon();
         }
     }
 
@@ -102,7 +118,7 @@ public class CategoryEditorActivity extends
         categoryEditorAdapter = new CategoryEditorAdapter();
         categoryEditorAdapter.setData(new ArrayList<Species>());
         RecyclerView.Adapter wrappedAdapter =
-            new CategoryEditorHeaderAdapter(categoryEditorAdapter);
+            new CategoryEditorHeaderAdapter(categoryEditorAdapter, this);
         wrappedAdapter.notifyDataSetChanged();
         categoryEditorContent.setAdapter(wrappedAdapter);
     }
@@ -121,12 +137,17 @@ public class CategoryEditorActivity extends
 
     @Override
     public void onRemovedPhotoClicked() {
-
     }
 
     @Override
     public void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode) {
-
+        if (originalRequestCode == REQUEST_BROWSE_IMAGE) {
+            RecyclerView.ViewHolder viewHolder =
+                categoryEditorContent.findViewHolderForAdapterPosition(0);
+            if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+                ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).bindIcon(uri);
+            }
+        }
     }
 
     @Override

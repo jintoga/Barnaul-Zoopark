@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
 
@@ -19,14 +21,18 @@ import com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFoot
  */
 
 public class CategoryEditorHeaderAdapter extends
-    AbstractHeaderFooterWrapperAdapter<RecyclerView.ViewHolder, CategoryEditorHeaderAdapter.FooterViewHolder> {
+    AbstractHeaderFooterWrapperAdapter<CategoryEditorHeaderAdapter.HeaderViewHolder, CategoryEditorHeaderAdapter.FooterViewHolder> {
 
-    public CategoryEditorHeaderAdapter(RecyclerView.Adapter adapter) {
+    private IconClickListener iconClickListener;
+
+    public CategoryEditorHeaderAdapter(RecyclerView.Adapter adapter,
+        IconClickListener iconClickListener) {
         setAdapter(adapter);
+        this.iconClickListener = iconClickListener;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateHeaderItemViewHolder(ViewGroup parent, int viewType) {
+    public HeaderViewHolder onCreateHeaderItemViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_category_editor_header, parent, false);
         return new HeaderViewHolder(view);
@@ -38,8 +44,23 @@ public class CategoryEditorHeaderAdapter extends
     }
 
     @Override
-    public void onBindHeaderItemViewHolder(RecyclerView.ViewHolder holder, int localPosition) {
-
+    public void onBindHeaderItemViewHolder(HeaderViewHolder holder, int localPosition) {
+        holder.attach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iconClickListener != null) {
+                    iconClickListener.onAttachIconClicked();
+                }
+            }
+        });
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iconClickListener != null) {
+                    iconClickListener.onRemoveIconClicked();
+                }
+            }
+        });
     }
 
     @Override
@@ -57,6 +78,12 @@ public class CategoryEditorHeaderAdapter extends
         return 0;
     }
 
+    public interface IconClickListener {
+        void onAttachIconClicked();
+
+        void onRemoveIconClicked();
+    }
+
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.name)
         EditText name;
@@ -64,11 +91,40 @@ public class CategoryEditorHeaderAdapter extends
         EditText description;
         @Bind(R.id.icon)
         ImageView icon;
+        @Bind(R.id.remove)
+        ImageButton remove;
+        @Bind(R.id.attach)
+        ImageButton attach;
+
         private Uri iconUri;
 
         HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bindIcon(@NonNull Uri uri) {
+            this.iconUri = uri;
+            this.icon.setVisibility(View.VISIBLE);
+            Glide.with(itemView.getContext()).load(iconUri).into(icon);
+            updateButtons(true);
+        }
+
+        public void clearIcon() {
+            this.iconUri = null;
+            this.icon.setVisibility(View.GONE);
+            this.icon.setImageDrawable(null);
+            updateButtons(false);
+        }
+
+        private void updateButtons(boolean isFilled) {
+            if (isFilled) {
+                attach.setVisibility(View.GONE);
+                remove.setVisibility(View.VISIBLE);
+            } else {
+                attach.setVisibility(View.VISIBLE);
+                remove.setVisibility(View.GONE);
+            }
         }
 
         @NonNull
