@@ -1,5 +1,7 @@
 package com.dat.barnaulzoopark.ui.admindatamanagement;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,6 +12,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.AbstractData;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.Query;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
@@ -54,7 +58,7 @@ public class DataManagementAdapter<T extends AbstractData>
     @Override
     protected void populateViewHolder(final ViewHolder viewHolder, final AbstractData item,
         int position) {
-        viewHolder.name.setText(item.getText());
+        viewHolder.bindData(item);
         viewHolder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +146,7 @@ public class DataManagementAdapter<T extends AbstractData>
         @Bind(R.id.edit)
         ImageView edit;
         @Bind(R.id.photo)
-        ImageView photo;
+        SimpleDraweeView photo;
         @Bind(R.id.name)
         TextView name;
 
@@ -153,6 +157,17 @@ public class DataManagementAdapter<T extends AbstractData>
                 ContextCompat.getColor(itemView.getContext(), R.color.default_icon_color));
             edit.setColorFilter(
                 ContextCompat.getColor(itemView.getContext(), R.color.default_icon_color));
+        }
+
+        void bindData(@NonNull AbstractData item) {
+            name.setText(item.getText());
+            if (item.getPhotoUrl() != null) {
+                photo.setImageURI(item.getPhotoUrl());
+            } else {
+                Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                    .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
+                photo.setImageURI(uri);
+            }
         }
 
         @Override

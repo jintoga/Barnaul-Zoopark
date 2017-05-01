@@ -53,6 +53,12 @@ public class Species extends AbstractData {
 
     @Exclude
     @Override
+    public String getPhotoUrl() {
+        return getIcon();
+    }
+
+    @Exclude
+    @Override
     public String getText() {
         return getName();
     }

@@ -5,6 +5,8 @@ package com.dat.barnaulzoopark.model;
  */
 
 public abstract class AbstractData {
+    public abstract String getPhotoUrl();
+
     public abstract String getText();
 
     public abstract String getId();

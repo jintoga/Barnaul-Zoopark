@@ -68,6 +68,12 @@ public class Animal extends AbstractData {
 
     @Exclude
     @Override
+    public String getPhotoUrl() {
+        return getPhotoSmall();
+    }
+
+    @Exclude
+    @Override
     public String getText() {
         return getName();
     }
