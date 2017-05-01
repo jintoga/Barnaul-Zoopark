@@ -1,9 +1,15 @@
 package com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
@@ -51,10 +57,42 @@ public class CategoryEditorHeaderAdapter extends
         return 0;
     }
 
-    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.name)
+        EditText name;
+        @Bind(R.id.description)
+        EditText description;
+        @Bind(R.id.icon)
+        ImageView icon;
+        private Uri iconUri;
+
         HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @NonNull
+        public String getName() {
+            return name.getText().toString();
+        }
+
+        @NonNull
+        public String getDescription() {
+            return description.getText().toString();
+        }
+
+        @Nullable
+        public Uri getIconUri() {
+            return iconUri;
+        }
+
+        public void highlightRequiredFields() {
+            if (name.getText().toString().isEmpty()) {
+                name.setError("Input required");
+            }
+            if (description.getText().toString().isEmpty()) {
+                description.setError("Input required");
+            }
         }
     }
 

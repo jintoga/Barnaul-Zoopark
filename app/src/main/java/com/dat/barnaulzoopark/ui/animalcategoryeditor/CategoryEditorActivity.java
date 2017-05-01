@@ -9,10 +9,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorAdapter;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorHeaderAdapter;
@@ -25,13 +31,18 @@ import java.util.ArrayList;
 public class CategoryEditorActivity extends
     BaseMvpPhotoEditActivity<CategoryEditorContract.View, CategoryEditorContract.UserActionListener>
     implements CategoryEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener {
+    private static final String TAG = CategoryEditorActivity.class.getName();
 
     private static final String EXTRA_SELECTED_CATEGORY_UID = "EXTRA_SELECTED_CATEGORY_UID";
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
-    @Bind(R.id.species)
-    protected RecyclerView species;
+    @Bind(R.id.categoryEditorContent)
+    protected RecyclerView categoryEditorContent;
     CategoryEditorAdapter categoryEditorAdapter;
+
+    private Category selectedCategory;
+
+    private MaterialDialog progressDialog;
 
     //ToDO: implement universal editor and use
     public static void start(Context context, @Nullable String categoryUid) {
@@ -43,6 +54,25 @@ public class CategoryEditorActivity extends
             intent.putExtra(EXTRA_SELECTED_CATEGORY_UID, categoryUid);
         }
         context.startActivity(intent);
+    }
+
+    @Override
+    public void highlightRequiredFields() {
+        Log.d(TAG, "highlightRequiredFields");
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).highlightRequiredFields();
+        }
+    }
+
+    @Override
+    public void showCreatingProgress() {
+        Log.d(TAG, "showCreatingProgress");
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, "Creating animal category...");
+        }
     }
 
     @Override
@@ -68,13 +98,13 @@ public class CategoryEditorActivity extends
             updateTitle(getString(R.string.create_category));
         }
 
-        species.setLayoutManager(new LinearLayoutManager(this));
+        categoryEditorContent.setLayoutManager(new LinearLayoutManager(this));
         categoryEditorAdapter = new CategoryEditorAdapter();
         categoryEditorAdapter.setData(new ArrayList<Species>());
         RecyclerView.Adapter wrappedAdapter =
             new CategoryEditorHeaderAdapter(categoryEditorAdapter);
         wrappedAdapter.notifyDataSetChanged();
-        species.setAdapter(wrappedAdapter);
+        categoryEditorContent.setAdapter(wrappedAdapter);
     }
 
     private void updateTitle(@NonNull String title) {
@@ -102,5 +132,41 @@ public class CategoryEditorActivity extends
     @Override
     public void onCropError(@NonNull String errorMsg) {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.category_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                break;
+            case R.id.save:
+                if (selectedCategory == null) {
+                    createCategory();
+                } else {
+                    //ToDo: implement edit
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void createCategory() {
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            String name = ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getName();
+            String description =
+                ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getDescription();
+            Uri iconUri = ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
+            presenter.createCategory(name, description, iconUri);
+        }
     }
 }

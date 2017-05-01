@@ -12,7 +12,7 @@
         android:background="@drawable/bg_file_attachment_border">
 
         <ImageView
-            android:id="@+id/thumbnail"
+            android:id="@+id/icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
