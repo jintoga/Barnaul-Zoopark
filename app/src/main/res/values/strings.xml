@@ -72,4 +72,6 @@
     <string name="data_management_animal_species">Animal species</string>
     <string name="data_management_animal_categories">Animal categories</string>
     <string name="data_management_animals">Animals</string>
+    <string name="create_category">Create category</string>
+    <string name="edit_category">Edit category</string>
 </resources>

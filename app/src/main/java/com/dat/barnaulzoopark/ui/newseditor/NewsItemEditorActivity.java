@@ -47,7 +47,7 @@ import java.util.Map;
 public class NewsItemEditorActivity extends
     BaseMvpPhotoEditActivity<NewsItemEditorContract.View, NewsItemEditorContract.UserActionListener>
     implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
-    BaseMvpPhotoEditActivity.Listener {
+    BaseMvpPhotoEditActivity.PhotoEditListener {
 
     private static final String EXTRA_SELECTED_NEWS_UID = "SELECTED_NEWS_UID";
     private static final String KEY_SAVED_ATTACHMENTS = "SAVED_ATTACHMENTS";
@@ -292,7 +292,7 @@ public class NewsItemEditorActivity extends
             getSupportActionBar().setHomeButtonEnabled(true);
         }
         init();
-        setListener(this);
+        setPhotoEditListener(this);
     }
 
     private void init() {

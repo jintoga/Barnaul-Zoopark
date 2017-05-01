@@ -6,6 +6,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
@@ -22,6 +24,7 @@ import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
+import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
@@ -44,6 +47,9 @@ public class DataManagementActivity
     protected Toolbar toolbar;
     @Bind(R.id.list)
     protected RecyclerView list;
+
+    @Bind(R.id.fabCreate)
+    protected FloatingActionButton fabCreate;
 
     public static void start(Context context, @NonNull String referenceName) {
         if (context instanceof DataManagementActivity) {
@@ -195,6 +201,22 @@ public class DataManagementActivity
         FirebaseDatabase database =
             BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
         return new DataManagementPresenter(database);
+    }
+
+    @OnClick(R.id.fabCreate)
+    protected void fabCreateClicked() {
+        String referenceName = getIntent().getStringExtra(EXTRA_REFERENCE_NAME);
+        if (referenceName != null) {
+            switch (referenceName) {
+                case BZFireBaseApi.animal_categories:
+                    CategoryEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.animal_species:
+                    break;
+                case BZFireBaseApi.animal:
+                    break;
+            }
+        }
     }
 
     @Override

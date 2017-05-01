@@ -34,4 +34,6 @@
     <string name="discard_your_changes">Отменить изменения?</string>
     <string name="discard">Отменить</string>
     <string name="dataControl">Управление данных</string>
+    <string name="create_category">Create category</string>
+    <string name="edit_category">Edit category</string>
 </resources>

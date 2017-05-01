@@ -36,11 +36,11 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
     private int originalRequestCode;
     private boolean isCapturePhoto = false;
     private static final int REQUEST_CODE_PERMISSIONS = 200;
-    private Listener listener;
+    private PhotoEditListener photoEditListener;
     private static final String TEMP_IMAGE_NAME = "temporary_image";
     private boolean withRemoveItem = false;
 
-    public interface Listener {
+    public interface PhotoEditListener {
         void onRemovedPhotoClicked();
 
         void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode);
@@ -48,8 +48,8 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
         void onCropError(@NonNull String errorMsg);
     }
 
-    protected void setListener(Listener listener) {
-        this.listener = listener;
+    protected void setPhotoEditListener(PhotoEditListener photoEditListener) {
+        this.photoEditListener = photoEditListener;
     }
 
     protected void createChangePhotoDialog(final int requestCode, boolean withRemoveItem) {
@@ -77,8 +77,8 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
             public void onClick(View view) {
                 isFilledWithPhoto = false;
                 dialog.dismiss();
-                if (listener != null) {
-                    listener.onRemovedPhotoClicked();
+                if (photoEditListener != null) {
+                    photoEditListener.onRemovedPhotoClicked();
                 }
             }
         });
@@ -137,15 +137,15 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
                 if (withRemoveItem) {
                     isFilledWithPhoto = true;
                 }
-                if (listener != null) {
-                    listener.onResultUriSuccess(resultUri, originalRequestCode);
+                if (photoEditListener != null) {
+                    photoEditListener.onResultUriSuccess(resultUri, originalRequestCode);
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE
                 && result != null) {
                 Exception error = result.getError();
                 Log.e(TAG, error.getLocalizedMessage());
-                if (listener != null) {
-                    listener.onCropError(error.getLocalizedMessage());
+                if (photoEditListener != null) {
+                    photoEditListener.onCropError(error.getLocalizedMessage());
                 }
             }
         }

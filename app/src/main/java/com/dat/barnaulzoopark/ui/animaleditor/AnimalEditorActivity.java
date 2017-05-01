@@ -19,7 +19,7 @@ import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 public class AnimalEditorActivity extends
     BaseMvpPhotoEditActivity<AnimalEditorContract.View, AnimalEditorContract.UserActionListener>
     implements AnimalEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
-    BaseMvpPhotoEditActivity.Listener {
+    BaseMvpPhotoEditActivity.PhotoEditListener {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
@@ -44,7 +44,7 @@ public class AnimalEditorActivity extends
             getSupportActionBar().setHomeButtonEnabled(true);
         }
         init();
-        setListener(this);
+        setPhotoEditListener(this);
     }
 
     private void init() {

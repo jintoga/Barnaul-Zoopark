@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class CategoryEditorActivity extends
     BaseMvpPhotoEditActivity<CategoryEditorContract.View, CategoryEditorContract.UserActionListener>
-    implements CategoryEditorContract.View, BaseMvpPhotoEditActivity.Listener {
+    implements CategoryEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener {
 
     private static final String EXTRA_SELECTED_CATEGORY_UID = "EXTRA_SELECTED_CATEGORY_UID";
     @Bind(R.id.toolbar)
@@ -57,10 +57,17 @@ public class CategoryEditorActivity extends
             getSupportActionBar().setHomeButtonEnabled(true);
         }
         init();
-        setListener(this);
+        setPhotoEditListener(this);
     }
 
     private void init() {
+        String selectedNewsUid = getIntent().getStringExtra(EXTRA_SELECTED_CATEGORY_UID);
+        if (selectedNewsUid != null) {
+            updateTitle(getString(R.string.edit_category));
+        } else {
+            updateTitle(getString(R.string.create_category));
+        }
+
         species.setLayoutManager(new LinearLayoutManager(this));
         categoryEditorAdapter = new CategoryEditorAdapter();
         categoryEditorAdapter.setData(new ArrayList<Species>());
@@ -68,6 +75,12 @@ public class CategoryEditorActivity extends
             new CategoryEditorHeaderAdapter(categoryEditorAdapter);
         wrappedAdapter.notifyDataSetChanged();
         species.setAdapter(wrappedAdapter);
+    }
+
+    private void updateTitle(@NonNull String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     @NonNull
