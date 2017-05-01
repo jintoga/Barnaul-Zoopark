@@ -34,8 +34,9 @@ import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchAct
  * Created by DAT on 4/28/2017.
  */
 
-public class DataManagementActivity extends
-    BaseMvpActivity<DataManagementContract.View, DataManagementContract.UserActionListener> {
+public class DataManagementActivity
+    extends BaseMvpActivity<DataManagementContract.View, DataManagementContract.UserActionListener>
+    implements DataManagementContract.View {
 
     private static final String EXTRA_REFERENCE_NAME = "EXTRA_REFERENCE_NAME";
 
@@ -51,6 +52,11 @@ public class DataManagementActivity extends
         Intent intent = new Intent(context, DataManagementActivity.class);
         intent.putExtra(EXTRA_REFERENCE_NAME, referenceName);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onRemoveError(@NonNull String errorMsg) {
+        showSnackBar(errorMsg);
     }
 
     @Override
@@ -144,19 +150,10 @@ public class DataManagementActivity extends
     }
 
     private void handleRemoveClicked(AbstractData data) {
-        //ToDo: implement
-        String res = "";
-        if (data instanceof Animal) {
-            res += "Remove Animal: " + ((Animal) data).getName();
-        } else if (data instanceof Species) {
-            res += "Remove Species: " + ((Species) data).getName();
-        } else if (data instanceof Category) {
-            res += "Remove Category: " + ((Category) data).getName();
-        }
-        showSnackBar(res);
+        presenter.removeItem(data);
     }
 
-    private void showSnackBar(String msg) {
+    private void showSnackBar(@NonNull String msg) {
         Snackbar snackbar = Snackbar.make(findViewById(R.id.container), msg, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
