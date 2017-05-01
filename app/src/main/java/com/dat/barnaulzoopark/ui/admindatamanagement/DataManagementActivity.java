@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -24,6 +23,7 @@ import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
+import com.dat.barnaulzoopark.ui.NonPredictiveItemAnimationsLinearLayoutManager;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -109,7 +109,7 @@ public class DataManagementActivity
             // Disable the change animation in order to make turning back animation of swiped item works properly.
             animator.setSupportsChangeAnimations(false);
 
-            list.setLayoutManager(new LinearLayoutManager(this));
+            list.setLayoutManager(new NonPredictiveItemAnimationsLinearLayoutManager(this));
             list.setAdapter(wrappedAdapter);
             list.setItemAnimator(animator);
             list.addItemDecoration(new SimpleListDividerDecorator(

@@ -52,18 +52,20 @@ public class DataManagementAdapter<T extends AbstractData>
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder viewHolder, final AbstractData item,
+    protected void populateViewHolder(final ViewHolder viewHolder, final AbstractData item,
         int position) {
         viewHolder.name.setText(item.getText());
         viewHolder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearPinnedPosition(viewHolder);
                 onEditButtonClick(item);
             }
         });
         viewHolder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearPinnedPosition(viewHolder);
                 onRemoveButtonClick(item);
             }
         });
@@ -72,6 +74,11 @@ public class DataManagementAdapter<T extends AbstractData>
         viewHolder.setMaxLeftSwipeAmount(-0.3f);
         viewHolder.setMaxRightSwipeAmount(0);
         viewHolder.setSwipeItemHorizontalSlideAmount(getPinnedPosition() == position ? -0.3f : 0);
+    }
+
+    private void clearPinnedPosition(ViewHolder viewHolder) {
+        pinnedPosition = -1;
+        notifyItemChanged(viewHolder.getAdapterPosition());
     }
 
     @Override

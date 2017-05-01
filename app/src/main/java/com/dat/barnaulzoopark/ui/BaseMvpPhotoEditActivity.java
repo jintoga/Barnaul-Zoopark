@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -127,7 +128,10 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
                 uri = data.getData();
             }
             if (uri != null) {
-                CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).start(this);
+                CropImage.activity(uri)
+                    .setOutputCompressFormat(Bitmap.CompressFormat.PNG)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
             }
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
