@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
@@ -22,6 +24,7 @@ import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 import com.dat.barnaulzoopark.ui.NonPredictiveItemAnimationsLinearLayoutManager;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
@@ -142,7 +145,7 @@ public class DataManagementActivity
         }
     }
 
-    private void handleEditClicked(AbstractData data) {
+    private void handleEditClicked(@NonNull AbstractData data) {
         //ToDo: implement
         String res = "";
         if (data instanceof Animal) {
@@ -155,8 +158,14 @@ public class DataManagementActivity
         showSnackBar(res);
     }
 
-    private void handleRemoveClicked(AbstractData data) {
-        presenter.removeItem(data);
+    private void handleRemoveClicked(@NonNull final AbstractData data) {
+        BZDialogBuilder.createConfirmDialog(this, getString(R.string.remove_category_title),
+            getString(R.string.remove)).onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                presenter.removeItem(data);
+            }
+        }).show();
     }
 
     private void showSnackBar(@NonNull String msg) {
