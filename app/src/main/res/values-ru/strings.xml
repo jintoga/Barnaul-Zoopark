@@ -42,4 +42,6 @@
     <string name="remove_success">Removed successful</string>
     <string name="edit_species">Edit species</string>
     <string name="create_species">Create species</string>
+    <string name="select">Выбрать</string>
+    <string name="categories_empty_error">Список категорий пустой. Создайте категорию!</string>
 </resources>

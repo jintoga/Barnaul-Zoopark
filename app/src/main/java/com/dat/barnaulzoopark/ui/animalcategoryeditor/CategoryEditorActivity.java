@@ -136,7 +136,7 @@ public class CategoryEditorActivity extends
 
     @Override
     public void uploadingIconProgress() {
-
+        Log.d(TAG, "uploadingIconProgress");
     }
 
     @Override
@@ -204,7 +204,7 @@ public class CategoryEditorActivity extends
 
     @Override
     public void onCropError(@NonNull String errorMsg) {
-
+        showSnackBar(errorMsg);
     }
 
     @Override

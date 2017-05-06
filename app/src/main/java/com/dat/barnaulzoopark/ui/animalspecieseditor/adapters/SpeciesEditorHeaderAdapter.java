@@ -154,6 +154,12 @@ public class SpeciesEditorHeaderAdapter extends
         }
 
         @Nullable
+        public String getCategoryId() {
+            Category selectedCategory = (Category) category.getSelectedItem();
+            return selectedCategory != null ? selectedCategory.getUid() : null;
+        }
+
+        @Nullable
         public Uri getIconUri() {
             return iconUri;
         }

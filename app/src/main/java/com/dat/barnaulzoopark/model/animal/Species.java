@@ -23,6 +23,13 @@ public class Species extends AbstractData {
         // Default constructor required for calls to DataSnapshot.getValue(Species.class)
     }
 
+    public Species(String uid, String name, String description, String categoryUid) {
+        this.uid = uid;
+        this.name = name;
+        this.description = description;
+        this.categoryUid = categoryUid;
+    }
+
     public String getUid() {
         return uid;
     }

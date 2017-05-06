@@ -13,6 +13,19 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 interface SpeciesEditorContract {
     interface View extends MvpView {
+        void onCreatingSpeciesFailure(@NonNull String localizedMessage);
+
+        void onCreatingSpeciesSuccess();
+
+        void onCreatingComplete();
+
+        void onUploadFailure(@NonNull String localizedMessage);
+
+        void showCreatingProgress();
+
+        void highlightRequiredFields();
+
+        void uploadingIconProgress();
     }
 
     interface UserActionListener extends MvpPresenter<SpeciesEditorContract.View> {

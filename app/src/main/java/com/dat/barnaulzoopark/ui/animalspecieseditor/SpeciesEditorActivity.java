@@ -6,14 +6,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.model.animal.Species;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.animalspecieseditor.adapters.SpeciesEditorAdapter;
 import com.dat.barnaulzoopark.ui.animalspecieseditor.adapters.SpeciesEditorHeaderAdapter;
@@ -32,12 +40,17 @@ public class SpeciesEditorActivity extends
 
     private static final int REQUEST_BROWSE_IMAGE = 111;
     private static final String EXTRA_SELECTED_SPECIES_UID = "EXTRA_SELECTED_SPECIES_UID";
+    private static final String TAG = SpeciesEditorActivity.class.getName();
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.speciesEditorContent)
     protected RecyclerView speciesEditorContent;
     SpeciesEditorAdapter speciesEditorAdapter;
+
+    private Species selectedSpecies;
+
+    private MaterialDialog progressDialog;
 
     //ToDO: implement universal editor and use
     public static void start(Context context, @Nullable String speciesUid) {
@@ -63,6 +76,63 @@ public class SpeciesEditorActivity extends
         if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
             ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).clearIcon();
         }
+    }
+
+    @Override
+    public void onCreatingSpeciesFailure(@NonNull String msg) {
+        Log.d(TAG, "onCreatingCategoryFailure");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Override
+    public void onCreatingSpeciesSuccess() {
+        Log.d(TAG, "onCreatingSpeciesSuccess");
+    }
+
+    @Override
+    public void onCreatingComplete() {
+        Log.d(TAG, "onCreatingComplete");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.created_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onUploadFailure(@NonNull String msg) {
+        Log.d(TAG, "onUploadFailure" + msg);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Override
+    public void showCreatingProgress() {
+        Log.d(TAG, "showCreatingProgress");
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, "Creating animal species...");
+        }
+    }
+
+    @Override
+    public void highlightRequiredFields() {
+        Log.d(TAG, "highlightRequiredFields");
+        RecyclerView.ViewHolder viewHolder =
+            speciesEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+            ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).highlightRequiredFields();
+        }
+    }
+
+    @Override
+    public void uploadingIconProgress() {
+        Log.d(TAG, "uploadingIconProgress");
     }
 
     @Override
@@ -116,7 +186,6 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onRemovedPhotoClicked() {
-
     }
 
     @Override
@@ -132,6 +201,55 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onCropError(@NonNull String errorMsg) {
+        showSnackBar(errorMsg);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.species_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                break;
+            case R.id.save:
+                if (selectedSpecies == null) {
+                    createSpecies();
+                } else {
+                    //ToDo: implement edit
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showSnackBar(@NonNull String msg) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.container), msg, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
+    private void createSpecies() {
+        RecyclerView.ViewHolder viewHolder =
+            speciesEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+
+            String categoryId =
+                ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getCategoryId();
+            if (categoryId != null) {
+                String name = ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getName();
+                String description =
+                    ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getDescription();
+                Uri iconUri =
+                    ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
+                presenter.createSpecies(name, description, categoryId, iconUri);
+            } else {
+                onCreatingSpeciesFailure(getString(R.string.categories_empty_error));
+            }
+        }
     }
 }

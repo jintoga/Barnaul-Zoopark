@@ -11,7 +11,7 @@ import com.google.firebase.database.Query;
  * Created by DAT on 5/6/2017.
  */
 
-public class SpeciesEditorCategorySpinnerAdapter extends FirebaseSpinnerAdapter<Category> {
+class SpeciesEditorCategorySpinnerAdapter extends FirebaseSpinnerAdapter<Category> {
 
     /**
      * @param activity The activity containing the ListView
@@ -25,9 +25,8 @@ public class SpeciesEditorCategorySpinnerAdapter extends FirebaseSpinnerAdapter<
      * location,
      * using some
      * combination of {@code limit()}, {@code startAt()}, and {@code endAt()}.
-     * @param dropdownLayout
      */
-    public SpeciesEditorCategorySpinnerAdapter(Activity activity, Class<Category> modelClass,
+    SpeciesEditorCategorySpinnerAdapter(Activity activity, Class<Category> modelClass,
         int modelLayout, int dropdownLayout, Query ref) {
         super(activity, modelClass, modelLayout, ref, dropdownLayout);
     }
