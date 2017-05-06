@@ -66,6 +66,10 @@ public class Animal extends AbstractData {
         return photos;
     }
 
+    public void setSpeciesUid(String speciesUid) {
+        this.speciesUid = speciesUid;
+    }
+
     @Exclude
     @Override
     public String getPhotoUrl() {

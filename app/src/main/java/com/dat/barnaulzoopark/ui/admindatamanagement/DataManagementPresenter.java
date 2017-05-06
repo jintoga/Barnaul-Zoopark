@@ -43,40 +43,43 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
 
     @Override
     public void removeItem(AbstractData data) {
-        if (data instanceof Animal) {
-            //databaseReference = database.getReference(BZFireBaseApi.animal);
-        } else if (data instanceof Species) {
-            //databaseReference = database.getReference(BZFireBaseApi.animal_species);
-        } else if (data instanceof Category) {
-            removeCategory(data);
-        } else {
-            if (getView() != null) {
-                getView().onRemoveError("DatabaseReference NULL");
-            }
-        }
+        remove(data);
     }
 
-    private void removeCategory(@NonNull final AbstractData data) {
-        final DatabaseReference databaseReference =
-            database.getReference(BZFireBaseApi.animal_categories);
-        final DatabaseReference categoryReference = databaseReference.child(data.getId());
+    private <T extends AbstractData> void remove(@NonNull final T data) {
+        DatabaseReference databaseReference;
+        Class clazz;
+        if (data instanceof Animal) {
+            databaseReference = database.getReference(BZFireBaseApi.animal);
+            clazz = Animal.class;
+        } else if (data instanceof Species) {
+            databaseReference = database.getReference(BZFireBaseApi.animal_species);
+            clazz = Species.class;
+        } else if (data instanceof Category) {
+            databaseReference = database.getReference(BZFireBaseApi.animal_categories);
+            clazz = Category.class;
+        } else {
+            return;
+        }
+        final DatabaseReference childDatabaseReference = databaseReference.child(data.getId());
         if (getView() != null) {
             getView().showRemoveProgress();
         }
-        RxFirebaseDatabase.observeSingleValueEvent(categoryReference, Category.class)
-            .flatMap(new Func1<Category, Observable<Category>>() {
+        final DatabaseReference finalDatabaseReference = databaseReference;
+        RxFirebaseDatabase.observeSingleValueEvent(childDatabaseReference, clazz)
+            .flatMap(new Func1<T, Observable<T>>() {
                 @Override
-                public Observable<Category> call(Category category) {
-                    return getDeleteCategoryIconObservable(category);
+                public Observable<T> call(T data) {
+                    return getDeleteIconObservable(data);
                 }
             })
-            .doOnNext(new Action1<Category>() {
+            .doOnNext(new Action1<T>() {
                 @Override
-                public void call(Category category) {
-                    deleteSpeciesCategoryUid(category);
+                public void call(T data) {
+                    deleteUidInChild(data);
                 }
             })
-            .subscribe(new Observer<Category>() {
+            .subscribe(new Observer<T>() {
                 @Override
                 public void onCompleted() {
                     if (getView() != null) {
@@ -92,25 +95,29 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
                 }
 
                 @Override
-                public void onNext(Category category) {
-                    databaseReference.child(category.getUid()).removeValue();
+                public void onNext(T data) {
+                    finalDatabaseReference.child(data.getId()).removeValue();
                 }
             });
     }
 
-    private void deleteSpeciesCategoryUid(@NonNull final Category category) {
-        final DatabaseReference databaseReference =
-            database.getReference(BZFireBaseApi.animal_species);
+    private <T extends AbstractData> void deleteUidInChild(@NonNull final T data) {
+        DatabaseReference databaseReference;
+        if (data instanceof Species) {
+            //Species's child is Animal
+            databaseReference = database.getReference(BZFireBaseApi.animal);
+        } else if (data instanceof Category) {
+            //Category's child is Species
+            databaseReference = database.getReference(BZFireBaseApi.animal_species);
+        } else {
+            return;
+        }
+        final DatabaseReference finalDatabaseReference = databaseReference;
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Species species = snapshot.getValue(Species.class);
-                    if (species.getCategoryUid() != null && species.getCategoryUid()
-                        .equals(category.getUid())) {
-                        species.setCategoryUid(null);
-                        databaseReference.child(species.getUid()).setValue(species);
-                    }
+                    deleteChildUid(data, snapshot, finalDatabaseReference);
                 }
             }
 
@@ -120,15 +127,41 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         });
     }
 
-    private Observable<Category> getDeleteCategoryIconObservable(@NonNull final Category category) {
-        String filePath = BZFireBaseApi.animal_categories + "/" + category.getUid() + "/" + "icon";
-        if (category.getIcon() == null || category.getIcon().isEmpty()) {
-            return Observable.just(category);
+    private <T extends AbstractData> void deleteChildUid(T data, DataSnapshot snapshot,
+        DatabaseReference finalDatabaseReference) {
+        if (data instanceof Species) {
+            Animal animal = snapshot.getValue(Animal.class);
+            if (animal.getSpeciesUid() != null && animal.getSpeciesUid().equals(data.getId())) {
+                animal.setSpeciesUid(null);
+                finalDatabaseReference.child(animal.getUid()).setValue(animal);
+            }
+        } else if (data instanceof Category) {
+            Species species = snapshot.getValue(Species.class);
+            if (species.getCategoryUid() != null && species.getCategoryUid().equals(data.getId())) {
+                species.setCategoryUid(null);
+                finalDatabaseReference.child(species.getUid()).setValue(species);
+            }
         }
-        return deleteFile(filePath).flatMap(new Func1<Void, Observable<Category>>() {
+    }
+
+    private <T extends AbstractData> Observable getDeleteIconObservable(@NonNull final T data) {
+        String prefix;
+        if (data instanceof Animal) {
+            prefix = BZFireBaseApi.animal;
+        } else if (data instanceof Species) {
+            prefix = BZFireBaseApi.animal_species;
+        } else {
+            prefix = BZFireBaseApi.animal_categories;
+        }
+        String filePath = prefix + "/" + data.getId() + "/" + "icon";
+
+        if (data.getPhotoUrl() == null || data.getPhotoUrl().isEmpty()) {
+            return Observable.just(data);
+        }
+        return deleteFile(filePath).flatMap(new Func1<Void, Observable<T>>() {
             @Override
-            public Observable<Category> call(Void aVoid) {
-                return Observable.just(category);
+            public Observable<T> call(Void aVoid) {
+                return Observable.just(data);
             }
         });
     }
