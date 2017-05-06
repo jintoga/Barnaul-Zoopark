@@ -10,7 +10,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  * Created by DAT on 4/23/2017.
  */
 
-public interface CategoryEditorContract {
+interface CategoryEditorContract {
     interface View extends MvpView {
         void highlightRequiredFields();
 

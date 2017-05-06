@@ -29,6 +29,7 @@ import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 import com.dat.barnaulzoopark.ui.NonPredictiveItemAnimationsLinearLayoutManager;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
+import com.dat.barnaulzoopark.ui.animalspecieseditor.SpeciesEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -249,6 +250,7 @@ public class DataManagementActivity
                     CategoryEditorActivity.start(this, null);
                     break;
                 case BZFireBaseApi.animal_species:
+                    SpeciesEditorActivity.start(this, null);
                     break;
                 case BZFireBaseApi.animal:
                     break;

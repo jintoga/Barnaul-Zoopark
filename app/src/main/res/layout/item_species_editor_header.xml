@@ -68,5 +68,12 @@
             android:inputType="text"
             android:maxLines="1"
             android:textColor="@color/black" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="46dp" />
     </LinearLayout>
 </LinearLayout>

@@ -22,12 +22,12 @@ import rx.functions.Func1;
  * Created by DAT on 4/23/2017.
  */
 
-public class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.View>
+class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.View>
     implements CategoryEditorContract.UserActionListener {
     private FirebaseDatabase database;
     private FirebaseStorage storage;
 
-    public CategoryEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
+    CategoryEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
         this.database = database;
         this.storage = storage;
     }
