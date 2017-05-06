@@ -125,7 +125,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         if (category.getIcon() == null || category.getIcon().isEmpty()) {
             return Observable.just(category);
         }
-        return deleteNewsItemFile(filePath).flatMap(new Func1<Void, Observable<Category>>() {
+        return deleteFile(filePath).flatMap(new Func1<Void, Observable<Category>>() {
             @Override
             public Observable<Category> call(Void aVoid) {
                 return Observable.just(category);
@@ -133,8 +133,8 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         });
     }
 
-    private Observable<Void> deleteNewsItemFile(@NonNull String filePath) {
-        StorageReference newsStorageReference = storage.getReference().child(filePath);
-        return RxFirebaseStorage.delete(newsStorageReference);
+    private Observable<Void> deleteFile(@NonNull String filePath) {
+        StorageReference storageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(storageReference);
     }
 }
