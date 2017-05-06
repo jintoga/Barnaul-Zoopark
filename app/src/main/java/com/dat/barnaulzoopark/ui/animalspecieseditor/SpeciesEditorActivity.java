@@ -30,6 +30,7 @@ public class SpeciesEditorActivity extends
     implements SpeciesEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener,
     SpeciesEditorHeaderAdapter.IconClickListener {
 
+    private static final int REQUEST_BROWSE_IMAGE = 111;
     private static final String EXTRA_SELECTED_SPECIES_UID = "EXTRA_SELECTED_SPECIES_UID";
 
     @Bind(R.id.toolbar)
@@ -52,12 +53,16 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onAttachIconClicked() {
-
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE, false);
     }
 
     @Override
     public void onRemoveIconClicked() {
-
+        RecyclerView.ViewHolder viewHolder =
+            speciesEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+            ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).clearIcon();
+        }
     }
 
     @Override
@@ -116,7 +121,13 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode) {
-
+        if (originalRequestCode == REQUEST_BROWSE_IMAGE) {
+            RecyclerView.ViewHolder viewHolder =
+                speciesEditorContent.findViewHolderForAdapterPosition(0);
+            if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+                ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).bindIcon(uri);
+            }
+        }
     }
 
     @Override
