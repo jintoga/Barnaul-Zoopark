@@ -46,6 +46,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         remove(data);
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends AbstractData> void remove(@NonNull final T data) {
         DatabaseReference databaseReference;
         Class clazz;
