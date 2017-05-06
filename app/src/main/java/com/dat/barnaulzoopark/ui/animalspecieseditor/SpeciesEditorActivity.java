@@ -87,7 +87,8 @@ public class SpeciesEditorActivity extends
         speciesEditorAdapter = new SpeciesEditorAdapter();
         speciesEditorAdapter.setData(new ArrayList<Animal>());
         RecyclerView.Adapter wrappedAdapter =
-            new SpeciesEditorHeaderAdapter(speciesEditorAdapter, this);
+            new SpeciesEditorHeaderAdapter(this, speciesEditorAdapter, this,
+                presenter.getCategoryReference());
         wrappedAdapter.notifyDataSetChanged();
         speciesEditorContent.setAdapter(wrappedAdapter);
     }

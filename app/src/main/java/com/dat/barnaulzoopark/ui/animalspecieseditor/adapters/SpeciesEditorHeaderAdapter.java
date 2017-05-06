@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.animalspecieseditor.adapters;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.animal.Category;
+import com.google.firebase.database.DatabaseReference;
 import com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
 
 /**
@@ -25,18 +28,22 @@ public class SpeciesEditorHeaderAdapter extends
     AbstractHeaderFooterWrapperAdapter<SpeciesEditorHeaderAdapter.HeaderViewHolder, SpeciesEditorHeaderAdapter.FooterViewHolder> {
 
     private IconClickListener iconClickListener;
+    private Activity activity;
+    private DatabaseReference categoryReference;
 
-    public SpeciesEditorHeaderAdapter(RecyclerView.Adapter adapter,
-        IconClickListener iconClickListener) {
+    public SpeciesEditorHeaderAdapter(Activity activity, RecyclerView.Adapter adapter,
+        IconClickListener iconClickListener, DatabaseReference categoryReference) {
         setAdapter(adapter);
+        this.activity = activity;
         this.iconClickListener = iconClickListener;
+        this.categoryReference = categoryReference;
     }
 
     @Override
     public HeaderViewHolder onCreateHeaderItemViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_species_editor_header, parent, false);
-        return new SpeciesEditorHeaderAdapter.HeaderViewHolder(view);
+        return new SpeciesEditorHeaderAdapter.HeaderViewHolder(activity, view, categoryReference);
     }
 
     @Override
@@ -92,6 +99,7 @@ public class SpeciesEditorHeaderAdapter extends
         EditText description;
         @Bind(R.id.category)
         Spinner category;
+        SpeciesEditorCategorySpinnerAdapter categorySpinnerAdapter;
         @Bind(R.id.icon)
         ImageView icon;
         @Bind(R.id.remove)
@@ -101,9 +109,14 @@ public class SpeciesEditorHeaderAdapter extends
 
         private Uri iconUri;
 
-        HeaderViewHolder(View itemView) {
+        HeaderViewHolder(Activity activity, View itemView, DatabaseReference categoryReference) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            categorySpinnerAdapter =
+                new SpeciesEditorCategorySpinnerAdapter(activity, Category.class,
+                    android.R.layout.simple_spinner_item,
+                    android.R.layout.simple_spinner_dropdown_item, categoryReference);
+            category.setAdapter(categorySpinnerAdapter);
         }
 
         public void bindIcon(@NonNull Uri uri) {
