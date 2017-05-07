@@ -7,6 +7,7 @@ import com.dat.barnaulzoopark.model.Attachment;
 import com.google.firebase.database.DatabaseReference;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,8 +24,9 @@ public interface AnimalEditorContract {
     interface UserActionListener extends MvpPresenter<AnimalEditorContract.View> {
 
         void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
-            @NonNull String speciesUid, boolean gender, @Nullable Uri iconUri,
-            @Nullable Uri bannerImageUri, @NonNull List<Attachment> data, @NonNull String videoUrl);
+            @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
+            @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @NonNull List<Attachment> data,
+            @NonNull String videoUrl);
 
         @NonNull
         DatabaseReference getSpeciesReference();

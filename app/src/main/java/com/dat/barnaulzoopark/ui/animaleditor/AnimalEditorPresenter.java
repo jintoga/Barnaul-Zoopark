@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,15 +28,15 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
 
     @Override
     public void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
-        @NonNull String speciesUid, boolean gender, @Nullable Uri iconUri,
-        @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
+        @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
+        @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
         @NonNull String videoUrl) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             if (getView() != null) {
                 getView().creatingProgress();
             }
-            create(name, aboutAnimal, speciesUid, gender, iconUri, bannerImageUri, attachments,
-                videoUrl);
+            create(name, aboutAnimal, speciesUid, gender, dateOfBirth, iconUri, bannerImageUri,
+                attachments, videoUrl);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -50,8 +51,8 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     }
 
     private void create(@NonNull String name, @NonNull String aboutAnimal,
-        @NonNull String speciesUid, boolean gender, @Nullable Uri iconUri,
-        @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
+        @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
+        @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
         @NonNull String videoUrl) {
         /*DatabaseReference newsDatabaseReference =
             database.getReference().child(BZFireBaseApi.animal);
