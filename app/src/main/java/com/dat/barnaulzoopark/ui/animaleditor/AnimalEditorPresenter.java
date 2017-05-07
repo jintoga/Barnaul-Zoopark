@@ -27,8 +27,9 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
 
     @Override
     public void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
-        @NonNull String speciesUid, int gender, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
-        @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
+        @NonNull String speciesUid, boolean gender, @Nullable Uri iconUri,
+        @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
+        @NonNull String videoUrl) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             if (getView() != null) {
                 getView().creatingProgress();
@@ -49,8 +50,37 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     }
 
     private void create(@NonNull String name, @NonNull String aboutAnimal,
-        @NonNull String speciesUid, int gender, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
-        @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
-
+        @NonNull String speciesUid, boolean gender, @Nullable Uri iconUri,
+        @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
+        @NonNull String videoUrl) {
+        /*DatabaseReference newsDatabaseReference =
+            database.getReference().child(BZFireBaseApi.animal);
+        final String uid = newsDatabaseReference.push().getKey();
+        final DatabaseReference newsItemReference = newsDatabaseReference.child(uid);
+        Animal animal =
+            new Animal(uid, aboutAnimal, speciesUid, Calendar.getInstance().getTimeInMillis());
+        if (!"".equals(video)) {
+            news.setVideo(video);
+        }
+        newsItemReference.setValue(news);
+        RxFirebaseDatabase.observeSingleValueEvent(newsItemReference, News.class)
+            .subscribe(new Action1<News>() {
+                @Override
+                public void call(News news) {
+                    if (getView() != null) {
+                        getView().onCreatingNewsItemSuccess();
+                    }
+                    if (news != null) {
+                        uploadImages(news, thumbnailUri, attachments);
+                    }
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    if (getView() != null) {
+                        getView().onCreatingNewsItemFailure(throwable.getLocalizedMessage());
+                    }
+                }
+            });*/
     }
 }

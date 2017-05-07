@@ -23,7 +23,7 @@ public interface AnimalEditorContract {
     interface UserActionListener extends MvpPresenter<AnimalEditorContract.View> {
 
         void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
-            @NonNull String speciesUid, int genderSelectedItem, @Nullable Uri iconUri,
+            @NonNull String speciesUid, boolean gender, @Nullable Uri iconUri,
             @Nullable Uri bannerImageUri, @NonNull List<Attachment> data, @NonNull String videoUrl);
 
         @NonNull

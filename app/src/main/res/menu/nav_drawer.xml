@@ -28,7 +28,7 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:icon="@drawable/ic_calendar"
+                    android:icon="@drawable/ic_calendar_schedule"
                     android:title="@string/schedule" />
                 <item
                     android:icon="@drawable/ic_currency_ruble"

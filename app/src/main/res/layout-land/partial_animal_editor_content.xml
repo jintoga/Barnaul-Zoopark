@@ -39,7 +39,6 @@
         android:layout_height="match_parent"
         android:layout_weight="0.65">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,26 +107,90 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp" />
 
-                    <Spinner
-                        android:id="@+id/gender"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp" />
 
                 </LinearLayout>
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/aboutOurAnimal"
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif"
-                android:gravity="top"
-                android:hint="about our animal"
-                android:inputType="textMultiLine"
-                android:lineSpacingExtra="6dp"
-                android:textColor="@color/black" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/ic_gender_male_female" />
+
+                <RadioButton
+                    android:id="@+id/isMale"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/male" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/female" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/ic_calendar" />
+
+                <EditText
+                    android:id="@+id/dateOfBirth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="date of birth"
+                    android:inputType="date"
+                    android:lines="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_info" />
+
+                <EditText
+                    android:id="@+id/aboutOurAnimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="top"
+                    android:hint="about animal"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="6dp"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

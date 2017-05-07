@@ -86,9 +86,5 @@
     <string name="create_animal">Create animal</string>
     <string name="female">Female</string>
     <string name="male">Male</string>
-
-    <string-array name="genders">
-        <item>@string/male</item>
-        <item>@string/female</item>
-    </string-array>
+    <string name="youtube_prefix">youtube.com/watch?v=</string>
 </resources>

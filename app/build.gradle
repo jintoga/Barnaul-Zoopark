@@ -84,4 +84,5 @@ dependencies {
     compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.5@aar'){
         transitive=true
     }
+    compile 'com.wdullaer:materialdatetimepicker:2.5.0'
 }

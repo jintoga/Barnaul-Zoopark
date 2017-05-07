@@ -15,10 +15,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -70,8 +70,10 @@ public class AnimalEditorActivity extends
     protected EditText name;
     @Bind(R.id.species)
     protected Spinner species;
-    @Bind(R.id.gender)
-    protected Spinner gender;
+    @Bind(R.id.isMale)
+    protected RadioButton isMale;
+    @Bind(R.id.dateOfBirth)
+    protected EditText dateOfBirth;
     @Bind(R.id.aboutOurAnimal)
     protected EditText aboutOurAnimal;
     @Bind(R.id.album)
@@ -163,7 +165,7 @@ public class AnimalEditorActivity extends
             attachmentAdapter.addEmptySlot();
         }
 
-        video.setPrefix("https://www.youtube.com/watch?v=");
+        video.setPrefix(getString(R.string.youtube_prefix));
     }
 
     private void initSpinners() {
@@ -172,12 +174,6 @@ public class AnimalEditorActivity extends
                 android.R.layout.simple_spinner_item, android.R.layout.simple_spinner_dropdown_item,
                 presenter.getSpeciesReference());
         species.setAdapter(speciesSpinnerAdapter);
-
-        ArrayAdapter<String> genderSpinnerAdapter =
-            new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                getResources().getStringArray(R.array.genders));
-        genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gender.setAdapter(genderSpinnerAdapter);
     }
 
     private void updateTitle(@NonNull String title) {
@@ -261,6 +257,11 @@ public class AnimalEditorActivity extends
         showSnackBar(errorMsg);
     }
 
+    @OnClick(R.id.dateOfBirth)
+    protected void dateOfBirthClicked() {
+
+    }
+
     @OnClick(R.id.bannerImageContainer)
     protected void bannerImageContainerClicked() {
         createChangePhotoDialog(REQUEST_BROWSE_IMAGE_BANNER, true);
@@ -324,7 +325,7 @@ public class AnimalEditorActivity extends
         if (!species.getAdapter().isEmpty()) {
             Species selectedSpecies = (Species) species.getSelectedItem();
             presenter.createAnimal(name.getText().toString(), aboutOurAnimal.getText().toString(),
-                selectedSpecies.getId(), gender.getSelectedItemPosition(), iconUri, bannerImageUri,
+                selectedSpecies.getId(), isMale.isChecked(), iconUri, bannerImageUri,
                 attachmentAdapter.getData(), video.getText().toString());
         } else {
 

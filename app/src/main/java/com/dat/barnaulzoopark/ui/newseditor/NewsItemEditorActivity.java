@@ -310,7 +310,7 @@ public class NewsItemEditorActivity extends
             attachmentAdapter.addEmptySlot();
         }
 
-        video.setPrefix("https://www.youtube.com/watch?v=");
+        video.setPrefix(getString(R.string.youtube_prefix));
     }
 
     private void loadSelectedNews(@NonNull String selectedNewsUid) {
