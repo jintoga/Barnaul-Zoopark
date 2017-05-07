@@ -46,8 +46,10 @@ public class AnimalEditorActivity extends
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
 
-    @Bind(R.id.thumbnail)
-    protected ImageView thumbnail;
+    @Bind(R.id.bannerImage)
+    protected ImageView bannerImage;
+    @Bind(R.id.icon)
+    protected ImageView icon;
     @Bind(R.id.name)
     protected EditText name;
     @Bind(R.id.species)
@@ -62,7 +64,8 @@ public class AnimalEditorActivity extends
     @Bind(R.id.video)
     protected PrefixEditText video;
 
-    private Uri thumbnailUri;
+    private Uri bannerImageUri;
+    private Uri iconUri;
 
     private int filledAttachmentCounter = 0;
     private int currentAttachmentPosition = 0;
@@ -220,7 +223,7 @@ public class AnimalEditorActivity extends
         if (!species.getAdapter().isEmpty()) {
             Species selectedSpecies = (Species) species.getSelectedItem();
             presenter.createAnimal(name.getText().toString(), aboutOurAnimal.getText().toString(),
-                selectedSpecies.getId(), gender.getSelectedItemPosition(), thumbnailUri,
+                selectedSpecies.getId(), gender.getSelectedItemPosition(), iconUri, bannerImageUri,
                 attachmentAdapter.getData(), video.getText().toString());
         } else {
 

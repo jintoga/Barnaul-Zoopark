@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:id="@+id/thumbnailContainer"
+            android:id="@+id/bannerImageContainer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/news_detail_banner_height"
             android:clickable="true"
@@ -18,7 +18,7 @@
             android:foreground="?android:selectableItemBackground">
 
             <ImageView
-                android:id="@+id/thumbnail"
+                android:id="@+id/bannerImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -41,27 +41,76 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <EditText
-                android:id="@+id/name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
-                android:hint="name"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="@color/black" />
+                android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/species"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
+                <com.dat.barnaulzoopark.widget.SquareFrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_file_attachment_border">
 
-            <Spinner
-                android:id="@+id/gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
+                    <ImageView
+                        android:id="@+id/icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+
+                    <ImageButton
+                        android:id="@+id/attach"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:foreground="?android:selectableItemBackground"
+                        android:tint="@color/white"
+                        app:srcCompat="@drawable/ic_add" />
+
+
+                    <ImageButton
+                        android:id="@+id/remove"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/black_transparent_15"
+                        android:foreground="?android:selectableItemBackground"
+                        android:tint="@color/white"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_delete" />
+                </com.dat.barnaulzoopark.widget.SquareFrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:hint="name"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/black" />
+
+                    <Spinner
+                        android:id="@+id/species"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp" />
+
+                    <Spinner
+                        android:id="@+id/gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/aboutOurAnimal"

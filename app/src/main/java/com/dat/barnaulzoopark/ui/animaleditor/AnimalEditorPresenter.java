@@ -27,13 +27,14 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
 
     @Override
     public void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
-        @NonNull String speciesUid, int gender, @Nullable Uri thumbnailUri,
+        @NonNull String speciesUid, int gender, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
         @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             if (getView() != null) {
                 getView().creatingProgress();
             }
-            create(name, aboutAnimal, speciesUid, gender, thumbnailUri, attachments, videoUrl);
+            create(name, aboutAnimal, speciesUid, gender, iconUri, bannerImageUri, attachments,
+                videoUrl);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -48,7 +49,7 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     }
 
     private void create(@NonNull String name, @NonNull String aboutAnimal,
-        @NonNull String speciesUid, int gender, @Nullable Uri thumbnailUri,
+        @NonNull String speciesUid, int gender, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
         @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
 
     }
