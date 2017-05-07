@@ -82,4 +82,6 @@
     <string name="create_species">Create species</string>
     <string name="select">Select</string>
     <string name="categories_empty_error">List of categories is empty. Create a category!</string>
+    <string name="edit_animal">Edit animal</string>
+    <string name="create_animal">Create animal</string>
 </resources>

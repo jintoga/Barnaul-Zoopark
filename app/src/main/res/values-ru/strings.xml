@@ -44,4 +44,6 @@
     <string name="create_species">Create species</string>
     <string name="select">Выбрать</string>
     <string name="categories_empty_error">Список категорий пустой. Создайте категорию!</string>
+    <string name="edit_animal">Edit animal</string>
+    <string name="create_animal">Create animal</string>
 </resources>
