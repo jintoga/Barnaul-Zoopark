@@ -34,6 +34,11 @@
     <string name="discard_your_changes">Отменить изменения?</string>
     <string name="discard">Отменить</string>
     <string name="dataControl">Управление данных</string>
+
+    <string name="data_management_animal_species">Animal species</string>
+    <string name="data_management_animal_categories">Animal categories</string>
+    <string name="data_management_animals">Animals</string>
+
     <string name="create_category">Создать категорию</string>
     <string name="edit_category">Редактировать категорию</string>
     <string name="created_successful">Created successful</string>
@@ -46,4 +51,6 @@
     <string name="categories_empty_error">Список категорий пустой. Создайте категорию!</string>
     <string name="edit_animal">Edit animal</string>
     <string name="create_animal">Create animal</string>
+    <string name="male">Мужское</string>
+    <string name="female">Женское</string>
 </resources>

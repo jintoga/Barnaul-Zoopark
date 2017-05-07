@@ -214,6 +214,7 @@ public class SpeciesEditorActivity extends
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                //ToDo: implement discard dialog
                 break;
             case R.id.save:
                 if (selectedSpecies == null) {
