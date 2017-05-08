@@ -36,11 +36,11 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     @Override
     public void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
         @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
-        @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
-        @NonNull String videoUrl) {
+        @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
+        @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             create(name, aboutAnimal, speciesUid, gender, dateOfBirth, iconUri, bannerImageUri,
-                attachments, videoUrl);
+                habitatMapImageUri, attachments, videoUrl);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -56,8 +56,8 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
 
     private void create(@NonNull String name, @NonNull String aboutAnimal,
         @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
-        @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @NonNull List<Attachment> attachments,
-        @NonNull String videoUrl) {
+        @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
+        @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
         DatabaseReference animalDatabaseReference =
             database.getReference().child(BZFireBaseApi.animal);
         final String uid = animalDatabaseReference.push().getKey();
@@ -84,6 +84,10 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
             .flatMap(animal1 -> {
                 String path = filePath + "photoBig";
                 return uploadImage(animal1, bannerImageUri, path, "photoBig");
+            })
+            .flatMap(animal1 -> {
+                String path = filePath + "imageHabitatMap";
+                return uploadImage(animal1, habitatMapImageUri, path, "imageHabitatMap");
             })
             .flatMap(animal1 -> uploadAttachments(animal1, attachments))
             .subscribe(animal1 -> {

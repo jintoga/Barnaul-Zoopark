@@ -22,6 +22,7 @@ public class Animal extends AbstractData {
     private long dateOfBirth;
     private Map<String, String> photos = new HashMap<>();
     private String video;
+    private String imageHabitatMap;
 
     public Animal() {
         // Default constructor required for calls to DataSnapshot.getValue(Animal.class)
@@ -91,6 +92,10 @@ public class Animal extends AbstractData {
 
     public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getImageHabitatMap() {
+        return imageHabitatMap;
     }
 
     @Exclude

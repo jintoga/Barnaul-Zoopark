@@ -57,6 +57,7 @@ public class AnimalEditorActivity extends
     private static final int REQUEST_BROWSE_IMAGE_BANNER = 1;
     private static final int REQUEST_BROWSE_IMAGE_ICON = 3;
     private static final int REQUEST_BROWSE_IMAGE_ATTACHMENT = 2;
+    private static final int REQUEST_BROWSE_IMAGE_HABITAT_MAP = 4;
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
@@ -84,9 +85,12 @@ public class AnimalEditorActivity extends
     private MultiFileAttachmentAdapter attachmentAdapter;
     @Bind(R.id.video)
     protected PrefixEditText video;
+    @Bind(R.id.habitatMapImage)
+    protected ImageView habitatMapImage;
 
     private Uri bannerImageUri;
     private Uri iconUri;
+    private Uri habitatMapImageUri;
 
     private int filledAttachmentCounter = 0;
     private int currentAttachmentPosition = 0;
@@ -241,11 +245,17 @@ public class AnimalEditorActivity extends
     }
 
     @Override
-    public void onRemovedPhotoClicked() {
+    public void onRemovedPhotoClicked(int requestCode) {
         Log.d(TAG, "onRemovedPhotoClicked");
-        bannerImageUri = null;
-        bannerImage.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.img_photo_gallery_placeholder));
+        if (requestCode == REQUEST_BROWSE_IMAGE_BANNER) {
+            bannerImageUri = null;
+            bannerImage.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.img_photo_gallery_placeholder));
+        } else if (requestCode == REQUEST_BROWSE_IMAGE_HABITAT_MAP) {
+            habitatMapImageUri = null;
+            habitatMapImage.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.img_photo_gallery_placeholder));
+        }
     }
 
     @Override
@@ -261,6 +271,11 @@ public class AnimalEditorActivity extends
                 iconUri = uri;
                 Glide.with(this).load(uri).into(icon);
                 updateAttachIconButtons(true);
+                break;
+            case REQUEST_BROWSE_IMAGE_HABITAT_MAP:
+                Log.d(TAG, "REQUEST_BROWSE_IMAGE_BANNER");
+                habitatMapImageUri = uri;
+                Glide.with(this).load(uri).into(habitatMapImage);
                 break;
             case REQUEST_BROWSE_IMAGE_ATTACHMENT:
                 Log.d(TAG, "REQUEST_BROWSE_IMAGE_ATTACHMENT");
@@ -298,6 +313,11 @@ public class AnimalEditorActivity extends
     @OnClick(R.id.bannerImageContainer)
     protected void bannerImageContainerClicked() {
         createChangePhotoDialog(REQUEST_BROWSE_IMAGE_BANNER, true);
+    }
+
+    @OnClick(R.id.habitatMapImageContainer)
+    protected void habitatMapImageContainerClicked() {
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_HABITAT_MAP, true);
     }
 
     @OnClick(R.id.attach)
@@ -354,7 +374,8 @@ public class AnimalEditorActivity extends
             Species selectedSpecies = (Species) species.getSelectedItem();
             presenter.createAnimal(name.getText().toString(), aboutOurAnimal.getText().toString(),
                 selectedSpecies.getId(), isMale.isChecked(), selectedDateOfBirth, iconUri,
-                bannerImageUri, attachmentAdapter.getData(), video.getText().toString());
+                bannerImageUri, habitatMapImageUri, attachmentAdapter.getData(),
+                video.getText().toString());
         } else {
 
         }

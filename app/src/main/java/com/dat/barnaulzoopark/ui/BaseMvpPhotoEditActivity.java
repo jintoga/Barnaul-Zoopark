@@ -42,7 +42,7 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
     private boolean withRemoveItem = false;
 
     public interface PhotoEditListener {
-        void onRemovedPhotoClicked();
+        void onRemovedPhotoClicked(int requestCode);
 
         void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode);
 
@@ -73,44 +73,35 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
         } else {
             removePhoto.setVisibility(View.GONE);
         }
-        removePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isFilledWithPhoto = false;
-                dialog.dismiss();
-                if (photoEditListener != null) {
-                    photoEditListener.onRemovedPhotoClicked();
-                }
+        removePhoto.setOnClickListener(view -> {
+            isFilledWithPhoto = false;
+            dialog.dismiss();
+            if (photoEditListener != null) {
+                photoEditListener.onRemovedPhotoClicked(requestCode);
             }
         });
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isCapturePhoto = true;
-                dialog.dismiss();
+        takePhoto.setOnClickListener(view -> {
+            isCapturePhoto = true;
+            dialog.dismiss();
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (ActivityCompat.checkSelfPermission(BaseMvpPhotoEditActivity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(BaseMvpPhotoEditActivity.this,
-                            new String[] { Manifest.permission.CAMERA }, REQUEST_CODE_PERMISSIONS);
-                        return;
-                    }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.checkSelfPermission(BaseMvpPhotoEditActivity.this,
+                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(BaseMvpPhotoEditActivity.this,
+                        new String[] { Manifest.permission.CAMERA }, REQUEST_CODE_PERMISSIONS);
+                    return;
                 }
-                startCapturePhoto(requestCode);
             }
+            startCapturePhoto(requestCode);
         });
-        choosePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isCapturePhoto = false;
+        choosePhoto.setOnClickListener(view -> {
+            isCapturePhoto = false;
 
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/+");
-                startActivityForResult(intent, requestCode);
-                dialog.dismiss();
-            }
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/+");
+            startActivityForResult(intent, requestCode);
+            dialog.dismiss();
         });
     }
 

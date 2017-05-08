@@ -29,8 +29,8 @@ public interface AnimalEditorContract {
 
         void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
             @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
-            @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @NonNull List<Attachment> data,
-            @NonNull String videoUrl);
+            @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
+            @NonNull List<Attachment> data, @NonNull String videoUrl);
 
         @NonNull
         DatabaseReference getSpeciesReference();

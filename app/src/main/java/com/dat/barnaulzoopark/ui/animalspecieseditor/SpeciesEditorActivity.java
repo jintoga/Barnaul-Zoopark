@@ -184,7 +184,7 @@ public class SpeciesEditorActivity extends
     }
 
     @Override
-    public void onRemovedPhotoClicked() {
+    public void onRemovedPhotoClicked(int requestCode) {
     }
 
     @Override

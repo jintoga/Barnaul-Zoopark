@@ -34,7 +34,7 @@ public class AnimalsDetailFragment extends Fragment {
     protected ObservableScrollView mScrollView;
     @Bind(R.id.animals_images)
     protected RecyclerView animalsImages;
-    AnimalsImagesHorizontalAdapter animalsImagesAdapter;
+    private AnimalsImagesHorizontalAdapter animalsImagesAdapter;
     @Bind(R.id.image_map)
     protected SimpleDraweeView imageMap;
 
@@ -107,12 +107,7 @@ public class AnimalsDetailFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         //hack: expand the header of Material ViewPager on tab selected
         if (mScrollView != null) {
-            mScrollView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScrollView.smoothScrollTo(0, 0);
-                }
-            }, 100);
+            mScrollView.postDelayed(() -> mScrollView.smoothScrollTo(0, 0), 100);
         }
     }
 }

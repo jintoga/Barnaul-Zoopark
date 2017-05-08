@@ -100,7 +100,7 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onRemovedPhotoClicked() {
+    public void onRemovedPhotoClicked(int requestCode) {
         Log.d(TAG, "onRemovedPhotoClicked");
         thumbnailUri = null;
         thumbnail.setImageDrawable(

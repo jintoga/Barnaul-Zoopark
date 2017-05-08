@@ -9,7 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +17,13 @@ import java.util.List;
  * Created by DAT on 4/9/2017.
  */
 
-public class AnimalsDetailPresenter extends MvpBasePresenter<AnimalsDetailContract.View>
+class AnimalsDetailPresenter extends MvpBasePresenter<AnimalsDetailContract.View>
     implements AnimalsDetailContract.UserActionListener {
 
     private FirebaseDatabase database;
-    private FirebaseStorage storage;
 
-    public AnimalsDetailPresenter(FirebaseDatabase database, FirebaseStorage storage) {
+    AnimalsDetailPresenter(FirebaseDatabase database) {
         this.database = database;
-        this.storage = storage;
     }
 
     @Override

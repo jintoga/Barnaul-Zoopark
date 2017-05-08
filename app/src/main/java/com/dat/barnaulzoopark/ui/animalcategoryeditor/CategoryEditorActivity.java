@@ -182,7 +182,7 @@ public class CategoryEditorActivity extends
     }
 
     @Override
-    public void onRemovedPhotoClicked() {
+    public void onRemovedPhotoClicked(int requestCode) {
     }
 
     @Override

@@ -18,7 +18,6 @@ import com.dat.barnaulzoopark.ui.BaseActivityWithAnimation;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import java.util.List;
 
 public class AnimalsDetailActivity extends
@@ -65,9 +64,7 @@ public class AnimalsDetailActivity extends
     public AnimalsDetailContract.UserActionListener createPresenter() {
         FirebaseDatabase database =
             BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
-        FirebaseStorage storage =
-            BZApplication.get(this).getApplicationComponent().fireBaseStorage();
-        return new AnimalsDetailPresenter(database, storage);
+        return new AnimalsDetailPresenter(database);
     }
 
     private void init() {
@@ -106,16 +103,13 @@ public class AnimalsDetailActivity extends
                     return animals.get(position).getName();
                 }
             });
-        materialViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-            @Override
-            public HeaderDesign getHeaderDesign(int page) {
-                String url = animals.get(page).getPhotoBig();
-                if (url == null || url.equals("")) {
-                    return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
-                        getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
-                }
-                return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
+        materialViewPager.setMaterialViewPagerListener(page -> {
+            String url = animals.get(page).getPhotoBig();
+            if (url == null || url.equals("")) {
+                return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
+                    getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
             }
+            return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
         });
 
         materialViewPager.getViewPager()
@@ -124,12 +118,9 @@ public class AnimalsDetailActivity extends
 
         //Move to selected animal
         final int selectedAnimalPosition = getIntent().getIntExtra(KEY_SELECTED_ANIMAL_POSITION, 0);
-        materialViewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                materialViewPager.getViewPager().setCurrentItem(selectedAnimalPosition);
-                materialViewPager.onPageSelected(selectedAnimalPosition);
-            }
+        materialViewPager.post(() -> {
+            materialViewPager.getViewPager().setCurrentItem(selectedAnimalPosition);
+            materialViewPager.onPageSelected(selectedAnimalPosition);
         });
     }
 
