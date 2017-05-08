@@ -15,8 +15,6 @@
 
         <include layout="@layout/partial_animals_detail_content_images" />
 
-        <include layout="@layout/partial_animals_detail_content_facts_about_species" />
-
         <include layout="@layout/partial_animals_detail_content_habitat_map" />
 
 

@@ -40,12 +40,6 @@ public class AnimalsDetailFragment extends Fragment {
 
     @Bind(R.id.aboutOurAnimal)
     protected TextView aboutOurAnimal;
-    @Bind(R.id.aboutSpecies)
-    protected TextView aboutSpecies;
-    @Bind(R.id.aboutCharacteristics)
-    protected TextView aboutCharacteristics;
-    @Bind(R.id.factsAboutAnimal)
-    protected TextView factsAboutAnimal;
 
     public static AnimalsDetailFragment newInstance(@NonNull Animal animal) {
         Gson gson = new Gson();
@@ -70,9 +64,6 @@ public class AnimalsDetailFragment extends Fragment {
             .build();
         imageMap.setImageURI(uri);
         aboutOurAnimal.setText("");
-        aboutSpecies.setText("");
-        aboutCharacteristics.setText("");
-        factsAboutAnimal.setText("");
         return view;
     }
 
@@ -87,12 +78,7 @@ public class AnimalsDetailFragment extends Fragment {
         super.onStart();
         animalsImagesAdapter.setData(DummyGenerator.getAnimalsPhotos());
         animalsImagesAdapter.notifyDataSetChanged();
-        aboutOurAnimal.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                bindData();
-            }
-        }, 500);
+        aboutOurAnimal.postDelayed(this::bindData, 500);
     }
 
     private void bindData() {
@@ -103,9 +89,6 @@ public class AnimalsDetailFragment extends Fragment {
         Gson gson = new Gson();
         Animal animal = gson.fromJson(animalJson, Animal.class);
         aboutOurAnimal.setText(animal.getAboutOurAnimal());
-        aboutSpecies.setText(animal.getSpeciesUid());
-        aboutCharacteristics.setText("");
-        factsAboutAnimal.setText("");
     }
 
     private void initRecyclerView() {
