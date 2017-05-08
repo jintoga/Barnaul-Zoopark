@@ -21,9 +21,20 @@ public class Animal extends AbstractData {
     private long timeEnter;
     private long dateOfBirth;
     private Map<String, String> photos = new HashMap<>();
+    private String video;
 
     public Animal() {
         // Default constructor required for calls to DataSnapshot.getValue(Animal.class)
+    }
+
+    public Animal(String uid, String name, String speciesUid, String aboutOurAnimal, boolean gender,
+        long timeEnter) {
+        this.uid = uid;
+        this.name = name;
+        this.speciesUid = speciesUid;
+        this.aboutOurAnimal = aboutOurAnimal;
+        this.gender = gender;
+        this.timeEnter = timeEnter;
     }
 
     public String getUid() {
@@ -68,6 +79,18 @@ public class Animal extends AbstractData {
 
     public void setSpeciesUid(String speciesUid) {
         this.speciesUid = speciesUid;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public void setDateOfBirth(long dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Exclude

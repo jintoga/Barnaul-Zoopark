@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.model.animal;
 
+import android.support.annotation.NonNull;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -17,7 +18,7 @@ public class Species extends AbstractData {
     private String icon;
     private String thumbnail;
     private String description;
-    private Map<String, String> animals = new HashMap<>();
+    private Map<String, String> animals;
 
     public Species() {
         // Default constructor required for calls to DataSnapshot.getValue(Species.class)
@@ -54,8 +55,9 @@ public class Species extends AbstractData {
         return thumbnail;
     }
 
+    @NonNull
     public Map<String, String> getAnimals() {
-        return animals;
+        return animals == null ? animals = new HashMap<>() : animals;
     }
 
     public void setCategoryUid(String categoryUid) {

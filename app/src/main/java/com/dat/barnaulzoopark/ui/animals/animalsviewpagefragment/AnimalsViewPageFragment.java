@@ -117,7 +117,7 @@ public class AnimalsViewPageFragment extends
     @Override
     public void onSpeciesSelected(@NonNull Species species) {
         Log.d("onSpeciesSelected", species.getUid());
-        if (species.getAnimals() != null && !species.getAnimals().isEmpty()) {
+        if (!species.getAnimals().isEmpty()) {
             AnimalSpeciesActivity.start(getActivity(), species);
         } else {
             Toast.makeText(getContext(),

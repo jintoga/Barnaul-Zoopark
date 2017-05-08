@@ -19,6 +19,10 @@ public interface AnimalEditorContract {
         void creatingProgress();
 
         void highlightRequiredFields();
+
+        void onCreatingFailure(@NonNull String msg);
+
+        void onCreatingSuccess();
     }
 
     interface UserActionListener extends MvpPresenter<AnimalEditorContract.View> {

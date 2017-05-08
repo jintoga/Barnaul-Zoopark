@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,6 +125,25 @@ public class AnimalEditorActivity extends
         if (aboutOurAnimal.getText().toString().isEmpty()) {
             aboutOurAnimal.setError("Input required");
         }
+    }
+
+    @Override
+    public void onCreatingFailure(@NonNull String msg) {
+        Log.d(TAG, "onCreatingFailure " + msg);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Override
+    public void onCreatingSuccess() {
+        Log.d(TAG, "onCreatingSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showToast("Animal created successful");
+        finish();
     }
 
     @Override
@@ -304,11 +322,6 @@ public class AnimalEditorActivity extends
             attach.setVisibility(View.VISIBLE);
             remove.setVisibility(View.GONE);
         }
-    }
-
-    private void showSnackBar(@NonNull String msg) {
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.container), msg, Snackbar.LENGTH_SHORT);
-        snackbar.show();
     }
 
     @Override
