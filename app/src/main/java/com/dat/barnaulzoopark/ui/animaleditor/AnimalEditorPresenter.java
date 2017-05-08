@@ -11,7 +11,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
@@ -19,7 +18,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * Created by DAT on 3/11/2017.
@@ -87,7 +85,7 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
                 String path = filePath + "photoBig";
                 return uploadImage(animal1, bannerImageUri, path, "photoBig");
             })
-            //ToDo: implement upload attachments
+            .flatMap(animal1 -> uploadAttachments(animal1, attachments))
             .subscribe(animal1 -> {
             }, throwable -> {
                 if (getView() != null) {
@@ -98,6 +96,35 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
                     getView().onCreatingSuccess();
                 }
             });
+    }
+
+    @NonNull
+    private Observable<Animal> uploadAttachments(@NonNull Animal animal,
+        @NonNull List<Attachment> attachments) {
+        return Observable.from(attachments).filter(Attachment::isFilled).flatMap(attachment -> {
+            Uri uri = Uri.parse(attachment.getUrl());
+            return uploadAttachmentImage(animal, uri);
+        });
+    }
+
+    @NonNull
+    private Observable<Animal> uploadAttachmentImage(@NonNull Animal animal, @NonNull Uri uri) {
+        final String attachmentUid = database.getReference().push().getKey();
+        final String attachmentPath =
+            BZFireBaseApi.animal + "/" + animal.getUid() + "/photos/" + attachmentUid;
+        return uploadFile(attachmentPath, uri).flatMap(
+            uploadedUri -> setAttachmentToAnimal(animal, attachmentUid, uploadedUri));
+    }
+
+    @NonNull
+    private Observable<Animal> setAttachmentToAnimal(@NonNull Animal animal,
+        @NonNull String attachmentUid, Uri uploadedUri) {
+        DatabaseReference animalDatabaseReference =
+            database.getReference().child(BZFireBaseApi.animal);
+        DatabaseReference animalItemReference = animalDatabaseReference.child(animal.getUid());
+        DatabaseReference animalItemPhotoReference = animalItemReference.child("photos");
+        animalItemPhotoReference.child(attachmentUid).setValue(uploadedUri.toString());
+        return Observable.just(animal);
     }
 
     private void addAnimalToSpecies(@NonNull Animal animal) {
@@ -119,25 +146,15 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         if (uri == null || filePath == null || field == null) {
             return Observable.just(animal);
         }
-        return uploadFile(filePath, uri).flatMap(new Func1<Uri, Observable<Animal>>() {
-            @Override
-            public Observable<Animal> call(Uri uploadedUri) {
-                return setImagePathToItem(animal, uploadedUri, field);
-            }
-        });
+        return uploadFile(filePath, uri).flatMap(
+            uploadedUri -> setImagePathToItem(animal, uploadedUri, field));
     }
 
     @NonNull
     private Observable<Uri> uploadFile(@NonNull final String fileName, @NonNull Uri uri) {
         StorageReference newsStorageReference = storage.getReference().child(fileName);
         return RxFirebaseStorage.putFile(newsStorageReference, uri)
-            .flatMap(new Func1<UploadTask.TaskSnapshot, Observable<Uri>>() {
-                @Override
-                public Observable<Uri> call(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri uploadedUri = taskSnapshot.getDownloadUrl();
-                    return Observable.just(uploadedUri);
-                }
-            });
+            .flatMap(taskSnapshot -> Observable.just(taskSnapshot.getDownloadUrl()));
     }
 
     @NonNull
