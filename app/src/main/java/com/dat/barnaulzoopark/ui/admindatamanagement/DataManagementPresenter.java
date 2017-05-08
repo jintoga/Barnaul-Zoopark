@@ -74,12 +74,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
                     return getDeleteIconObservable(data);
                 }
             })
-            .doOnNext(new Action1<T>() {
-                @Override
-                public void call(T data) {
-                    deleteUidInChild(data);
-                }
-            })
+            .doOnNext((Action1<T>) this::deleteUidInChild)
             .subscribe(new Observer<T>() {
                 @Override
                 public void onCompleted() {

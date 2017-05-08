@@ -19,7 +19,6 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
@@ -393,18 +392,13 @@ public class NewsItemEditorActivity extends
 
     private void showDiscardConfirm() {
         BZDialogBuilder.createConfirmDialog(this, getString(R.string.discard_your_changes),
-            getString(R.string.discard)).onNegative(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                dialog.dismiss();
-            }
-        }).onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+            getString(R.string.discard))
+            .onNegative((dialog, which) -> dialog.dismiss())
+            .onPositive((dialog, which) -> {
                 dialog.dismiss();
                 finish();
-            }
-        }).show();
+            })
+            .show();
     }
 
     private void checkDiscardConfirmRequirement() {
