@@ -15,10 +15,6 @@
         android:background="@color/transparent"
         tools:visibility="visible">
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -44,6 +40,11 @@
                 android:tint="@color/default_icon_color" />
 
         </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7" />
     </LinearLayout>
 
     <LinearLayout

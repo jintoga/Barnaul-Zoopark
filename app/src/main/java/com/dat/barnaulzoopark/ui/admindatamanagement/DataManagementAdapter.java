@@ -59,25 +59,19 @@ public class DataManagementAdapter<T extends AbstractData>
     protected void populateViewHolder(final ViewHolder viewHolder, final AbstractData item,
         int position) {
         viewHolder.bindData(item);
-        viewHolder.edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearPinnedPosition(viewHolder);
-                onEditButtonClick(item);
-            }
+        viewHolder.edit.setOnClickListener(v -> {
+            clearPinnedPosition(viewHolder);
+            onEditButtonClick(item);
         });
-        viewHolder.remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearPinnedPosition(viewHolder);
-                onRemoveButtonClick(item);
-            }
+        viewHolder.remove.setOnClickListener(v -> {
+            clearPinnedPosition(viewHolder);
+            onRemoveButtonClick(item);
         });
 
         // set swiping properties
-        viewHolder.setMaxLeftSwipeAmount(-0.3f);
-        viewHolder.setMaxRightSwipeAmount(0);
-        viewHolder.setSwipeItemHorizontalSlideAmount(getPinnedPosition() == position ? -0.3f : 0);
+        viewHolder.setMaxLeftSwipeAmount(0);
+        viewHolder.setMaxRightSwipeAmount(0.3f);
+        viewHolder.setSwipeItemHorizontalSlideAmount(getPinnedPosition() == position ? 0.3f : 0);
     }
 
     private void clearPinnedPosition(ViewHolder viewHolder) {
@@ -87,7 +81,7 @@ public class DataManagementAdapter<T extends AbstractData>
 
     @Override
     public int onGetSwipeReactionType(ViewHolder holder, int position, int x, int y) {
-        return Swipeable.REACTION_CAN_SWIPE_LEFT;
+        return Swipeable.REACTION_CAN_SWIPE_RIGHT;
     }
 
     @Override
@@ -102,9 +96,9 @@ public class DataManagementAdapter<T extends AbstractData>
     @Override
     public SwipeResultAction onSwipeItem(ViewHolder holder, int position, int result) {
         switch (result) {
-            // swipe left --- pin
-            case Swipeable.RESULT_SWIPED_LEFT:
-                return new SwipeLeftResultAction(this, position);
+            // swipe right --- pin
+            case Swipeable.RESULT_SWIPED_RIGHT:
+                return new SwipeRightResultAction(this, position);
             default:
                 if (position != RecyclerView.NO_POSITION) {
                     return new UnpinResultAction(this, position);
@@ -184,11 +178,11 @@ public class DataManagementAdapter<T extends AbstractData>
         return pinnedPosition;
     }
 
-    private static class SwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
+    private static class SwipeRightResultAction extends SwipeResultActionMoveToSwipedDirection {
         private DataManagementAdapter adapter;
         private final int position;
 
-        SwipeLeftResultAction(DataManagementAdapter adapter, int position) {
+        SwipeRightResultAction(DataManagementAdapter adapter, int position) {
             this.adapter = adapter;
             this.position = position;
         }

@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
@@ -187,12 +186,9 @@ public class DataManagementActivity
 
     private void handleRemoveClicked(@NonNull final AbstractData data) {
         BZDialogBuilder.createConfirmDialog(this, getString(R.string.remove_category_title),
-            getString(R.string.remove)).onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                presenter.removeItem(data);
-            }
-        }).show();
+            getString(R.string.remove))
+            .onPositive((dialog, which) -> presenter.removeItem(data))
+            .show();
     }
 
     @Nullable
