@@ -78,8 +78,8 @@ public class AnimalSpeciesHeaderAdapter extends
         }
 
         void bindHeaderData(@NonNull Species species) {
-            if (species.getThumbnail() != null) {
-                Glide.with(itemView.getContext()).load(species.getThumbnail()).into(thumbnail);
+            if (species.getIcon() != null) {
+                Glide.with(itemView.getContext()).load(species.getIcon()).into(thumbnail);
             } else {
                 Glide.with(itemView.getContext())
                     .load(R.drawable.img_photo_gallery_placeholder)

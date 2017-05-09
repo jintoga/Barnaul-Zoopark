@@ -13,7 +13,6 @@ public class Species extends AbstractData {
     private String categoryUid;
     private String name;
     private String icon;
-    private String thumbnail;
     private String description;
 
     public Species() {
@@ -45,10 +44,6 @@ public class Species extends AbstractData {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
     }
 
     public void setCategoryUid(String categoryUid) {

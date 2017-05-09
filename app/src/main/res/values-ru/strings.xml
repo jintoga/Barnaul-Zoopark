@@ -61,4 +61,6 @@
     <string name="animal_detail_date_of_birth">Дата рождения:</string>
     <string name="animal_detail_video">Видео</string>
     <string name="species_empty_error">Список видов животных пустой. Создайте вида животного!</string>
+    <string name="species_hint_name">название</string>
+    <string name="species_hint_description">описание</string>
 </resources>
