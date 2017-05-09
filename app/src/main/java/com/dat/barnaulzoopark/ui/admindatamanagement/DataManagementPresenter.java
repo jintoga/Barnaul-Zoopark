@@ -172,8 +172,11 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         if (animal.getImageHabitatMap() != null) {
             observables.add(deleteFile(prefix + "imageHabitatMap"));
         }
-        observables.add(deleteAnimalAttachmentsObservables(animal));
-        return Observable.concat(observables).flatMap(aVoid -> Observable.just(animal));
+        if (!animal.getPhotos().isEmpty()) {
+            observables.add(deleteAnimalAttachmentsObservables(animal));
+        }
+        return !observables.isEmpty() ? Observable.concat(observables)
+            .flatMap(aVoid -> Observable.just(animal)) : Observable.just(animal);
     }
 
     @NonNull
