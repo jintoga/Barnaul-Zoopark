@@ -65,7 +65,12 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onAttachIconClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE, false);
+        RecyclerView.ViewHolder viewHolder =
+            speciesEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+            Uri iconUri = ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
+            createChangePhotoDialog(REQUEST_BROWSE_IMAGE, iconUri != null);
+        }
     }
 
     @Override

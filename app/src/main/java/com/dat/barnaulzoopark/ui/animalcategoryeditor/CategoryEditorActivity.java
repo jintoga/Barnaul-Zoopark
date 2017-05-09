@@ -107,7 +107,12 @@ public class CategoryEditorActivity extends
 
     @Override
     public void onAttachIconClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE, false);
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            Uri iconUri = ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
+            createChangePhotoDialog(REQUEST_BROWSE_IMAGE, iconUri != null);
+        }
     }
 
     @Override

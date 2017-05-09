@@ -135,9 +135,6 @@ public class NewsItemEditorActivity extends
 
     @Override
     public void bindSelectedNews(@NonNull News selectedNews) {
-        if (selectedNews.getThumbnail() != null && !"".equals(selectedNews.getThumbnail())) {
-            setFilledWithPhoto(true);
-        }
         this.selectedNews = selectedNews;
         if (selectedNews.getThumbnail() != null) {
             thumbnailUri = Uri.parse(selectedNews.getThumbnail());
@@ -441,12 +438,12 @@ public class NewsItemEditorActivity extends
             return;
         }
         currentAttachmentPosition = position;
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT, false);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT);
     }
 
     @OnClick(R.id.thumbnailContainer)
     protected void thumbnailContainerClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL, true);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL, thumbnailUri != null);
     }
 
     @Override

@@ -241,7 +241,7 @@ public class AnimalEditorActivity extends
             return;
         }
         currentAttachmentPosition = position;
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT, false);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT);
     }
 
     @Override
@@ -312,17 +312,17 @@ public class AnimalEditorActivity extends
 
     @OnClick(R.id.bannerImageContainer)
     protected void bannerImageContainerClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_BANNER, true);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_BANNER, bannerImageUri != null);
     }
 
     @OnClick(R.id.habitatMapImageContainer)
     protected void habitatMapImageContainerClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_HABITAT_MAP, true);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_HABITAT_MAP, habitatMapImageUri != null);
     }
 
     @OnClick(R.id.attach)
     protected void attachIconClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ICON, false);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ICON, iconUri != null);
     }
 
     @OnClick(R.id.remove)
