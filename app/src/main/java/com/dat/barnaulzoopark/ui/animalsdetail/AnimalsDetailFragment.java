@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.ui.YoutubeVideoFragment;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -55,6 +56,8 @@ public class AnimalsDetailFragment extends Fragment {
     protected View photosContainer;
     @Bind(R.id.habitatMapContainer)
     protected View habitatMapContainer;
+    @Bind(R.id.videoContainer)
+    protected View videoContainer;
 
     public static AnimalsDetailFragment newInstance(@NonNull Animal animal) {
         Gson gson = new Gson();
@@ -122,6 +125,16 @@ public class AnimalsDetailFragment extends Fragment {
             habitatMapContainer.setVisibility(View.VISIBLE);
         } else {
             habitatMapContainer.setVisibility(View.GONE);
+        }
+        if (animal.getVideo() != null && !animal.getVideo().isEmpty()) {
+            YoutubeVideoFragment youtubeVideoFragment =
+                YoutubeVideoFragment.newInstance(animal.getVideo());
+            getChildFragmentManager().beginTransaction()
+                .replace(R.id.youtubeContainer, youtubeVideoFragment)
+                .commitAllowingStateLoss();
+            videoContainer.setVisibility(View.VISIBLE);
+        } else {
+            videoContainer.setVisibility(View.GONE);
         }
     }
 

@@ -93,5 +93,6 @@
     <string name="animal_detail_name">Name:</string>
     <string name="animal_detail_entry_date">Entry Date:</string>
     <string name="animal_detail_date_of_birth">Date of birth:</string>
+    <string name="animal_detail_video">Video</string>
     <string name="species_empty_error">List of species is empty. Create a species first!</string>
 </resources>

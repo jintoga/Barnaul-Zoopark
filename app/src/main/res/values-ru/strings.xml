@@ -59,5 +59,6 @@
     <string name="animal_detail_name">Имя:</string>
     <string name="animal_detail_entry_date">Дата вступления:</string>
     <string name="animal_detail_date_of_birth">Дата рождения:</string>
+    <string name="animal_detail_video">Видео</string>
     <string name="species_empty_error">Список видов животных пустой. Создайте вида животного!</string>
 </resources>
