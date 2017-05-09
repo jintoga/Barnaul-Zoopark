@@ -98,10 +98,10 @@ public class AnimalsDetailFragment extends Fragment {
         aboutOurAnimal.setText(animal.getAboutOurAnimal());
         name.setText(animal.getName());
         Drawable drawable =
-            animal.isMale() ? ContextCompat.getDrawable(getContext(), R.drawable.ic_gender_male)
+            animal.isGender() ? ContextCompat.getDrawable(getContext(), R.drawable.ic_gender_male)
                 : ContextCompat.getDrawable(getContext(), R.drawable.ic_gender_female);
         gender.setImageDrawable(drawable);
-        if (animal.isMale()) {
+        if (animal.isGender()) {
             gender.setColorFilter(ContextCompat.getColor(getContext(), R.color.blue));
         } else {
             gender.setColorFilter(ContextCompat.getColor(getContext(), R.color.pink));

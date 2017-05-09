@@ -19,7 +19,7 @@ public class Animal extends AbstractData {
     private String photoSmall;
     private String photoBig;
     private String aboutOurAnimal;
-    private boolean gender;
+    private boolean gender; //Male - true / Female - false
     private Long timeEnter;
     private Long dateOfBirth;
     private Map<String, String> photos;
@@ -64,12 +64,7 @@ public class Animal extends AbstractData {
         return aboutOurAnimal;
     }
 
-    @Exclude
-    public boolean isMale() {
-        return isGender();
-    }
-
-    private boolean isGender() {
+    public boolean isGender() {
         return gender;
     }
 
