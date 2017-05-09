@@ -16,6 +16,8 @@ import com.google.firebase.storage.StorageReference;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
+import java.util.ArrayList;
+import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.functions.Action1;
@@ -68,12 +70,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         }
         final DatabaseReference finalDatabaseReference = databaseReference;
         RxFirebaseDatabase.observeSingleValueEvent(childDatabaseReference, clazz)
-            .flatMap(new Func1<T, Observable<T>>() {
-                @Override
-                public Observable<T> call(T data) {
-                    return getDeleteIconObservable(data);
-                }
-            })
+            .flatMap(o -> getDeleteIconObservable(data))
             .doOnNext((Action1<T>) this::deleteUidInChild)
             .subscribe(new Observer<T>() {
                 @Override
@@ -143,7 +140,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
     private <T extends AbstractData> Observable getDeleteIconObservable(@NonNull final T data) {
         String prefix;
         if (data instanceof Animal) {
-            prefix = BZFireBaseApi.animal;
+            return getDeleteAnimalImagesObservable((Animal) data);
         } else if (data instanceof Species) {
             prefix = BZFireBaseApi.animal_species;
         } else {
@@ -162,6 +159,33 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         });
     }
 
+    @NonNull
+    private Observable<Animal> getDeleteAnimalImagesObservable(@NonNull Animal animal) {
+        final String prefix = BZFireBaseApi.animal + "/" + animal.getUid() + "/";
+        List<Observable<Void>> observables = new ArrayList<>();
+        if (animal.getPhotoSmall() != null) {
+            observables.add(deleteFile(prefix + "photoSmall"));
+        }
+        if (animal.getPhotoBig() != null) {
+            observables.add(deleteFile(prefix + "photoBig"));
+        }
+        if (animal.getImageHabitatMap() != null) {
+            observables.add(deleteFile(prefix + "imageHabitatMap"));
+        }
+        observables.add(deleteAnimalAttachmentsObservables(animal));
+        return Observable.concat(observables).flatMap(aVoid -> Observable.just(animal));
+    }
+
+    @NonNull
+    private Observable<Void> deleteAnimalAttachmentsObservables(@NonNull Animal animal) {
+        return Observable.from(animal.getPhotos().keySet()).flatMap(attachmentUid -> {
+            final String attachmentPath =
+                BZFireBaseApi.animal + "/" + animal.getUid() + "/photos/" + attachmentUid;
+            return deleteFile(attachmentPath);
+        });
+    }
+
+    @NonNull
     private Observable<Void> deleteFile(@NonNull String filePath) {
         StorageReference storageReference = storage.getReference().child(filePath);
         return RxFirebaseStorage.delete(storageReference);
