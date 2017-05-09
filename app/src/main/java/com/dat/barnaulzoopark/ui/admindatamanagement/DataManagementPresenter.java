@@ -173,14 +173,14 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             observables.add(deleteFile(prefix + "imageHabitatMap"));
         }
         if (!animal.getPhotos().isEmpty()) {
-            observables.add(deleteAnimalAttachmentsObservables(animal));
+            observables.add(deleteAnimalAttachmentsObservable(animal));
         }
         return !observables.isEmpty() ? Observable.concat(observables)
             .flatMap(aVoid -> Observable.just(animal)) : Observable.just(animal);
     }
 
     @NonNull
-    private Observable<Void> deleteAnimalAttachmentsObservables(@NonNull Animal animal) {
+    private Observable<Void> deleteAnimalAttachmentsObservable(@NonNull Animal animal) {
         return Observable.from(animal.getPhotos().keySet()).flatMap(attachmentUid -> {
             final String attachmentPath =
                 BZFireBaseApi.animal + "/" + animal.getUid() + "/photos/" + attachmentUid;
