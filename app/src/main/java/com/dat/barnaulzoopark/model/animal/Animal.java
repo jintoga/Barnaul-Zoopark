@@ -1,5 +1,7 @@
 package com.dat.barnaulzoopark.model.animal;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -18,9 +20,9 @@ public class Animal extends AbstractData {
     private String photoBig;
     private String aboutOurAnimal;
     private boolean gender;
-    private long timeEnter;
-    private long dateOfBirth;
-    private Map<String, String> photos = new HashMap<>();
+    private Long timeEnter;
+    private Long dateOfBirth;
+    private Map<String, String> photos;
     private String video;
     private String imageHabitatMap;
 
@@ -62,7 +64,12 @@ public class Animal extends AbstractData {
         return aboutOurAnimal;
     }
 
-    public boolean isGender() {
+    @Exclude
+    public boolean isMale() {
+        return isGender();
+    }
+
+    private boolean isGender() {
         return gender;
     }
 
@@ -70,12 +77,14 @@ public class Animal extends AbstractData {
         return timeEnter;
     }
 
-    public long getDateOfBirth() {
+    @Nullable
+    public Long getDateOfBirth() {
         return dateOfBirth;
     }
 
+    @NonNull
     public Map<String, String> getPhotos() {
-        return photos;
+        return photos == null ? photos = new HashMap<>() : photos;
     }
 
     public void setSpeciesUid(String speciesUid) {

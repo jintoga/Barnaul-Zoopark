@@ -53,4 +53,10 @@
     <string name="create_animal">Create animal</string>
     <string name="male">Мужское</string>
     <string name="female">Женское</string>
+    <string name="habitat">— Ареал обитания</string>
+    <string name="animal_detail_about_animal">О питомце</string>
+    <string name="animal_detail_photos">Фотографии животного</string>
+    <string name="animal_detail_name">Имя:</string>
+    <string name="animal_detail_entry_date">Дата вступления:</string>
+    <string name="animal_detail_date_of_birth">Дата рождения:</string>
 </resources>

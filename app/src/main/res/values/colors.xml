@@ -31,6 +31,8 @@
     <color name="black_transparent_10">#1A000000</color>
 
     <color name="yellow">#ffc436</color>
+    <color name="pink">#ff36c9</color>
+    <color name="blue">#3636ff</color>
 
     <color name="primary_transparent_70">#B32196F3</color>
     <color name="primary_transparent_35">#592196F3</color>

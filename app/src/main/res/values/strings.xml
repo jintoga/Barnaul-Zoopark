@@ -87,4 +87,10 @@
     <string name="female">Female</string>
     <string name="male">Male</string>
     <string name="youtube_prefix">youtube.com/watch?v=</string>
+    <string name="habitat">— Habitat</string>
+    <string name="animal_detail_about_animal">About animal</string>
+    <string name="animal_detail_photos">Photos</string>
+    <string name="animal_detail_name">Name:</string>
+    <string name="animal_detail_entry_date">Entry Date:</string>
+    <string name="animal_detail_date_of_birth">Date of birth:</string>
 </resources>

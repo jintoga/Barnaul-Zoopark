@@ -1,15 +1,14 @@
 package com.dat.barnaulzoopark.ui.animalsdetail;
 
-import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.Photo;
+import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
  */
 public class AnimalsImagesHorizontalAdapter
     extends RecyclerView.Adapter<AnimalsImagesHorizontalAdapter.ViewHolder> {
-    private List<Photo> data = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,8 +29,8 @@ public class AnimalsImagesHorizontalAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (data.get(position) != null) {
-            final Photo photo = data.get(position);
-            holder.bindData(photo);
+            final String photoUrl = data.get(position);
+            holder.bindData(photoUrl);
         }
     }
 
@@ -45,7 +44,7 @@ public class AnimalsImagesHorizontalAdapter
         return position;
     }
 
-    public void setData(List<Photo> photos) {
+    public void setData(List<String> photos) {
         data.clear();
         data.addAll(photos);
         notifyDataSetChanged();
@@ -53,15 +52,15 @@ public class AnimalsImagesHorizontalAdapter
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.thumbnail)
-        protected ImageView thumbnail;
+        protected SimpleDraweeView thumbnail;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindData(final Photo photo) {
-            thumbnail.setImageURI(Uri.parse(photo.getUrl()));
+        public void bindData(final @NonNull String photoUrl) {
+            thumbnail.setImageURI(photoUrl);
         }
     }
 }

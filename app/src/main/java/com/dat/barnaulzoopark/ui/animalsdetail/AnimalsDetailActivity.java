@@ -41,7 +41,6 @@ public class AnimalsDetailActivity extends
 
     @Bind(R.id.materialViewPager)
     protected MaterialViewPager materialViewPager;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,7 @@ public class AnimalsDetailActivity extends
     }
 
     private void init() {
-        toolbar = materialViewPager.getToolbar();
+        Toolbar toolbar = materialViewPager.getToolbar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
