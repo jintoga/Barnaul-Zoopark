@@ -377,7 +377,7 @@ public class AnimalEditorActivity extends
                 bannerImageUri, habitatMapImageUri, attachmentAdapter.getData(),
                 video.getText().toString());
         } else {
-
+            onCreatingFailure(getString(R.string.species_empty_error));
         }
     }
 }

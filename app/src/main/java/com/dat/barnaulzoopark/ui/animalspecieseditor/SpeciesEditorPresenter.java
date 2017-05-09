@@ -15,7 +15,6 @@ import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import rx.Observable;
 import rx.Observer;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
@@ -56,22 +55,16 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
         Species species = new Species(uid, name, description, categoryUid);
         speciesItemReference.setValue(species);
         RxFirebaseDatabase.observeSingleValueEvent(speciesItemReference, Species.class)
-            .subscribe(new Action1<Species>() {
-                @Override
-                public void call(Species species) {
-                    if (getView() != null) {
-                        getView().onCreatingSpeciesSuccess();
-                    }
-                    if (species != null) {
-                        uploadIcon(species, iconUri);
-                    }
+            .subscribe(species1 -> {
+                if (getView() != null) {
+                    getView().onCreatingSpeciesSuccess();
                 }
-            }, new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    if (getView() != null) {
-                        getView().onCreatingSpeciesFailure(throwable.getLocalizedMessage());
-                    }
+                if (species1 != null) {
+                    uploadIcon(species1, iconUri);
+                }
+            }, throwable -> {
+                if (getView() != null) {
+                    getView().onCreatingSpeciesFailure(throwable.getLocalizedMessage());
                 }
             });
     }

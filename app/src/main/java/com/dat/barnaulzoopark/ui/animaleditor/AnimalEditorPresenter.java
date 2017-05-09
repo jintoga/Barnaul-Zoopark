@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.animal.Animal;
-import com.dat.barnaulzoopark.model.animal.Species;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -76,7 +75,6 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         }
         final String filePath = BZFireBaseApi.animal + "/" + animal.getUid() + "/";
         RxFirebaseDatabase.observeSingleValueEvent(animalItemReference, Animal.class)
-            .doOnNext(this::addAnimalToSpecies)
             .flatMap(animal1 -> {
                 String path = filePath + "photoSmall";
                 return uploadImage(animal1, iconUri, path, "photoSmall");
@@ -129,19 +127,6 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         DatabaseReference animalItemPhotoReference = animalItemReference.child("photos");
         animalItemPhotoReference.child(attachmentUid).setValue(uploadedUri.toString());
         return Observable.just(animal);
-    }
-
-    private void addAnimalToSpecies(@NonNull Animal animal) {
-        DatabaseReference speciesDatabaseReference =
-            database.getReference().child(BZFireBaseApi.animal_species);
-        final DatabaseReference speciesItemReference =
-            speciesDatabaseReference.child(animal.getSpeciesUid());
-        RxFirebaseDatabase.observeSingleValueEvent(speciesItemReference, Species.class)
-            .doOnNext(species -> {
-                species.getAnimals().put(animal.getUid(), animal.getUid());
-                speciesDatabaseReference.child(animal.getSpeciesUid()).setValue(species);
-            })
-            .subscribe();
     }
 
     @NonNull

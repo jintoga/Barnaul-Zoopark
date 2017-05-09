@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
@@ -117,19 +116,6 @@ public class AnimalsViewPageFragment extends
     @Override
     public void onSpeciesSelected(@NonNull Species species) {
         Log.d("onSpeciesSelected", species.getUid());
-        if (!species.getAnimals().isEmpty()) {
-            AnimalSpeciesActivity.start(getActivity(), species);
-        } else {
-            Toast.makeText(getContext(),
-                String.format("Selected species(%s) has no animal", species.getName()),
-                Toast.LENGTH_SHORT).show();
-        }
-        /*if (species.getAnimals() != null && !species.getAnimals().isEmpty()) {
-            AnimalsDetailActivity.start(getActivity(), species.getUid());
-        } else {
-            Toast.makeText(getContext(),
-                String.format("Selected species(%s) has no animal", species.getName()),
-                Toast.LENGTH_SHORT).show();
-        }*/
+        AnimalSpeciesActivity.start(getActivity(), species);
     }
 }

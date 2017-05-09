@@ -85,7 +85,7 @@ public class AnimalsDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        aboutOurAnimal.postDelayed(this::bindData, 500);
+        bindData();
     }
 
     private void bindData() {

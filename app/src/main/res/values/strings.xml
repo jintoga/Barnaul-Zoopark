@@ -81,7 +81,7 @@
     <string name="edit_species">Edit species</string>
     <string name="create_species">Create species</string>
     <string name="select">Select</string>
-    <string name="categories_empty_error">List of categories is empty. Create a category!</string>
+    <string name="categories_empty_error">List of categories is empty. Create a category first!</string>
     <string name="edit_animal">Edit animal</string>
     <string name="create_animal">Create animal</string>
     <string name="female">Female</string>
@@ -93,4 +93,5 @@
     <string name="animal_detail_name">Name:</string>
     <string name="animal_detail_entry_date">Entry Date:</string>
     <string name="animal_detail_date_of_birth">Date of birth:</string>
+    <string name="species_empty_error">List of species is empty. Create a species first!</string>
 </resources>
