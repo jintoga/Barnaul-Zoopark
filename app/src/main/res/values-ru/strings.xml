@@ -65,4 +65,5 @@
     <string name="species_hint_description">описание</string>
     <string name="edit_successful">Редактирование прошло успешно</string>
     <string name="species">Виды животных</string>
+    <string name="remove_child_from_category_title">Удалить \"%s\" из текущей категории?</string>
 </resources>

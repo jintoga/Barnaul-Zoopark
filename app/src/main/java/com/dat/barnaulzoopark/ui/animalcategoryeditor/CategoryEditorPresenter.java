@@ -7,19 +7,14 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.utils.UriUtil;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
-import java.util.ArrayList;
-import java.util.List;
 import rx.Observable;
 
 /**
@@ -58,6 +53,14 @@ class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.Vi
                 getView().highlightRequiredFields();
             }
         }
+    }
+
+    @NonNull
+    @Override
+    public Query getChildSpeciesReference(@Nullable String selectedCategoryUid) {
+        DatabaseReference databaseReference =
+            database.getReference().child(BZFireBaseApi.animal_species);
+        return databaseReference.orderByChild("categoryUid").equalTo(selectedCategoryUid);
     }
 
     private void edit(@NonNull Category selectedCategory, @NonNull String name,
@@ -122,7 +125,6 @@ class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.Vi
             getView().showLoadingProgress();
         }
         RxFirebaseDatabase.observeSingleValueEvent(categoryReference, Category.class)
-            .doOnNext(category -> loadChildrenSpecies(selectedCategoryUid))
             .subscribe(selectedCategory -> {
                 if (getView() != null) {
                     getView().bindSelectedCategory(selectedCategory);
@@ -138,28 +140,13 @@ class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.Vi
             });
     }
 
-    private void loadChildrenSpecies(@NonNull String selectedCategoryUid) {
-        DatabaseReference databaseReference =
-            database.getReference().child(BZFireBaseApi.animal_species);
-        Query query = databaseReference.orderByChild("categoryUid").equalTo(selectedCategoryUid);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Species> speciesList = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Species species = snapshot.getValue(Species.class);
-                    speciesList.add(species);
-                }
-                if (getView() != null) {
-                    getView().bindSpecies(speciesList);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                if (getView() != null) {
-                    getView().onLoadChildrenSpeciesError(databaseError.getMessage());
-                }
+    @Override
+    public void removeChildFromCategory(@NonNull Species species) {
+        species.setCategoryUid(null);
+        DatabaseReference databaseReference = database.getReference(BZFireBaseApi.animal_species);
+        databaseReference.child(species.getUid()).setValue(species).addOnFailureListener(e -> {
+            if (getView() != null) {
+                getView().onRemoveChildError(e.getMessage());
             }
         });
     }

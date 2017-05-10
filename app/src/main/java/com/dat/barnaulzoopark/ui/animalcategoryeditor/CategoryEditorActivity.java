@@ -26,8 +26,6 @@ import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorAda
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorHeaderAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by DAT on 4/23/2017.
@@ -36,7 +34,8 @@ import java.util.List;
 public class CategoryEditorActivity extends
     BaseMvpPhotoEditActivity<CategoryEditorContract.View, CategoryEditorContract.UserActionListener>
     implements CategoryEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener,
-    CategoryEditorHeaderAdapter.IconClickListener {
+    CategoryEditorHeaderAdapter.IconClickListener,
+    CategoryEditorAdapter.RemoveChildFromCategoryListener {
     private static final int REQUEST_BROWSE_IMAGE = 111;
     private static final String TAG = CategoryEditorActivity.class.getName();
 
@@ -45,7 +44,7 @@ public class CategoryEditorActivity extends
     protected Toolbar toolbar;
     @Bind(R.id.categoryEditorContent)
     protected RecyclerView categoryEditorContent;
-    CategoryEditorAdapter categoryEditorAdapter;
+    private CategoryEditorAdapter categoryEditorAdapter;
 
     private Category selectedCategory;
 
@@ -71,22 +70,6 @@ public class CategoryEditorActivity extends
         if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
             ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).bindSelectedCategory(
                 selectedCategory);
-        }
-    }
-
-    @Override
-    public void bindSpecies(@NonNull List<Species> speciesList) {
-        RecyclerView.ViewHolder viewHolder =
-            categoryEditorContent.findViewHolderForAdapterPosition(0);
-        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
-            categoryEditorAdapter.setData(speciesList);
-            if (categoryEditorAdapter.getItemCount() == 0) {
-                ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).setChildrenListHeader(
-                    false);
-            } else {
-                ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).setChildrenListHeader(
-                    true);
-            }
         }
     }
 
@@ -165,6 +148,12 @@ public class CategoryEditorActivity extends
     }
 
     @Override
+    public void onRemoveChildError(@NonNull String message) {
+        Log.d(TAG, "onRemoveChildError");
+        showSnackBar(message);
+    }
+
+    @Override
     public void onAttachIconClicked() {
         RecyclerView.ViewHolder viewHolder =
             categoryEditorContent.findViewHolderForAdapterPosition(0);
@@ -172,6 +161,15 @@ public class CategoryEditorActivity extends
             Uri iconUri = ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
             createChangePhotoDialog(REQUEST_BROWSE_IMAGE, iconUri != null);
         }
+    }
+
+    @Override
+    public void onRemoveChildFromCategoryClicked(@NonNull Species species) {
+        String title =
+            String.format(getString(R.string.remove_child_from_category_title), species.getName());
+        BZDialogBuilder.createConfirmDialog(this, title, getString(R.string.remove))
+            .onPositive((dialog, which) -> presenter.removeChildFromCategory(species))
+            .show();
     }
 
     @Override
@@ -226,25 +224,27 @@ public class CategoryEditorActivity extends
     }
 
     private void init() {
-        categoryEditorContent.setLayoutManager(new LinearLayoutManager(this));
-        categoryEditorAdapter = new CategoryEditorAdapter();
-        categoryEditorAdapter.setData(new ArrayList<>());
-        RecyclerView.Adapter wrappedAdapter =
-            new CategoryEditorHeaderAdapter(categoryEditorAdapter, this);
-        wrappedAdapter.notifyDataSetChanged();
-        categoryEditorContent.setAdapter(wrappedAdapter);
-
         String selectedCategoryUid = getIntent().getStringExtra(EXTRA_SELECTED_CATEGORY_UID);
         if (selectedCategoryUid != null) {
-            loadSelectedCategory(selectedCategoryUid);
+            presenter.loadSelectedCategory(selectedCategoryUid);
             updateTitle(getString(R.string.edit_category));
         } else {
             updateTitle(getString(R.string.create_category));
         }
+        initRecyclerView(selectedCategoryUid);
     }
 
-    private void loadSelectedCategory(@NonNull String selectedCategoryUid) {
-        presenter.loadSelectedCategory(selectedCategoryUid);
+    private void initRecyclerView(@Nullable String selectedCategoryUid) {
+        categoryEditorContent.setLayoutManager(new LinearLayoutManager(this));
+        categoryEditorAdapter =
+            new CategoryEditorAdapter(Species.class, R.layout.item_category_editor,
+                CategoryEditorAdapter.ViewHolder.class,
+                presenter.getChildSpeciesReference(selectedCategoryUid), this);
+
+        RecyclerView.Adapter wrappedAdapter =
+            new CategoryEditorHeaderAdapter(categoryEditorAdapter, this);
+        wrappedAdapter.notifyDataSetChanged();
+        categoryEditorContent.setAdapter(wrappedAdapter);
     }
 
     private void updateTitle(@NonNull String title) {

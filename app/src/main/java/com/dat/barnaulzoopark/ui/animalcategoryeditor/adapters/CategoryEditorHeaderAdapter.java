@@ -46,12 +46,9 @@ public class CategoryEditorHeaderAdapter extends
 
     @Override
     public void onBindHeaderItemViewHolder(HeaderViewHolder holder, int localPosition) {
-        holder.attach.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (iconClickListener != null) {
-                    iconClickListener.onAttachIconClicked();
-                }
+        holder.attach.setOnClickListener(v -> {
+            if (iconClickListener != null) {
+                iconClickListener.onAttachIconClicked();
             }
         });
         holder.remove.setOnClickListener(v -> {
