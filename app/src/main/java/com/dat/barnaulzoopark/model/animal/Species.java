@@ -67,4 +67,14 @@ public class Species extends AbstractData {
     public String getId() {
         return getUid();
     }
+
+    public void clearIcon() {
+        this.icon = null;
+    }
+
+    public void update(String categoryUid, String name, String description) {
+        this.categoryUid = categoryUid;
+        this.name = name;
+        this.description = description;
+    }
 }

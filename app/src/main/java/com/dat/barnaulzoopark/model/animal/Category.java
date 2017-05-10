@@ -70,7 +70,7 @@ public class Category extends AbstractData {
         this.description = description;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void clearIcon() {
+        this.icon = null;
     }
 }

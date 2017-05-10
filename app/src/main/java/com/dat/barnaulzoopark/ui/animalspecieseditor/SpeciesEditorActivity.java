@@ -115,11 +115,6 @@ public class SpeciesEditorActivity extends
     }
 
     @Override
-    public void onCreatingSpeciesSuccess() {
-        Log.d(TAG, "onCreatingSpeciesSuccess");
-    }
-
-    @Override
     public void onCreatingComplete() {
         Log.d(TAG, "onCreatingComplete");
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -130,20 +125,40 @@ public class SpeciesEditorActivity extends
     }
 
     @Override
+    public void onEditError(@NonNull String localizedMessage) {
+        Log.d(TAG, "onEditError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onEditSuccess() {
+        Log.d(TAG, "onEditSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void showEditingProgress() {
+        Log.d(TAG, "showEditingProgress");
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, "Updating animal species...");
+        }
+    }
+
+    @Override
     public void onLoadCategoriesError(@NonNull String msg) {
         Log.d(TAG, "onLoadCategoriesError");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         showSnackBar(msg);
-    }
-
-    @Override
-    public void onLoadCategoriesSuccess() {
-        Log.d(TAG, "onLoadCategoriesSuccess");
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
     }
 
     @Override
@@ -161,15 +176,6 @@ public class SpeciesEditorActivity extends
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
-    }
-
-    @Override
-    public void onUploadFailure(@NonNull String msg) {
-        Log.d(TAG, "onUploadFailure" + msg);
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-        showSnackBar(msg);
     }
 
     @Override
@@ -198,11 +204,6 @@ public class SpeciesEditorActivity extends
             progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
                 "Loading selected animal species...");
         }
-    }
-
-    @Override
-    public void uploadingIconProgress() {
-        Log.d(TAG, "uploadingIconProgress");
     }
 
     @Override
@@ -298,13 +299,32 @@ public class SpeciesEditorActivity extends
                 if (selectedSpecies == null) {
                     createSpecies();
                 } else {
-                    //ToDo: implement edit
+                    editCategory();
                 }
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editCategory() {
+        RecyclerView.ViewHolder viewHolder =
+            speciesEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+            String categoryUid =
+                ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getCategoryId();
+            if (categoryUid != null) {
+                String name = ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getName();
+                String description =
+                    ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getDescription();
+                Uri iconUri =
+                    ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
+                presenter.editCategory(selectedSpecies, name, description, categoryUid, iconUri);
+            } else {
+                onCreatingSpeciesFailure(getString(R.string.categories_empty_error));
+            }
+        }
     }
 
     private void createSpecies() {

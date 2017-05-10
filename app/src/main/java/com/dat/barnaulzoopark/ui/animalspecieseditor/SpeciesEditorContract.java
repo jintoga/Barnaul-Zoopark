@@ -22,35 +22,37 @@ interface SpeciesEditorContract {
 
         void onCreatingSpeciesFailure(@NonNull String localizedMessage);
 
-        void onCreatingSpeciesSuccess();
-
         void onCreatingComplete();
 
-        void onLoadCategoriesError(@NonNull String localizedMessage);
+        void showCreatingProgress();
 
-        void onLoadCategoriesSuccess();
+        void onLoadCategoriesError(@NonNull String localizedMessage);
 
         void onLoadSpeciesError(@NonNull String localizedMessage);
 
         void onLoadSpeciesSuccess();
 
-        void onUploadFailure(@NonNull String localizedMessage);
-
-        void showCreatingProgress();
-
         void highlightRequiredFields();
 
-        void showLoadingProgress();
+        void showEditingProgress();
 
-        void uploadingIconProgress();
+        void onEditError(@NonNull String localizedMessage);
+
+        void onEditSuccess();
+
+        void showLoadingProgress();
     }
 
     interface UserActionListener extends MvpPresenter<SpeciesEditorContract.View> {
         void createSpecies(@NonNull String name, @NonNull String description,
             @NonNull String categoryUid, @Nullable Uri iconUri);
 
+        void editCategory(@NonNull Species selectedSpecies, @NonNull String name,
+            @NonNull String description, @NonNull String categoryUid, @Nullable Uri iconUri);
+
         void loadCategories();
 
+        @NonNull
         Query getChildAnimalsReference(@Nullable String selectedSpeciesUid);
 
         void loadSelectedSpecies(@NonNull String selectedSpeciesUid);

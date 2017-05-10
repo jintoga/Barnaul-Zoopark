@@ -58,6 +58,9 @@ class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.Vi
     @NonNull
     @Override
     public Query getChildSpeciesReference(@Nullable String selectedCategoryUid) {
+        if (selectedCategoryUid == null) {
+            selectedCategoryUid = "";
+        }
         DatabaseReference databaseReference =
             database.getReference().child(BZFireBaseApi.animal_species);
         return databaseReference.orderByChild("categoryUid").equalTo(selectedCategoryUid);
@@ -106,12 +109,12 @@ class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.Vi
     }
 
     @NonNull
-    private Observable<Category> deleteIcon(Category selectedCategory,
-        DatabaseReference categoryItemReference, String filePath) {
-        StorageReference newsStorageReference = storage.getReference().child(filePath);
-        return RxFirebaseStorage.delete(newsStorageReference).flatMap(aVoid -> {
+    private Observable<Category> deleteIcon(@NonNull Category selectedCategory,
+        @NonNull DatabaseReference categoryItemReference, @NonNull String filePath) {
+        StorageReference categoryStorageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(categoryStorageReference).flatMap(aVoid -> {
             //set icon Value in Selected category to null
-            selectedCategory.setIcon(null);
+            selectedCategory.clearIcon();
             categoryItemReference.setValue(selectedCategory);
             return Observable.just(selectedCategory);
         });

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
+import com.dat.barnaulzoopark.utils.UriUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +22,6 @@ import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
-import rx.Observer;
 import rx.functions.Func1;
 
 /**
@@ -42,15 +42,78 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
     public void createSpecies(@NonNull String name, @NonNull String description,
         @NonNull String categoryUid, @Nullable Uri iconUri) {
         if (!"".equals(name) && !"".equals(description) && !"".equals(categoryUid)) {
-            if (getView() != null) {
-                getView().showCreatingProgress();
-            }
             create(name, description, categoryUid, iconUri);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
             }
         }
+    }
+
+    @Override
+    public void editCategory(@NonNull Species selectedSpecies, @NonNull String name,
+        @NonNull String description, @NonNull String categoryUid, @Nullable Uri iconUri) {
+        if (!"".equals(name) && !"".equals(description)) {
+            edit(selectedSpecies, categoryUid, name, description, iconUri);
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
+        }
+    }
+
+    private void edit(@NonNull Species selectedSpecies, @NonNull String categoryUid,
+        @NonNull String name, @NonNull String description, @Nullable Uri iconUri) {
+        DatabaseReference databaseReference =
+            database.getReference().child(BZFireBaseApi.animal_species);
+        final DatabaseReference speciesItemReference =
+            databaseReference.child(selectedSpecies.getUid());
+        selectedSpecies.update(categoryUid, name, description);
+        speciesItemReference.setValue(selectedSpecies);
+        if (getView() != null) {
+            getView().showEditingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(speciesItemReference, Category.class)
+            .flatMap(category -> updateIcon(selectedSpecies, iconUri, speciesItemReference))
+            .doOnCompleted(() -> {
+                if (getView() != null) {
+                    getView().onEditSuccess();
+                }
+            })
+            .doOnError(throwable -> {
+                if (getView() != null) {
+                    getView().onEditError(throwable.getLocalizedMessage());
+                }
+            })
+            .subscribe();
+    }
+
+    @NonNull
+    private Observable<Species> updateIcon(@NonNull Species selectedSpecies, @Nullable Uri iconUri,
+        @NonNull DatabaseReference speciesItemReference) {
+        String filePath =
+            BZFireBaseApi.animal_species + "/" + selectedSpecies.getUid() + "/" + "icon";
+        if (iconUri == null && selectedSpecies.getIcon() != null) {
+            //delete
+            return deleteIcon(selectedSpecies, speciesItemReference, filePath);
+        } else if (iconUri != null && UriUtil.isLocalFile(iconUri)) {
+            //update
+            return uploadIcon(selectedSpecies, iconUri);
+        } else {
+            return Observable.just(selectedSpecies);
+        }
+    }
+
+    @NonNull
+    private Observable<Species> deleteIcon(@NonNull Species selectedSpecies,
+        @NonNull DatabaseReference speciesItemReference, @NonNull String filePath) {
+        StorageReference speciesStorageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(speciesStorageReference).flatMap(aVoid -> {
+            //set icon Value in Selected category to null
+            selectedSpecies.clearIcon();
+            speciesItemReference.setValue(selectedSpecies);
+            return Observable.just(selectedSpecies);
+        });
     }
 
     public void loadCategories() {
@@ -85,70 +148,53 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
         final DatabaseReference speciesItemReference = databaseReference.child(uid);
         Species species = new Species(uid, name, description, categoryUid);
         speciesItemReference.setValue(species);
+        if (getView() != null) {
+            getView().showCreatingProgress();
+        }
         RxFirebaseDatabase.observeSingleValueEvent(speciesItemReference, Species.class)
-            .subscribe(species1 -> {
+            .flatMap(species1 -> uploadIcon(species1, iconUri))
+            .doOnCompleted(() -> {
                 if (getView() != null) {
-                    getView().onCreatingSpeciesSuccess();
+                    getView().onCreatingComplete();
                 }
-                if (species1 != null) {
-                    uploadIcon(species1, iconUri);
-                }
-            }, throwable -> {
+            })
+            .doOnError(throwable -> {
                 if (getView() != null) {
                     getView().onCreatingSpeciesFailure(throwable.getLocalizedMessage());
                 }
-            });
+            })
+            .subscribe();
     }
 
-    private void uploadIcon(@NonNull Species species, @Nullable Uri iconUri) {
+    @NonNull
+    private Observable<Species> uploadIcon(@NonNull Species species, @Nullable Uri iconUri) {
         if (iconUri == null) {
-            if (getView() != null) {
-                getView().onCreatingComplete();
-            }
+            return Observable.just(species);
         } else {
-            getObservableUploadIcon(species, iconUri).subscribe(new Observer<Species>() {
-                @Override
-                public void onCompleted() {
-                    if (getView() != null) {
-                        getView().onCreatingComplete();
-                    }
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    if (getView() != null) {
-                        getView().onUploadFailure(e.getLocalizedMessage());
-                    }
-                }
-
-                @Override
-                public void onNext(Species species) {
-
-                }
-            });
+            return getObservableUploadIcon(species, iconUri);
         }
     }
 
+    @NonNull
     private Observable<Species> getObservableUploadIcon(@NonNull final Species species,
         @NonNull Uri uri) {
-        if (getView() != null) {
-            getView().uploadingIconProgress();
-        }
         String filePath = BZFireBaseApi.animal_species + "/" + species.getUid() + "/" + "icon";
         return uploadImage(filePath, uri).flatMap(new Func1<Uri, Observable<Species>>() {
             @Override
             public Observable<Species> call(Uri uploadedUri) {
-                return setIconToSpecies(species.getUid(), uploadedUri);
+                return setIconToSpecies(species, uploadedUri);
             }
         });
     }
 
-    private Observable<Species> setIconToSpecies(@NonNull String uid, @NonNull Uri uploadedUri) {
+    @NonNull
+    private Observable<Species> setIconToSpecies(@NonNull Species species,
+        @NonNull Uri uploadedUri) {
         DatabaseReference databaseReference =
             database.getReference().child(BZFireBaseApi.animal_species);
-        DatabaseReference speciesReference = databaseReference.child(uid);
+        DatabaseReference speciesReference = databaseReference.child(species.getUid());
         speciesReference.child("icon").setValue(uploadedUri.toString());
-        return RxFirebaseDatabase.observeSingleValueEvent(databaseReference, Species.class);
+        return Observable.just(species);
     }
 
     private Observable<Uri> uploadImage(@NonNull final String fileName, @NonNull Uri uri) {
@@ -163,8 +209,12 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
             });
     }
 
+    @NonNull
     @Override
     public Query getChildAnimalsReference(@Nullable String selectedSpeciesUid) {
+        if (selectedSpeciesUid == null) {
+            selectedSpeciesUid = "";
+        }
         DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.animal);
         return databaseReference.orderByChild("speciesUid").equalTo(selectedSpeciesUid);
     }
