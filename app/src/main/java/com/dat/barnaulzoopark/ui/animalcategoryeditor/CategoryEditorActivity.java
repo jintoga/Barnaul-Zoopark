@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
+import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorAdapter;
@@ -26,6 +27,7 @@ import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorHea
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by DAT on 4/23/2017.
@@ -70,6 +72,11 @@ public class CategoryEditorActivity extends
             ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).bindSelectedCategory(
                 selectedCategory);
         }
+    }
+
+    @Override
+    public void bindSpecies(@NonNull List<Species> speciesList) {
+        categoryEditorAdapter.setData(speciesList);
     }
 
     @Override
@@ -135,6 +142,15 @@ public class CategoryEditorActivity extends
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onLoadChildrenSpeciesError(@NonNull String message) {
+        Log.d(TAG, "onLoadChildrenSpeciesError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(message);
     }
 
     @Override
@@ -266,6 +282,8 @@ public class CategoryEditorActivity extends
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                //ToDO: implement discard changes
+                finish();
                 break;
             case R.id.save:
                 if (selectedCategory == null) {

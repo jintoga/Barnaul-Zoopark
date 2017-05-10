@@ -4,8 +4,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.model.animal.Category;
+import com.dat.barnaulzoopark.model.animal.Species;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import java.util.List;
 
 /**
  * Created by DAT on 4/23/2017.
@@ -14,6 +16,8 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 interface CategoryEditorContract {
     interface View extends MvpView {
         void bindSelectedCategory(@NonNull Category selectedCategory);
+
+        void bindSpecies(@NonNull List<Species> speciesList);
 
         void highlightRequiredFields();
 
@@ -28,6 +32,8 @@ interface CategoryEditorContract {
         void onLoadCategoryError(@NonNull String localizedMessage);
 
         void onLoadCategorySuccess();
+
+        void onLoadChildrenSpeciesError(@NonNull String message);
 
         void showCreatingProgress();
 
