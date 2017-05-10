@@ -19,7 +19,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
-import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.adapters.CategoryEditorAdapter;
@@ -63,6 +62,17 @@ public class CategoryEditorActivity extends
     }
 
     @Override
+    public void bindSelectedCategory(@NonNull Category selectedCategory) {
+        this.selectedCategory = selectedCategory;
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).bindSelectedCategory(
+                selectedCategory);
+        }
+    }
+
+    @Override
     public void highlightRequiredFields() {
         Log.d(TAG, "highlightRequiredFields");
         RecyclerView.ViewHolder viewHolder =
@@ -82,13 +92,8 @@ public class CategoryEditorActivity extends
     }
 
     @Override
-    public void onCreatingCategorySuccess() {
-        Log.d(TAG, "onCreatingCategorySuccess");
-    }
-
-    @Override
-    public void onCreatingComplete() {
-        Log.d(TAG, "onCreatingComplete");
+    public void onCreatingSuccess() {
+        Log.d(TAG, "onCreatingSuccess");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -97,12 +102,39 @@ public class CategoryEditorActivity extends
     }
 
     @Override
-    public void onUploadFailure(@NonNull String msg) {
-        Log.d(TAG, "onUploadFailure" + msg);
+    public void onEditError(@NonNull String msg) {
+        Log.d(TAG, "onEditError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Override
+    public void onEditSuccess() {
+        Log.d(TAG, "onEditSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onLoadCategoryError(@NonNull String msg) {
+        Log.d(TAG, "onLoadCategoryError" + msg);
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
         showSnackBar(msg);
+    }
+
+    @Override
+    public void onLoadCategorySuccess() {
+        Log.d(TAG, "onLoadCategorySuccess");
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override
@@ -134,8 +166,21 @@ public class CategoryEditorActivity extends
     }
 
     @Override
-    public void uploadingIconProgress() {
-        Log.d(TAG, "uploadingIconProgress");
+    public void showEditingProgress() {
+        Log.d(TAG, "showEditingProgress");
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, "Updating animal category...");
+        }
+    }
+
+    @Override
+    public void showLoadingProgress() {
+        Log.d(TAG, "showLoadingProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                "Loading selected animal category...");
+        }
     }
 
     @Override
@@ -154,20 +199,25 @@ public class CategoryEditorActivity extends
     }
 
     private void init() {
-        String selectedNewsUid = getIntent().getStringExtra(EXTRA_SELECTED_CATEGORY_UID);
-        if (selectedNewsUid != null) {
-            updateTitle(getString(R.string.edit_category));
-        } else {
-            updateTitle(getString(R.string.create_category));
-        }
-
         categoryEditorContent.setLayoutManager(new LinearLayoutManager(this));
         categoryEditorAdapter = new CategoryEditorAdapter();
-        categoryEditorAdapter.setData(new ArrayList<Species>());
+        categoryEditorAdapter.setData(new ArrayList<>());
         RecyclerView.Adapter wrappedAdapter =
             new CategoryEditorHeaderAdapter(categoryEditorAdapter, this);
         wrappedAdapter.notifyDataSetChanged();
         categoryEditorContent.setAdapter(wrappedAdapter);
+
+        String selectedCategoryUid = getIntent().getStringExtra(EXTRA_SELECTED_CATEGORY_UID);
+        if (selectedCategoryUid != null) {
+            loadSelectedCategory(selectedCategoryUid);
+            updateTitle(getString(R.string.edit_category));
+        } else {
+            updateTitle(getString(R.string.create_category));
+        }
+    }
+
+    private void loadSelectedCategory(@NonNull String selectedCategoryUid) {
+        presenter.loadSelectedCategory(selectedCategoryUid);
     }
 
     private void updateTitle(@NonNull String title) {
@@ -221,13 +271,25 @@ public class CategoryEditorActivity extends
                 if (selectedCategory == null) {
                     createCategory();
                 } else {
-                    //ToDo: implement edit
+                    editCategory();
                 }
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editCategory() {
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            String name = ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getName();
+            String description =
+                ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getDescription();
+            Uri iconUri = ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
+            presenter.editCategory(selectedCategory, name, description, iconUri);
+        }
     }
 
     private void createCategory() {

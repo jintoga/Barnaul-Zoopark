@@ -46,13 +46,18 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="center"
             android:paddingBottom="0.5dp"
             app:layout_scrollFlags="scroll|enterAlways"
+            app:paddingEnd="16dp"
+            app:tabGravity="fill"
             app:tabIndicatorColor="@color/white"
             app:tabIndicatorHeight="2.5dp"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="16dp"
+            app:tabPaddingStart="16dp"
             app:tabSelectedTextColor="@color/white"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 

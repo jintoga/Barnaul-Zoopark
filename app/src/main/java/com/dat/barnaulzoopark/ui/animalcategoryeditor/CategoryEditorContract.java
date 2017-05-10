@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.animalcategoryeditor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.dat.barnaulzoopark.model.animal.Category;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -12,23 +13,36 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 interface CategoryEditorContract {
     interface View extends MvpView {
+        void bindSelectedCategory(@NonNull Category selectedCategory);
+
         void highlightRequiredFields();
 
         void onCreatingCategoryFailure(@NonNull String localizedMessage);
 
-        void onCreatingCategorySuccess();
+        void onCreatingSuccess();
 
-        void onCreatingComplete();
+        void onEditError(@NonNull String localizedMessage);
 
-        void onUploadFailure(@NonNull String localizedMessage);
+        void onEditSuccess();
+
+        void onLoadCategoryError(@NonNull String localizedMessage);
+
+        void onLoadCategorySuccess();
 
         void showCreatingProgress();
 
-        void uploadingIconProgress();
+        void showEditingProgress();
+
+        void showLoadingProgress();
     }
 
     interface UserActionListener extends MvpPresenter<CategoryEditorContract.View> {
         void createCategory(@NonNull String name, @NonNull String description,
             @Nullable Uri iconUri);
+
+        void editCategory(@NonNull Category selectedCategory, @NonNull String name,
+            @NonNull String description, @Nullable Uri iconUri);
+
+        void loadSelectedCategory(@NonNull String selectedCategoryUid);
     }
 }

@@ -179,7 +179,7 @@ public class DataManagementActivity
         } else if (data instanceof Species) {
             res += "Edit Species: " + ((Species) data).getName();
         } else if (data instanceof Category) {
-            res += "Edit Category: " + ((Category) data).getName();
+            CategoryEditorActivity.start(this, ((Category) data).getUid());
         }
         showSnackBar(res);
     }
@@ -216,6 +216,7 @@ public class DataManagementActivity
     }
 
     @SuppressWarnings("unchecked")
+    @NonNull
     private <T extends AbstractData> DataManagementAdapter getAdapter(Class<T> clzz,
         String referenceName) {
         return new DataManagementAdapter(clzz, R.layout.item_data_management,

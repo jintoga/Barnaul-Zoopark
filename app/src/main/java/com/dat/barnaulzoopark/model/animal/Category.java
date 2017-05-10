@@ -64,4 +64,13 @@ public class Category extends AbstractData {
     public String getId() {
         return getUid();
     }
+
+    public void update(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 }

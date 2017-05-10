@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.animal.Category;
 import com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
 
 /**
@@ -45,9 +46,12 @@ public class CategoryEditorHeaderAdapter extends
 
     @Override
     public void onBindHeaderItemViewHolder(HeaderViewHolder holder, int localPosition) {
-        holder.attach.setOnClickListener(v -> {
-            if (iconClickListener != null) {
-                iconClickListener.onAttachIconClicked();
+        holder.attach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (iconClickListener != null) {
+                    iconClickListener.onAttachIconClicked();
+                }
             }
         });
         holder.remove.setOnClickListener(v -> {
@@ -101,6 +105,17 @@ public class CategoryEditorHeaderAdapter extends
             this.icon.setVisibility(View.VISIBLE);
             Glide.with(itemView.getContext()).load(iconUri).into(icon);
             updateButtons(true);
+        }
+
+        public void bindSelectedCategory(@NonNull Category selectedCategory) {
+            name.setText(selectedCategory.getName());
+            description.setText(selectedCategory.getDescription());
+            if (selectedCategory.getIcon() != null) {
+                this.iconUri = Uri.parse(selectedCategory.getIcon());
+                this.icon.setVisibility(View.VISIBLE);
+                Glide.with(itemView.getContext()).load(selectedCategory.getIcon()).into(icon);
+                updateButtons(true);
+            }
         }
 
         public void clearIcon() {

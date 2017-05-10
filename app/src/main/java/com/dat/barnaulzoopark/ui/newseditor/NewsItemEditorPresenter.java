@@ -4,10 +4,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.webkit.URLUtil;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
+import com.dat.barnaulzoopark.utils.UriUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -125,6 +125,7 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         });
     }
 
+    @NonNull
     private Observable<Void> deleteNewsItemFile(@NonNull String filePath) {
         StorageReference newsStorageReference = storage.getReference().child(filePath);
         return RxFirebaseStorage.delete(newsStorageReference);
@@ -301,10 +302,9 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
                 }
             });
         } else if ((thumbnailUri != null
-            && isLocalFile(thumbnailUri)
-            && news.getThumbnail() == null) || (thumbnailUri != null
-            && isLocalFile(thumbnailUri)
-            && news.getThumbnail() != null)) {
+            && UriUtil.isLocalFile(thumbnailUri)
+            && news.getThumbnail() == null) || (thumbnailUri != null && UriUtil.isLocalFile(
+            thumbnailUri) && news.getThumbnail() != null)) {
             //update
             return uploadImage(thumbnailPath, thumbnailUri).flatMap(
                 new Func1<Uri, Observable<News>>() {
@@ -317,10 +317,6 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
         } else {
             return Observable.just(news);
         }
-    }
-
-    private boolean isLocalFile(@NonNull Uri uri) {
-        return URLUtil.isFileUrl(uri.toString());
     }
 
     private Observable<Uri> uploadImage(@NonNull final String fileName, @NonNull Uri uri) {
