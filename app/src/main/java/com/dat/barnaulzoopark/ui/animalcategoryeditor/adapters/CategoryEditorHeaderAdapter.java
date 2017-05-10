@@ -92,6 +92,8 @@ public class CategoryEditorHeaderAdapter extends
         ImageButton remove;
         @Bind(R.id.attach)
         ImageButton attach;
+        @Bind(R.id.childrenHeader)
+        View childrenHeader;
 
         private Uri iconUri;
 
@@ -123,6 +125,10 @@ public class CategoryEditorHeaderAdapter extends
             this.icon.setVisibility(View.GONE);
             this.icon.setImageDrawable(null);
             updateButtons(false);
+        }
+
+        public void setChildrenListHeader(boolean shouldShow) {
+            childrenHeader.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
         }
 
         private void updateButtons(boolean isFilled) {

@@ -76,7 +76,18 @@ public class CategoryEditorActivity extends
 
     @Override
     public void bindSpecies(@NonNull List<Species> speciesList) {
-        categoryEditorAdapter.setData(speciesList);
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            categoryEditorAdapter.setData(speciesList);
+            if (categoryEditorAdapter.getItemCount() == 0) {
+                ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).setChildrenListHeader(
+                    false);
+            } else {
+                ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).setChildrenListHeader(
+                    true);
+            }
+        }
     }
 
     @Override
