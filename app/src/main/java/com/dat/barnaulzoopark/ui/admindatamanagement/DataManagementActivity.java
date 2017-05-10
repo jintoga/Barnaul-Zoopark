@@ -177,7 +177,7 @@ public class DataManagementActivity
         if (data instanceof Animal) {
             res += "Edit Animal: " + ((Animal) data).getName();
         } else if (data instanceof Species) {
-            res += "Edit Species: " + ((Species) data).getName();
+            SpeciesEditorActivity.start(this, ((Species) data).getUid());
         } else if (data instanceof Category) {
             CategoryEditorActivity.start(this, ((Category) data).getUid());
         }

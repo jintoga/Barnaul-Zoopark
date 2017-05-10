@@ -7,6 +7,7 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -136,5 +137,11 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
     @Override
     public DatabaseReference getCategoryReference() {
         return database.getReference(BZFireBaseApi.animal_categories);
+    }
+
+    @Override
+    public Query getChildAnimalsReference(@Nullable String selectedSpeciesUid) {
+        DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.animal);
+        return databaseReference.orderByChild("speciesUid").equalTo(selectedSpeciesUid);
     }
 }

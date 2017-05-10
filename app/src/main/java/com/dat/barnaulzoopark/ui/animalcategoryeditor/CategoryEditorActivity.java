@@ -44,13 +44,11 @@ public class CategoryEditorActivity extends
     protected Toolbar toolbar;
     @Bind(R.id.categoryEditorContent)
     protected RecyclerView categoryEditorContent;
-    private CategoryEditorAdapter categoryEditorAdapter;
 
     private Category selectedCategory;
 
     private MaterialDialog progressDialog;
 
-    //ToDO: implement universal editor and use
     public static void start(Context context, @Nullable String categoryUid) {
         if (context instanceof CategoryEditorActivity) {
             return;
@@ -236,7 +234,7 @@ public class CategoryEditorActivity extends
 
     private void initRecyclerView(@Nullable String selectedCategoryUid) {
         categoryEditorContent.setLayoutManager(new LinearLayoutManager(this));
-        categoryEditorAdapter =
+        CategoryEditorAdapter categoryEditorAdapter =
             new CategoryEditorAdapter(Species.class, R.layout.item_category_editor,
                 CategoryEditorAdapter.ViewHolder.class,
                 presenter.getChildSpeciesReference(selectedCategoryUid), this);

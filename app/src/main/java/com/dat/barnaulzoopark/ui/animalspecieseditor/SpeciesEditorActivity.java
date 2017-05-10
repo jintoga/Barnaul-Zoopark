@@ -26,7 +26,6 @@ import com.dat.barnaulzoopark.ui.animalspecieseditor.adapters.SpeciesEditorAdapt
 import com.dat.barnaulzoopark.ui.animalspecieseditor.adapters.SpeciesEditorHeaderAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import java.util.ArrayList;
 
 /**
  * Created by DAT on 5/2/2017.
@@ -35,7 +34,8 @@ import java.util.ArrayList;
 public class SpeciesEditorActivity extends
     BaseMvpPhotoEditActivity<SpeciesEditorContract.View, SpeciesEditorContract.UserActionListener>
     implements SpeciesEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener,
-    SpeciesEditorHeaderAdapter.IconClickListener {
+    SpeciesEditorHeaderAdapter.IconClickListener,
+    SpeciesEditorAdapter.RemoveAnimalFromSpeciesListener {
 
     private static final int REQUEST_BROWSE_IMAGE = 111;
     private static final String EXTRA_SELECTED_SPECIES_UID = "EXTRA_SELECTED_SPECIES_UID";
@@ -45,13 +45,11 @@ public class SpeciesEditorActivity extends
     protected Toolbar toolbar;
     @Bind(R.id.speciesEditorContent)
     protected RecyclerView speciesEditorContent;
-    SpeciesEditorAdapter speciesEditorAdapter;
 
     private Species selectedSpecies;
 
     private MaterialDialog progressDialog;
 
-    //ToDO: implement universal editor and use
     public static void start(Context context, @Nullable String speciesUid) {
         if (context instanceof SpeciesEditorActivity) {
             return;
@@ -71,6 +69,11 @@ public class SpeciesEditorActivity extends
             Uri iconUri = ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
             createChangePhotoDialog(REQUEST_BROWSE_IMAGE, iconUri != null);
         }
+    }
+
+    @Override
+    public void onRemoveAnimalFromSpeciesClicked(@NonNull Animal animal) {
+
     }
 
     @Override
@@ -161,10 +164,16 @@ public class SpeciesEditorActivity extends
         } else {
             updateTitle(getString(R.string.create_species));
         }
+        initRecyclerView(selectedSpeciesUid);
+    }
 
+    private void initRecyclerView(@Nullable String selectedSpeciesUid) {
         speciesEditorContent.setLayoutManager(new LinearLayoutManager(this));
-        speciesEditorAdapter = new SpeciesEditorAdapter();
-        speciesEditorAdapter.setData(new ArrayList<Animal>());
+        SpeciesEditorAdapter speciesEditorAdapter =
+            new SpeciesEditorAdapter(Animal.class, R.layout.item_species_editor,
+                SpeciesEditorAdapter.ViewHolder.class,
+                presenter.getChildAnimalsReference(selectedSpeciesUid), this);
+
         RecyclerView.Adapter wrappedAdapter =
             new SpeciesEditorHeaderAdapter(this, speciesEditorAdapter, this,
                 presenter.getCategoryReference());
@@ -219,6 +228,7 @@ public class SpeciesEditorActivity extends
         switch (item.getItemId()) {
             case android.R.id.home:
                 //ToDo: implement discard dialog
+                finish();
                 break;
             case R.id.save:
                 if (selectedSpecies == null) {

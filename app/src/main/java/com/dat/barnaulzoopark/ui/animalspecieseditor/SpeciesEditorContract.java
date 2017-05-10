@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -34,5 +35,7 @@ interface SpeciesEditorContract {
 
         @NonNull
         DatabaseReference getCategoryReference();
+
+        Query getChildAnimalsReference(String selectedSpeciesUid);
     }
 }
