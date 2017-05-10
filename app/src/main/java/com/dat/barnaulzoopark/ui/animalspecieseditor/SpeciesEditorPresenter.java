@@ -4,16 +4,22 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
+import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
+import java.util.ArrayList;
+import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.functions.Func1;
@@ -45,6 +51,30 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
                 getView().highlightRequiredFields();
             }
         }
+    }
+
+    public void loadCategories() {
+        database.getReference(BZFireBaseApi.animal_categories)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<Category> categories = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Category category = snapshot.getValue(Category.class);
+                        categories.add(category);
+                    }
+                    if (getView() != null) {
+                        getView().bindCategories(categories);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    if (getView() != null) {
+                        getView().onLoadCategoriesError(databaseError.getMessage());
+                    }
+                }
+            });
     }
 
     private void create(@NonNull String name, @NonNull String description,
@@ -133,15 +163,32 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
             });
     }
 
-    @NonNull
-    @Override
-    public DatabaseReference getCategoryReference() {
-        return database.getReference(BZFireBaseApi.animal_categories);
-    }
-
     @Override
     public Query getChildAnimalsReference(@Nullable String selectedSpeciesUid) {
         DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.animal);
         return databaseReference.orderByChild("speciesUid").equalTo(selectedSpeciesUid);
+    }
+
+    @Override
+    public void loadSelectedSpecies(@NonNull String selectedSpeciesUid) {
+        DatabaseReference speciesReference =
+            database.getReference(BZFireBaseApi.animal_species).child(selectedSpeciesUid);
+        if (getView() != null) {
+            getView().showLoadingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(speciesReference, Species.class)
+            .subscribe(selectedSpecies -> {
+                if (getView() != null) {
+                    getView().bindSelectedSpecies(selectedSpecies);
+                }
+            }, throwable -> {
+                if (getView() != null) {
+                    getView().onLoadSpeciesError(throwable.getLocalizedMessage());
+                }
+            }, () -> {
+                if (getView() != null) {
+                    getView().onLoadSpeciesSuccess();
+                }
+            });
     }
 }

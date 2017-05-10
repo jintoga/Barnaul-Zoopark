@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
@@ -26,6 +27,7 @@ import com.dat.barnaulzoopark.ui.animalspecieseditor.adapters.SpeciesEditorAdapt
 import com.dat.barnaulzoopark.ui.animalspecieseditor.adapters.SpeciesEditorHeaderAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import java.util.List;
 
 /**
  * Created by DAT on 5/2/2017.
@@ -86,6 +88,24 @@ public class SpeciesEditorActivity extends
     }
 
     @Override
+    public void bindCategories(@NonNull List<Category> categories) {
+        RecyclerView.ViewHolder viewHolder =
+            speciesEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+            ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).bindCategories(categories);
+            if (selectedSpecies != null) {
+                ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).bindSelectedSpecies(
+                    selectedSpecies);
+            }
+        }
+    }
+
+    @Override
+    public void bindSelectedSpecies(@NonNull Species selectedSpecies) {
+        this.selectedSpecies = selectedSpecies;
+    }
+
+    @Override
     public void onCreatingSpeciesFailure(@NonNull String msg) {
         Log.d(TAG, "onCreatingCategoryFailure");
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -107,6 +127,40 @@ public class SpeciesEditorActivity extends
         }
         Toast.makeText(this, R.string.created_successful, Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Override
+    public void onLoadCategoriesError(@NonNull String msg) {
+        Log.d(TAG, "onLoadCategoriesError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Override
+    public void onLoadCategoriesSuccess() {
+        Log.d(TAG, "onLoadCategoriesSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onLoadSpeciesError(@NonNull String localizedMessage) {
+        Log.d(TAG, "onLoadSpeciesError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onLoadSpeciesSuccess() {
+        Log.d(TAG, "onLoadCategorySuccess");
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override
@@ -138,6 +192,15 @@ public class SpeciesEditorActivity extends
     }
 
     @Override
+    public void showLoadingProgress() {
+        Log.d(TAG, "showLoadingProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                "Loading selected animal species...");
+        }
+    }
+
+    @Override
     public void uploadingIconProgress() {
         Log.d(TAG, "uploadingIconProgress");
     }
@@ -160,11 +223,13 @@ public class SpeciesEditorActivity extends
     private void init() {
         String selectedSpeciesUid = getIntent().getStringExtra(EXTRA_SELECTED_SPECIES_UID);
         if (selectedSpeciesUid != null) {
+            presenter.loadSelectedSpecies(selectedSpeciesUid);
             updateTitle(getString(R.string.edit_species));
         } else {
             updateTitle(getString(R.string.create_species));
         }
         initRecyclerView(selectedSpeciesUid);
+        presenter.loadCategories();
     }
 
     private void initRecyclerView(@Nullable String selectedSpeciesUid) {
@@ -175,8 +240,7 @@ public class SpeciesEditorActivity extends
                 presenter.getChildAnimalsReference(selectedSpeciesUid), this);
 
         RecyclerView.Adapter wrappedAdapter =
-            new SpeciesEditorHeaderAdapter(this, speciesEditorAdapter, this,
-                presenter.getCategoryReference());
+            new SpeciesEditorHeaderAdapter(speciesEditorAdapter, this);
         wrappedAdapter.notifyDataSetChanged();
         speciesEditorContent.setAdapter(wrappedAdapter);
     }

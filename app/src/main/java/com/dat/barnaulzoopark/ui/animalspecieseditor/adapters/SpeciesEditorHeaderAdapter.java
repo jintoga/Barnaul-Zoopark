@@ -1,6 +1,5 @@
 package com.dat.barnaulzoopark.ui.animalspecieseditor.adapters;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,8 +16,10 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
-import com.google.firebase.database.DatabaseReference;
+import com.dat.barnaulzoopark.model.animal.Species;
+import com.dat.barnaulzoopark.ui.adapters.BaseHintSpinnerAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.headerfooter.AbstractHeaderFooterWrapperAdapter;
+import java.util.List;
 
 /**
  * Created by DAT on 5/2/2017.
@@ -28,22 +29,18 @@ public class SpeciesEditorHeaderAdapter extends
     AbstractHeaderFooterWrapperAdapter<SpeciesEditorHeaderAdapter.HeaderViewHolder, SpeciesEditorHeaderAdapter.FooterViewHolder> {
 
     private IconClickListener iconClickListener;
-    private Activity activity;
-    private DatabaseReference categoryReference;
 
-    public SpeciesEditorHeaderAdapter(Activity activity, RecyclerView.Adapter adapter,
-        IconClickListener iconClickListener, DatabaseReference categoryReference) {
+    public SpeciesEditorHeaderAdapter(RecyclerView.Adapter adapter,
+        IconClickListener iconClickListener) {
         setAdapter(adapter);
-        this.activity = activity;
         this.iconClickListener = iconClickListener;
-        this.categoryReference = categoryReference;
     }
 
     @Override
     public HeaderViewHolder onCreateHeaderItemViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_species_editor_header, parent, false);
-        return new SpeciesEditorHeaderAdapter.HeaderViewHolder(activity, view, categoryReference);
+        return new SpeciesEditorHeaderAdapter.HeaderViewHolder(view);
     }
 
     @Override
@@ -93,7 +90,7 @@ public class SpeciesEditorHeaderAdapter extends
         EditText description;
         @Bind(R.id.category)
         Spinner category;
-        SpeciesEditorCategorySpinnerAdapter categorySpinnerAdapter;
+        BaseHintSpinnerAdapter<Category> categorySpinnerAdapter;
         @Bind(R.id.icon)
         ImageView icon;
         @Bind(R.id.remove)
@@ -103,13 +100,19 @@ public class SpeciesEditorHeaderAdapter extends
 
         private Uri iconUri;
 
-        HeaderViewHolder(Activity activity, View itemView, DatabaseReference categoryReference) {
+        HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bindCategories(@NonNull List<Category> categories) {
             categorySpinnerAdapter =
-                new SpeciesEditorCategorySpinnerAdapter(activity, Category.class,
-                    android.R.layout.simple_spinner_item,
-                    android.R.layout.simple_spinner_dropdown_item, categoryReference);
+                new BaseHintSpinnerAdapter<Category>(itemView.getContext(), categories) {
+                    @Override
+                    protected String getItemStringValue(@NonNull Category item) {
+                        return item.getName();
+                    }
+                };
             category.setAdapter(categorySpinnerAdapter);
         }
 
@@ -118,6 +121,27 @@ public class SpeciesEditorHeaderAdapter extends
             this.icon.setVisibility(View.VISIBLE);
             Glide.with(itemView.getContext()).load(iconUri).into(icon);
             updateButtons(true);
+        }
+
+        public void bindSelectedSpecies(@NonNull Species selectedSpecies) {
+            name.setText(selectedSpecies.getName());
+            description.setText(selectedSpecies.getDescription());
+            if (selectedSpecies.getIcon() != null) {
+                this.iconUri = Uri.parse(selectedSpecies.getIcon());
+                this.icon.setVisibility(View.VISIBLE);
+                Glide.with(itemView.getContext()).load(selectedSpecies.getIcon()).into(icon);
+                updateButtons(true);
+            }
+            for (int i = 1; i < categorySpinnerAdapter.getData().size();
+                i++) { //position 0 is hint so start from 1
+                if (categorySpinnerAdapter.getData()
+                    .get(i)
+                    .getUid()
+                    .equals(selectedSpecies.getCategoryUid())) {
+                    category.setSelection(i);
+                    break;
+                }
+            }
         }
 
         public void clearIcon() {
