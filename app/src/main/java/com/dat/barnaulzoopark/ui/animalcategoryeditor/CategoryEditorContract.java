@@ -40,6 +40,8 @@ interface CategoryEditorContract {
         void showEditingProgress();
 
         void showLoadingProgress();
+
+        void showSpeciesChildrenHeader(boolean shouldShow);
     }
 
     interface UserActionListener extends MvpPresenter<CategoryEditorContract.View> {

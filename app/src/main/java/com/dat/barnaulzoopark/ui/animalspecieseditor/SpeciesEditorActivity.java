@@ -207,6 +207,16 @@ public class SpeciesEditorActivity extends
     }
 
     @Override
+    public void showSpeciesChildrenHeader(boolean shouldShow) {
+        RecyclerView.ViewHolder viewHolder =
+            speciesEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
+            ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).setChildrenListHeader(
+                shouldShow);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_species_editor);

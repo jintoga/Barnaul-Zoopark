@@ -41,6 +41,8 @@ interface SpeciesEditorContract {
         void onEditSuccess();
 
         void showLoadingProgress();
+
+        void showSpeciesChildrenHeader(boolean shouldShow);
     }
 
     interface UserActionListener extends MvpPresenter<SpeciesEditorContract.View> {

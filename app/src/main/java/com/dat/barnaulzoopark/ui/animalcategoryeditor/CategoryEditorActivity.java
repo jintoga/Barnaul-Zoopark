@@ -207,6 +207,16 @@ public class CategoryEditorActivity extends
     }
 
     @Override
+    public void showSpeciesChildrenHeader(boolean shouldShow) {
+        RecyclerView.ViewHolder viewHolder =
+            categoryEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof CategoryEditorHeaderAdapter.HeaderViewHolder) {
+            ((CategoryEditorHeaderAdapter.HeaderViewHolder) viewHolder).setChildrenListHeader(
+                shouldShow);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_editor);

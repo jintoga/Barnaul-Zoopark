@@ -66,4 +66,5 @@
     <string name="edit_successful">Редактирование прошло успешно</string>
     <string name="species">Виды животных</string>
     <string name="remove_child_from_category_title">Удалить \"%s\" из текущей категории?</string>
+    <string name="animals">Животные</string>
 </resources>

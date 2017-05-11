@@ -97,6 +97,8 @@ public class SpeciesEditorHeaderAdapter extends
         ImageButton remove;
         @Bind(R.id.attach)
         ImageButton attach;
+        @Bind(R.id.childrenHeader)
+        View childrenHeader;
 
         private Uri iconUri;
 
@@ -114,6 +116,10 @@ public class SpeciesEditorHeaderAdapter extends
                     }
                 };
             category.setAdapter(categorySpinnerAdapter);
+        }
+
+        public void setChildrenListHeader(boolean shouldShow) {
+            childrenHeader.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
         }
 
         public void bindIcon(@NonNull Uri uri) {

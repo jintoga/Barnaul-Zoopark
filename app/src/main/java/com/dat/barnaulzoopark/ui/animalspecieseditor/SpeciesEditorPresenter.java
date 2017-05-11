@@ -216,7 +216,20 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
             selectedSpeciesUid = "";
         }
         DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.animal);
-        return databaseReference.orderByChild("speciesUid").equalTo(selectedSpeciesUid);
+        Query query = databaseReference.orderByChild("speciesUid").equalTo(selectedSpeciesUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (getView() != null) {
+                    getView().showSpeciesChildrenHeader(dataSnapshot.getChildrenCount() > 0);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        return query;
     }
 
     @Override

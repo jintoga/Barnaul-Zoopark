@@ -7,9 +7,12 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.utils.UriUtil;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
@@ -63,7 +66,21 @@ class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.Vi
         }
         DatabaseReference databaseReference =
             database.getReference().child(BZFireBaseApi.animal_species);
-        return databaseReference.orderByChild("categoryUid").equalTo(selectedCategoryUid);
+        Query query = databaseReference.orderByChild("categoryUid").equalTo(selectedCategoryUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (getView() != null) {
+                    getView().showSpeciesChildrenHeader(dataSnapshot.getChildrenCount() > 0);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return query;
     }
 
     private void edit(@NonNull Category selectedCategory, @NonNull String name,

@@ -100,4 +100,5 @@
     <string name="edit_successful">Edited successfully</string>
     <string name="species">Species</string>
     <string name="remove_child_from_category_title">Remove \"%s\" from current category?</string>
+    <string name="animals">Animals</string>
 </resources>
