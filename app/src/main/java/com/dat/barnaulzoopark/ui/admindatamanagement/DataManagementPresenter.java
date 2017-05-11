@@ -125,13 +125,13 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         if (data instanceof Species) {
             Animal animal = snapshot.getValue(Animal.class);
             if (animal.getSpeciesUid() != null && animal.getSpeciesUid().equals(data.getId())) {
-                animal.setSpeciesUid(null);
+                animal.clearSpeciesUid();
                 finalDatabaseReference.child(animal.getUid()).setValue(animal);
             }
         } else if (data instanceof Category) {
             Species species = snapshot.getValue(Species.class);
             if (species.getCategoryUid() != null && species.getCategoryUid().equals(data.getId())) {
-                species.setCategoryUid(null);
+                species.clearCategoryUid();
                 finalDatabaseReference.child(species.getUid()).setValue(species);
             }
         }

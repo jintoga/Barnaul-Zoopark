@@ -75,7 +75,11 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onRemoveAnimalFromSpeciesClicked(@NonNull Animal animal) {
-
+        String title =
+            String.format(getString(R.string.remove_child_from_species_title), animal.getName());
+        BZDialogBuilder.createConfirmDialog(this, title, getString(R.string.remove))
+            .onPositive((dialog, which) -> presenter.removeChildFromSpecies(animal))
+            .show();
     }
 
     @Override
@@ -122,6 +126,12 @@ public class SpeciesEditorActivity extends
         }
         Toast.makeText(this, R.string.created_successful, Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Override
+    public void onRemoveChildError(@NonNull String message) {
+        Log.d(TAG, "onRemoveChildError");
+        showSnackBar(message);
     }
 
     @Override

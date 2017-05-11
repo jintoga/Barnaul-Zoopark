@@ -162,7 +162,7 @@ class CategoryEditorPresenter extends MvpBasePresenter<CategoryEditorContract.Vi
 
     @Override
     public void removeChildFromCategory(@NonNull Species species) {
-        species.setCategoryUid(null);
+        species.clearCategoryUid();
         DatabaseReference databaseReference = database.getReference(BZFireBaseApi.animal_species);
         databaseReference.child(species.getUid()).setValue(species).addOnFailureListener(e -> {
             if (getView() != null) {

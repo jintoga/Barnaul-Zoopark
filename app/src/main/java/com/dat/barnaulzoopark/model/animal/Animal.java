@@ -40,6 +40,10 @@ public class Animal extends AbstractData {
         this.timeEnter = timeEnter;
     }
 
+    public void clearSpeciesUid() {
+        this.speciesUid = null;
+    }
+
     public String getUid() {
         return uid;
     }
@@ -80,10 +84,6 @@ public class Animal extends AbstractData {
     @NonNull
     public Map<String, String> getPhotos() {
         return photos == null ? photos = new HashMap<>() : photos;
-    }
-
-    public void setSpeciesUid(String speciesUid) {
-        this.speciesUid = speciesUid;
     }
 
     public String getVideo() {

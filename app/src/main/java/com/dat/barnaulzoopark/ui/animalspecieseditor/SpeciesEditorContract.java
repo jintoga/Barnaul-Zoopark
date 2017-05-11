@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.animalspecieseditor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.google.firebase.database.Query;
@@ -23,6 +24,8 @@ interface SpeciesEditorContract {
         void onCreatingSpeciesFailure(@NonNull String localizedMessage);
 
         void onCreatingComplete();
+
+        void onRemoveChildError(@NonNull String message);
 
         void showCreatingProgress();
 
@@ -58,5 +61,7 @@ interface SpeciesEditorContract {
         Query getChildAnimalsReference(@Nullable String selectedSpeciesUid);
 
         void loadSelectedSpecies(@NonNull String selectedSpeciesUid);
+
+        void removeChildFromSpecies(@NonNull Animal animal);
     }
 }

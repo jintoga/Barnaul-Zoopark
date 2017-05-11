@@ -46,8 +46,8 @@ public class Species extends AbstractData {
         return description;
     }
 
-    public void setCategoryUid(String categoryUid) {
-        this.categoryUid = categoryUid;
+    public void clearCategoryUid() {
+        this.categoryUid = null;
     }
 
     @Exclude

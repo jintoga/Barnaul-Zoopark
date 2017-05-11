@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
+import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.utils.UriUtil;
@@ -253,5 +254,16 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
                     getView().onLoadSpeciesSuccess();
                 }
             });
+    }
+
+    @Override
+    public void removeChildFromSpecies(@NonNull Animal animal) {
+        animal.clearSpeciesUid();
+        DatabaseReference databaseReference = database.getReference(BZFireBaseApi.animal);
+        databaseReference.child(animal.getUid()).setValue(animal).addOnFailureListener(e -> {
+            if (getView() != null) {
+                getView().onRemoveChildError(e.getMessage());
+            }
+        });
     }
 }
