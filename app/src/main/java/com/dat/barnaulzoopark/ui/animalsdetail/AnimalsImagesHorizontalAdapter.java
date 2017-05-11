@@ -15,9 +15,10 @@ import java.util.List;
 /**
  * Created by Nguyen on 7/8/2016.
  */
-public class AnimalsImagesHorizontalAdapter
+class AnimalsImagesHorizontalAdapter
     extends RecyclerView.Adapter<AnimalsImagesHorizontalAdapter.ViewHolder> {
     private List<String> data = new ArrayList<>();
+    private ItemClickListener itemClickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,7 +32,16 @@ public class AnimalsImagesHorizontalAdapter
         if (data.get(position) != null) {
             final String photoUrl = data.get(position);
             holder.bindData(photoUrl);
+            holder.itemView.setOnClickListener(view -> {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClicked(holder.getAdapterPosition());
+                }
+            });
         }
+    }
+
+    void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
@@ -62,5 +72,9 @@ public class AnimalsImagesHorizontalAdapter
         public void bindData(final @NonNull String photoUrl) {
             thumbnail.setImageURI(photoUrl);
         }
+    }
+
+    interface ItemClickListener {
+        void onItemClicked(int adapterPosition);
     }
 }

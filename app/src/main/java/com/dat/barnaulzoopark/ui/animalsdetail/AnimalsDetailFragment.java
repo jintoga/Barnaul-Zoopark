@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.YoutubeVideoFragment;
+import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -26,11 +27,13 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by DAT on 10-Jul-16.
  */
-public class AnimalsDetailFragment extends Fragment {
+public class AnimalsDetailFragment extends Fragment
+    implements AnimalsImagesHorizontalAdapter.ItemClickListener {
 
     private static final String KEY_ANIMAL = "ANIMAL";
 
@@ -59,6 +62,8 @@ public class AnimalsDetailFragment extends Fragment {
     @Bind(R.id.videoContainer)
     protected View videoContainer;
 
+    private Animal selectedAnimal;
+
     public static AnimalsDetailFragment newInstance(@NonNull Animal animal) {
         Gson gson = new Gson();
         String animalJson = gson.toJson(animal);
@@ -80,6 +85,14 @@ public class AnimalsDetailFragment extends Fragment {
     }
 
     @Override
+    public void onItemClicked(int adapterPosition) {
+        if (selectedAnimal != null) {
+            List<String> albumUrls = new ArrayList<>(selectedAnimal.getPhotos().values());
+            PhotosDetailActivity.start(getActivity(), albumUrls, adapterPosition, false);
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
@@ -97,38 +110,39 @@ public class AnimalsDetailFragment extends Fragment {
         }
         String animalJson = getArguments().getString(KEY_ANIMAL);
         Gson gson = new Gson();
-        Animal animal = gson.fromJson(animalJson, Animal.class);
-        aboutOurAnimal.setText(animal.getAboutOurAnimal());
-        name.setText(animal.getName());
-        Drawable drawable =
-            animal.isGender() ? ContextCompat.getDrawable(getContext(), R.drawable.ic_gender_male)
-                : ContextCompat.getDrawable(getContext(), R.drawable.ic_gender_female);
+        selectedAnimal = gson.fromJson(animalJson, Animal.class);
+        aboutOurAnimal.setText(selectedAnimal.getAboutOurAnimal());
+        name.setText(selectedAnimal.getName());
+        Drawable drawable = selectedAnimal.isGender() ? ContextCompat.getDrawable(getContext(),
+            R.drawable.ic_gender_male)
+            : ContextCompat.getDrawable(getContext(), R.drawable.ic_gender_female);
         gender.setImageDrawable(drawable);
-        if (animal.isGender()) {
+        if (selectedAnimal.isGender()) {
             gender.setColorFilter(ContextCompat.getColor(getContext(), R.color.blue));
         } else {
             gender.setColorFilter(ContextCompat.getColor(getContext(), R.color.pink));
         }
-        dateEnter.setText(ConverterUtils.DATE_FORMAT.format(new Date(animal.getTimeEnter())));
-        if (animal.getDateOfBirth() != null) {
+        dateEnter.setText(
+            ConverterUtils.DATE_FORMAT.format(new Date(selectedAnimal.getTimeEnter())));
+        if (selectedAnimal.getDateOfBirth() != null) {
             dateOfBirth.setText(
-                ConverterUtils.DATE_FORMAT.format(new Date(animal.getDateOfBirth())));
+                ConverterUtils.DATE_FORMAT.format(new Date(selectedAnimal.getDateOfBirth())));
         }
-        if (!animal.getPhotos().isEmpty()) {
-            animalsImagesAdapter.setData(new ArrayList<>(animal.getPhotos().values()));
+        if (!selectedAnimal.getPhotos().isEmpty()) {
+            animalsImagesAdapter.setData(new ArrayList<>(selectedAnimal.getPhotos().values()));
             photosContainer.setVisibility(View.VISIBLE);
         } else {
             photosContainer.setVisibility(View.GONE);
         }
-        if (animal.getImageHabitatMap() != null) {
-            habitatMapImage.setImageURI(animal.getImageHabitatMap());
+        if (selectedAnimal.getImageHabitatMap() != null) {
+            habitatMapImage.setImageURI(selectedAnimal.getImageHabitatMap());
             habitatMapContainer.setVisibility(View.VISIBLE);
         } else {
             habitatMapContainer.setVisibility(View.GONE);
         }
-        if (animal.getVideo() != null && !animal.getVideo().isEmpty()) {
+        if (selectedAnimal.getVideo() != null && !selectedAnimal.getVideo().isEmpty()) {
             YoutubeVideoFragment youtubeVideoFragment =
-                YoutubeVideoFragment.newInstance(animal.getVideo());
+                YoutubeVideoFragment.newInstance(selectedAnimal.getVideo());
             getChildFragmentManager().beginTransaction()
                 .replace(R.id.youtubeContainer, youtubeVideoFragment)
                 .commitAllowingStateLoss();
@@ -145,6 +159,7 @@ public class AnimalsDetailFragment extends Fragment {
         animalsImages.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
         if (animalsImagesAdapter == null) {
             animalsImagesAdapter = new AnimalsImagesHorizontalAdapter();
+            animalsImagesAdapter.setItemClickListener(this);
         }
         animalsImages.setAdapter(animalsImagesAdapter);
     }

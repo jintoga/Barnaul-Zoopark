@@ -60,7 +60,7 @@ public class NewsDetailPhotosAdapter
         notifyDataSetChanged();
     }
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
+    void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
