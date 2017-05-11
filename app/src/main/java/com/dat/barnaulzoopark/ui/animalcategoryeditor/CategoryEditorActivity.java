@@ -183,18 +183,22 @@ public class CategoryEditorActivity extends
     public void showCreatingProgress() {
         Log.d(TAG, "showCreatingProgress");
         if (progressDialog == null) {
-            progressDialog =
-                BZDialogBuilder.createSimpleProgressDialog(this, "Creating animal category...");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.creating_category));
         }
+        progressDialog.setContent(getString(R.string.creating_category));
+        progressDialog.show();
     }
 
     @Override
     public void showEditingProgress() {
         Log.d(TAG, "showEditingProgress");
         if (progressDialog == null) {
-            progressDialog =
-                BZDialogBuilder.createSimpleProgressDialog(this, "Updating animal category...");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.updating_category));
         }
+        progressDialog.setContent(getString(R.string.updating_category));
+        progressDialog.show();
     }
 
     @Override
@@ -204,6 +208,7 @@ public class CategoryEditorActivity extends
             progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
                 "Loading selected animal category...");
         }
+        progressDialog.show();
     }
 
     @Override

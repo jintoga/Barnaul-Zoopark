@@ -52,7 +52,7 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
     }
 
     @Override
-    public void editCategory(@NonNull Species selectedSpecies, @NonNull String name,
+    public void editSpecies(@NonNull Species selectedSpecies, @NonNull String name,
         @NonNull String description, @NonNull String categoryUid, @Nullable Uri iconUri) {
         if (!"".equals(name) && !"".equals(description)) {
             edit(selectedSpecies, categoryUid, name, description, iconUri);
@@ -74,8 +74,8 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
         if (getView() != null) {
             getView().showEditingProgress();
         }
-        RxFirebaseDatabase.observeSingleValueEvent(speciesItemReference, Category.class)
-            .flatMap(category -> updateIcon(selectedSpecies, iconUri, speciesItemReference))
+        RxFirebaseDatabase.observeSingleValueEvent(speciesItemReference, Species.class)
+            .flatMap(species -> updateIcon(selectedSpecies, iconUri, speciesItemReference))
             .doOnCompleted(() -> {
                 if (getView() != null) {
                     getView().onEditSuccess();
@@ -110,7 +110,6 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
         @NonNull DatabaseReference speciesItemReference, @NonNull String filePath) {
         StorageReference speciesStorageReference = storage.getReference().child(filePath);
         return RxFirebaseStorage.delete(speciesStorageReference).flatMap(aVoid -> {
-            //set icon Value in Selected category to null
             selectedSpecies.clearIcon();
             speciesItemReference.setValue(selectedSpecies);
             return Observable.just(selectedSpecies);

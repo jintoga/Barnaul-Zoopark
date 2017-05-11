@@ -52,7 +52,7 @@ interface SpeciesEditorContract {
         void createSpecies(@NonNull String name, @NonNull String description,
             @NonNull String categoryUid, @Nullable Uri iconUri);
 
-        void editCategory(@NonNull Species selectedSpecies, @NonNull String name,
+        void editSpecies(@NonNull Species selectedSpecies, @NonNull String name,
             @NonNull String description, @NonNull String categoryUid, @Nullable Uri iconUri);
 
         void loadCategories();

@@ -35,6 +35,12 @@ public interface AnimalEditorContract {
 
         void onLoadAnimalSuccess();
 
+        void showEditingProgress();
+
+        void onEditError(@NonNull String localizedMessage);
+
+        void onEditSuccess();
+
         void showLoadingProgress();
 
         void bindSelectedAnimal(@NonNull Animal selectedAnimal);
@@ -45,7 +51,13 @@ public interface AnimalEditorContract {
         void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
             @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
             @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
-            @NonNull List<Attachment> data, @NonNull String videoUrl);
+            @NonNull List<Attachment> attachments, @NonNull String videoUrl);
+
+        void editAnimal(@NonNull Animal selectedAnimal, @NonNull String name,
+            @NonNull String aboutAnimal, @NonNull String speciesUid, boolean gender,
+            @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
+            @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
+            @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl);
 
         @NonNull
         DatabaseReference getSpeciesReference();

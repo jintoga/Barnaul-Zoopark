@@ -7,6 +7,7 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Species;
+import com.dat.barnaulzoopark.utils.UriUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +51,140 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
                 getView().highlightRequiredFields();
             }
         }
+    }
+
+    @Override
+    public void editAnimal(@NonNull Animal selectedAnimal, @NonNull String name,
+        @NonNull String aboutAnimal, @NonNull String speciesUid, boolean gender,
+        @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
+        @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl) {
+        if (!"".equals(name) && !"".equals(aboutAnimal)) {
+            edit(selectedAnimal, name, aboutAnimal, speciesUid, gender, dateOfBirth, iconUri,
+                bannerImageUri, habitatMapImageUri, attachmentsToAdd, attachmentsToDelete,
+                videoUrl);
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
+        }
+    }
+
+    private void edit(@NonNull Animal selectedAnimal, @NonNull String name,
+        @NonNull String aboutAnimal, @NonNull String speciesUid, boolean gender,
+        @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
+        @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl) {
+        DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.animal);
+        final DatabaseReference animalItemReference =
+            databaseReference.child(selectedAnimal.getUid());
+        selectedAnimal.update(speciesUid, name, aboutAnimal, gender);
+        if (!"".equals(videoUrl)) {
+            selectedAnimal.setVideo(videoUrl);
+        }
+        if (dateOfBirth != null) {
+            selectedAnimal.setDateOfBirth(dateOfBirth.getTime());
+        }
+        animalItemReference.setValue(selectedAnimal);
+        if (getView() != null) {
+            getView().showEditingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(animalItemReference, Animal.class)
+            .flatMap(
+                animal -> updateIcon(selectedAnimal, iconUri, animalItemReference, "photoSmall",
+                    selectedAnimal.getPhotoSmall() != null))
+            .flatMap(animal -> updateIcon(selectedAnimal, bannerImageUri, animalItemReference,
+                "photoBig", selectedAnimal.getPhotoBig() != null))
+            .flatMap(animal -> updateIcon(selectedAnimal, habitatMapImageUri, animalItemReference,
+                "imageHabitatMap", selectedAnimal.getImageHabitatMap() != null))
+            .flatMap(
+                animal -> updateAttachments(selectedAnimal, animalItemReference, attachmentsToAdd,
+                    attachmentsToDelete))
+            .doOnCompleted(() -> {
+                if (getView() != null) {
+                    getView().onEditSuccess();
+                }
+            })
+            .doOnError(throwable -> {
+                if (getView() != null) {
+                    getView().onEditError(throwable.getLocalizedMessage());
+                }
+            })
+            .subscribe();
+    }
+
+    @NonNull
+    private Observable<Animal> updateAttachments(@NonNull Animal selectedAnimal,
+        @NonNull DatabaseReference animalItemReference, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.concat(
+            deleteAttachments(selectedAnimal, animalItemReference, attachmentsToDelete),
+            uploadAttachments(selectedAnimal, attachmentsToAdd));
+    }
+
+    @NonNull
+    private Observable<Animal> deleteAttachments(@NonNull Animal selectedAnimal,
+        @NonNull DatabaseReference animalItemReference,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.from(attachmentsToDelete)
+            .filter(attachment -> attachment.getAttachmentUid() != null)
+            .flatMap(attachment -> {
+                final String attachmentPath = BZFireBaseApi.animal
+                    + "/"
+                    + selectedAnimal.getUid()
+                    + "/photos/"
+                    + attachment.getAttachmentUid();
+                return deleteAttachment(attachmentPath).flatMap(aVoid -> {
+                    selectedAnimal.getPhotos().remove(attachment.getAttachmentUid());
+                    animalItemReference.setValue(selectedAnimal);
+                    return Observable.just(selectedAnimal);
+                });
+            });
+    }
+
+    @NonNull
+    private Observable<Void> deleteAttachment(@NonNull String filePath) {
+        StorageReference animalStorageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(animalStorageReference);
+    }
+
+    @NonNull
+    private Observable<Animal> updateIcon(@NonNull Animal selectedAnimal, @Nullable Uri iconUri,
+        @NonNull DatabaseReference animalItemReference, @Nullable String field,
+        boolean alreadyHasImage) {
+        String filePath = BZFireBaseApi.animal + "/" + selectedAnimal.getUid() + "/" + field;
+        if (iconUri == null && alreadyHasImage) {
+            //delete
+            return deleteImage(selectedAnimal, animalItemReference, filePath, field);
+        } else if (iconUri != null && UriUtil.isLocalFile(iconUri)) {
+            //update
+            return uploadImage(selectedAnimal, iconUri, filePath, field);
+        } else {
+            return Observable.just(selectedAnimal);
+        }
+    }
+
+    @NonNull
+    private Observable<Animal> deleteImage(@NonNull Animal selectedAnimal,
+        @NonNull DatabaseReference animalItemReference, @NonNull String filePath, String field) {
+        StorageReference animalStorageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(animalStorageReference).flatMap(aVoid -> {
+            switch (field) {
+                case "photoSmall":
+                    selectedAnimal.clearPhotoSmall();
+                    break;
+                case "photoBig":
+                    selectedAnimal.clearPhotoBig();
+                    break;
+                case "imageHabitatMap":
+                    selectedAnimal.clearImageHabitatMap();
+                    break;
+                default:
+                    return Observable.just(selectedAnimal);
+            }
+            animalItemReference.setValue(selectedAnimal);
+            return Observable.just(selectedAnimal);
+        });
     }
 
     @NonNull
@@ -156,10 +291,13 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     @NonNull
     private Observable<Animal> uploadAttachments(@NonNull Animal animal,
         @NonNull List<Attachment> attachments) {
-        return Observable.from(attachments).filter(Attachment::isFilled).flatMap(attachment -> {
-            Uri uri = Uri.parse(attachment.getUrl());
-            return uploadAttachmentImage(animal, uri);
-        });
+        return Observable.from(attachments)
+            .filter(
+                (attachment1) -> attachment1.isFilled() && attachment1.getAttachmentUid() == null)
+            .flatMap(attachment -> {
+                Uri uri = Uri.parse(attachment.getUrl());
+                return uploadAttachmentImage(animal, uri);
+            });
     }
 
     @NonNull

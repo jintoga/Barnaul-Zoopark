@@ -157,9 +157,11 @@ public class SpeciesEditorActivity extends
     public void showEditingProgress() {
         Log.d(TAG, "showEditingProgress");
         if (progressDialog == null) {
-            progressDialog =
-                BZDialogBuilder.createSimpleProgressDialog(this, "Updating animal species...");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.updating_species));
         }
+        progressDialog.setContent(getString(R.string.updating_species));
+        progressDialog.show();
     }
 
     @Override
@@ -192,9 +194,11 @@ public class SpeciesEditorActivity extends
     public void showCreatingProgress() {
         Log.d(TAG, "showCreatingProgress");
         if (progressDialog == null) {
-            progressDialog =
-                BZDialogBuilder.createSimpleProgressDialog(this, "Creating animal species...");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.creating_species));
         }
+        progressDialog.setContent(getString(R.string.creating_species));
+        progressDialog.show();
     }
 
     @Override
@@ -212,8 +216,10 @@ public class SpeciesEditorActivity extends
         Log.d(TAG, "showLoadingProgress");
         if (progressDialog == null) {
             progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
-                "Loading selected animal species...");
+                getString(R.string.loading_species));
         }
+        progressDialog.setContent(getString(R.string.loading_species));
+        progressDialog.show();
     }
 
     @Override
@@ -319,7 +325,7 @@ public class SpeciesEditorActivity extends
                 if (selectedSpecies == null) {
                     createSpecies();
                 } else {
-                    editCategory();
+                    editSpecies();
                 }
                 break;
             default:
@@ -328,7 +334,7 @@ public class SpeciesEditorActivity extends
         return super.onOptionsItemSelected(item);
     }
 
-    private void editCategory() {
+    private void editSpecies() {
         RecyclerView.ViewHolder viewHolder =
             speciesEditorContent.findViewHolderForAdapterPosition(0);
         if (viewHolder instanceof SpeciesEditorHeaderAdapter.HeaderViewHolder) {
@@ -340,9 +346,9 @@ public class SpeciesEditorActivity extends
                     ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getDescription();
                 Uri iconUri =
                     ((SpeciesEditorHeaderAdapter.HeaderViewHolder) viewHolder).getIconUri();
-                presenter.editCategory(selectedSpecies, name, description, categoryUid, iconUri);
+                presenter.editSpecies(selectedSpecies, name, description, categoryUid, iconUri);
             } else {
-                onCreatingSpeciesFailure(getString(R.string.categories_empty_error));
+                onEditError(getString(R.string.categories_empty_error));
             }
         }
     }

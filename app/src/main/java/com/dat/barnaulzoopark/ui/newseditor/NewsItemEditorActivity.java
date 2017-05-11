@@ -23,11 +23,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
+import com.dat.barnaulzoopark.ui.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.dat.barnaulzoopark.widget.PrefixEditText;
 import com.google.firebase.database.FirebaseDatabase;
@@ -173,8 +173,11 @@ public class NewsItemEditorActivity extends
     public void deletingNewsItem() {
         Log.d(TAG, "deletingNewsItem");
         if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Deleting News Item");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.deleting_news_item));
         }
+        progressDialog.setContent(getString(R.string.deleting_news_item));
+        progressDialog.show();
     }
 
     @Override
@@ -240,8 +243,11 @@ public class NewsItemEditorActivity extends
     public void creatingNewsItemProgress() {
         Log.d(TAG, "creatingNewsItemProgress");
         if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Creating News Item");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.creating_news_item));
         }
+        progressDialog.setContent(getString(R.string.creating_news_item));
+        progressDialog.show();
     }
 
     @Override
@@ -262,8 +268,11 @@ public class NewsItemEditorActivity extends
     public void updatingNewsItemProgress() {
         Log.d(TAG, "updatingNewsItemProgress");
         if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Updating News Item");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.updating_news_item));
         }
+        progressDialog.setContent(getString(R.string.updating_news_item));
+        progressDialog.show();
     }
 
     @Override

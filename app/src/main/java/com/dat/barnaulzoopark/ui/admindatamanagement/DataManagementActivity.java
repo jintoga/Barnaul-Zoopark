@@ -90,8 +90,11 @@ public class DataManagementActivity
     public void showRemoveProgress() {
         Log.d(TAG, "showRemoveProgress");
         if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Removing...");
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.removing));
         }
+        progressDialog.setContent(getString(R.string.removing));
+        progressDialog.show();
     }
 
     @Override

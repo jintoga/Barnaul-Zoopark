@@ -104,4 +104,16 @@
     <string name="remove_child_from_species_title">Remove \"%s\" from current species?</string>
     <string name="select_category_hint">Select category</string>
     <string name="select_species_hint">Select species</string>
+    <string name="creating_animal">Creating animal…</string>
+    <string name="updating_animal">Updating animal data…</string>
+    <string name="loading_selected_animal">Loading selected animal…</string>
+    <string name="creating_category">Creating animal category…</string>
+    <string name="updating_category">Updating animal category…</string>
+    <string name="removing">Removing…</string>
+    <string name="deleting_news_item">Deleting News Item</string>
+    <string name="creating_news_item">Creating News Item</string>
+    <string name="updating_news_item">Updating News Item</string>
+    <string name="updating_species">Updating animal species…</string>
+    <string name="creating_species">Creating animal species…</string>
+    <string name="loading_species">Loading selected animal species…</string>
 </resources>

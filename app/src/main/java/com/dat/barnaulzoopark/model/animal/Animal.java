@@ -40,6 +40,18 @@ public class Animal extends AbstractData {
         this.timeEnter = timeEnter;
     }
 
+    public void clearPhotoSmall() {
+        this.photoSmall = null;
+    }
+
+    public void clearPhotoBig() {
+        this.photoBig = null;
+    }
+
+    public void clearImageHabitatMap() {
+        this.imageHabitatMap = null;
+    }
+
     public void clearSpeciesUid() {
         this.speciesUid = null;
     }
@@ -118,5 +130,12 @@ public class Animal extends AbstractData {
     @Override
     public String getId() {
         return getUid();
+    }
+
+    public void update(String speciesUid, String name, String aboutAnimal, boolean gender) {
+        this.speciesUid = speciesUid;
+        this.name = name;
+        this.aboutOurAnimal = aboutAnimal;
+        this.gender = gender;
     }
 }

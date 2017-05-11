@@ -43,6 +43,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by DAT on 3/11/2017.
@@ -134,8 +135,11 @@ public class AnimalEditorActivity extends
     public void creatingProgress() {
         Log.d(TAG, "creatingProgress");
         if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Creating animal...");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.creating_animal));
         }
+        progressDialog.setContent(getString(R.string.creating_animal));
+        progressDialog.show();
     }
 
     @Override
@@ -186,12 +190,44 @@ public class AnimalEditorActivity extends
     }
 
     @Override
+    public void showEditingProgress() {
+        Log.d(TAG, "showEditingProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.updating_animal));
+        }
+        progressDialog.setContent(getString(R.string.updating_animal));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onEditError(@NonNull String localizedMessage) {
+        Log.d(TAG, "onEditError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onEditSuccess() {
+        Log.d(TAG, "onEditSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
     public void showLoadingProgress() {
         Log.d(TAG, "showLoadingProgress");
         if (progressDialog == null) {
-            progressDialog =
-                BZDialogBuilder.createSimpleProgressDialog(this, "Loading selected animal...");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.loading_selected_animal));
         }
+        progressDialog.setContent(getString(R.string.loading_selected_animal));
+        progressDialog.show();
     }
 
     @Override
@@ -231,9 +267,10 @@ public class AnimalEditorActivity extends
             habitatMapImageUri = Uri.parse(selectedAnimal.getImageHabitatMap());
             Glide.with(this).load(habitatMapImageUri).into(habitatMapImage);
         }
-        for (String filePath : selectedAnimal.getPhotos().values()) {
+        for (Map.Entry<String, String> entry : selectedAnimal.getPhotos().entrySet()) {
             filledAttachmentCounter++;
-            Attachment attachment = new Attachment(true, filePath);
+            Attachment attachment = new Attachment(true, entry.getValue());
+            attachment.setAttachmentUid(entry.getKey());
             attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
             attachmentAdapter.addEmptySlot();
             album.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
@@ -262,6 +299,7 @@ public class AnimalEditorActivity extends
         String selectedAnimalUid = getIntent().getStringExtra(EXTRA_SELECTED_ANIMAL_UID);
         if (selectedAnimalUid != null) {
             presenter.loadSelectedAnimal(selectedAnimalUid);
+            attachmentAdapter.setEditingMode(true);
             updateTitle(getString(R.string.edit_animal));
         } else {
             updateTitle(getString(R.string.create_animal));
@@ -450,13 +488,25 @@ public class AnimalEditorActivity extends
                 if (selectedAnimal == null) {
                     createAnimal();
                 } else {
-                    //ToDo: implement edit
+                    editAnimal();
                 }
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editAnimal() {
+        if (getSpeciesUid() != null) {
+            presenter.editAnimal(selectedAnimal, name.getText().toString(),
+                aboutOurAnimal.getText().toString(), getSpeciesUid(), isMale.isChecked(),
+                selectedDateOfBirth, iconUri, bannerImageUri, habitatMapImageUri,
+                attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete(),
+                video.getText().toString());
+        } else {
+            onEditError(getString(R.string.species_invalid_error));
+        }
     }
 
     private void createAnimal() {
