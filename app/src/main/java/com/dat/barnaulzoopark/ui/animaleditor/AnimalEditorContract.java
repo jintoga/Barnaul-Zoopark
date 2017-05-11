@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.model.animal.Species;
 import com.google.firebase.database.DatabaseReference;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -16,6 +18,11 @@ import java.util.List;
 
 public interface AnimalEditorContract {
     interface View extends MvpView {
+
+        void bindSpecies(@NonNull List<Species> speciesList);
+
+        void onLoadSpeciesError(@NonNull String message);
+
         void creatingProgress();
 
         void highlightRequiredFields();
@@ -23,6 +30,14 @@ public interface AnimalEditorContract {
         void onCreatingFailure(@NonNull String msg);
 
         void onCreatingSuccess();
+
+        void onLoadAnimalError(@NonNull String localizedMessage);
+
+        void onLoadAnimalSuccess();
+
+        void showLoadingProgress();
+
+        void bindSelectedAnimal(@NonNull Animal selectedAnimal);
     }
 
     interface UserActionListener extends MvpPresenter<AnimalEditorContract.View> {
@@ -34,5 +49,9 @@ public interface AnimalEditorContract {
 
         @NonNull
         DatabaseReference getSpeciesReference();
+
+        void loadSelectedAnimal(@NonNull String selectedAnimalUid);
+
+        void loadSpecies();
     }
 }

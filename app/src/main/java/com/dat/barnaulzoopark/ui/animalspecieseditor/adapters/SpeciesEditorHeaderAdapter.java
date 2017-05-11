@@ -115,6 +115,8 @@ public class SpeciesEditorHeaderAdapter extends
                         return item.getName();
                     }
                 };
+            categorySpinnerAdapter.setHint(
+                itemView.getResources().getString(R.string.select_category_hint));
             category.setAdapter(categorySpinnerAdapter);
         }
 

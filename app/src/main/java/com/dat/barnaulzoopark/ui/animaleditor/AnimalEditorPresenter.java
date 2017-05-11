@@ -6,13 +6,18 @@ import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.model.animal.Species;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +56,54 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     @Override
     public DatabaseReference getSpeciesReference() {
         return database.getReference(BZFireBaseApi.animal_species);
+    }
+
+    @Override
+    public void loadSelectedAnimal(@NonNull String selectedAnimalUid) {
+        DatabaseReference animalReference =
+            database.getReference(BZFireBaseApi.animal).child(selectedAnimalUid);
+        if (getView() != null) {
+            getView().showLoadingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(animalReference, Animal.class)
+            .subscribe(selectedAnimal -> {
+                if (getView() != null) {
+                    getView().bindSelectedAnimal(selectedAnimal);
+                }
+            }, throwable -> {
+                if (getView() != null) {
+                    getView().onLoadAnimalError(throwable.getLocalizedMessage());
+                }
+            }, () -> {
+                if (getView() != null) {
+                    getView().onLoadAnimalSuccess();
+                }
+            });
+    }
+
+    @Override
+    public void loadSpecies() {
+        database.getReference(BZFireBaseApi.animal_species)
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<Species> speciesList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Species species = snapshot.getValue(Species.class);
+                        speciesList.add(species);
+                    }
+                    if (getView() != null) {
+                        getView().bindSpecies(speciesList);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    if (getView() != null) {
+                        getView().onLoadSpeciesError(databaseError.getMessage());
+                    }
+                }
+            });
     }
 
     private void create(@NonNull String name, @NonNull String aboutAnimal,

@@ -48,7 +48,7 @@
     <string name="edit_species">Edit species</string>
     <string name="create_species">Create species</string>
     <string name="select">Выбрать</string>
-    <string name="categories_empty_error">Список категорий пустой. Создайте категорию!</string>
+    <string name="categories_empty_error">Выберите или создайте категорию!</string>
     <string name="edit_animal">Edit animal</string>
     <string name="create_animal">Create animal</string>
     <string name="male">Мужское</string>
@@ -60,7 +60,7 @@
     <string name="animal_detail_entry_date">Дата вступления:</string>
     <string name="animal_detail_date_of_birth">Дата рождения:</string>
     <string name="animal_detail_video">Видео</string>
-    <string name="species_empty_error">Список видов животных пустой. Создайте вида животного!</string>
+    <string name="species_invalid_error">Выберите или создайте вида животного!</string>
     <string name="species_hint_name">название</string>
     <string name="species_hint_description">описание</string>
     <string name="edit_successful">Редактирование прошло успешно</string>
@@ -68,4 +68,6 @@
     <string name="remove_child_from_category_title">Удалить \"%s\" из текущей категории?</string>
     <string name="animals">Животные</string>
     <string name="remove_child_from_species_title">Удалить \"%s\" из текущего вида?</string>
+    <string name="select_category_hint">Выбрать категорию</string>
+    <string name="select_species_hint">Выбрать вид</string>
 </resources>

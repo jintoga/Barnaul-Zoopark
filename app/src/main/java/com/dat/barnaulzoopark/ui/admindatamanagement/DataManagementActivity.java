@@ -175,7 +175,7 @@ public class DataManagementActivity
         //ToDo: implement
         String res = "";
         if (data instanceof Animal) {
-            res += "Edit Animal: " + ((Animal) data).getName();
+            AnimalEditorActivity.start(this, ((Animal) data).getUid());
         } else if (data instanceof Species) {
             SpeciesEditorActivity.start(this, ((Species) data).getUid());
         } else if (data instanceof Category) {

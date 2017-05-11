@@ -27,13 +27,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
-import com.dat.barnaulzoopark.ui.animaleditor.adapters.AnimalEditorSpeciesSpinnerAdapter;
+import com.dat.barnaulzoopark.ui.adapters.BaseHintSpinnerAdapter;
+import com.dat.barnaulzoopark.ui.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.dat.barnaulzoopark.widget.PrefixEditText;
@@ -42,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by DAT on 3/11/2017.
@@ -74,8 +75,11 @@ public class AnimalEditorActivity extends
     protected EditText name;
     @Bind(R.id.species)
     protected Spinner species;
+    BaseHintSpinnerAdapter<Species> speciesSpinnerAdapter;
     @Bind(R.id.isMale)
     protected RadioButton isMale;
+    @Bind(R.id.isFemale)
+    protected RadioButton isFemale;
     @Bind(R.id.dateOfBirth)
     protected EditText dateOfBirth;
     @Bind(R.id.aboutOurAnimal)
@@ -110,6 +114,20 @@ public class AnimalEditorActivity extends
             intent.putExtra(EXTRA_SELECTED_ANIMAL_UID, animalUid);
         }
         context.startActivity(intent);
+    }
+
+    @Override
+    public void bindSpecies(@NonNull List<Species> speciesList) {
+        initSpinner(speciesList);
+    }
+
+    @Override
+    public void onLoadSpeciesError(@NonNull String message) {
+        Log.d(TAG, "onLoadSpeciesError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(message);
     }
 
     @Override
@@ -151,6 +169,79 @@ public class AnimalEditorActivity extends
     }
 
     @Override
+    public void onLoadAnimalError(@NonNull String localizedMessage) {
+        Log.d(TAG, "onLoadAnimalError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onLoadAnimalSuccess() {
+        Log.d(TAG, "onLoadAnimalSuccess");
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showLoadingProgress() {
+        Log.d(TAG, "showLoadingProgress");
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, "Loading selected animal...");
+        }
+    }
+
+    @Override
+    public void bindSelectedAnimal(@NonNull Animal selectedAnimal) {
+        this.selectedAnimal = selectedAnimal;
+        for (int i = 1; i < speciesSpinnerAdapter.getData().size();
+            i++) { //position 0 is hint so start from 1
+            if (speciesSpinnerAdapter.getData()
+                .get(i)
+                .getUid()
+                .equals(selectedAnimal.getSpeciesUid())) {
+                species.setSelection(i);
+                break;
+            }
+        }
+        name.setText(selectedAnimal.getName());
+        aboutOurAnimal.setText(selectedAnimal.getAboutOurAnimal());
+        isMale.setChecked(selectedAnimal.isGender());
+        isFemale.setChecked(!selectedAnimal.isGender());
+        if (selectedAnimal.getDateOfBirth() != null) {
+            selectedDateOfBirth = new Date(selectedAnimal.getDateOfBirth());
+            dateOfBirth.setText(ConverterUtils.DATE_FORMAT.format(selectedDateOfBirth));
+        }
+        if (selectedAnimal.getVideo() != null) {
+            video.setText(selectedAnimal.getVideo());
+        }
+        if (selectedAnimal.getPhotoSmall() != null) {
+            iconUri = Uri.parse(selectedAnimal.getPhotoSmall());
+            Glide.with(this).load(iconUri).into(icon);
+            updateAttachIconButtons(true);
+        }
+        if (selectedAnimal.getPhotoBig() != null) {
+            bannerImageUri = Uri.parse(selectedAnimal.getPhotoBig());
+            Glide.with(this).load(bannerImageUri).into(bannerImage);
+        }
+        if (selectedAnimal.getImageHabitatMap() != null) {
+            habitatMapImageUri = Uri.parse(selectedAnimal.getImageHabitatMap());
+            Glide.with(this).load(habitatMapImageUri).into(habitatMapImage);
+        }
+        for (String filePath : selectedAnimal.getPhotos().values()) {
+            filledAttachmentCounter++;
+            Attachment attachment = new Attachment(true, filePath);
+            attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
+            attachmentAdapter.addEmptySlot();
+            album.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
+            currentAttachmentPosition++;
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animal_editor);
@@ -166,15 +257,15 @@ public class AnimalEditorActivity extends
     }
 
     private void init() {
+        initAttachmentsRecyclerView();
+        presenter.loadSpecies();
         String selectedAnimalUid = getIntent().getStringExtra(EXTRA_SELECTED_ANIMAL_UID);
         if (selectedAnimalUid != null) {
+            presenter.loadSelectedAnimal(selectedAnimalUid);
             updateTitle(getString(R.string.edit_animal));
         } else {
             updateTitle(getString(R.string.create_animal));
         }
-
-        initSpinners();
-        initAttachmentsRecyclerView();
     }
 
     private void initAttachmentsRecyclerView() {
@@ -184,23 +275,19 @@ public class AnimalEditorActivity extends
             (int) getResources().getDimension(R.dimen.item_file_attachment_decoration)));
         attachmentAdapter = new MultiFileAttachmentAdapter(this);
         album.setAdapter(attachmentAdapter);
-        String selectedAnimalUid = getIntent().getStringExtra(EXTRA_SELECTED_ANIMAL_UID);
-        if (selectedAnimalUid != null) {
-            //ToDo: implement edit
-            //loadSelectedAnimal(selectedAnimalUid);
-            //attachmentAdapter.setEditingMode(true);
-        } else {
-            attachmentAdapter.addEmptySlot();
-        }
+        attachmentAdapter.addEmptySlot();
 
         video.setPrefix(getString(R.string.youtube_prefix));
     }
 
-    private void initSpinners() {
-        AnimalEditorSpeciesSpinnerAdapter speciesSpinnerAdapter =
-            new AnimalEditorSpeciesSpinnerAdapter(this, Species.class,
-                android.R.layout.simple_spinner_item, android.R.layout.simple_spinner_dropdown_item,
-                presenter.getSpeciesReference());
+    private void initSpinner(@NonNull List<Species> speciesList) {
+        speciesSpinnerAdapter = new BaseHintSpinnerAdapter<Species>(this, speciesList) {
+            @Override
+            protected String getItemStringValue(@NonNull Species species) {
+                return species.getName();
+            }
+        };
+        speciesSpinnerAdapter.setHint(getString(R.string.select_species_hint));
         species.setAdapter(speciesSpinnerAdapter);
     }
 
@@ -299,6 +386,9 @@ public class AnimalEditorActivity extends
     @OnClick(R.id.dateOfBirth)
     protected void dateOfBirthClicked() {
         final Calendar calendar = Calendar.getInstance();
+        if (selectedDateOfBirth != null) {
+            calendar.setTime(selectedDateOfBirth);
+        }
         DatePickerDialog datePickerDialog =
             DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
                     calendar.set(year, monthOfYear, dayOfMonth);
@@ -370,14 +460,21 @@ public class AnimalEditorActivity extends
     }
 
     private void createAnimal() {
-        if (!species.getAdapter().isEmpty()) {
-            Species selectedSpecies = (Species) species.getSelectedItem();
+        if (getSpeciesUid() != null) {
             presenter.createAnimal(name.getText().toString(), aboutOurAnimal.getText().toString(),
-                selectedSpecies.getId(), isMale.isChecked(), selectedDateOfBirth, iconUri,
-                bannerImageUri, habitatMapImageUri, attachmentAdapter.getData(),
-                video.getText().toString());
+                getSpeciesUid(), isMale.isChecked(), selectedDateOfBirth, iconUri, bannerImageUri,
+                habitatMapImageUri, attachmentAdapter.getData(), video.getText().toString());
         } else {
-            onCreatingFailure(getString(R.string.species_empty_error));
+            onCreatingFailure(getString(R.string.species_invalid_error));
         }
+    }
+
+    @Nullable
+    public String getSpeciesUid() {
+        if (species.getSelectedItemPosition() > 0) {
+            Species selectedSpecies = (Species) species.getSelectedItem();
+            return selectedSpecies.getUid();
+        }
+        return null;
     }
 }

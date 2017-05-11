@@ -135,6 +135,7 @@
                     android:text="@string/male" />
 
                 <RadioButton
+                    android:id="@+id/isFemale"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

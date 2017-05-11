@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.adapters;
+package com.dat.barnaulzoopark.ui.adapters;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;

@@ -117,9 +117,10 @@ class SpeciesEditorPresenter extends MvpBasePresenter<SpeciesEditorContract.View
         });
     }
 
+    @Override
     public void loadCategories() {
         database.getReference(BZFireBaseApi.animal_categories)
-            .addListenerForSingleValueEvent(new ValueEventListener() {
+            .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     List<Category> categories = new ArrayList<>();
