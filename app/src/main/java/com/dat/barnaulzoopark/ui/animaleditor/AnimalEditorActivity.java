@@ -224,9 +224,9 @@ public class AnimalEditorActivity extends
         Log.d(TAG, "showLoadingProgress");
         if (progressDialog == null) {
             progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
-                getString(R.string.loading_selected_animal));
+                getString(R.string.loading_animal));
         }
-        progressDialog.setContent(getString(R.string.loading_selected_animal));
+        progressDialog.setContent(getString(R.string.loading_animal));
         progressDialog.show();
     }
 

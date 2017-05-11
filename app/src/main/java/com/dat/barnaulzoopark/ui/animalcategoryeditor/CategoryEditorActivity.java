@@ -206,8 +206,9 @@ public class CategoryEditorActivity extends
         Log.d(TAG, "showLoadingProgress");
         if (progressDialog == null) {
             progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
-                "Loading selected animal category...");
+                getString(R.string.loading_category));
         }
+        progressDialog.setContent(getString(R.string.loading_category));
         progressDialog.show();
     }
 
