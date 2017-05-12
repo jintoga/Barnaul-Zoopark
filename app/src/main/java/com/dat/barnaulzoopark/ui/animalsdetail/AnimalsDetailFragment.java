@@ -4,10 +4,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +17,13 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
+import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.YoutubeVideoFragment;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
@@ -26,6 +31,7 @@ import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,13 +40,16 @@ import java.util.List;
 /**
  * Created by DAT on 10-Jul-16.
  */
-public class AnimalsDetailFragment extends Fragment
-    implements AnimalsImagesHorizontalAdapter.ItemClickListener {
+public class AnimalsDetailFragment extends
+    BaseMvpFragment<AnimalsDetailContract.ViewFragment, AnimalsDetailContract.FragmentUserActionListener>
+    implements AnimalsDetailContract.ViewFragment,
+    AnimalsImagesHorizontalAdapter.ItemClickListener {
 
     private static final String KEY_ANIMAL = "ANIMAL";
+    private static final String TAG = AnimalsDetailFragment.class.getName();
 
     @Bind(R.id.scrollView)
-    protected ObservableScrollView mScrollView;
+    protected ObservableScrollView observableScrollView;
     @Bind(R.id.animals_images)
     protected RecyclerView animalsImages;
     private AnimalsImagesHorizontalAdapter animalsImagesAdapter;
@@ -63,10 +72,12 @@ public class AnimalsDetailFragment extends Fragment
     protected View habitatMapContainer;
     @Bind(R.id.videoContainer)
     protected View videoContainer;
-    @Bind(R.id.bookmark)
-    protected ImageView bookmark;
+    @Bind(R.id.subscribeAnimal)
+    protected ImageView subscribeAnimal;
 
     private Animal selectedAnimal;
+
+    private MaterialDialog progressDialog;
 
     public static AnimalsDetailFragment newInstance(@NonNull Animal animal) {
         Gson gson = new Gson();
@@ -96,10 +107,53 @@ public class AnimalsDetailFragment extends Fragment
         }
     }
 
+    @NonNull
+    @Override
+    public AnimalsDetailContract.FragmentUserActionListener createPresenter() {
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
+        return new AnimalsDetailFragmentPresenter(database);
+    }
+
+    @Override
+    public void onUpdatingUserData() {
+        Log.d(TAG, "onUpdatingUserData");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(),
+                getString(R.string.subscribing_to_animal));
+        }
+        progressDialog.setContent(getString(R.string.subscribing_to_animal));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onUpdateUserDataError(@NonNull String localizedMessage) {
+        Log.d(TAG, "onUpdateUserDataError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    private void showSnackBar(String localizedMessage) {
+        showSnackBar(observableScrollView, localizedMessage);
+    }
+
+    @Override
+    public void onUpdateUserDataSuccess(boolean isAlreadySubscribed) {
+        Log.d(TAG, "onUpdateUserDataSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        String msg =
+            isAlreadySubscribed ? getString(R.string.subscribed) : getString(R.string.unsubscribed);
+        showSnackBar(msg);
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
+        MaterialViewPagerHelper.registerScrollView(getActivity(), observableScrollView, null);
     }
 
     @Override
@@ -154,6 +208,13 @@ public class AnimalsDetailFragment extends Fragment
         } else {
             videoContainer.setVisibility(View.GONE);
         }
+        User user = BZApplication.get(getContext()).getUser();
+        if (user != null) {
+            updateBookmarkButton(user.getSubscribedAnimals().containsKey(selectedAnimal.getUid()));
+            subscribeAnimal.setVisibility(View.VISIBLE);
+        } else {
+            subscribeAnimal.setVisibility(View.GONE);
+        }
     }
 
     private void init() {
@@ -172,25 +233,33 @@ public class AnimalsDetailFragment extends Fragment
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         //hack: expand the header of Material ViewPager on tab selected
-        if (mScrollView != null) {
-            mScrollView.postDelayed(() -> mScrollView.smoothScrollTo(0, 0), 100);
+        if (observableScrollView != null) {
+            observableScrollView.postDelayed(() -> observableScrollView.smoothScrollTo(0, 0), 100);
         }
     }
 
-    boolean isBookmarkClicked = false;
+    @OnClick(R.id.subscribeAnimal)
+    protected void subscribeAnimalClicked() {
+        User user = BZApplication.get(getContext()).getUser();
+        if (user == null) {
+            showSnackBar(getString(R.string.user_data_empty));
+            return;
+        }
+        subscribeToAnimal(user);
+    }
 
-    @OnClick(R.id.bookmark)
-    protected void bookmarkClicked() {
+    private void subscribeToAnimal(@NonNull User user) {
+        boolean isAlreadySubscribed =
+            user.getSubscribedAnimals().containsKey(selectedAnimal.getUid());
+        updateBookmarkButton(!isAlreadySubscribed);
+        presenter.updateUserData(isAlreadySubscribed, user, selectedAnimal);
+    }
+
+    private void updateBookmarkButton(boolean isFavorite) {
+        int imageRes = isFavorite ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark_empty;
+        subscribeAnimal.setImageResource(imageRes);
         AlphaAnimation alphaAnimationShowIcon = new AlphaAnimation(0.2f, 1.0f);
         alphaAnimationShowIcon.setDuration(500);
-        if (!isBookmarkClicked) {
-            bookmark.setImageResource(R.drawable.ic_bookmark_filled);
-            bookmark.startAnimation(alphaAnimationShowIcon);
-            isBookmarkClicked = true;
-        } else {
-            bookmark.setImageResource(R.drawable.ic_bookmark_empty);
-            bookmark.startAnimation(alphaAnimationShowIcon);
-            isBookmarkClicked = false;
-        }
+        subscribeAnimal.startAnimation(alphaAnimationShowIcon);
     }
 }

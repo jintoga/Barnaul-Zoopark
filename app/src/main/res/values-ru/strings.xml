@@ -88,6 +88,9 @@
     <string name="animal_blog">Блог животных</string>
     <string name="user_profile">Личный кабинет</string>
     <string name="favourite_animals">Любимые животные</string>
-    <string name="user_data_empty_error">User\'s data not found error!</string>
+    <string name="user_data_empty">User\'s data not found!</string>
     <string name="admin_privilege_status">(админ)</string>
+    <string name="subscribing_to_animal">Updating user\'s data</string>
+    <string name="subscribed">Subscribed</string>
+    <string name="unsubscribed">Unsubscribed</string>
 </resources>

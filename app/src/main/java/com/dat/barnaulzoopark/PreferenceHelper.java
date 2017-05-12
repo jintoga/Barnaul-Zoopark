@@ -15,16 +15,16 @@ import javax.inject.Singleton;
 @Singleton
 public class PreferenceHelper {
 
-    public static final String PREF_FILE_NAME = "BZSharedPreference";
+    private static final String PREF_FILE_NAME = "BZSharedPreference";
 
-    public static final String KEY_USER = "KEY_USER";
-    public static final String KEY_IS_LOGGED_IN = "KEY_IS_LOGGED_IN";
-    public static final String KEY_IS_ADMIN = "KEY_IS_ADMIN";
+    private static final String KEY_USER = "KEY_USER";
+    private static final String KEY_IS_LOGGED_IN = "KEY_IS_LOGGED_IN";
+    private static final String KEY_IS_ADMIN = "KEY_IS_ADMIN";
 
     private final SharedPreferences preferences;
 
     @Inject
-    public PreferenceHelper(Context context) {
+    PreferenceHelper(Context context) {
         preferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
     }
 
@@ -44,7 +44,7 @@ public class PreferenceHelper {
         preferences.edit().putBoolean(KEY_IS_ADMIN, isAdmin).apply();
     }
 
-    public boolean isAdmin() {
+    boolean isAdmin() {
         return preferences.getBoolean(KEY_IS_ADMIN, false);
     }
 
@@ -54,7 +54,7 @@ public class PreferenceHelper {
     }
 
     @Nullable
-    public User getUser() {
+    User getUser() {
         String userJson = preferences.getString(KEY_USER, null);
         if (userJson != null) {
             return new Gson().fromJson(userJson, User.class);

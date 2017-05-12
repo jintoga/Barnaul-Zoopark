@@ -17,12 +17,12 @@ import java.util.List;
  * Created by DAT on 4/9/2017.
  */
 
-class AnimalsDetailPresenter extends MvpBasePresenter<AnimalsDetailContract.View>
-    implements AnimalsDetailContract.UserActionListener {
+class AnimalsDetailActivityPresenter extends MvpBasePresenter<AnimalsDetailContract.ViewActivity>
+    implements AnimalsDetailContract.ActivityUserActionListener {
 
     private FirebaseDatabase database;
 
-    AnimalsDetailPresenter(FirebaseDatabase database) {
+    AnimalsDetailActivityPresenter(FirebaseDatabase database) {
         this.database = database;
     }
 

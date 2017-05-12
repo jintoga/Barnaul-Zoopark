@@ -10,6 +10,7 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class User {
+    private String uid;
     private String name;
     private String email;
     private String photo;
@@ -20,11 +21,16 @@ public class User {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String name, String email, String photo, boolean admin) {
+    public User(String uid, String name, String email, String photo, boolean admin) {
+        this.uid = uid;
         this.name = name;
         this.email = email;
         this.photo = photo;
         this.admin = admin;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public String getName() {

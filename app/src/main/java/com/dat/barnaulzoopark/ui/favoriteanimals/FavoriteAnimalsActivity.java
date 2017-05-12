@@ -57,11 +57,11 @@ public class FavoriteAnimalsActivity extends
     }
 
     private void loadFavoriteAnimals() {
-        User user = BZApplication.get(this).getApplicationComponent().preferencesHelper().getUser();
+        User user = BZApplication.get(this).getUser();
         if (user != null) {
             presenter.loadFavoritesAnimals(user.getSubscribedAnimals().keySet());
         } else {
-            showSnackBar(getString(R.string.user_data_empty_error));
+            showSnackBar(getString(R.string.user_data_empty));
         }
     }
 

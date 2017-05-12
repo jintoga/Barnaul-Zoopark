@@ -21,8 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 public class AnimalsDetailActivity extends
-    BaseActivityWithAnimation<AnimalsDetailContract.View, AnimalsDetailContract.UserActionListener>
-    implements AnimalsDetailContract.View {
+    BaseActivityWithAnimation<AnimalsDetailContract.ViewActivity, AnimalsDetailContract.ActivityUserActionListener>
+    implements AnimalsDetailContract.ViewActivity {
     public static final String KEY_SPECIES_UID = "KEY_SPECIES_UID";
     private static final String KEY_SELECTED_ANIMAL_POSITION = "KEY_SELECTED_ANIMAL_POSITION";
 
@@ -60,10 +60,10 @@ public class AnimalsDetailActivity extends
 
     @NonNull
     @Override
-    public AnimalsDetailContract.UserActionListener createPresenter() {
+    public AnimalsDetailContract.ActivityUserActionListener createPresenter() {
         FirebaseDatabase database =
             BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
-        return new AnimalsDetailPresenter(database);
+        return new AnimalsDetailActivityPresenter(database);
     }
 
     private void init() {

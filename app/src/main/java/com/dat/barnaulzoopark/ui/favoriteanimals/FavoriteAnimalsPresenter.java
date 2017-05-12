@@ -28,19 +28,23 @@ class FavoriteAnimalsPresenter extends MvpBasePresenter<FavoriteAnimalsContract.
     @Override
     public void loadFavoritesAnimals(@NonNull Set<String> animalUids) {
         database.getReference()
-            .child(BZFireBaseApi.news)
+            .child(BZFireBaseApi.animal)
             .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     List<Animal> animals = new ArrayList<>();
+                    List<Animal> result = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if (animalUids.contains(dataSnapshot.getKey())) {
-                            Animal animal = snapshot.getValue(Animal.class);
-                            animals.add(animal);
+                        Animal animal = snapshot.getValue(Animal.class);
+                        animals.add(animal);
+                    }
+                    for (Animal animal : animals) {
+                        if (animalUids.contains(animal.getUid())) {
+                            result.add(animal);
                         }
                     }
                     if (getView() != null) {
-                        getView().bindAnimals(animals);
+                        getView().bindAnimals(result);
                     }
                 }
 

@@ -63,7 +63,7 @@ class SignUpPresenter extends MvpBasePresenter<SignUpContract.View>
         @NonNull String email) {
         DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.users);
         DatabaseReference currentUserReference = databaseReference.child(userUID);
-        User user = new User(name, email, "", false);
+        User user = new User(userUID, name, email, "", false);
         currentUserReference.setValue(user);
     }
 }
