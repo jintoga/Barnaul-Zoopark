@@ -28,7 +28,7 @@ public class BasePreferenceFragment extends PreferenceFragmentCompat {
         ButterKnife.bind(this, view);
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).setupNavDrawerWithToolbar(toolbar,
-                getString(R.string.dataControl));
+                getString(R.string.data_control));
         }
     }
 }

@@ -68,7 +68,7 @@
 
     <string name="discard_your_changes">Discard your changes?</string>
     <string name="discard">Discard</string>
-    <string name="dataControl">Data control</string>
+    <string name="data_control">Data control</string>
     <string name="data_management_animal_species">Animal species</string>
     <string name="data_management_animal_categories">Animal categories</string>
     <string name="data_management_animals">Animals</string>
@@ -118,4 +118,8 @@
     <string name="creating_news_item">Creating News Item</string>
     <string name="updating_news_item">Updating News Item</string>
     <string name="animals_list_empty">List of animals is empty!</string>
+    <string name="admin">Admin</string>
+    <string name="animal_blog">Animal blog</string>
+    <string name="user_profile">My account</string>
+    <string name="favourite_animals">Favourite animals</string>
 </resources>

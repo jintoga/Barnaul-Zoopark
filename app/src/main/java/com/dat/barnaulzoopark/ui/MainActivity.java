@@ -110,6 +110,7 @@ public class MainActivity
             Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
         }
+        setUserPrivilege(true);
         setAdminPrivilege(user);
         BZApplication.get(this)
             .getApplicationComponent()
@@ -139,6 +140,14 @@ public class MainActivity
         });
     }
 
+    private void setUserPrivilege(boolean showUserMenu) {
+        Menu menu = navigationView.getMenu();
+        MenuItem userProfileMenuItem = menu.findItem(R.id.userProfile);
+        if (userProfileMenuItem != null) {
+            userProfileMenuItem.setVisible(showUserMenu);
+        }
+    }
+
     private void setAdminPrivilege(@NonNull User user) {
         if (user.isAdmin()) {
             role.setText("(admin)"); //ToDO :// FIXME: 4/26/2017
@@ -160,6 +169,7 @@ public class MainActivity
     @Override
     public void bindUserDataAsGuest() {
         hideAdminControl();
+        setUserPrivilege(false);
         Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
             .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
         userPhoto.setImageURI(uri);

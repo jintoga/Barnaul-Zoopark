@@ -33,7 +33,7 @@
     <string name="edit_name_hint">Введите имя</string>
     <string name="discard_your_changes">Отменить изменения?</string>
     <string name="discard">Отменить</string>
-    <string name="dataControl">Управление данных</string>
+    <string name="data_control">Управление данных</string>
 
     <string name="data_management_animal_species">Animal species</string>
     <string name="data_management_animal_categories">Animal categories</string>
@@ -84,4 +84,8 @@
     <string name="creating_news_item">Creating News Item</string>
     <string name="updating_news_item">Updating News Item</string>
     <string name="animals_list_empty">Список животных пустой!</string>
+    <string name="admin">Админ</string>
+    <string name="animal_blog">Блог животных</string>
+    <string name="user_profile">Личный кабинет</string>
+    <string name="favourite_animals">Любимые животные</string>
 </resources>

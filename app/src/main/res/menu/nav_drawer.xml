@@ -50,14 +50,30 @@
         </menu>
     </item>
     <item
+        android:id="@+id/userProfile"
+        android:title="@string/user_profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/favouriteAnimals"
+                    android:icon="@drawable/ic_bookmark_filled"
+                    android:title="@string/favourite_animals" />
+                <item
+                    android:id="@+id/blogAnimal"
+                    android:icon="@drawable/ic_panda"
+                    android:title="@string/animal_blog" />
+            </group>
+        </menu>
+    </item>
+    <item
         android:id="@+id/admin"
-        android:title="Admin">
+        android:title="@string/admin">
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/dataControl"
-                    android:icon="@drawable/ic_create"
-                    android:title="@string/dataControl" />
+                    android:icon="@drawable/ic_database"
+                    android:title="@string/data_control" />
             </group>
         </menu>
     </item>
