@@ -15,7 +15,6 @@ import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 import java.util.List;
 
 /**
@@ -26,18 +25,14 @@ public class FavoriteAnimalsActivity extends
     BaseMvpActivity<FavoriteAnimalsContract.View, FavoriteAnimalsContract.UserActionListener>
     implements FavoriteAnimalsContract.View {
 
-    private static final String KEY_USER = "KEY_USER";
-
     @Bind(R.id.materialViewPager)
     protected MaterialViewPager materialViewPager;
 
-    public static void start(@NonNull Context context, @NonNull User user) {
+    public static void start(@NonNull Context context) {
         if (context instanceof FavoriteAnimalsActivity) {
             return;
         }
         Intent intent = new Intent(context, FavoriteAnimalsActivity.class);
-        String userJson = new Gson().toJson(user);
-        intent.putExtra(KEY_USER, userJson);
         context.startActivity(intent);
     }
 
@@ -62,9 +57,8 @@ public class FavoriteAnimalsActivity extends
     }
 
     private void loadFavoriteAnimals() {
-        String userJson = getIntent().getStringExtra(KEY_USER);
-        if (userJson != null) {
-            User user = new Gson().fromJson(userJson, User.class);
+        User user = BZApplication.get(this).getApplicationComponent().preferencesHelper().getUser();
+        if (user != null) {
             presenter.loadFavoritesAnimals(user.getSubscribedAnimals().keySet());
         } else {
             showSnackBar(getString(R.string.user_data_empty_error));

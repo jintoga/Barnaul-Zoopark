@@ -72,8 +72,6 @@ public class MainActivity
     private static final String TAG_HOME_FRAGMENT = "HOME";
     private boolean isLoggedIn = false;
 
-    private User user;
-
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
         //Ignore
@@ -109,7 +107,7 @@ public class MainActivity
 
     @Override
     public void bindUserData(@NonNull User user) {
-        this.user = user;
+        BZApplication.get(this).getApplicationComponent().preferencesHelper().setUser(user);
         if (user.getPhoto() != null) {
             Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
@@ -346,9 +344,7 @@ public class MainActivity
                 fragment = new ZooMapFragment();
                 break;
             case R.id.favouriteAnimals:
-                if (user != null) {
-                    FavoriteAnimalsActivity.start(this, user);
-                }
+                FavoriteAnimalsActivity.start(this);
                 break;
             case R.id.dataControl:
                 Log.d(TAG, "dataControl");

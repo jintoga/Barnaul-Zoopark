@@ -2,6 +2,10 @@ package com.dat.barnaulzoopark;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import com.dat.barnaulzoopark.model.User;
+import com.google.gson.Gson;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -13,6 +17,7 @@ public class PreferenceHelper {
 
     public static final String PREF_FILE_NAME = "BZSharedPreference";
 
+    public static final String KEY_USER = "KEY_USER";
     public static final String KEY_IS_LOGGED_IN = "KEY_IS_LOGGED_IN";
     public static final String KEY_IS_ADMIN = "KEY_IS_ADMIN";
 
@@ -41,5 +46,19 @@ public class PreferenceHelper {
 
     public boolean isAdmin() {
         return preferences.getBoolean(KEY_IS_ADMIN, false);
+    }
+
+    public void setUser(@NonNull User user) {
+        String userJson = new Gson().toJson(user);
+        preferences.edit().putString(KEY_USER, userJson).apply();
+    }
+
+    @Nullable
+    public User getUser() {
+        String userJson = preferences.getString(KEY_USER, null);
+        if (userJson != null) {
+            return new Gson().fromJson(userJson, User.class);
+        }
+        return null;
     }
 }
