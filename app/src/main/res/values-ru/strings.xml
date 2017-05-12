@@ -89,4 +89,5 @@
     <string name="user_profile">Личный кабинет</string>
     <string name="favourite_animals">Любимые животные</string>
     <string name="user_data_empty_error">User\'s data not found error!</string>
+    <string name="admin_privilege_status">(админ)</string>
 </resources>

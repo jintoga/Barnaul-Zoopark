@@ -50,6 +50,7 @@
         <activity android:name=".ui.animalcategoryeditor.CategoryEditorActivity" />
         <activity android:name=".ui.animalspecieseditor.SpeciesEditorActivity" />
         <activity android:name=".ui.admindatamanagement.DataManagementActivity" />
+        <activity android:name=".ui.favoriteanimals.FavoriteAnimalsActivity" />
     </application>
 
 </manifest>

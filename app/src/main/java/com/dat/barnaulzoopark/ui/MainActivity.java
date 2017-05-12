@@ -33,7 +33,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
 import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
-import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsFragment;
+import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsActivity;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
@@ -154,7 +154,7 @@ public class MainActivity
 
     private void setAdminPrivilege(@NonNull User user) {
         if (user.isAdmin()) {
-            role.setText("(admin)"); //ToDO :// FIXME: 4/26/2017
+            role.setText(R.string.admin_privilege_status); //ToDO :// FIXME: 4/26/2017
             role.setVisibility(View.VISIBLE);
         } else {
             role.setVisibility(View.GONE);
@@ -326,7 +326,6 @@ public class MainActivity
         if (currentMenuItemID == menuItem.getItemId()) {
             return false;
         }
-        currentMenuItemID = menuItem.getItemId();
         Fragment fragment = null;
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
@@ -334,6 +333,7 @@ public class MainActivity
                 getSupportFragmentManager().popBackStack(null,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 addInitFragment(new NewsFragment());
+                currentMenuItemID = menuItem.getItemId();
                 return true;
             case R.id.ourAnimals:
                 fragment = new AnimalsFragment();
@@ -347,7 +347,7 @@ public class MainActivity
                 break;
             case R.id.favouriteAnimals:
                 if (user != null) {
-                    fragment = FavoriteAnimalsFragment.newInstance(user);
+                    FavoriteAnimalsActivity.start(this, user);
                 }
                 break;
             case R.id.dataControl:
@@ -356,6 +356,7 @@ public class MainActivity
                 break;
         }
         if (fragment != null) {
+            currentMenuItemID = menuItem.getItemId();
             FragmentManager fragmentManager = getSupportFragmentManager();
             Log.d(TAG, fragmentManager.getBackStackEntryCount() + "");
             if (fragmentManager.getBackStackEntryCount() > 1) {

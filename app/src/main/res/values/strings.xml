@@ -123,4 +123,5 @@
     <string name="user_profile">My account</string>
     <string name="favourite_animals">Favourite animals</string>
     <string name="user_data_empty_error">User\'s data not found error!</string>
+    <string name="admin_privilege_status">(admin)</string>
 </resources>
