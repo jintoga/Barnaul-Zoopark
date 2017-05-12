@@ -62,4 +62,8 @@
     <style name="UnderLinedSpinnerStyle" parent="Base.Widget.AppCompat.Spinner.Underlined">
         <item name="android:minHeight">@dimen/single_line_item_height</item>
     </style>
+    <!-- AppTheme with white text. -->
+    <style name="AppTheme.WhiteText" parent="AppTheme">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
 </resources>

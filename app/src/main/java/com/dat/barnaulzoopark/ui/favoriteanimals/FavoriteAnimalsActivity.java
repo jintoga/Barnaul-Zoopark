@@ -4,8 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
@@ -13,7 +18,9 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
+import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailFragment;
 import com.github.florent37.materialviewpager.MaterialViewPager;
+import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
@@ -27,6 +34,8 @@ public class FavoriteAnimalsActivity extends
 
     @Bind(R.id.materialViewPager)
     protected MaterialViewPager materialViewPager;
+    @Bind(R.id.emptyText)
+    protected TextView emptyText;
 
     public static void start(@NonNull Context context) {
         if (context instanceof FavoriteAnimalsActivity) {
@@ -52,7 +61,8 @@ public class FavoriteAnimalsActivity extends
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.favourite_animals));
         }
     }
 
@@ -75,7 +85,56 @@ public class FavoriteAnimalsActivity extends
 
     @Override
     public void bindAnimals(@NonNull List<Animal> favoriteAnimals) {
+        if (!favoriteAnimals.isEmpty()) {
+            initMaterialViewPager(favoriteAnimals);
+        }
+        setViewPagerVisibility(!favoriteAnimals.isEmpty());
+    }
 
+    private void initMaterialViewPager(@NonNull final List<Animal> animals) {
+        materialViewPager.getViewPager()
+            .setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+                @Override
+                public Fragment getItem(int position) {
+                    return AnimalsDetailFragment.newInstance(animals.get(position));
+                }
+
+                @Override
+                public int getCount() {
+                    return animals.size();
+                }
+
+                @Override
+                public CharSequence getPageTitle(int position) {
+                    return animals.get(position).getName();
+                }
+            });
+        materialViewPager.setMaterialViewPagerListener(page -> {
+            String url = animals.get(page).getPhotoBig();
+            if (url == null || url.equals("")) {
+                return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
+                    getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
+            }
+            return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
+        });
+
+        materialViewPager.getViewPager()
+            .setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
+        materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
+    }
+
+    private void setViewPagerVisibility(boolean shouldShow) {
+        int viewpagerVisibility = shouldShow ? View.VISIBLE : View.GONE;
+        int emptyTextVisibility = !shouldShow ? View.VISIBLE : View.GONE;
+        materialViewPager.getViewPager().setVisibility(viewpagerVisibility);
+        materialViewPager.getPagerTitleStrip().setVisibility(viewpagerVisibility);
+        materialViewPager.getHeaderBackgroundContainer().setVisibility(viewpagerVisibility);
+        if (shouldShow) {
+            materialViewPager.setColor(ContextCompat.getColor(this, R.color.colorPrimary), 400);
+        } else {
+            materialViewPager.setColor(ContextCompat.getColor(this, R.color.transparent), 0);
+        }
+        emptyText.setVisibility(emptyTextVisibility);
     }
 
     @Override

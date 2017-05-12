@@ -93,4 +93,5 @@
     <string name="subscribing_to_animal">Updating user\'s data</string>
     <string name="subscribed">Subscribed</string>
     <string name="unsubscribed">Unsubscribed</string>
+    <string name="empty">Пусто</string>
 </resources>
