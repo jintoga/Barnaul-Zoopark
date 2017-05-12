@@ -11,10 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.YoutubeVideoFragment;
@@ -61,6 +63,8 @@ public class AnimalsDetailFragment extends Fragment
     protected View habitatMapContainer;
     @Bind(R.id.videoContainer)
     protected View videoContainer;
+    @Bind(R.id.bookmark)
+    protected ImageView bookmark;
 
     private Animal selectedAnimal;
 
@@ -170,6 +174,23 @@ public class AnimalsDetailFragment extends Fragment
         //hack: expand the header of Material ViewPager on tab selected
         if (mScrollView != null) {
             mScrollView.postDelayed(() -> mScrollView.smoothScrollTo(0, 0), 100);
+        }
+    }
+
+    boolean isBookmarkClicked = false;
+
+    @OnClick(R.id.bookmark)
+    protected void bookmarkClicked() {
+        AlphaAnimation alphaAnimationShowIcon = new AlphaAnimation(0.2f, 1.0f);
+        alphaAnimationShowIcon.setDuration(500);
+        if (!isBookmarkClicked) {
+            bookmark.setImageResource(R.drawable.ic_bookmark_filled);
+            bookmark.startAnimation(alphaAnimationShowIcon);
+            isBookmarkClicked = true;
+        } else {
+            bookmark.setImageResource(R.drawable.ic_bookmark_empty);
+            bookmark.startAnimation(alphaAnimationShowIcon);
+            isBookmarkClicked = false;
         }
     }
 }

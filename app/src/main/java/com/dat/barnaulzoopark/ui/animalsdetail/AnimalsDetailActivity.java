@@ -81,6 +81,9 @@ public class AnimalsDetailActivity extends
     public void bindAnimals(@NonNull List<Animal> animals) {
         if (!animals.isEmpty()) {
             initMaterialViewPager(animals);
+        } else {
+            Toast.makeText(this, R.string.animals_list_empty, Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -118,8 +121,10 @@ public class AnimalsDetailActivity extends
         //Move to selected animal
         final int selectedAnimalPosition = getIntent().getIntExtra(KEY_SELECTED_ANIMAL_POSITION, 0);
         materialViewPager.post(() -> {
-            materialViewPager.getViewPager().setCurrentItem(selectedAnimalPosition);
-            materialViewPager.onPageSelected(selectedAnimalPosition);
+            if (selectedAnimalPosition >= 0 && selectedAnimalPosition < animals.size()) {
+                materialViewPager.getViewPager().setCurrentItem(selectedAnimalPosition);
+                materialViewPager.onPageSelected(selectedAnimalPosition);
+            }
         });
     }
 

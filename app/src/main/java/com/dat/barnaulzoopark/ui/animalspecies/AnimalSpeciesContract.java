@@ -10,7 +10,7 @@ import java.util.List;
  * Created by DAT on 4/16/2017.
  */
 
-public interface AnimalSpeciesContract {
+interface AnimalSpeciesContract {
     interface View extends MvpView {
         void bindAnimals(@NonNull List<Animal> animals);
     }

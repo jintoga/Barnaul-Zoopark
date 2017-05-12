@@ -117,4 +117,5 @@
     <string name="deleting_news_item">Deleting News Item</string>
     <string name="creating_news_item">Creating News Item</string>
     <string name="updating_news_item">Updating News Item</string>
+    <string name="animals_list_empty">List of animals is empty!</string>
 </resources>

@@ -9,7 +9,7 @@
     android:layout_marginRight="4dp"
     android:visibility="gone"
     app:cardUseCompatPadding="true"
-    app:contentPadding="8dp"
+    app:contentPadding="16dp"
     tools:visibility="visible">
 
     <TextView
