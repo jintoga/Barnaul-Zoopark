@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -16,19 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
-import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
 import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import java.util.List;
 
 /**
@@ -53,8 +48,6 @@ public class AnimalsFragment
     protected ViewPager animalsViewPager;
     private AnimalsViewPagerAdapter animalsViewPagerAdapter;
 
-    private View view;
-
     @Override
     public void bindCategories(@NonNull List<Category> categories) {
         initAnimalsViewPager(categories);
@@ -64,7 +57,7 @@ public class AnimalsFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_animals, container, false);
+        View view = inflater.inflate(R.layout.fragment_animals, container, false);
         ButterKnife.bind(this, view);
         init();
         return view;
@@ -75,12 +68,7 @@ public class AnimalsFragment
         super.onViewStateRestored(savedInstanceState);
         boolean isSearchViewFocused = searchView.isSearchViewFocused();
         if (!isSearchViewFocused) {
-            searchView.post(new Runnable() {
-                @Override
-                public void run() {
-                    searchView.clearSearchView();
-                }
-            });
+            searchView.post(() -> searchView.clearSearchView());
         }
     }
 
@@ -125,13 +113,9 @@ public class AnimalsFragment
     @NonNull
     @Override
     public AnimalsContract.UserActionListener createPresenter() {
-        FirebaseAuth auth =
-            BZApplication.get(getContext()).getApplicationComponent().firebaseAuth();
         FirebaseDatabase database =
             BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
-        FirebaseStorage storage =
-            BZApplication.get(getContext()).getApplicationComponent().fireBaseStorage();
-        return new AnimalsPresenter(auth, database, storage);
+        return new AnimalsPresenter(database);
     }
 
     private void initAnimalsViewPager(@NonNull List<Category> categories) {
@@ -229,5 +213,4 @@ public class AnimalsFragment
             appBarLayout.setExpanded(setExpanded, true);
         }
     }
-
 }

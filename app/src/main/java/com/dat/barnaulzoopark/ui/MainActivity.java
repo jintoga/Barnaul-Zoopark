@@ -33,6 +33,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
 import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
+import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
@@ -71,6 +72,8 @@ public class MainActivity
     private static final String TAG_HOME_FRAGMENT = "HOME";
     private boolean isLoggedIn = false;
 
+    private User user;
+
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
         //Ignore
@@ -106,6 +109,7 @@ public class MainActivity
 
     @Override
     public void bindUserData(@NonNull User user) {
+        this.user = user;
         if (user.getPhoto() != null) {
             Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
@@ -340,6 +344,11 @@ public class MainActivity
             case R.id.zooMap:
                 Log.d(TAG, "ZOO MAP");
                 fragment = new ZooMapFragment();
+                break;
+            case R.id.favouriteAnimals:
+                if (user != null) {
+                    fragment = FavoriteAnimalsFragment.newInstance(user);
+                }
                 break;
             case R.id.dataControl:
                 Log.d(TAG, "dataControl");

@@ -1,6 +1,10 @@
 package com.dat.barnaulzoopark.ui;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.widget.Toast;
+import com.dat.barnaulzoopark.R;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -17,5 +21,17 @@ public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    protected void showSnackBar(@NonNull String msg) {
+        if (getView() != null && getView().findViewById(R.id.container) != null) {
+            Snackbar snackbar =
+                Snackbar.make(getView().findViewById(R.id.container), msg, Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
+    }
+
+    protected void showToast(@NonNull String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }
