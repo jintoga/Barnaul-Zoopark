@@ -256,7 +256,7 @@ public class AnimalsDetailFragment extends
     }
 
     private void updateBookmarkButton(boolean isFavorite) {
-        int imageRes = isFavorite ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark_empty;
+        int imageRes = isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_empty;
         subscribeAnimal.setImageResource(imageRes);
         AlphaAnimation alphaAnimationShowIcon = new AlphaAnimation(0.2f, 1.0f);
         alphaAnimationShowIcon.setDuration(500);

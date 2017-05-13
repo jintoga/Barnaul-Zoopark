@@ -56,7 +56,7 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/favouriteAnimals"
-                    android:icon="@drawable/ic_bookmark_filled"
+                    android:icon="@drawable/ic_favorite_filled"
                     android:title="@string/favourite_animals" />
                 <item
                     android:id="@+id/blogAnimal"

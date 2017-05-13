@@ -57,4 +57,5 @@
 
     <dimen name="item_file_attachment_decoration">6dp</dimen>
     <dimen name="item_species_animals_child_height">120dp</dimen>
+    <dimen name="recycler_view_favorite_animals_span">4dp</dimen>
 </resources>

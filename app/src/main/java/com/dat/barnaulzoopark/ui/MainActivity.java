@@ -33,7 +33,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
 import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
-import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsActivity;
+import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
@@ -324,6 +324,7 @@ public class MainActivity
         if (currentMenuItemID == menuItem.getItemId()) {
             return false;
         }
+        currentMenuItemID = menuItem.getItemId();
         Fragment fragment = null;
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
@@ -331,7 +332,6 @@ public class MainActivity
                 getSupportFragmentManager().popBackStack(null,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 addInitFragment(new NewsFragment());
-                currentMenuItemID = menuItem.getItemId();
                 return true;
             case R.id.ourAnimals:
                 fragment = new AnimalsFragment();
@@ -344,7 +344,7 @@ public class MainActivity
                 fragment = new ZooMapFragment();
                 break;
             case R.id.favouriteAnimals:
-                FavoriteAnimalsActivity.start(this);
+                fragment = new FavoriteAnimalsFragment();
                 break;
             case R.id.dataControl:
                 Log.d(TAG, "dataControl");
@@ -352,7 +352,6 @@ public class MainActivity
                 break;
         }
         if (fragment != null) {
-            currentMenuItemID = menuItem.getItemId();
             FragmentManager fragmentManager = getSupportFragmentManager();
             Log.d(TAG, fragmentManager.getBackStackEntryCount() + "");
             if (fragmentManager.getBackStackEntryCount() > 1) {

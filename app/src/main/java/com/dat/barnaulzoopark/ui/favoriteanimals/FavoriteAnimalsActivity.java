@@ -91,6 +91,21 @@ public class FavoriteAnimalsActivity extends
         setViewPagerVisibility(!favoriteAnimals.isEmpty());
     }
 
+    @Override
+    public void onUpdatingUserData() {
+
+    }
+
+    @Override
+    public void onUpdateUserDataError(@NonNull String localizedMessage) {
+
+    }
+
+    @Override
+    public void onUpdateUserDataSuccess(boolean isAlreadySubscribed, int clickedPosition) {
+
+    }
+
     private void initMaterialViewPager(@NonNull final List<Animal> animals) {
         materialViewPager.getViewPager()
             .setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
