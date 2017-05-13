@@ -7,12 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
 import com.dat.barnaulzoopark.model.User;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
+import javax.inject.Inject;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by DAT on 03-May-16.
  */
 public class BZApplication extends MultiDexApplication {
+
+    @Inject
+    OkHttpClient okHttpClient;
 
     @NonNull
     private ApplicationComponent applicationComponent;
@@ -30,8 +37,20 @@ public class BZApplication extends MultiDexApplication {
         applicationComponent.inject(this);
         applicationComponent.fireBaseDatabase()
             .setPersistenceEnabled(true); //FireBase offline capabilities
-        Fresco.initialize(this);
+
+        ImagePipelineConfig config =
+            OkHttpImagePipelineConfigFactory.newBuilder(getApplicationContext(), okHttpClient)
+                .setDownsampleEnabled(true)
+                .build();
+        Fresco.initialize(getApplicationContext(), config);
+
         MaterialViewPagerAnimator.ENABLE_LOG = false;
+    }
+
+    @Override
+    public void onLowMemory() {
+        Fresco.getImagePipeline().clearMemoryCaches();
+        super.onLowMemory();
     }
 
     @NonNull

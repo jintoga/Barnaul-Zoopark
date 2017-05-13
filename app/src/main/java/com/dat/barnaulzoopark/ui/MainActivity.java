@@ -33,6 +33,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
 import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
+import com.dat.barnaulzoopark.ui.bloganimal.BlogAnimalFragment;
 import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
@@ -332,8 +333,10 @@ public class MainActivity
             case R.id.favouriteAnimals:
                 fragment = new FavoriteAnimalsFragment();
                 break;
+            case R.id.blogAnimal:
+                fragment = new BlogAnimalFragment();
+                break;
             case R.id.dataControl:
-                Log.d(TAG, "dataControl");
                 fragment = new DataManagementPreferenceFragment();
                 break;
         }

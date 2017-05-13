@@ -4,6 +4,7 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import okhttp3.OkHttpClient;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -33,6 +34,13 @@ class ApplicationModule {
     @Singleton
     EventBus provideEventBus() {
         return EventBus.getDefault();
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient provideHttpClient() {
+        OkHttpClient.Builder okHttp = new OkHttpClient.Builder();
+        return okHttp.build();
     }
 
     @Provides
