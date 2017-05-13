@@ -11,10 +11,10 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 @Module
-public class ApplicationModule {
+class ApplicationModule {
     private BZApplication application;
 
-    public ApplicationModule(BZApplication application) {
+    ApplicationModule(BZApplication application) {
         this.application = application;
     }
 
@@ -25,7 +25,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public BZApplication provideApplication() {
+    BZApplication provideApplication() {
         return application;
     }
 

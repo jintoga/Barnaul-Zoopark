@@ -68,7 +68,7 @@ public class NewsDetailPhotosAdapter
         void onItemClicked(int adapterPosition);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.photo)
         protected ImageView photo;
 

@@ -16,19 +16,19 @@ public class FirebaseModule {
 
     @Provides
     @Singleton
-    public FirebaseDatabase provideFireBaseDatabase() {
+    FirebaseDatabase provideFireBaseDatabase() {
         return FirebaseDatabase.getInstance();
     }
 
     @Provides
     @Singleton
-    public FirebaseStorage provideFireBaseStorage() {
+    FirebaseStorage provideFireBaseStorage() {
         return FirebaseStorage.getInstance();
     }
 
     @Provides
     @Singleton
-    public FirebaseAuth provideFireBaseAuth() {
+    FirebaseAuth provideFireBaseAuth() {
         return FirebaseAuth.getInstance();
     }
 }

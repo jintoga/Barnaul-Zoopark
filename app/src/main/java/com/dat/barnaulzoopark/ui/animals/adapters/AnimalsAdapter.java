@@ -68,7 +68,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
         void onSpeciesSelected(@NonNull Species species);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.thumbnail)
         protected ImageView thumbnail;

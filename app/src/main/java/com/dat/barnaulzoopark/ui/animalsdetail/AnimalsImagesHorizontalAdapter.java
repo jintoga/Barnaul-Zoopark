@@ -60,7 +60,7 @@ class AnimalsImagesHorizontalAdapter
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.thumbnail)
         protected SimpleDraweeView thumbnail;
 

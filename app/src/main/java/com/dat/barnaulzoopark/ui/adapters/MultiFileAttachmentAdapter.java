@@ -161,7 +161,7 @@ public class MultiFileAttachmentAdapter
         return data.get(0).isFilled();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.attach)
         ImageButton attach;
         @Bind(R.id.remove)
