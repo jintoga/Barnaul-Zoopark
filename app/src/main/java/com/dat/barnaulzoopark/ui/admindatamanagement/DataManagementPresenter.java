@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.admindatamanagement;
 import android.support.annotation.NonNull;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
+import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -96,7 +97,10 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
 
     private <T extends AbstractData> void deleteUidInChild(@NonNull final T data) {
         DatabaseReference databaseReference;
-        if (data instanceof Species) {
+        if (data instanceof Animal) {
+            //Delete animal's uid in user's subscriptions
+            databaseReference = database.getReference(BZFireBaseApi.users);
+        } else if (data instanceof Species) {
             //Species's child is Animal
             databaseReference = database.getReference(BZFireBaseApi.animal);
         } else if (data instanceof Category) {
@@ -122,7 +126,13 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
 
     private <T extends AbstractData> void deleteChildUid(T data, DataSnapshot snapshot,
         DatabaseReference finalDatabaseReference) {
-        if (data instanceof Species) {
+        if (data instanceof Animal) {
+            User user = snapshot.getValue(User.class);
+            if (user.getSubscribedAnimals().containsKey(data.getId())) {
+                user.getSubscribedAnimals().remove(data.getId());
+                finalDatabaseReference.child(user.getUid()).setValue(user);
+            }
+        } else if (data instanceof Species) {
             Animal animal = snapshot.getValue(Animal.class);
             if (animal.getSpeciesUid() != null && animal.getSpeciesUid().equals(data.getId())) {
                 animal.clearSpeciesUid();
