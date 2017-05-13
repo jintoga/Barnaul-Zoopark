@@ -483,6 +483,7 @@ public class AnimalEditorActivity extends
         switch (item.getItemId()) {
             case android.R.id.home:
                 //ToDo: implement discard dialog
+                finish();
                 break;
             case R.id.save:
                 if (selectedAnimal == null) {
