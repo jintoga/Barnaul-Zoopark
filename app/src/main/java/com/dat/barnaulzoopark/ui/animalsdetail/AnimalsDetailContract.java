@@ -25,7 +25,7 @@ interface AnimalsDetailContract {
 
         void onUpdateUserDataError(@NonNull String localizedMessage);
 
-        void onUpdateUserDataSuccess(boolean isAlreadySubscribed);
+        void onUpdateUserDataSuccess(boolean isAlreadySubscribed, @NonNull Animal selectedAnimal);
     }
 
     interface FragmentUserActionListener extends MvpPresenter<AnimalsDetailContract.ViewFragment> {

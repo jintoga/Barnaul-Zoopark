@@ -2,34 +2,42 @@ package com.dat.barnaulzoopark.ui.favoriteanimals;
 
 import android.support.annotation.NonNull;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
+import com.dat.barnaulzoopark.events.AnimalSubscribeEvent;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.ui.EventMvpPresenter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by DAT on 5/12/2017.
  */
 
-class FavoriteAnimalsPresenter extends MvpBasePresenter<FavoriteAnimalsContract.View>
+class FavoriteAnimalsPresenter extends EventMvpPresenter<FavoriteAnimalsContract.View>
     implements FavoriteAnimalsContract.UserActionListener {
 
     private FirebaseDatabase database;
 
-    FavoriteAnimalsPresenter(FirebaseDatabase database) {
+    FavoriteAnimalsPresenter(EventBus eventBus, FirebaseDatabase database) {
+        super(eventBus);
         this.database = database;
     }
 
     @Override
     public void loadFavoritesAnimals(@NonNull Set<String> animalUids) {
+        if (getView() != null) {
+            getView().onLoadFavoriteAnimalsProgress();
+        }
         database.getReference()
             .child(BZFireBaseApi.animal)
             .addValueEventListener(new ValueEventListener() {
@@ -48,12 +56,15 @@ class FavoriteAnimalsPresenter extends MvpBasePresenter<FavoriteAnimalsContract.
                     }
                     if (getView() != null) {
                         getView().bindAnimals(result);
+                        getView().onLoadFavoriteAnimalsSuccess();
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    if (getView() != null) {
+                        getView().onLoadFavoriteAnimalsError(databaseError.getMessage());
+                    }
                 }
             });
     }
@@ -84,5 +95,15 @@ class FavoriteAnimalsPresenter extends MvpBasePresenter<FavoriteAnimalsContract.
                 }
             })
             .subscribe();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AnimalSubscribeEvent event) {
+        if (!isViewAttached()) {
+            return;
+        }
+        if (getView() != null) {
+            getView().updateFavoriteAnimals();
+        }
     }
 }

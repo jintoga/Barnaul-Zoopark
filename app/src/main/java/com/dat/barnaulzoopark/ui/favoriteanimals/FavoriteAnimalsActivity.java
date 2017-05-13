@@ -12,10 +12,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseActivityWithAnimation;
 import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailFragment;
 import com.github.florent37.materialviewpager.MaterialViewPager;
@@ -37,6 +39,8 @@ public class FavoriteAnimalsActivity extends
     protected MaterialViewPager materialViewPager;
     @Bind(R.id.emptyText)
     protected TextView emptyText;
+
+    private MaterialDialog progressDialog;
 
     public static void start(@NonNull Activity activity, int selectedAnimalPosition) {
         if (activity instanceof FavoriteAnimalsActivity) {
@@ -83,7 +87,7 @@ public class FavoriteAnimalsActivity extends
     public FavoriteAnimalsContract.UserActionListener createPresenter() {
         FirebaseDatabase database =
             BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
-        return new FavoriteAnimalsPresenter(database);
+        return new FavoriteAnimalsPresenter(null, database);
     }
 
     @Override
@@ -104,6 +108,35 @@ public class FavoriteAnimalsActivity extends
 
     @Override
     public void onUpdateUserDataSuccess(boolean isAlreadySubscribed, int clickedPosition) {
+    }
+
+    @Override
+    public void onLoadFavoriteAnimalsProgress() {
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.loading_favorite_animals));
+        }
+        progressDialog.setContent(getString(R.string.loading_favorite_animals));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onLoadFavoriteAnimalsSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onLoadFavoriteAnimalsError(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void updateFavoriteAnimals() {
     }
 
     private void initMaterialViewPager(@NonNull final List<Animal> animals) {

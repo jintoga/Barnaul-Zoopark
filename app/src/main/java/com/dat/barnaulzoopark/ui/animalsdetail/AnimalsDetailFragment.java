@@ -20,6 +20,7 @@ import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.events.AnimalSubscribeEvent;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
@@ -140,14 +141,18 @@ public class AnimalsDetailFragment extends
     }
 
     @Override
-    public void onUpdateUserDataSuccess(boolean isAlreadySubscribed) {
+    public void onUpdateUserDataSuccess(boolean subscribed, @NonNull Animal selectedAnimal) {
         Log.d(TAG, "onUpdateUserDataSuccess");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        String msg =
-            isAlreadySubscribed ? getString(R.string.subscribed) : getString(R.string.unsubscribed);
+        String msg = subscribed ? getString(R.string.subscribed) : getString(R.string.unsubscribed);
         showSnackBar(msg);
+
+        BZApplication.get(getActivity())
+            .getApplicationComponent()
+            .eventBus()
+            .post(new AnimalSubscribeEvent());
     }
 
     @Override

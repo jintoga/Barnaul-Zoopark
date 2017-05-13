@@ -21,6 +21,14 @@ interface FavoriteAnimalsContract {
         void onUpdateUserDataError(@NonNull String localizedMessage);
 
         void onUpdateUserDataSuccess(boolean isAlreadySubscribed, int clickedPosition);
+
+        void onLoadFavoriteAnimalsProgress();
+
+        void onLoadFavoriteAnimalsSuccess();
+
+        void onLoadFavoriteAnimalsError(@NonNull String localizedMessage);
+
+        void updateFavoriteAnimals();
     }
 
     interface UserActionListener extends MvpPresenter<FavoriteAnimalsContract.View> {

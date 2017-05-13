@@ -24,6 +24,7 @@ import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by DAT on 5/13/2017.
@@ -78,8 +79,8 @@ public class FavoriteAnimalsFragment extends
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         loadFavoriteAnimals();
     }
 
@@ -111,9 +112,10 @@ public class FavoriteAnimalsFragment extends
     @NonNull
     @Override
     public FavoriteAnimalsContract.UserActionListener createPresenter() {
+        EventBus eventBus = BZApplication.get(getContext()).getApplicationComponent().eventBus();
         FirebaseDatabase database =
             BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
-        return new FavoriteAnimalsPresenter(database);
+        return new FavoriteAnimalsPresenter(eventBus, database);
     }
 
     @Override
@@ -153,6 +155,36 @@ public class FavoriteAnimalsFragment extends
         showSnackBar(msg);
         animalsAdapter.removeItem(clickedPosition);
         setRecyclerViewVisibility(animalsAdapter.getItemCount() > 0);
+    }
+
+    @Override
+    public void onLoadFavoriteAnimalsProgress() {
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(),
+                getString(R.string.loading_favorite_animals));
+        }
+        progressDialog.setContent(getString(R.string.loading_favorite_animals));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onLoadFavoriteAnimalsSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onLoadFavoriteAnimalsError(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void updateFavoriteAnimals() {
+        loadFavoriteAnimals();
     }
 
     @Override

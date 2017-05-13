@@ -128,4 +128,5 @@
     <string name="subscribed">Subscribed</string>
     <string name="unsubscribed">Unsubscribed</string>
     <string name="empty">Empty</string>
+    <string name="loading_favorite_animals">Loading favorite animals…</string>
 </resources>

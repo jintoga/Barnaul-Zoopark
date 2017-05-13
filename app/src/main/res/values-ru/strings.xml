@@ -94,4 +94,5 @@
     <string name="subscribed">Subscribed</string>
     <string name="unsubscribed">Unsubscribed</string>
     <string name="empty">Пусто</string>
+    <string name="loading_favorite_animals">Идёт загрузка любимых животных…</string>
 </resources>

@@ -39,7 +39,7 @@ class AnimalsDetailFragmentPresenter extends MvpBasePresenter<AnimalsDetailContr
         RxFirebaseDatabase.observeSingleValueEvent(userItemReference, Animal.class)
             .doOnCompleted(() -> {
                 if (getView() != null) {
-                    getView().onUpdateUserDataSuccess(!isAlreadySubscribed);
+                    getView().onUpdateUserDataSuccess(!isAlreadySubscribed, selectedAnimal);
                 }
             })
             .doOnError(throwable -> {
