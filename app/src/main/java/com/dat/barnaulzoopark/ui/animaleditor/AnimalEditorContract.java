@@ -16,7 +16,7 @@ import java.util.List;
  * Created by DAT on 3/11/2017.
  */
 
-public interface AnimalEditorContract {
+interface AnimalEditorContract {
     interface View extends MvpView {
 
         void bindSpecies(@NonNull List<Species> speciesList);

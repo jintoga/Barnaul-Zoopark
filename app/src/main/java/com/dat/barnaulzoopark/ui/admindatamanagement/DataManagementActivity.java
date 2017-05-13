@@ -20,6 +20,7 @@ import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
+import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -29,6 +30,7 @@ import com.dat.barnaulzoopark.ui.NonPredictiveItemAnimationsLinearLayoutManager;
 import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
 import com.dat.barnaulzoopark.ui.animaleditor.AnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.animalspecieseditor.SpeciesEditorActivity;
+import com.dat.barnaulzoopark.ui.bloganimaleditor.BlogAnimalEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -211,6 +213,10 @@ public class DataManagementActivity
                 title = getString(R.string.data_management_animals);
                 adapter = getAdapter(Animal.class, referenceName);
                 break;
+            case BZFireBaseApi.blog_animal:
+                title = getString(R.string.data_management_blog_animals);
+                adapter = getAdapter(BlogAnimal.class, referenceName);
+                break;
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
@@ -249,6 +255,9 @@ public class DataManagementActivity
                     break;
                 case BZFireBaseApi.animal:
                     AnimalEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.blog_animal:
+                    BlogAnimalEditorActivity.start(this, null);
                     break;
             }
         }

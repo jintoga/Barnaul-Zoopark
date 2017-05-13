@@ -13,4 +13,8 @@
     <Preference
         android:key="key_animals"
         app:title="@string/data_management_animals" />
+
+    <Preference
+        android:key="key_blog_animal"
+        app:title="@string/data_management_blog_animals" />
 </PreferenceScreen>

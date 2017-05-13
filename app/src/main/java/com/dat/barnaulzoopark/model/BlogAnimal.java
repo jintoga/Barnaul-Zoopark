@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.model;
 
 import android.support.annotation.NonNull;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
  * Created by DAT on 5/12/2017.
  */
 @IgnoreExtraProperties
-public class BlogAnimal {
+public class BlogAnimal extends AbstractData {
     private String uid;
     private String animalUid;
     private String title;
@@ -54,5 +55,23 @@ public class BlogAnimal {
     @NonNull
     public Map<String, String> getPhotos() {
         return photos == null ? photos = new HashMap<>() : photos;
+    }
+
+    @Exclude
+    @Override
+    public String getPhotoUrl() {
+        return getThumbnail();
+    }
+
+    @Exclude
+    @Override
+    public String getText() {
+        return getTitle();
+    }
+
+    @Exclude
+    @Override
+    public String getId() {
+        return getUid();
     }
 }

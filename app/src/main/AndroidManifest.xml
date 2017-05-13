@@ -53,6 +53,7 @@
         <activity
             android:name=".ui.favoriteanimals.FavoriteAnimalsActivity"
             android:theme="@style/AppTheme.WhiteText" />
+        <activity android:name=".ui.bloganimaleditor.BlogAnimalEditorActivity" />
     </application>
 
 </manifest>
