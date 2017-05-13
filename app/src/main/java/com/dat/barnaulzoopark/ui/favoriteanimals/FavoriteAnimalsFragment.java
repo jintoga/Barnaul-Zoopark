@@ -101,8 +101,9 @@ public class FavoriteAnimalsFragment extends
     }
 
     private void setRecyclerViewVisibility(boolean shouldShow) {
-        int recyclerViewVisibility = shouldShow ? View.VISIBLE : View.GONE;
-        int emptyTextVisibility = !shouldShow ? View.VISIBLE : View.GONE;
+        int recyclerViewVisibility =
+            shouldShow ? android.view.View.VISIBLE : android.view.View.GONE;
+        int emptyTextVisibility = !shouldShow ? android.view.View.VISIBLE : android.view.View.GONE;
         favouriteAnimals.setVisibility(recyclerViewVisibility);
         emptyText.setVisibility(emptyTextVisibility);
     }
@@ -117,7 +118,7 @@ public class FavoriteAnimalsFragment extends
 
     @Override
     public void onItemClicked(@NonNull Animal animal, int position) {
-
+        FavoriteAnimalsActivity.start(getActivity(), position);
     }
 
     @Override

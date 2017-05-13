@@ -1,6 +1,6 @@
 package com.dat.barnaulzoopark.ui.favoriteanimals;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,7 +16,7 @@ import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
-import com.dat.barnaulzoopark.ui.BaseMvpActivity;
+import com.dat.barnaulzoopark.ui.BaseActivityWithAnimation;
 import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailFragment;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
@@ -29,20 +28,24 @@ import java.util.List;
  */
 
 public class FavoriteAnimalsActivity extends
-    BaseMvpActivity<FavoriteAnimalsContract.View, FavoriteAnimalsContract.UserActionListener>
+    BaseActivityWithAnimation<FavoriteAnimalsContract.View, FavoriteAnimalsContract.UserActionListener>
     implements FavoriteAnimalsContract.View {
+
+    private static final String KEY_SELECTED_ANIMAL_POSITION = "KEY_SELECTED_ANIMAL_POSITION";
 
     @Bind(R.id.materialViewPager)
     protected MaterialViewPager materialViewPager;
     @Bind(R.id.emptyText)
     protected TextView emptyText;
 
-    public static void start(@NonNull Context context) {
-        if (context instanceof FavoriteAnimalsActivity) {
+    public static void start(@NonNull Activity activity, int selectedAnimalPosition) {
+        if (activity instanceof FavoriteAnimalsActivity) {
             return;
         }
-        Intent intent = new Intent(context, FavoriteAnimalsActivity.class);
-        context.startActivity(intent);
+        Intent intent = new Intent(activity, FavoriteAnimalsActivity.class);
+        intent.putExtra(KEY_SELECTED_ANIMAL_POSITION, selectedAnimalPosition);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
     @Override
@@ -93,17 +96,14 @@ public class FavoriteAnimalsActivity extends
 
     @Override
     public void onUpdatingUserData() {
-
     }
 
     @Override
     public void onUpdateUserDataError(@NonNull String localizedMessage) {
-
     }
 
     @Override
     public void onUpdateUserDataSuccess(boolean isAlreadySubscribed, int clickedPosition) {
-
     }
 
     private void initMaterialViewPager(@NonNull final List<Animal> animals) {
@@ -136,11 +136,20 @@ public class FavoriteAnimalsActivity extends
         materialViewPager.getViewPager()
             .setOffscreenPageLimit(materialViewPager.getViewPager().getAdapter().getCount());
         materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
+
+        //Move to selected animal
+        final int selectedAnimalPosition = getIntent().getIntExtra(KEY_SELECTED_ANIMAL_POSITION, 0);
+        materialViewPager.post(() -> {
+            if (selectedAnimalPosition >= 0 && selectedAnimalPosition < animals.size()) {
+                materialViewPager.getViewPager().setCurrentItem(selectedAnimalPosition);
+                materialViewPager.onPageSelected(selectedAnimalPosition);
+            }
+        });
     }
 
     private void setViewPagerVisibility(boolean shouldShow) {
-        int viewpagerVisibility = shouldShow ? View.VISIBLE : View.GONE;
-        int emptyTextVisibility = !shouldShow ? View.VISIBLE : View.GONE;
+        int viewpagerVisibility = shouldShow ? android.view.View.VISIBLE : android.view.View.GONE;
+        int emptyTextVisibility = !shouldShow ? android.view.View.VISIBLE : android.view.View.GONE;
         materialViewPager.getViewPager().setVisibility(viewpagerVisibility);
         materialViewPager.getPagerTitleStrip().setVisibility(viewpagerVisibility);
         materialViewPager.getHeaderBackgroundContainer().setVisibility(viewpagerVisibility);
@@ -156,7 +165,7 @@ public class FavoriteAnimalsActivity extends
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                finishWithTransition(true);
                 break;
             default:
                 return false;
