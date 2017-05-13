@@ -121,25 +121,17 @@ public class MainActivity
         userName.setText(user.getName());
         userEmail.setText(user.getEmail());
         logButton.setImageResource(R.drawable.ic_logout);
-        logButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BZDialogBuilder.createVerifyLogoutDialog(MainActivity.this)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog,
-                            @NonNull DialogAction which) {
-                            FirebaseAuth.getInstance().signOut();
-                            BZApplication.get(MainActivity.this)
-                                .getApplicationComponent()
-                                .preferencesHelper()
-                                .clear();
-                            goToStartUp();
-                        }
-                    })
-                    .show();
-            }
-        });
+        logButton.setOnClickListener(
+            v -> BZDialogBuilder.createVerifyLogoutDialog(MainActivity.this)
+                .onPositive((dialog, which) -> {
+                    FirebaseAuth.getInstance().signOut();
+                    BZApplication.get(MainActivity.this)
+                        .getApplicationComponent()
+                        .preferencesHelper()
+                        .clear();
+                    goToStartUp();
+                })
+                .show());
     }
 
     private void setUserPrivilege(boolean showUserMenu) {
@@ -255,21 +247,15 @@ public class MainActivity
         userPhoto = (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPhoto);
         loadingPhoto =
             (ProgressBar) navigationView.getHeaderView(0).findViewById(R.id.loadingPhoto);
-        userPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLoggedIn) {
-                    presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
-                }
+        userPhoto.setOnClickListener(v -> {
+            if (isLoggedIn) {
+                presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
             }
         });
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
-        userName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLoggedIn) {
-                    showEditUserNameDialog();
-                }
+        userName.setOnClickListener(v -> {
+            if (isLoggedIn) {
+                showEditUserNameDialog();
             }
         });
         role = (TextView) navigationView.getHeaderView(0).findViewById(R.id.role);
