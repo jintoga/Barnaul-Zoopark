@@ -144,4 +144,5 @@
     <string name="remove_item_blog_animal">animal blog</string>
     <string name="loading_blogs">Loading blogs of favorite animals…</string>
     <string name="loading_selected_blog">Loading selected blog…</string>
+    <string name="updating_blog">Updating animal blog…</string>
 </resources>

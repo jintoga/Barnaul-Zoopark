@@ -7,6 +7,7 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.utils.UriUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +48,126 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
                 getView().highlightRequiredFields();
             }
         }
+    }
+
+    @Override
+    public void editAnimal(@NonNull BlogAnimal selectedBlog, @NonNull String title,
+        @NonNull String description, @NonNull String animalUid, @Nullable Uri thumbnailUri,
+        @NonNull List<Attachment> attachmentsToAdd, @NonNull List<Attachment> attachmentsToDelete,
+        @NonNull String videoUrl) {
+        if (!"".equals(title) && !"".equals(description) && !"".equals(animalUid)) {
+            edit(selectedBlog, title, description, animalUid, thumbnailUri, attachmentsToAdd,
+                attachmentsToDelete, videoUrl);
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
+        }
+    }
+
+    private void edit(@NonNull BlogAnimal selectedBlog, @NonNull String title,
+        @NonNull String description, @NonNull String animalUid, @Nullable Uri thumbnailUri,
+        @NonNull List<Attachment> attachmentsToAdd, @NonNull List<Attachment> attachmentsToDelete,
+        @NonNull String videoUrl) {
+        DatabaseReference databaseReference =
+            database.getReference().child(BZFireBaseApi.blog_animal);
+        final DatabaseReference blogItemReference = databaseReference.child(selectedBlog.getUid());
+        selectedBlog.update(animalUid, title, description,
+            Calendar.getInstance().getTimeInMillis());
+        if (!"".equals(videoUrl)) {
+            selectedBlog.setVideo(videoUrl);
+        }
+        blogItemReference.setValue(selectedBlog);
+        if (getView() != null) {
+            getView().showEditingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(blogItemReference, BlogAnimal.class)
+            .flatMap(blogAnimal -> updateIcon(blogAnimal, thumbnailUri, blogItemReference))
+            .flatMap(
+                blogAnimal -> updateAttachments(selectedBlog, blogItemReference, attachmentsToAdd,
+                    attachmentsToDelete))
+            .doOnCompleted(() -> {
+                if (getView() != null) {
+                    getView().onEditSuccess();
+                }
+            })
+            .doOnError(throwable -> {
+                if (getView() != null) {
+                    getView().onEditError(throwable.getLocalizedMessage());
+                }
+            })
+            .subscribe();
+    }
+
+    @NonNull
+    private Observable<BlogAnimal> updateIcon(@NonNull BlogAnimal blogAnimal,
+        @Nullable Uri thumbnailUri, @NonNull DatabaseReference databaseReference) {
+        String filePath = BZFireBaseApi.blog_animal + "/" + blogAnimal.getUid() + "/" + "thumbnail";
+        if (thumbnailUri == null && blogAnimal.getThumbnail() != null) {
+            //delete
+            return deleteIcon(blogAnimal, databaseReference, filePath);
+        } else if (thumbnailUri != null && UriUtil.isLocalFile(thumbnailUri)) {
+            //update
+            return uploadIcon(blogAnimal, thumbnailUri);
+        } else {
+            return Observable.just(blogAnimal);
+        }
+    }
+
+    @NonNull
+    private Observable<BlogAnimal> deleteIcon(@NonNull BlogAnimal blogAnimal,
+        @NonNull DatabaseReference databaseReference, @NonNull String filePath) {
+        StorageReference blogStorageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(blogStorageReference).flatMap(aVoid -> {
+            blogAnimal.clearThumbnail();
+            databaseReference.setValue(blogAnimal);
+            return Observable.just(blogAnimal);
+        });
+    }
+
+    @NonNull
+    private Observable<BlogAnimal> uploadIcon(@NonNull BlogAnimal blogAnimal,
+        @Nullable Uri iconUri) {
+        if (iconUri == null) {
+            return Observable.just(blogAnimal);
+        } else {
+            return getObservableUploadIcon(blogAnimal, iconUri);
+        }
+    }
+
+    @NonNull
+    private Observable<BlogAnimal> updateAttachments(@NonNull BlogAnimal blogAnimal,
+        @NonNull DatabaseReference databaseReference, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.concat(
+            deleteAttachments(blogAnimal, databaseReference, attachmentsToDelete),
+            uploadAttachments(blogAnimal, attachmentsToAdd));
+    }
+
+    @NonNull
+    private Observable<BlogAnimal> deleteAttachments(@NonNull BlogAnimal blogAnimal,
+        @NonNull DatabaseReference databaseReference,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.from(attachmentsToDelete)
+            .filter(attachment -> attachment.getAttachmentUid() != null)
+            .flatMap(attachment -> {
+                final String attachmentPath = BZFireBaseApi.blog_animal
+                    + "/"
+                    + blogAnimal.getUid()
+                    + "/photos/"
+                    + attachment.getAttachmentUid();
+                return deleteAttachment(attachmentPath).flatMap(aVoid -> {
+                    blogAnimal.getPhotos().remove(attachment.getAttachmentUid());
+                    databaseReference.setValue(blogAnimal);
+                    return Observable.just(blogAnimal);
+                });
+            });
+    }
+
+    @NonNull
+    private Observable<Void> deleteAttachment(@NonNull String filePath) {
+        StorageReference animalStorageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(animalStorageReference);
     }
 
     private void create(@NonNull String title, @NonNull String description,

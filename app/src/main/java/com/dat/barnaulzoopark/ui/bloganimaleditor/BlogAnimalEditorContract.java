@@ -35,12 +35,23 @@ public interface BlogAnimalEditorContract {
         void onLoadBlogProgress();
 
         void onLoadBlogSuccess();
+
+        void showEditingProgress();
+
+        void onEditSuccess();
+
+        void onEditError(@NonNull String localizedMessage);
     }
 
     interface UserActionListener extends MvpPresenter<View> {
         void createAnimal(@NonNull String title, @NonNull String description,
             @NonNull String animalUid, @Nullable Uri thumbnailUri,
             @NonNull List<Attachment> attachments, @NonNull String videoUrl);
+
+        void editAnimal(@NonNull BlogAnimal selectedBlog, @NonNull String title,
+            @NonNull String description, @NonNull String animalUid, @Nullable Uri thumbnailUri,
+            @NonNull List<Attachment> attachmentsToAdd,
+            @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl);
 
         void loadAnimals();
 

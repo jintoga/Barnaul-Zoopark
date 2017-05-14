@@ -252,7 +252,14 @@ public class BlogAnimalEditorActivity extends
     }
 
     private void editBlogAnimal() {
-
+        if (getAnimalUid() != null) {
+            presenter.editAnimal(selectedBlog, title.getText().toString(),
+                description.getText().toString(), getAnimalUid(), thumbnailUri,
+                attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete(),
+                video.getText().toString());
+        } else {
+            onEditError(getString(R.string.species_invalid_error));
+        }
     }
 
     @Override
@@ -380,6 +387,36 @@ public class BlogAnimalEditorActivity extends
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void showEditingProgress() {
+        Log.d(TAG, "showEditingProgress");
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.updating_blog));
+        }
+        progressDialog.setContent(getString(R.string.updating_blog));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onEditSuccess() {
+        Log.d(TAG, "onEditSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onEditError(@NonNull String localizedMessage) {
+        Log.d(TAG, "onEditError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
     }
 
     @Nullable

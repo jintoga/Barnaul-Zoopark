@@ -32,6 +32,10 @@ public class BlogAnimal extends AbstractData {
         this.time = time;
     }
 
+    public void clearThumbnail() {
+        this.thumbnail = null;
+    }
+
     public String getUid() {
         return uid;
     }
@@ -89,5 +93,12 @@ public class BlogAnimal extends AbstractData {
     @Override
     public String getId() {
         return getUid();
+    }
+
+    public void update(String animalUid, String title, String description, long time) {
+        this.animalUid = animalUid;
+        this.title = title;
+        this.description = description;
+        this.time = time;
     }
 }
