@@ -130,7 +130,7 @@ public class NewsItemEditorActivity extends
 
     @Override
     public void onCropError(@NonNull String errorMsg) {
-        Log.d(TAG, errorMsg);
+        showSnackBar(errorMsg);
     }
 
     @Override
@@ -186,7 +186,7 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        showSnackBar(errorMsg);
     }
 
     @Override
@@ -213,7 +213,7 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        showSnackBar(errorMsg);
     }
 
     @Override
@@ -227,7 +227,7 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        showSnackBar(errorMsg);
     }
 
     @Override
@@ -261,7 +261,7 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        showSnackBar(errorMsg);
     }
 
     @Override
