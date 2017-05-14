@@ -1,6 +1,5 @@
 package com.dat.barnaulzoopark.ui.animals.animalsfragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
@@ -22,7 +20,6 @@ import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsViewPagerAdapter;
 import com.dat.barnaulzoopark.widget.SearchView.FloatingSearchView;
-import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
@@ -32,8 +29,7 @@ import java.util.List;
 public class AnimalsFragment
     extends BaseMvpFragment<AnimalsContract.View, AnimalsContract.UserActionListener>
     implements AnimalsContract.View, FloatingSearchView.SearchViewFocusedListener,
-    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener, AppBarManager,
-    MainActivity.DispatchTouchEventListener {
+    FloatingSearchView.SearchViewDrawerListener, MainActivity.DrawerListener {
 
     @Bind(R.id.appBarLayout)
     protected AppBarLayout appBarLayout;
@@ -180,37 +176,5 @@ public class AnimalsFragment
     public void onSearchViewEditTextLostFocus() {
         Log.d("Lost Focus", "Lost Focus on searchView");
         searchView.clearSearchView();
-    }
-
-    @Override
-    public void collapseAppBar() {
-        appBarLayout.setExpanded(false, true);
-    }
-
-    @Override
-    public void expandAppBar() {
-        appBarLayout.setExpanded(true, true);
-    }
-
-    @Override
-    public int getVisibleHeightForRecyclerViewInPx() {
-        int windowHeight, appBarHeight;
-        windowHeight = getActivity().getWindow().getDecorView().getHeight();
-        appBarHeight = appBarLayout.getHeight();
-        return windowHeight - appBarHeight;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ((MainActivity) getActivity()).setDispatchTouchEventListener(this);
-    }
-
-    public void dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            float per = Math.abs(appBarLayout.getY()) / appBarLayout.getTotalScrollRange();
-            boolean setExpanded = (per <= 0.5F);
-            appBarLayout.setExpanded(setExpanded, true);
-        }
     }
 }

@@ -68,8 +68,7 @@ public class FavoriteAnimalsActivity extends
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.favourite_animals));
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 

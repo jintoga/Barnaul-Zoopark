@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.ConfigurableRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/animals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +20,6 @@ import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.animals.adapters.AnimalsAdapter;
 import com.dat.barnaulzoopark.ui.animalspecies.AnimalSpeciesActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
-import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.AppBarManager;
-import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.ConfigurableRecyclerView;
-import com.dat.barnaulzoopark.widget.SmoothSupportAppBarLayout.SmoothGridLayoutManager;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import java.util.List;
@@ -35,7 +34,7 @@ public class AnimalsViewPageFragment extends
     private static final String KEY_CATEGORY_ID = "CATEGORY_ID";
 
     @Bind(R.id.animals)
-    protected ConfigurableRecyclerView animals;
+    protected RecyclerView animals;
     private AnimalsAdapter animalsAdapter;
 
     public static Fragment create(@NonNull String categoryUid) {
@@ -57,18 +56,17 @@ public class AnimalsViewPageFragment extends
     }
 
     private void init() {
-        SmoothGridLayoutManager layoutManager;
+        GridLayoutManager layoutManager;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            layoutManager = new SmoothGridLayoutManager(getContext(), 3);
+            layoutManager = new GridLayoutManager(getContext(), 3);
             animals.addItemDecoration(new GridSpacingItemDecoration(3, getContext().getResources()
                 .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), true));
         } else {
-            layoutManager = new SmoothGridLayoutManager(getContext(), 2);
+            layoutManager = new GridLayoutManager(getContext(), 2);
             animals.addItemDecoration(new GridSpacingItemDecoration(2, getContext().getResources()
                 .getDimensionPixelSize(R.dimen.recycler_view_animals_items_span), true));
         }
         animals.setLayoutManager(layoutManager);
-        layoutManager.setAppBarManager((AppBarManager) getParentFragment());
         if (animalsAdapter == null) {
             animalsAdapter = new AnimalsAdapter(this);
         }
