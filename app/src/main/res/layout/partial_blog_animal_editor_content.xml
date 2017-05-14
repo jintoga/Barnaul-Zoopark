@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:id="@+id/thumbnailContainer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/news_detail_banner_height"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_photo_gallery_placeholder" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="right|bottom"
+                android:layout_margin="16dp"
+                android:background="@null"
+                android:tint="@color/white"
+                app:srcCompat="@drawable/ic_photo_camera" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:tint="@color/colorTextSecondary"
+                    app:srcCompat="@drawable/ic_pets_black" />
+
+                <Spinner
+                    android:id="@+id/species"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:tint="@color/colorTextSecondary"
+                    app:srcCompat="@drawable/ic_title" />
+
+                <EditText
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="title"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:tint="@color/colorTextSecondary"
+                    app:srcCompat="@drawable/ic_news_content" />
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="top"
+                    android:hint="content"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="6dp"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="16dp"
+                    android:tint="@color/colorTextSecondary"
+                    app:srcCompat="@drawable/ic_collections_black" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/album"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:tint="@color/colorTextSecondary"
+                    app:srcCompat="@drawable/ic_youtube_play" />
+
+                <com.dat.barnaulzoopark.widget.PrefixEditText
+                    android:id="@+id/video"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="top"
+                    android:hint="VIDEO_ID"
+                    android:inputType="textUri"
+                    android:lineSpacingExtra="6dp"
+                    android:maxLength="11"
+                    android:maxLines="1"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

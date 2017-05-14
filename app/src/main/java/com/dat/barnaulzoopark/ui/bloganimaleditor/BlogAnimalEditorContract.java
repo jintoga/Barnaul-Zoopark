@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.bloganimaleditor;
 
+import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -12,5 +13,8 @@ public interface BlogAnimalEditorContract {
     }
 
     interface UserActionListener extends MvpPresenter<View> {
+        void loadAnimals();
+
+        void loadSelectedBlog(@NonNull String selectedBlogUid);
     }
 }

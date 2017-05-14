@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.bloganimaleditor;
 
+import android.support.annotation.NonNull;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
@@ -16,5 +17,15 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
     BlogAnimalEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
         this.database = database;
         this.storage = storage;
+    }
+
+    @Override
+    public void loadAnimals() {
+
+    }
+
+    @Override
+    public void loadSelectedBlog(@NonNull String selectedBlogUid) {
+
     }
 }

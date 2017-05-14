@@ -9,5 +9,8 @@
 
     <include layout="@layout/appbar_toolbar_layout" />
 
+    <requestFocus />
+
+    <include layout="@layout/partial_blog_animal_editor_content" />
 
 </LinearLayout>

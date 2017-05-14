@@ -130,4 +130,6 @@
     <string name="empty">Empty</string>
     <string name="loading_favorite_animals">Loading favorite animals…</string>
     <string name="data_management_blog_animals">Animal blogs</string>
+    <string name="edit_blog_animal">Edit animal blog</string>
+    <string name="create_blog_animal">Create animal blog</string>
 </resources>

@@ -53,7 +53,9 @@
         <activity
             android:name=".ui.favoriteanimals.FavoriteAnimalsActivity"
             android:theme="@style/AppTheme.WhiteText" />
-        <activity android:name=".ui.bloganimaleditor.BlogAnimalEditorActivity" />
+        <activity
+            android:name=".ui.bloganimaleditor.BlogAnimalEditorActivity"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

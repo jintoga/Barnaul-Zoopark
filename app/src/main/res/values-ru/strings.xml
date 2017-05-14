@@ -96,4 +96,6 @@
     <string name="empty">Пусто</string>
     <string name="loading_favorite_animals">Идёт загрузка любимых животных…</string>
     <string name="data_management_blog_animals">Блог животных</string>
+    <string name="edit_blog_animal">Редактировать блог животного</string>
+    <string name="create_blog_animal">Создать блог животного</string>
 </resources>
