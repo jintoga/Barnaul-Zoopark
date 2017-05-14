@@ -75,7 +75,6 @@
     <string name="create_category">Create category</string>
     <string name="edit_category">Edit category</string>
     <string name="created_successful">Created successful</string>
-    <string name="remove_category_title">Remove category?</string>
     <string name="remove">Remove</string>
     <string name="remove_success">Removed successful</string>
     <string name="edit_species">Edit species</string>
@@ -138,4 +137,9 @@
     <string name="select_animal_hint">Select an animal</string>
     <string name="creating_blog_animal">Creating animal blog…</string>
     <string name="blog_animal_created_success">Animal blog created successfully</string>
+    <string name="data_management_remove_title" formatted="false">Remove \"%s\" %s?</string>
+    <string name="remove_item_animal">animal</string>
+    <string name="remove_item_species">species</string>
+    <string name="remove_item_category">category</string>
+    <string name="remove_item_blog_animal">animal blog</string>
 </resources>

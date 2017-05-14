@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui.admindatamanagement;
 import android.support.annotation.NonNull;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
+import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
@@ -19,6 +20,7 @@ import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import rx.Observable;
 import rx.Observer;
 import rx.functions.Action1;
@@ -53,7 +55,10 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
     private <T extends AbstractData> void remove(@NonNull final T data) {
         DatabaseReference databaseReference;
         Class clazz;
-        if (data instanceof Animal) {
+        if (data instanceof BlogAnimal) {
+            databaseReference = database.getReference(BZFireBaseApi.blog_animal);
+            clazz = BlogAnimal.class;
+        } else if (data instanceof Animal) {
             databaseReference = database.getReference(BZFireBaseApi.animal);
             clazz = Animal.class;
         } else if (data instanceof Species) {
@@ -149,7 +154,9 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
 
     private <T extends AbstractData> Observable getDeleteIconObservable(@NonNull final T data) {
         String prefix;
-        if (data instanceof Animal) {
+        if (data instanceof BlogAnimal) {
+            return getDeleteBlogAnimalImagesObservable((BlogAnimal) data);
+        } else if (data instanceof Animal) {
             return getDeleteAnimalImagesObservable((Animal) data);
         } else if (data instanceof Species) {
             prefix = BZFireBaseApi.animal_species;
@@ -170,6 +177,23 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
     }
 
     @NonNull
+    private Observable<BlogAnimal> getDeleteBlogAnimalImagesObservable(
+        @NonNull BlogAnimal blogAnimal) {
+        final String filePath =
+            BZFireBaseApi.blog_animal + "/" + blogAnimal.getUid() + "/" + "thumbnail";
+        List<Observable<Void>> observables = new ArrayList<>();
+        if (blogAnimal.getThumbnail() != null) {
+            observables.add(deleteFile(filePath));
+        }
+        if (!blogAnimal.getPhotos().isEmpty()) {
+            observables.add(deleteAttachmentsObservable(blogAnimal.getUid(), blogAnimal.getPhotos(),
+                BZFireBaseApi.blog_animal));
+        }
+        return !observables.isEmpty() ? Observable.concat(observables)
+            .flatMap(aVoid -> Observable.just(blogAnimal)) : Observable.just(blogAnimal);
+    }
+
+    @NonNull
     private Observable<Animal> getDeleteAnimalImagesObservable(@NonNull Animal animal) {
         final String prefix = BZFireBaseApi.animal + "/" + animal.getUid() + "/";
         List<Observable<Void>> observables = new ArrayList<>();
@@ -183,17 +207,18 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             observables.add(deleteFile(prefix + "imageHabitatMap"));
         }
         if (!animal.getPhotos().isEmpty()) {
-            observables.add(deleteAnimalAttachmentsObservable(animal));
+            observables.add(deleteAttachmentsObservable(animal.getUid(), animal.getPhotos(),
+                BZFireBaseApi.animal));
         }
         return !observables.isEmpty() ? Observable.concat(observables)
             .flatMap(aVoid -> Observable.just(animal)) : Observable.just(animal);
     }
 
     @NonNull
-    private Observable<Void> deleteAnimalAttachmentsObservable(@NonNull Animal animal) {
-        return Observable.from(animal.getPhotos().keySet()).flatMap(attachmentUid -> {
-            final String attachmentPath =
-                BZFireBaseApi.animal + "/" + animal.getUid() + "/photos/" + attachmentUid;
+    private Observable<Void> deleteAttachmentsObservable(@NonNull String uid,
+        @NonNull Map<String, String> photos, @NonNull String prefix) {
+        return Observable.from(photos.keySet()).flatMap(attachmentUid -> {
+            final String attachmentPath = prefix + "/" + uid + "/photos/" + attachmentUid;
             return deleteFile(attachmentPath);
         });
     }

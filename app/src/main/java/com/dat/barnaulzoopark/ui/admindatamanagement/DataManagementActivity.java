@@ -190,8 +190,20 @@ public class DataManagementActivity
     }
 
     private void handleRemoveClicked(@NonNull final AbstractData data) {
-        BZDialogBuilder.createConfirmDialog(this, getString(R.string.remove_category_title),
-            getString(R.string.remove))
+        String itemToDelete = "";
+        if (data instanceof Animal) {
+            itemToDelete = getString(R.string.remove_item_animal);
+        } else if (data instanceof Species) {
+            itemToDelete = getString(R.string.remove_item_species);
+        } else if (data instanceof Category) {
+            itemToDelete = getString(R.string.remove_item_category);
+        } else if (data instanceof BlogAnimal) {
+            itemToDelete = getString(R.string.remove_item_blog_animal);
+        }
+        String title =
+            String.format(getString(R.string.data_management_remove_title), data.getText(),
+                itemToDelete);
+        BZDialogBuilder.createConfirmDialog(this, title, getString(R.string.remove))
             .onPositive((dialog, which) -> presenter.removeItem(data))
             .show();
     }

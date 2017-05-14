@@ -42,7 +42,6 @@
     <string name="create_category">Создать категорию</string>
     <string name="edit_category">Редактировать категорию</string>
     <string name="created_successful">Created successful</string>
-    <string name="remove_category_title">Удалить категорию?</string>
     <string name="remove">Удалить</string>
     <string name="remove_success">Removed successful</string>
     <string name="edit_species">Edit species</string>
@@ -104,4 +103,9 @@
     <string name="select_animal_hint">Выбрать животного</string>
     <string name="creating_blog_animal">Создается блог о животном…</string>
     <string name="blog_animal_created_success">Блог о животном создан успешно</string>
+    <string name="data_management_remove_title" formatted="false">Remove \"%s\" %s?</string>
+    <string name="remove_item_animal">животного</string>
+    <string name="remove_item_species">вида</string>
+    <string name="remove_item_category">категорию</string>
+    <string name="remove_item_blog_animal">блог о животном</string>
 </resources>
