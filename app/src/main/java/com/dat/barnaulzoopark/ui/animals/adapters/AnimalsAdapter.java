@@ -6,12 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.animal.Species;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
         if (data.get(position) != null) {
             final Species species = data.get(position);
             holder.bindData(species);
-            holder.clickable.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onSpeciesSelected(species);
-                }
-            });
+            holder.clickable.setOnClickListener(v -> listener.onSpeciesSelected(species));
         }
     }
 
@@ -71,7 +67,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.thumbnail)
-        protected ImageView thumbnail;
+        protected SimpleDraweeView thumbnail;
         @Bind(R.id.species)
         protected TextView name;
         @Bind(R.id.clickable)
@@ -85,7 +81,11 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
         public void bindData(@NonNull Species species) {
             name.setText(species.getName());
             if (species.getIcon() != null) {
-                thumbnail.setImageURI(Uri.parse(species.getIcon()));
+                thumbnail.setImageURI(species.getIcon());
+            } else {
+                Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+                    .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
+                thumbnail.setImageURI(uri);
             }
         }
     }

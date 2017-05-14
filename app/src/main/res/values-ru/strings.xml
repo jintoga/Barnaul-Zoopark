@@ -108,4 +108,5 @@
     <string name="remove_item_species">вида</string>
     <string name="remove_item_category">категорию</string>
     <string name="remove_item_blog_animal">блог о животном</string>
+    <string name="loading_blogs">Идёт загрузка блогов любимых животных…</string>
 </resources>

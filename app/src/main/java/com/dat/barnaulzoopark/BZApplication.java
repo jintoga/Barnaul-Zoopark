@@ -6,10 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDexApplication;
 import com.dat.barnaulzoopark.model.User;
+import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.listener.RequestListener;
+import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import okhttp3.OkHttpClient;
 
@@ -38,11 +43,15 @@ public class BZApplication extends MultiDexApplication {
         applicationComponent.fireBaseDatabase()
             .setPersistenceEnabled(true); //FireBase offline capabilities
 
+        Set<RequestListener> requestListeners = new HashSet<>();
+        requestListeners.add(new RequestLoggingListener());
         ImagePipelineConfig config =
             OkHttpImagePipelineConfigFactory.newBuilder(getApplicationContext(), okHttpClient)
                 .setDownsampleEnabled(true)
+                .setRequestListeners(requestListeners)
                 .build();
         Fresco.initialize(getApplicationContext(), config);
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
 
         MaterialViewPagerAnimator.ENABLE_LOG = false;
     }

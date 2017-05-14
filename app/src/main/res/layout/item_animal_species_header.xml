@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
         android:layout_height="@dimen/news_detail_banner_height"
