@@ -102,8 +102,8 @@
     <string name="remove_child_from_category_title">Remove \"%s\" from current category?</string>
     <string name="animals">Animals</string>
     <string name="remove_child_from_species_title">Remove \"%s\" from current species?</string>
-    <string name="select_category_hint">Select category</string>
-    <string name="select_species_hint">Select species</string>
+    <string name="select_category_hint">Select a category</string>
+    <string name="select_species_hint">Select a species</string>
     <string name="creating_animal">Creating animal…</string>
     <string name="updating_animal">Updating animal data…</string>
     <string name="loading_animal">Loading selected animal…</string>
@@ -132,4 +132,8 @@
     <string name="data_management_blog_animals">Animal blogs</string>
     <string name="edit_blog_animal">Edit animal blog</string>
     <string name="create_blog_animal">Create animal blog</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="animal_invalid_error">Select or create an animal first!</string>
+    <string name="select_animal_hint">Select an animal</string>
 </resources>

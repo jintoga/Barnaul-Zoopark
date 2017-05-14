@@ -11,8 +11,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,7 +26,9 @@ import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.BlogAnimal;
+import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
+import com.dat.barnaulzoopark.ui.adapters.BaseHintSpinnerAdapter;
 import com.dat.barnaulzoopark.ui.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.dat.barnaulzoopark.widget.PrefixEditText;
@@ -56,6 +61,9 @@ public class BlogAnimalEditorActivity extends
 
     @Bind(R.id.thumbnail)
     protected ImageView thumbnail;
+    @Bind(R.id.animals)
+    protected Spinner animals;
+    BaseHintSpinnerAdapter<Animal> animalsSpinnerAdapter;
     @Bind(R.id.title)
     protected EditText title;
     @Bind(R.id.description)
@@ -203,6 +211,89 @@ public class BlogAnimalEditorActivity extends
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.blog_animal_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //ToDo: implement discard dialog
+                finish();
+                break;
+            case R.id.save:
+                if (selectedBlog == null) {
+                    createBlogAnimal();
+                } else {
+                    editBlogAnimal();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void createBlogAnimal() {
+        if (getAnimalUid() != null) {
+            presenter.createAnimal(title.getText().toString(), description.getText().toString(),
+                getAnimalUid(), thumbnailUri, attachmentAdapter.getData(),
+                video.getText().toString());
+        } else {
+            onCreatingFailure(getString(R.string.animal_invalid_error));
+        }
+    }
+
+    private void editBlogAnimal() {
+
+    }
+
+    @Override
+    public void bindAnimals(@NonNull List<Animal> animals) {
+        initSpinner(animals);
+    }
+
+    private void initSpinner(@NonNull List<Animal> data) {
+        animalsSpinnerAdapter = new BaseHintSpinnerAdapter<Animal>(this, data) {
+            @Override
+            protected String getItemStringValue(@NonNull Animal animal) {
+                return animal.getName();
+            }
+        };
+        animalsSpinnerAdapter.setHint(getString(R.string.select_animal_hint));
+        animals.setAdapter(animalsSpinnerAdapter);
+    }
+
+    @Override
+    public void onCreatingFailure(@NonNull String msg) {
+        Log.d(TAG, "onCreatingFailure " + msg);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Override
+    public void onLoadAnimalsError(@NonNull String msg) {
+        Log.d(TAG, "onLoadAnimalsError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(msg);
+    }
+
+    @Nullable
+    public String getAnimalUid() {
+        if (animals.getSelectedItemPosition() > 0) {
+            Animal selectedAnimal = (Animal) animals.getSelectedItem();
+            return selectedAnimal.getUid();
+        }
+        return null;
     }
 
     @Override

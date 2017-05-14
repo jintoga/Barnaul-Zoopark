@@ -98,4 +98,8 @@
     <string name="data_management_blog_animals">Блог животных</string>
     <string name="edit_blog_animal">Редактировать блог животного</string>
     <string name="create_blog_animal">Создать блог животного</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    <string name="animal_invalid_error">Выберите или создайте нового животного!</string>
+    <string name="select_animal_hint">Выбрать животного</string>
 </resources>

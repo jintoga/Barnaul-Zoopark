@@ -62,7 +62,7 @@
                     app:srcCompat="@drawable/ic_pets_black" />
 
                 <Spinner
-                    android:id="@+id/species"
+                    android:id="@+id/animals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
