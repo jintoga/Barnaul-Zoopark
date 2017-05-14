@@ -103,8 +103,9 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
     private <T extends AbstractData> void deleteUidInChild(@NonNull final T data) {
         DatabaseReference databaseReference;
         if (data instanceof Animal) {
-            //Delete animal's uid in user's subscriptions
-            databaseReference = database.getReference(BZFireBaseApi.users);
+            deleteAnimalUidFromUserSubscription((Animal) data);
+            //Animal's child is Blog Animal
+            databaseReference = database.getReference(BZFireBaseApi.blog_animal);
         } else if (data instanceof Species) {
             //Species's child is Animal
             databaseReference = database.getReference(BZFireBaseApi.animal);
@@ -129,13 +130,36 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         });
     }
 
+    private void deleteAnimalUidFromUserSubscription(@NonNull Animal animal) {
+        //Delete animal's uid in user's subscriptions
+        DatabaseReference databaseReference = database.getReference(BZFireBaseApi.users);
+        final DatabaseReference finalDatabaseReference = databaseReference;
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    if (user.getSubscribedAnimals().containsKey(animal.getUid())) {
+                        user.getSubscribedAnimals().remove(animal.getUid());
+                        finalDatabaseReference.child(user.getUid()).setValue(user);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
     private <T extends AbstractData> void deleteChildUid(T data, DataSnapshot snapshot,
         DatabaseReference finalDatabaseReference) {
         if (data instanceof Animal) {
-            User user = snapshot.getValue(User.class);
-            if (user.getSubscribedAnimals().containsKey(data.getId())) {
-                user.getSubscribedAnimals().remove(data.getId());
-                finalDatabaseReference.child(user.getUid()).setValue(user);
+            BlogAnimal blogAnimal = snapshot.getValue(BlogAnimal.class);
+            if (blogAnimal.getAnimalUid() != null && blogAnimal.getAnimalUid()
+                .equals(data.getId())) {
+                blogAnimal.clearAnimalUid();
+                finalDatabaseReference.child(blogAnimal.getUid()).setValue(blogAnimal);
             }
         } else if (data instanceof Species) {
             Animal animal = snapshot.getValue(Animal.class);

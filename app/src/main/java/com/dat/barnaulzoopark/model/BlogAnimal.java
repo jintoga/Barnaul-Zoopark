@@ -69,6 +69,10 @@ public class BlogAnimal extends AbstractData {
         this.video = video;
     }
 
+    public void clearAnimalUid() {
+        this.animalUid = null;
+    }
+
     @Exclude
     @Override
     public String getPhotoUrl() {
