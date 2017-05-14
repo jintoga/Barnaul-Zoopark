@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -17,6 +18,8 @@ public interface BlogAnimalEditorContract {
     interface View extends MvpView {
         void bindAnimals(@NonNull List<Animal> animals);
 
+        void bindSelectedAnimal(@NonNull BlogAnimal blogAnimal);
+
         void creatingProgress();
 
         void highlightRequiredFields();
@@ -26,6 +29,12 @@ public interface BlogAnimalEditorContract {
         void onCreatingSuccess();
 
         void onLoadAnimalsError(@NonNull String msg);
+
+        void onLoadBlogError(@NonNull String localizedMessage);
+
+        void onLoadBlogProgress();
+
+        void onLoadBlogSuccess();
     }
 
     interface UserActionListener extends MvpPresenter<View> {

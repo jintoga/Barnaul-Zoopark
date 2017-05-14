@@ -41,7 +41,7 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
         @NonNull String animalUid, @Nullable Uri thumbnailUri,
         @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
         if (!"".equals(title) && !"".equals(description) && !"".equals(animalUid)) {
-            create(title, description, animalUid, thumbnailUri, attachments, animalUid);
+            create(title, description, animalUid, thumbnailUri, attachments, videoUrl);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -174,6 +174,24 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
 
     @Override
     public void loadSelectedBlog(@NonNull String selectedBlogUid) {
-
+        DatabaseReference blogReference =
+            database.getReference(BZFireBaseApi.blog_animal).child(selectedBlogUid);
+        if (getView() != null) {
+            getView().onLoadBlogProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(blogReference, BlogAnimal.class)
+            .subscribe(blogAnimal -> {
+                if (getView() != null) {
+                    getView().bindSelectedAnimal(blogAnimal);
+                }
+            }, throwable -> {
+                if (getView() != null) {
+                    getView().onLoadBlogError(throwable.getLocalizedMessage());
+                }
+            }, () -> {
+                if (getView() != null) {
+                    getView().onLoadBlogSuccess();
+                }
+            });
     }
 }

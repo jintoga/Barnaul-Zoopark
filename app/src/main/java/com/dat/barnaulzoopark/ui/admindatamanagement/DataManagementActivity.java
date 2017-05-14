@@ -177,16 +177,15 @@ public class DataManagementActivity
     }
 
     private void handleEditClicked(@NonNull AbstractData data) {
-        //ToDo: implement
-        String res = "";
         if (data instanceof Animal) {
             AnimalEditorActivity.start(this, ((Animal) data).getUid());
         } else if (data instanceof Species) {
             SpeciesEditorActivity.start(this, ((Species) data).getUid());
         } else if (data instanceof Category) {
             CategoryEditorActivity.start(this, ((Category) data).getUid());
+        } else if (data instanceof BlogAnimal) {
+            BlogAnimalEditorActivity.start(this, ((BlogAnimal) data).getUid());
         }
-        showSnackBar(res);
     }
 
     private void handleRemoveClicked(@NonNull final AbstractData data) {

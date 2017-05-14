@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by DAT on 5/13/2017.
@@ -260,6 +261,39 @@ public class BlogAnimalEditorActivity extends
     }
 
     @Override
+    public void bindSelectedAnimal(@NonNull BlogAnimal blogAnimal) {
+        this.selectedBlog = blogAnimal;
+        for (int i = 1; i < animalsSpinnerAdapter.getData().size();
+            i++) { //position 0 is hint so start from 1
+            if (animalsSpinnerAdapter.getData()
+                .get(i)
+                .getUid()
+                .equals(selectedBlog.getAnimalUid())) {
+                animals.setSelection(i);
+                break;
+            }
+        }
+        title.setText(selectedBlog.getTitle());
+        description.setText(selectedBlog.getDescription());
+        if (selectedBlog.getVideo() != null) {
+            video.setText(selectedBlog.getVideo());
+        }
+        if (selectedBlog.getThumbnail() != null) {
+            thumbnailUri = Uri.parse(selectedBlog.getThumbnail());
+            Glide.with(this).load(thumbnailUri).into(thumbnail);
+        }
+        for (Map.Entry<String, String> entry : selectedBlog.getPhotos().entrySet()) {
+            filledAttachmentCounter++;
+            Attachment attachment = new Attachment(true, entry.getValue());
+            attachment.setAttachmentUid(entry.getKey());
+            attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
+            attachmentAdapter.addEmptySlot();
+            album.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
+            currentAttachmentPosition++;
+        }
+    }
+
+    @Override
     public void creatingProgress() {
         Log.d(TAG, "creatingProgress");
         if (progressDialog == null) {
@@ -318,6 +352,34 @@ public class BlogAnimalEditorActivity extends
             progressDialog.dismiss();
         }
         showSnackBar(msg);
+    }
+
+    @Override
+    public void onLoadBlogError(@NonNull String localizedMessage) {
+        Log.d(TAG, "onLoadBlogError");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onLoadBlogProgress() {
+        Log.d(TAG, "onLoadBlogProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.loading_selected_blog));
+        }
+        progressDialog.setContent(getString(R.string.loading_selected_blog));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onLoadBlogSuccess() {
+        Log.d(TAG, "onLoadBlogSuccess");
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Nullable
