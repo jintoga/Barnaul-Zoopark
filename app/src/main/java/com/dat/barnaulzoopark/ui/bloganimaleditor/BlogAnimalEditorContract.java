@@ -17,15 +17,21 @@ public interface BlogAnimalEditorContract {
     interface View extends MvpView {
         void bindAnimals(@NonNull List<Animal> animals);
 
+        void creatingProgress();
+
+        void highlightRequiredFields();
+
         void onCreatingFailure(@NonNull String msg);
+
+        void onCreatingSuccess();
 
         void onLoadAnimalsError(@NonNull String msg);
     }
 
     interface UserActionListener extends MvpPresenter<View> {
         void createAnimal(@NonNull String title, @NonNull String description,
-            @NonNull String animalUid, @Nullable Uri iconUri, @NonNull List<Attachment> attachments,
-            @NonNull String videoUrl);
+            @NonNull String animalUid, @Nullable Uri thumbnailUri,
+            @NonNull List<Attachment> attachments, @NonNull String videoUrl);
 
         void loadAnimals();
 

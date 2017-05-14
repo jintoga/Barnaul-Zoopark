@@ -24,6 +24,14 @@ public class BlogAnimal extends AbstractData {
         // Default constructor required for calls to DataSnapshot.getValue(News.class)
     }
 
+    public BlogAnimal(String uid, String animalUid, String title, String description, long time) {
+        this.uid = uid;
+        this.animalUid = animalUid;
+        this.title = title;
+        this.description = description;
+        this.time = time;
+    }
+
     public String getUid() {
         return uid;
     }
@@ -55,6 +63,10 @@ public class BlogAnimal extends AbstractData {
     @NonNull
     public Map<String, String> getPhotos() {
         return photos == null ? photos = new HashMap<>() : photos;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     @Exclude

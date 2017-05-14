@@ -136,4 +136,6 @@
     <string name="delete">Delete</string>
     <string name="animal_invalid_error">Select or create an animal first!</string>
     <string name="select_animal_hint">Select an animal</string>
+    <string name="creating_blog_animal">Creating animal blog…</string>
+    <string name="blog_animal_created_success">Animal blog created successfully</string>
 </resources>

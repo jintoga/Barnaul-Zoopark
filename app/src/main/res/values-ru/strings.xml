@@ -96,10 +96,12 @@
     <string name="empty">Пусто</string>
     <string name="loading_favorite_animals">Идёт загрузка любимых животных…</string>
     <string name="data_management_blog_animals">Блог животных</string>
-    <string name="edit_blog_animal">Редактировать блог животного</string>
-    <string name="create_blog_animal">Создать блог животного</string>
+    <string name="edit_blog_animal">Редактировать блог о животном</string>
+    <string name="create_blog_animal">Создать блог о животном</string>
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
     <string name="animal_invalid_error">Выберите или создайте нового животного!</string>
     <string name="select_animal_hint">Выбрать животного</string>
+    <string name="creating_blog_animal">Создается блог о животном…</string>
+    <string name="blog_animal_created_success">Блог о животном создан успешно</string>
 </resources>

@@ -27,6 +27,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.adapters.BaseHintSpinnerAdapter;
 import com.dat.barnaulzoopark.ui.adapters.MultiFileAttachmentAdapter;
@@ -258,6 +259,28 @@ public class BlogAnimalEditorActivity extends
         initSpinner(animals);
     }
 
+    @Override
+    public void creatingProgress() {
+        Log.d(TAG, "creatingProgress");
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.creating_blog_animal));
+        }
+        progressDialog.setContent(getString(R.string.creating_blog_animal));
+        progressDialog.show();
+    }
+
+    @Override
+    public void highlightRequiredFields() {
+        Log.d(TAG, "highlightRequiredFields");
+        if (title.getText().toString().isEmpty()) {
+            title.setError("Input required");
+        }
+        if (description.getText().toString().isEmpty()) {
+            description.setError("Input required");
+        }
+    }
+
     private void initSpinner(@NonNull List<Animal> data) {
         animalsSpinnerAdapter = new BaseHintSpinnerAdapter<Animal>(this, data) {
             @Override
@@ -276,6 +299,16 @@ public class BlogAnimalEditorActivity extends
             progressDialog.dismiss();
         }
         showSnackBar(msg);
+    }
+
+    @Override
+    public void onCreatingSuccess() {
+        Log.d(TAG, "onCreatingSuccess");
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showToast(getString(R.string.blog_animal_created_success));
+        finish();
     }
 
     @Override
