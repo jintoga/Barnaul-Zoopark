@@ -43,7 +43,7 @@ public class BlogAnimalDetailActivity extends
     BaseActivityWithAnimation<BlogAnimalDetailContract.View, BlogAnimalDetailContract.UserActionListener>
     implements BlogAnimalDetailContract.View, AttachmentImagesHorizontalAdapter.ItemClickListener {
 
-    private static final String EXTRA_BLOG_ANIMAL_UID = "EXTRA_BLOG_ANIMAL_UID";
+    public static final String EXTRA_BLOG_ANIMAL_UID = "EXTRA_BLOG_ANIMAL_UID";
 
     @Bind(R.id.app_bar_layout)
     protected SmoothAppBarLayout appBarLayout;
