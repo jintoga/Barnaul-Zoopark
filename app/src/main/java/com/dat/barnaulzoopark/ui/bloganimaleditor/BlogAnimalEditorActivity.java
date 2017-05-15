@@ -243,7 +243,7 @@ public class BlogAnimalEditorActivity extends
 
     private void createBlogAnimal() {
         if (getAnimalUid() != null) {
-            presenter.createAnimal(title.getText().toString(), description.getText().toString(),
+            presenter.createBlogAnimal(title.getText().toString(), description.getText().toString(),
                 getAnimalUid(), thumbnailUri, attachmentAdapter.getData(),
                 video.getText().toString());
         } else {
@@ -253,7 +253,7 @@ public class BlogAnimalEditorActivity extends
 
     private void editBlogAnimal() {
         if (getAnimalUid() != null) {
-            presenter.editAnimal(selectedBlog, title.getText().toString(),
+            presenter.editBlogAnimal(selectedBlog, title.getText().toString(),
                 description.getText().toString(), getAnimalUid(), thumbnailUri,
                 attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete(),
                 video.getText().toString());

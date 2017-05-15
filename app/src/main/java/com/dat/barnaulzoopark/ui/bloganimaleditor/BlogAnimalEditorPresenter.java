@@ -38,11 +38,11 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
     }
 
     @Override
-    public void createAnimal(@NonNull String title, @NonNull String description,
-        @NonNull String animalUid, @Nullable Uri thumbnailUri,
+    public void createBlogAnimal(@NonNull String title, @NonNull String description,
+        @NonNull String blogAnimalUid, @Nullable Uri thumbnailUri,
         @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
-        if (!"".equals(title) && !"".equals(description) && !"".equals(animalUid)) {
-            create(title, description, animalUid, thumbnailUri, attachments, videoUrl);
+        if (!"".equals(title) && !"".equals(description) && !"".equals(blogAnimalUid)) {
+            create(title, description, blogAnimalUid, thumbnailUri, attachments, videoUrl);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -51,12 +51,12 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
     }
 
     @Override
-    public void editAnimal(@NonNull BlogAnimal selectedBlog, @NonNull String title,
-        @NonNull String description, @NonNull String animalUid, @Nullable Uri thumbnailUri,
+    public void editBlogAnimal(@NonNull BlogAnimal selectedBlog, @NonNull String title,
+        @NonNull String description, @NonNull String blogAnimalUid, @Nullable Uri thumbnailUri,
         @NonNull List<Attachment> attachmentsToAdd, @NonNull List<Attachment> attachmentsToDelete,
         @NonNull String videoUrl) {
-        if (!"".equals(title) && !"".equals(description) && !"".equals(animalUid)) {
-            edit(selectedBlog, title, description, animalUid, thumbnailUri, attachmentsToAdd,
+        if (!"".equals(title) && !"".equals(description) && !"".equals(blogAnimalUid)) {
+            edit(selectedBlog, title, description, blogAnimalUid, thumbnailUri, attachmentsToAdd,
                 attachmentsToDelete, videoUrl);
         } else {
             if (getView() != null) {

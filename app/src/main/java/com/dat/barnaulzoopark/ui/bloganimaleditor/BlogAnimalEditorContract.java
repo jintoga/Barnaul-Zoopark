@@ -44,12 +44,12 @@ public interface BlogAnimalEditorContract {
     }
 
     interface UserActionListener extends MvpPresenter<View> {
-        void createAnimal(@NonNull String title, @NonNull String description,
-            @NonNull String animalUid, @Nullable Uri thumbnailUri,
+        void createBlogAnimal(@NonNull String title, @NonNull String description,
+            @NonNull String blogAnimalUid, @Nullable Uri thumbnailUri,
             @NonNull List<Attachment> attachments, @NonNull String videoUrl);
 
-        void editAnimal(@NonNull BlogAnimal selectedBlog, @NonNull String title,
-            @NonNull String description, @NonNull String animalUid, @Nullable Uri thumbnailUri,
+        void editBlogAnimal(@NonNull BlogAnimal selectedBlog, @NonNull String title,
+            @NonNull String description, @NonNull String blogAnimalUid, @Nullable Uri thumbnailUri,
             @NonNull List<Attachment> attachmentsToAdd,
             @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl);
 
