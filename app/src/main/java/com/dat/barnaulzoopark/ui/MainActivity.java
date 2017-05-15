@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
+import com.dat.barnaulzoopark.BuildConfig;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
@@ -109,6 +110,10 @@ public class MainActivity
     @Override
     public void bindUserData(@NonNull User user) {
         BZApplication.get(this).getApplicationComponent().preferencesHelper().setUser(user);
+        BZApplication.get(this)
+            .getApplicationComponent()
+            .firebaseMessaging()
+            .subscribeToTopic(BuildConfig.NOTIFICATION_SUBSCRIBE_TOPIC);
         if (user.getPhoto() != null) {
             Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);

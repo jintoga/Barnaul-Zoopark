@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class FirebaseMessageService extends FirebaseMessagingService {
 
-    private static final String KEY_ANIMAL_UID = "ANIMAL_UID";
-    private static final String KEY_BLOG_UID = "BLOG_UID";
+    private static final String KEY_ANIMAL_UID = "animalUid";
+    private static final String KEY_BLOG_UID = "blogUid";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -49,7 +49,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 
         NotificationCompat.Builder notificationBuilder =
             new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_panda)
-                .setContentTitle("New animal blog created")
+                .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
