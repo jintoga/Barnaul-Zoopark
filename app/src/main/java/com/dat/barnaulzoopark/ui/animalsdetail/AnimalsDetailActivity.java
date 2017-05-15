@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -106,12 +107,14 @@ public class AnimalsDetailActivity extends
                 }
             });
         materialViewPager.setMaterialViewPagerListener(page -> {
-            String url = animals.get(page).getPhotoBig();
-            if (url == null || url.equals("")) {
+            if (animals.get(page).getPhotoBig() == null
+                && animals.get(page).getPhotoSmall() == null) {
                 return HeaderDesign.fromColorResAndDrawable(R.color.colorPrimary,
-                    getResources().getDrawable(R.drawable.img_photo_gallery_placeholder));
+                    ContextCompat.getDrawable(this, R.drawable.img_photo_gallery_placeholder));
+            } else {
+                return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary,
+                    getHeaderImageUrl(animals.get(page)));
             }
-            return HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, url);
         });
 
         materialViewPager.getViewPager()
@@ -126,6 +129,15 @@ public class AnimalsDetailActivity extends
                 materialViewPager.onPageSelected(selectedAnimalPosition);
             }
         });
+    }
+
+    @NonNull
+    private String getHeaderImageUrl(@NonNull Animal animal) {
+        if (animal.getPhotoBig() != null) {
+            return animal.getPhotoBig();
+        } else {
+            return animal.getPhotoSmall();
+        }
     }
 
     @Override
