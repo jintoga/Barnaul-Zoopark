@@ -5,6 +5,7 @@ import android.support.v7.preference.Preference;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.ui.BasePreferenceFragment;
+import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
 
 /**
  * Created by DAT on 4/27/2017.
@@ -12,6 +13,7 @@ import com.dat.barnaulzoopark.ui.BasePreferenceFragment;
 
 public class DataManagementPreferenceFragment extends BasePreferenceFragment {
 
+    private static final String KEY_NEWS = "key_news";
     private static final String KEY_ANIMAL_CATEGORIES = "key_animal_categories";
     private static final String KEY_ANIMAL_SPECIES = "key_animal_species";
     private static final String KEY_ANIMALS = "key_animals";
@@ -26,6 +28,9 @@ public class DataManagementPreferenceFragment extends BasePreferenceFragment {
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         switch (preference.getKey()) {
+            case KEY_NEWS:
+                DataManagementActivity.start(getContext(), BZFireBaseApi.news);
+                break;
             case KEY_ANIMAL_CATEGORIES:
                 DataManagementActivity.start(getContext(), BZFireBaseApi.animal_categories);
                 break;

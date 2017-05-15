@@ -1,9 +1,11 @@
 package com.dat.barnaulzoopark.ui.admindatamanagement;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
+import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
@@ -66,6 +68,9 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             clazz = Species.class;
         } else if (data instanceof Category) {
             databaseReference = database.getReference(BZFireBaseApi.animal_categories);
+            clazz = Category.class;
+        } else if (data instanceof News) {
+            databaseReference = database.getReference(BZFireBaseApi.news);
             clazz = Category.class;
         } else {
             return;
@@ -178,8 +183,14 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
 
     private <T extends AbstractData> Observable getDeleteIconObservable(@NonNull final T data) {
         String prefix;
-        if (data instanceof BlogAnimal) {
-            return getDeleteBlogAnimalImagesObservable((BlogAnimal) data);
+        if (data instanceof News) {
+            News news = (News) data;
+            return getDeleteBlogOrNewsImagesObservable(news, news.getUid(), BZFireBaseApi.news,
+                news.getThumbnail(), news.getPhotos());
+        } else if (data instanceof BlogAnimal) {
+            BlogAnimal blogAnimal = (BlogAnimal) data;
+            return getDeleteBlogOrNewsImagesObservable(blogAnimal, blogAnimal.getUid(),
+                BZFireBaseApi.blog_animal, blogAnimal.getThumbnail(), blogAnimal.getPhotos());
         } else if (data instanceof Animal) {
             return getDeleteAnimalImagesObservable((Animal) data);
         } else if (data instanceof Species) {
@@ -201,20 +212,19 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
     }
 
     @NonNull
-    private Observable<BlogAnimal> getDeleteBlogAnimalImagesObservable(
-        @NonNull BlogAnimal blogAnimal) {
-        final String filePath =
-            BZFireBaseApi.blog_animal + "/" + blogAnimal.getUid() + "/" + "thumbnail";
+    private Observable<AbstractData> getDeleteBlogOrNewsImagesObservable(@NonNull AbstractData data,
+        @NonNull String uid, @NonNull String prefix, @Nullable String singleImageUrl,
+        @NonNull Map<String, String> photos) {
+        final String filePath = prefix + "/" + uid + "/" + "thumbnail";
         List<Observable<Void>> observables = new ArrayList<>();
-        if (blogAnimal.getThumbnail() != null) {
+        if (singleImageUrl != null) {
             observables.add(deleteFile(filePath));
         }
-        if (!blogAnimal.getPhotos().isEmpty()) {
-            observables.add(deleteAttachmentsObservable(blogAnimal.getUid(), blogAnimal.getPhotos(),
-                BZFireBaseApi.blog_animal));
+        if (!photos.isEmpty()) {
+            observables.add(deleteAttachmentsObservable(uid, photos, prefix));
         }
         return !observables.isEmpty() ? Observable.concat(observables)
-            .flatMap(aVoid -> Observable.just(blogAnimal)) : Observable.just(blogAnimal);
+            .flatMap(aVoid -> Observable.just(data)) : Observable.just(data);
     }
 
     @NonNull

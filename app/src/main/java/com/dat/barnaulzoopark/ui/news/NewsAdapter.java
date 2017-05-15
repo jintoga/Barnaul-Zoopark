@@ -2,7 +2,6 @@ package com.dat.barnaulzoopark.ui.news;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -74,19 +73,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
                     .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
             }
             viewHolder.thumbnail.setImageURI(uri);
-            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    listener.onNewsLongClicked(model.getUid());
-                    return false;
-                }
-            });
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClicked(model.getUid(), viewHolder.getAdapterPosition());
-                }
-            });
+            viewHolder.itemView.setOnClickListener(
+                view -> listener.onItemClicked(model.getUid(), viewHolder.getAdapterPosition()));
         }
     }
 
@@ -95,19 +83,19 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         return position;
     }
 
-    public int getSelectedPosition() {
+    int getSelectedPosition() {
         return selectedPosition < getItemCount() ? selectedPosition : 0;
     }
 
-    public void setSelectedPosition(int selectedPosition) {
+    void setSelectedPosition(int selectedPosition) {
         this.selectedPosition = selectedPosition;
     }
 
-    public News getSelectedItem() {
+    News getSelectedItem() {
         return getItem(getSelectedPosition());
     }
 
-    public void notifySelectedItem() {
+    void notifySelectedItem() {
         //1st notify for only Selected Item to keep ripple effect
         notifyItemChanged(selectedPosition);
         //then notify all other items to hide Indicator
@@ -143,7 +131,5 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
 
     interface NewsAdapterListener {
         void onItemClicked(@NonNull String uid, int selectedPosition);
-
-        void onNewsLongClicked(String uid);
     }
 }

@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
+        android:key="key_news"
+        app:title="@string/data_management_news" />
+
+    <Preference
         android:key="key_animal_categories"
         app:title="@string/data_management_animal_categories" />
 

@@ -4,8 +4,6 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.News;
@@ -25,7 +22,6 @@ import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailActivity;
 import com.dat.barnaulzoopark.ui.newsdetail.NewsDetailFragment;
-import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,11 +43,7 @@ public class NewsFragment
     protected Toolbar toolbar;
     @Bind(R.id.recyclerViewNews)
     protected RecyclerView recyclerViewNews;
-    @Bind(R.id.fabCreate)
-    protected FloatingActionButton fabCreate;
     private NewsAdapter adapter;
-
-    private int scrollFlags = -1;
 
     private int selectedNewsPosition = 0;
 
@@ -70,9 +62,6 @@ public class NewsFragment
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         ButterKnife.bind(this, view);
         ((MainActivity) getActivity()).setupNavDrawerWithToolbar(toolbar, getString(R.string.news));
-        AppBarLayout.LayoutParams layoutParams =
-            (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-        scrollFlags = layoutParams.getScrollFlags();
 
         if (/*savedInstanceState == null &&*/ BZApplication.get(getContext()).isTabletLandscape()) {
             NewsDetailFragment newsDetailFragment = NewsDetailFragment.newInstance(null);
@@ -91,33 +80,6 @@ public class NewsFragment
         if (BZApplication.get(getContext()).isTabletLandscape()) {
             presenter.loadData();
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateAdminPrivilege();
-    }
-
-    private void updateAdminPrivilege() {
-        enableCollapsingToolbar(BZApplication.get(getContext()).isAdmin());
-        if (BZApplication.get(getContext()).isAdmin()) {
-            fabCreate.setVisibility(View.VISIBLE);
-        } else {
-            fabCreate.setVisibility(View.GONE);
-        }
-    }
-
-    //Prevent toolbar from collapsing when user is ADMIN
-    private void enableCollapsingToolbar(boolean shouldEnable) {
-        AppBarLayout.LayoutParams layoutParams =
-            (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-        if (shouldEnable) {
-            layoutParams.setScrollFlags(0);
-        } else {
-            layoutParams.setScrollFlags(scrollFlags);
-        }
-        toolbar.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -181,14 +143,6 @@ public class NewsFragment
         }
     }
 
-    @Override
-    public void onNewsLongClicked(String uid) {
-        //ToDo: display Edit, Delete Buttons on Toolbar
-        if (BZApplication.get(getContext()).isAdmin()) {
-            NewsItemEditorActivity.start(getActivity(), uid);
-        }
-    }
-
     private void initRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerViewNews.setLayoutManager(layoutManager);
@@ -218,23 +172,5 @@ public class NewsFragment
             }
         });
         recyclerViewNews.setAdapter(adapter);
-        recyclerViewNews.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (BZApplication.get(getContext()).isAdmin() && !BZApplication.get(getContext())
-                    .isTabletLandscape()) {
-                    if (dy > 0 && fabCreate.isShown()) {
-                        fabCreate.hide();
-                    } else if (dy < 0) {
-                        fabCreate.show();
-                    }
-                }
-            }
-        });
-    }
-
-    @OnClick(R.id.fabCreate)
-    protected void fabCreateClicked() {
-        NewsItemEditorActivity.start(getContext(), null);
     }
 }

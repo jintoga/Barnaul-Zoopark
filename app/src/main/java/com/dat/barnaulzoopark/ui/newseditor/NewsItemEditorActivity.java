@@ -170,35 +170,6 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void deletingNewsItem() {
-        Log.d(TAG, "deletingNewsItem");
-        if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
-                getString(R.string.deleting_news_item));
-        }
-        progressDialog.setContent(getString(R.string.deleting_news_item));
-        progressDialog.show();
-    }
-
-    @Override
-    public void onDeleteNewsItemFailure(@NonNull String errorMsg) {
-        Log.d(TAG, "onDeleteNewsItemFailure" + errorMsg);
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-        showSnackBar(errorMsg);
-    }
-
-    @Override
-    public void onDeleteNewsItemSuccessful() {
-        Log.d(TAG, "onDeleteNewsItemSuccessful");
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-        finish();
-    }
-
-    @Override
     public void onUpdatingComplete() {
         Log.d(TAG, "onUpdatingComplete");
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -310,12 +281,20 @@ public class NewsItemEditorActivity extends
         String selectedNewsUid = getIntent().getStringExtra(EXTRA_SELECTED_NEWS_UID);
         if (selectedNewsUid != null) {
             loadSelectedNews(selectedNewsUid);
+            updateTitle(getString(R.string.edit_news_item));
             attachmentAdapter.setEditingMode(true);
         } else {
+            updateTitle(getString(R.string.create_news_item));
             attachmentAdapter.addEmptySlot();
         }
 
         video.setPrefix(getString(R.string.youtube_prefix));
+    }
+
+    private void updateTitle(@NonNull String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     private void loadSelectedNews(@NonNull String selectedNewsUid) {
@@ -325,12 +304,6 @@ public class NewsItemEditorActivity extends
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.news_item_editor, menu);
-        if (selectedNews == null) {
-            MenuItem deleteMenuItem = menu.findItem(R.id.delete);
-            if (deleteMenuItem != null) {
-                deleteMenuItem.setVisible(false);
-            }
-        }
         return true;
     }
 
@@ -356,10 +329,6 @@ public class NewsItemEditorActivity extends
                         finish();
                     }
                 }
-                break;
-            case R.id.delete:
-                String selectedNewsUid = getIntent().getStringExtra(EXTRA_SELECTED_NEWS_UID);
-                presenter.deleteNewsItem(selectedNewsUid);
                 break;
             default:
                 break;

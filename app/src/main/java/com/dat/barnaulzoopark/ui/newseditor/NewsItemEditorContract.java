@@ -19,12 +19,6 @@ public interface NewsItemEditorContract {
 
         void highlightRequiredFields();
 
-        void deletingNewsItem();
-
-        void onDeleteNewsItemFailure(@NonNull String errorMsg);
-
-        void onDeleteNewsItemSuccessful();
-
         void onUpdatingComplete();
 
         void onUpdatingNewsFailure(@NonNull String errorMsg);
@@ -49,8 +43,6 @@ public interface NewsItemEditorContract {
     }
 
     interface UserActionListener extends MvpPresenter<NewsItemEditorContract.View> {
-
-        void deleteNewsItem(@Nullable String selectedNewsUid);
 
         void loadSelectedNews(@NonNull String selectedNewsUid);
 

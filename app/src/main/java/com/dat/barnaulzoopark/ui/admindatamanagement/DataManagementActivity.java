@@ -21,6 +21,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
+import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -31,6 +32,7 @@ import com.dat.barnaulzoopark.ui.animalcategoryeditor.CategoryEditorActivity;
 import com.dat.barnaulzoopark.ui.animaleditor.AnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.animalspecieseditor.SpeciesEditorActivity;
 import com.dat.barnaulzoopark.ui.bloganimaleditor.BlogAnimalEditorActivity;
+import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -185,6 +187,8 @@ public class DataManagementActivity
             CategoryEditorActivity.start(this, ((Category) data).getUid());
         } else if (data instanceof BlogAnimal) {
             BlogAnimalEditorActivity.start(this, ((BlogAnimal) data).getUid());
+        } else if (data instanceof News) {
+            NewsItemEditorActivity.start(this, ((News) data).getUid());
         }
     }
 
@@ -198,6 +202,8 @@ public class DataManagementActivity
             itemToDelete = getString(R.string.remove_item_category);
         } else if (data instanceof BlogAnimal) {
             itemToDelete = getString(R.string.remove_item_blog_animal);
+        } else if (data instanceof News) {
+            itemToDelete = getString(R.string.remove_item_news);
         }
         String title =
             String.format(getString(R.string.data_management_remove_title), data.getText(),
@@ -212,6 +218,10 @@ public class DataManagementActivity
         String title = "";
         DataManagementAdapter adapter = null;
         switch (referenceName) {
+            case BZFireBaseApi.news:
+                title = getString(R.string.data_management_news);
+                adapter = getAdapter(News.class, referenceName);
+                break;
             case BZFireBaseApi.animal_categories:
                 title = getString(R.string.data_management_animal_categories);
                 adapter = getAdapter(Category.class, referenceName);
@@ -258,6 +268,9 @@ public class DataManagementActivity
         String referenceName = getIntent().getStringExtra(EXTRA_REFERENCE_NAME);
         if (referenceName != null) {
             switch (referenceName) {
+                case BZFireBaseApi.news:
+                    NewsItemEditorActivity.start(this, null);
+                    break;
                 case BZFireBaseApi.animal_categories:
                     CategoryEditorActivity.start(this, null);
                     break;

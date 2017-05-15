@@ -113,9 +113,9 @@
     <string name="updating_category">Updating animal category…</string>
     <string name="loading_category">Loading selected animal category…</string>
     <string name="removing">Removing…</string>
-    <string name="deleting_news_item">Deleting News Item</string>
-    <string name="creating_news_item">Creating News Item</string>
-    <string name="updating_news_item">Updating News Item</string>
+    <string name="deleting_news_item">Deleting news item…</string>
+    <string name="creating_news_item">Creating news item…</string>
+    <string name="updating_news_item">Updating news item…</string>
     <string name="animals_list_empty">List of animals is empty!</string>
     <string name="admin">Admin</string>
     <string name="animal_blog">Animal blog</string>
@@ -145,4 +145,8 @@
     <string name="loading_blogs">Loading blogs of favorite animals…</string>
     <string name="loading_selected_blog">Loading selected blog…</string>
     <string name="updating_blog">Updating animal blog…</string>
+    <string name="data_management_news">News</string>
+    <string name="remove_item_news">news item</string>
+    <string name="edit_news_item">Edit news</string>
+    <string name="create_news_item">Create news</string>
 </resources>

@@ -111,4 +111,8 @@
     <string name="loading_blogs">Идёт загрузка блогов любимых животных…</string>
     <string name="loading_selected_blog">Идёт загрузка блога…</string>
     <string name="updating_blog">Updating animal blog…</string>
+    <string name="data_management_news">Новости зоопарка</string>
+    <string name="remove_item_news">новостей зоопарка</string>
+    <string name="edit_news_item">Редактировать новостей</string>
+    <string name="create_news_item">Создать новостей</string>
 </resources>

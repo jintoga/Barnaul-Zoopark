@@ -21,7 +21,6 @@ import com.kelvinapps.rxfirebase.RxFirebaseDatabase;
 import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import rx.Observable;
 import rx.Observer;
 import rx.functions.Action1;
@@ -37,92 +36,9 @@ public class NewsItemEditorPresenter extends MvpBasePresenter<NewsItemEditorCont
     private FirebaseDatabase database;
     private FirebaseStorage storage;
 
-    public NewsItemEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
+    NewsItemEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
         this.database = database;
         this.storage = storage;
-    }
-
-    @Override
-    public void deleteNewsItem(@Nullable final String selectedNewsUid) {
-        if (selectedNewsUid != null) {
-            final DatabaseReference newsReference =
-                database.getReference(BZFireBaseApi.news).child(selectedNewsUid);
-            RxFirebaseDatabase.observeSingleValueEvent(newsReference, News.class)
-                .subscribe(new Action1<News>() {
-                    @Override
-                    public void call(News news) {
-                        if (getView() != null) {
-                            getView().deletingNewsItem();
-                        }
-                        if (news.getThumbnail() == null) {
-                            deleteNewsItemAttachments(news.getUid(), news.getPhotos()).subscribe(
-                                new Observer<Void>() {
-                                    @Override
-                                    public void onCompleted() {
-                                        newsReference.removeValue();
-                                        if (getView() != null) {
-                                            getView().onDeleteNewsItemSuccessful();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(Void aVoid) {
-
-                                    }
-                                });
-                        }
-                        if (news.getThumbnail() != null && news.getPhotos() != null) {
-                            String thumbnailPath =
-                                BZFireBaseApi.news + "/" + news.getUid() + "/" + "thumbnail";
-                            Observable.concat(deleteNewsItemFile(thumbnailPath),
-                                deleteNewsItemAttachments(news.getUid(), news.getPhotos()))
-                                .subscribe(new Observer<Void>() {
-                                    @Override
-                                    public void onCompleted() {
-                                        newsReference.removeValue();
-                                        if (getView() != null) {
-                                            getView().onDeleteNewsItemSuccessful();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(Void aVoid) {
-
-                                    }
-                                });
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        if (getView() != null) {
-                            getView().onDeleteNewsItemFailure(throwable.getLocalizedMessage());
-                        }
-                    }
-                });
-        }
-    }
-
-    private Observable<Void> deleteNewsItemAttachments(final String newsUid,
-        final Map<String, String> attachments) {
-        return Observable.from(attachments.keySet()).flatMap(new Func1<String, Observable<Void>>() {
-            @Override
-            public Observable<Void> call(String attachmentUid) {
-                String attachmentPath =
-                    BZFireBaseApi.news + "/" + newsUid + "/photos/" + attachmentUid;
-                return deleteNewsItemFile(attachmentPath);
-            }
-        });
     }
 
     @NonNull
