@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import com.dat.barnaulzoopark.BZApplication;
@@ -47,11 +49,14 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         PendingIntent pendingIntent =
             PendingIntent.getActivity(this, 1410, intent, PendingIntent.FLAG_ONE_SHOT);
 
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
             new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_panda)
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)
+                .setVibrate(new long[] { 1000, 1000 })
+                .setSound(alarmSound)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =

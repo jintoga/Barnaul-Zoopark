@@ -137,7 +137,11 @@ public class BlogAnimalDetailActivity extends
     }
 
     @Override
-    public void showBlogAnimal(@NonNull BlogAnimal blogAnimal) {
+    public void showBlogAnimal(@Nullable BlogAnimal blogAnimal) {
+        if (blogAnimal == null) {
+            finish();
+            return;
+        }
         this.selectedBlogAnimal = blogAnimal;
         nestedScrollView.scrollTo(0, 0);
         if (blogAnimal.getThumbnail() != null) {
