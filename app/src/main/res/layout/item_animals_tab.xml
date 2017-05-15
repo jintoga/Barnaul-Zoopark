@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,9 +15,9 @@
         android:layout_gravity="center"
         android:layout_marginRight="8dp"
         android:tint="@color/gray"
-        fresco:progressBarAutoRotateInterval="1000"
-        fresco:progressBarImage="@drawable/fresco_progressbar"
-        fresco:progressBarImageScaleType="centerInside" />
+        app:progressBarAutoRotateInterval="1000"
+        app:progressBarImage="@drawable/fresco_progressbar"
+        app:progressBarImageScaleType="centerInside" />
 
     <TextView
         android:id="@+id/textViewTabItemName"

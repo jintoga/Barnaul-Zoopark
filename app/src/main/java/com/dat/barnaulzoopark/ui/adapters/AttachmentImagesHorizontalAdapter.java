@@ -1,47 +1,44 @@
-package com.dat.barnaulzoopark.ui.animalsdetail;
+package com.dat.barnaulzoopark.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
-import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Nguyen on 7/8/2016.
+ * Created by DAT on 5/15/2017.
  */
-class AnimalsImagesHorizontalAdapter
-    extends RecyclerView.Adapter<AnimalsImagesHorizontalAdapter.ViewHolder> {
+
+public class AttachmentImagesHorizontalAdapter
+    extends RecyclerView.Adapter<AttachmentImagesHorizontalAdapter.ViewHolder> {
     private List<String> data = new ArrayList<>();
     private ItemClickListener itemClickListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_animals_detail_images, parent, false);
+            .inflate(R.layout.item_attachment_image, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if (data.get(position) != null) {
-            final String photoUrl = data.get(position);
-            holder.bindData(photoUrl);
+            holder.bindData(data.get(position));
             holder.itemView.setOnClickListener(view -> {
                 if (itemClickListener != null) {
-                    itemClickListener.onItemClicked(holder.getAdapterPosition());
+                    itemClickListener.onAttachmentClicked(holder.getAdapterPosition());
                 }
             });
         }
-    }
-
-    void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
     }
 
     @Override
@@ -54,27 +51,31 @@ class AnimalsImagesHorizontalAdapter
         return position;
     }
 
-    public void setData(List<String> photos) {
+    public void setData(List<String> photoUrls) {
         data.clear();
-        data.addAll(photos);
+        data.addAll(photoUrls);
         notifyDataSetChanged();
     }
 
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onAttachmentClicked(int adapterPosition);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.thumbnail)
-        protected SimpleDraweeView thumbnail;
+        @Bind(R.id.photo)
+        protected ImageView photo;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindData(final @NonNull String photoUrl) {
-            thumbnail.setImageURI(photoUrl);
+        void bindData(@NonNull final String url) {
+            Glide.with(itemView.getContext()).load(url).centerCrop().into(photo);
         }
-    }
-
-    interface ItemClickListener {
-        void onItemClicked(int adapterPosition);
     }
 }

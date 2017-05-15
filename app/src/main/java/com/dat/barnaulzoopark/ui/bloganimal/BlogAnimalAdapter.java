@@ -26,7 +26,7 @@ class BlogAnimalAdapter extends RecyclerView.Adapter<BlogAnimalAdapter.ViewHolde
     private List<BlogAnimal> data = new ArrayList<>();
     private ClickListener clickListener;
 
-    BlogAnimalAdapter(ClickListener clickListener) {
+    BlogAnimalAdapter(@NonNull ClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
@@ -89,6 +89,7 @@ class BlogAnimalAdapter extends RecyclerView.Adapter<BlogAnimalAdapter.ViewHolde
                     .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
             }
             thumbnail.setImageURI(uri);
+            itemView.setOnClickListener(v -> clickListener.onItemClicked(blogAnimal));
         }
     }
 

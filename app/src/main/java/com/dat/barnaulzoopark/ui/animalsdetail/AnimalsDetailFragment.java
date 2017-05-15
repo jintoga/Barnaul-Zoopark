@@ -26,6 +26,7 @@ import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.YoutubeVideoFragment;
+import com.dat.barnaulzoopark.ui.adapters.AttachmentImagesHorizontalAdapter;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
@@ -44,7 +45,7 @@ import java.util.List;
 public class AnimalsDetailFragment extends
     BaseMvpFragment<AnimalsDetailContract.ViewFragment, AnimalsDetailContract.FragmentUserActionListener>
     implements AnimalsDetailContract.ViewFragment,
-    AnimalsImagesHorizontalAdapter.ItemClickListener {
+    AttachmentImagesHorizontalAdapter.ItemClickListener {
 
     private static final String KEY_ANIMAL = "ANIMAL";
     private static final String TAG = AnimalsDetailFragment.class.getName();
@@ -53,7 +54,7 @@ public class AnimalsDetailFragment extends
     protected ObservableScrollView observableScrollView;
     @Bind(R.id.animals_images)
     protected RecyclerView animalsImages;
-    private AnimalsImagesHorizontalAdapter animalsImagesAdapter;
+    private AttachmentImagesHorizontalAdapter animalsImagesAdapter;
     @Bind(R.id.habitatMapImage)
     protected SimpleDraweeView habitatMapImage;
 
@@ -101,7 +102,7 @@ public class AnimalsDetailFragment extends
     }
 
     @Override
-    public void onItemClicked(int adapterPosition) {
+    public void onAttachmentClicked(int adapterPosition) {
         if (selectedAnimal != null) {
             List<String> albumUrls = new ArrayList<>(selectedAnimal.getPhotos().values());
             PhotosDetailActivity.start(getActivity(), albumUrls, adapterPosition, false);
@@ -228,7 +229,7 @@ public class AnimalsDetailFragment extends
         animalsImages.setLayoutManager(linearLayoutManager);
         animalsImages.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
         if (animalsImagesAdapter == null) {
-            animalsImagesAdapter = new AnimalsImagesHorizontalAdapter();
+            animalsImagesAdapter = new AttachmentImagesHorizontalAdapter();
             animalsImagesAdapter.setItemClickListener(this);
         }
         animalsImages.setAdapter(animalsImagesAdapter);

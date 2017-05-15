@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:baselineAligned="false"
-        android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:paddingBottom="16dp"

@@ -22,6 +22,7 @@ import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
+import com.dat.barnaulzoopark.ui.bloganimaldetail.BlogAnimalDetailActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
@@ -58,7 +59,7 @@ public class BlogAnimalFragment
 
     @Override
     public void onItemClicked(@NonNull BlogAnimal blogAnimal) {
-
+        BlogAnimalDetailActivity.start(getActivity(), blogAnimal.getUid());
     }
 
     private void setRecyclerViewVisibility(boolean shouldShow) {
@@ -130,7 +131,6 @@ public class BlogAnimalFragment
                 getString(R.string.animal_blog));
         }
         initRecyclerView();
-
     }
 
     private void initRecyclerView() {
