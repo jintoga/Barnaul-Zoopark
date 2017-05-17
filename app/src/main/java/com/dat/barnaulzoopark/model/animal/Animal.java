@@ -25,6 +25,8 @@ public class Animal extends AbstractData {
     private Map<String, String> photos;
     private String video;
     private String imageHabitatMap;
+    private Double lat;
+    private Double lng;
 
     public Animal() {
         // Default constructor required for calls to DataSnapshot.getValue(Animal.class)
@@ -112,6 +114,19 @@ public class Animal extends AbstractData {
 
     public String getImageHabitatMap() {
         return imageHabitatMap;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLatLng(Double lat, Double lng) {
+        this.lat = lat;
+        this.lng = lng;
     }
 
     @Exclude

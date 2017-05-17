@@ -152,4 +152,5 @@
     <string name="push_notification_blog_animal_title">Something new about your favorite animal!</string>
     <string name="push_notification_blog_animal_text">New blog created</string>
     <string name="virtual_tour">360° tour</string>
+    <string name="location_updated">Location updated!</string>
 </resources>
