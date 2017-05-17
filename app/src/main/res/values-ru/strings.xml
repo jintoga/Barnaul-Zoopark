@@ -117,4 +117,5 @@
     <string name="create_news_item">Создать новостей</string>
     <string name="push_notification_blog_animal_title">Что-то новое о вашем любимом животном!</string>
     <string name="push_notification_blog_animal_text">Новый блог о любимом животном создан</string>
+    <string name="virtual_tour">360° тур</string>
 </resources>
