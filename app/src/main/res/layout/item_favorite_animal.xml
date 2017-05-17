@@ -55,7 +55,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="8dp"
-                android:src="@drawable/ic_favorite_empty" />
+                app:srcCompat="@drawable/ic_favorite_empty" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

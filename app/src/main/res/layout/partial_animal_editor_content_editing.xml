@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
             android:orientation="vertical">
 
             <EditText
@@ -88,13 +88,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_gender_male_female" />
+            app:srcCompat="@drawable/ic_gender_male_female" />
 
         <RadioButton
             android:id="@+id/isMale"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:checked="true"
             android:text="@string/male" />
@@ -103,7 +103,7 @@
             android:id="@+id/isFemale"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:text="@string/female" />
     </RadioGroup>
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|start"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_calendar" />
+            app:srcCompat="@drawable/ic_calendar" />
 
         <EditText
             android:id="@+id/dateOfBirth"
@@ -142,8 +142,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="end|center"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_location_on" />
+            android:layout_marginRight="16dp"
+            app:srcCompat="@drawable/ic_location_on" />
 
         <EditText
             android:id="@+id/latLng"
@@ -169,8 +169,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="end|center"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_info" />
+            android:layout_marginRight="16dp"
+            app:srcCompat="@drawable/ic_info" />
 
         <EditText
             android:id="@+id/aboutOurAnimal"
