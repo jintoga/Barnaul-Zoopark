@@ -1,0 +1,14 @@
+#streetview_canvas{ 
+    height: 100vh;  
+	margin: -10px;
+	overflow:auto;  
+}
+.gm-iv-address-link{ 
+	display:none !important; 
+}
+.gm-iv-marker{ 
+	display:none !important; 
+}
+.gm-iv-vertical-separator{ 
+	display:none !important; 
+}

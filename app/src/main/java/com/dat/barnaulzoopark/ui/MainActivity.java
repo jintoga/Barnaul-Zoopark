@@ -41,6 +41,7 @@ import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfileContract;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfilePresenter;
+import com.dat.barnaulzoopark.ui.virtualtour.VirtualTourFragment;
 import com.dat.barnaulzoopark.ui.zoomap.ZooMapFragment;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -334,6 +335,9 @@ public class MainActivity
             case R.id.zooMap:
                 Log.d(TAG, "ZOO MAP");
                 fragment = new ZooMapFragment();
+                break;
+            case R.id.virtualTour:
+                fragment = new VirtualTourFragment();
                 break;
             case R.id.favouriteAnimals:
                 fragment = new FavoriteAnimalsFragment();

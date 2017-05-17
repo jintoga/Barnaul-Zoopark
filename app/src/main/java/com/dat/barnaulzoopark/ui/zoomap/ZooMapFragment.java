@@ -11,20 +11,22 @@ import android.webkit.WebView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
+import com.dat.barnaulzoopark.ui.BaseFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
-import com.dat.barnaulzoopark.ui.TempBaseFragment;
 
 /**
  * Created by DAT on 11/4/2016.
  */
 
 @SuppressLint("SetJavaScriptEnabled")
-public class ZooMapFragment extends TempBaseFragment {
+public class ZooMapFragment extends BaseFragment {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.webViewMap)
     protected WebView webViewMap;
+    @Bind(R.id.container)
+    protected View container;
 
     @Nullable
     @Override
@@ -47,7 +49,7 @@ public class ZooMapFragment extends TempBaseFragment {
         webViewMap.getSettings().setDisplayZoomControls(false);
         webViewMap.getSettings().setSupportZoom(true);
 
-        webViewMap.addJavascriptInterface(new WebAppInterface(getContext()), "Android");
+        webViewMap.addJavascriptInterface(new WebAppInterface(container), "Android");
         webViewMap.loadUrl("file:///android_asset/map.html");
     }
 }
