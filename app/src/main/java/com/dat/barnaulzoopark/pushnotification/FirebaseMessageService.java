@@ -51,7 +51,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
-            new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_panda)
+            new NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_panda_white_36dp)
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)
