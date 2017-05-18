@@ -57,6 +57,6 @@ public class VirtualTourFragment extends BaseFragment {
                 }
             }
         });
-        webViewTour.loadUrl("file:///android_asset/test.html");
+        webViewTour.loadUrl("file:///android_asset/virtualtour.html");
     }
 }
