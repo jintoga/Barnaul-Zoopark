@@ -22,6 +22,7 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.News;
+import com.dat.barnaulzoopark.model.TicketPrice;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -33,6 +34,7 @@ import com.dat.barnaulzoopark.ui.animaleditor.AnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.animalspecieseditor.SpeciesEditorActivity;
 import com.dat.barnaulzoopark.ui.bloganimaleditor.BlogAnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
+import com.dat.barnaulzoopark.ui.ticketpriceeditor.TicketPriceEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -189,6 +191,8 @@ public class DataManagementActivity
             BlogAnimalEditorActivity.start(this, ((BlogAnimal) data).getUid());
         } else if (data instanceof News) {
             NewsItemEditorActivity.start(this, ((News) data).getUid());
+        } else if (data instanceof TicketPrice) {
+            TicketPriceEditorActivity.start(this, ((TicketPrice) data).getUid());
         }
     }
 
@@ -238,6 +242,10 @@ public class DataManagementActivity
                 title = getString(R.string.data_management_blog_animals);
                 adapter = getAdapter(BlogAnimal.class, referenceName);
                 break;
+            case BZFireBaseApi.ticket_price:
+                title = getString(R.string.ticket_price);
+                adapter = getAdapter(TicketPrice.class, referenceName);
+                break;
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
@@ -282,6 +290,9 @@ public class DataManagementActivity
                     break;
                 case BZFireBaseApi.blog_animal:
                     BlogAnimalEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.ticket_price:
+                    TicketPriceEditorActivity.start(this, null);
                     break;
             }
         }

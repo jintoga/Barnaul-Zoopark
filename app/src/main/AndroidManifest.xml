@@ -74,6 +74,7 @@
             android:name=".ui.bloganimaleditor.BlogAnimalEditorActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.bloganimaldetail.BlogAnimalDetailActivity" />
+        <activity android:name=".ui.ticketpriceeditor.TicketPriceEditorActivity" />
     </application>
 
 </manifest>
