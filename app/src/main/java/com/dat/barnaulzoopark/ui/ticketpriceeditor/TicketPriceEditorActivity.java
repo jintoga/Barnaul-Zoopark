@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
@@ -27,6 +30,16 @@ public class TicketPriceEditorActivity extends
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
+    @Bind(R.id.name)
+    protected EditText name;
+    @Bind(R.id.price)
+    protected EditText price;
+    @Bind(R.id.icon)
+    protected ImageView icon;
+    @Bind(R.id.remove)
+    protected ImageButton remove;
+    @Bind(R.id.attach)
+    protected ImageButton attach;
 
     public static void start(Context context, @Nullable String categoryUid) {
         if (context instanceof TicketPriceEditorActivity) {
