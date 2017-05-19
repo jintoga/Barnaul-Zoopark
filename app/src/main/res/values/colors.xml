@@ -7,11 +7,14 @@
     <color name="colorText">@color/black</color>
     <color name="colorTextSecondary">#727272</color>
     <color name="colorDivider">#B6B6B6</color>
+    <color name="colorTextHint">#61000000</color>
 
     <color name="banner_background">#4da651</color>
 
     <color name="black">#000000</color>
     <color name="gray">#dfdfdf</color>
+    <color name="gray_light">#f2f2f2</color>
+    <color name="default_icon_color">#737070</color>
     <color name="white">#ffffff</color>
 
     <color name="transparent">#00000000</color>
@@ -28,12 +31,15 @@
     <color name="black_transparent_10">#1A000000</color>
 
     <color name="yellow">#ffc436</color>
+    <color name="pink">#ff36c9</color>
+    <color name="blue">#3636ff</color>
 
     <color name="primary_transparent_70">#B32196F3</color>
     <color name="primary_transparent_35">#592196F3</color>
     <color name="primary_transparent_00">#002196F3</color>
 
     <color name="gray_transparent_70">#b3dfdfdf</color>
+    <color name="gray_transparent_55">#8Cdfdfdf</color>
     <color name="fb_transparent_70">#a63e5c9a</color>
     <color name="vk_transparent_85">#d954769a</color>
     <color name="green_transparent_70">#9923c257</color>
@@ -48,4 +54,5 @@
     <color name="primary_90">#E64CAF50</color>
 
     <color name="avatar_bg_color">#e9eef1</color>
+    <color name="expandable_item_indicator_color">@color/black</color>
 </resources>

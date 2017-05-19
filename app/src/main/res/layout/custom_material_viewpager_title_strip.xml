@@ -9,7 +9,10 @@
     app:pstsIndicatorColor="#FFF"
     app:pstsIndicatorHeight="2dp"
     app:pstsPaddingMiddle="true"
-    app:pstsTabPaddingLeftRight="10dp"
+    app:pstsScrollOffset="0dp"
+    app:pstsShouldExpand="false"
+    app:pstsTabPaddingLeftRight="24dp"
     app:pstsTabTextAllCaps="true"
+    app:pstsTabTextColor="@color/white"
     app:pstsTabTextFontFamily="sans-serif-light"
     tools:background="#A333" />

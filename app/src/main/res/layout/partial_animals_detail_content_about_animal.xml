@@ -7,67 +7,149 @@
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     app:cardUseCompatPadding="true"
-    app:contentPadding="8dp">
+    app:contentPadding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="О виде животного"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/text_size_16"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/aboutSpecies"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:lineSpacingExtra="8dp"
-            android:textSize="@dimen/text_size_14"
-            tools:text="@string/test_text2" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Отличительные и характерные особенности"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/text_size_14"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/animal_detail_about_animal"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/text_size_18" />
 
-        <TextView
-            android:id="@+id/aboutCharacteristics"
+            <ImageView
+                android:id="@+id/subscribeAnimal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_favorite_empty" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:lineSpacingExtra="8dp"
-            android:textSize="@dimen/text_size_14"
-            tools:text="@string/test_text3" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="О наших питомцах"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/text_size_16"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.4"
+                android:text="@string/animal_detail_name"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/text_size_14" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="0.6">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-light"
+                    android:lineSpacingExtra="8dp"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="@dimen/text_size_14"
+                    tools:text="name" />
+
+                <ImageView
+                    android:id="@+id/gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="6dp"
+                    tools:srcCompat="@drawable/ic_gender_male_female" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.4"
+                android:text="@string/animal_detail_entry_date"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/dateEnter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_weight="0.6"
+                android:fontFamily="sans-serif-light"
+                android:lineSpacingExtra="8dp"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="@dimen/text_size_14"
+                tools:text="dateEnter" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.4"
+                android:text="@string/animal_detail_date_of_birth"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/dateOfBirth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_weight="0.6"
+                android:fontFamily="sans-serif-light"
+                android:lineSpacingExtra="8dp"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="@dimen/text_size_14"
+                tools:text="dateOfBirth" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/aboutOurAnimal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-light"
             android:lineSpacingExtra="8dp"
+            android:textColor="@color/colorTextSecondary"
             android:textSize="@dimen/text_size_14"
-            tools:text="@string/test_text" />
+            tools:text="aboutOurAnimal" />
 
 
     </LinearLayout>

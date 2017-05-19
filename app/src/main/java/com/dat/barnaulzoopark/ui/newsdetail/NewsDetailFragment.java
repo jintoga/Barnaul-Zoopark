@@ -22,6 +22,7 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.YoutubeVideoFragment;
+import com.dat.barnaulzoopark.ui.adapters.AttachmentImagesHorizontalAdapter;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.AnimalsImagesHorizontalSpaceDecoration;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
@@ -39,7 +40,7 @@ import me.henrytao.smoothappbarlayout.widget.NestedScrollView;
 
 public class NewsDetailFragment
     extends BaseMvpFragment<NewsDetailContract.View, NewsDetailContract.UserActionListener>
-    implements NewsDetailContract.View, NewsDetailPhotosAdapter.ItemClickListener {
+    implements NewsDetailContract.View, AttachmentImagesHorizontalAdapter.ItemClickListener {
 
     private static final String KEY_NEWS_UID = "NEWS_UID";
 
@@ -61,7 +62,7 @@ public class NewsDetailFragment
     protected TextView photosLabel;
     @Bind(R.id.photos)
     protected RecyclerView photos;
-    private NewsDetailPhotosAdapter photosAdapter;
+    private AttachmentImagesHorizontalAdapter photosAdapter;
 
     @Bind(R.id.youtubeContainer)
     protected FrameLayout youtubeContainer;
@@ -99,7 +100,7 @@ public class NewsDetailFragment
     }
 
     @Override
-    public void onItemClicked(int adapterPosition) {
+    public void onAttachmentClicked(int adapterPosition) {
         if (currentNews != null) {
             List<String> albumUrls = new ArrayList<>(currentNews.getPhotos().values());
             PhotosDetailActivity.start(getActivity(), albumUrls, adapterPosition, false);
@@ -118,7 +119,7 @@ public class NewsDetailFragment
     }
 
     private void init() {
-        if (BZApplication.isTabletLandscape(getContext())) {
+        if (BZApplication.get(getContext()).isTabletLandscape()) {
             toolbar.setVisibility(View.GONE);
         } else {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -145,7 +146,7 @@ public class NewsDetailFragment
         photos.setLayoutManager(linearLayoutManager);
         photos.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
         if (photosAdapter == null) {
-            photosAdapter = new NewsDetailPhotosAdapter();
+            photosAdapter = new AttachmentImagesHorizontalAdapter();
             photosAdapter.setItemClickListener(this);
         }
         photos.setAdapter(photosAdapter);

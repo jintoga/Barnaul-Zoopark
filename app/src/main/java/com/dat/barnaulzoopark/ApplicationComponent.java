@@ -1,9 +1,12 @@
 package com.dat.barnaulzoopark;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import com.dat.barnaulzoopark.api.FirebaseModule;
+import com.dat.barnaulzoopark.pushnotification.NotificationApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import dagger.Component;
 import javax.inject.Singleton;
@@ -30,7 +33,18 @@ public interface ApplicationComponent {
     FirebaseAuth firebaseAuth();
 
     @NonNull
+    FirebaseMessaging firebaseMessaging();
+
+    @NonNull
     EventBus eventBus();
 
     void inject(BZApplication application);
+
+    @NonNull
+    PreferenceHelper preferencesHelper();
+
+    Context context();
+
+    @NonNull
+    NotificationApi notificationApi();
 }

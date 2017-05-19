@@ -3,6 +3,7 @@ package com.dat.barnaulzoopark.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -31,30 +32,30 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
 
     private static final String TAG = BaseMvpPhotoEditActivity.class.getName();
 
-    private boolean isFilledWithPhoto = false;
-
     private int originalRequestCode;
     private boolean isCapturePhoto = false;
     private static final int REQUEST_CODE_PERMISSIONS = 200;
-    private Listener listener;
+    private PhotoEditListener photoEditListener;
     private static final String TEMP_IMAGE_NAME = "temporary_image";
-    private boolean withRemoveItem = false;
 
-    public interface Listener {
-        void onRemovedPhotoClicked();
+    public interface PhotoEditListener {
+        void onRemovedPhotoClicked(int requestCode);
 
         void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode);
 
         void onCropError(@NonNull String errorMsg);
     }
 
-    protected void setListener(Listener listener) {
-        this.listener = listener;
+    protected void setPhotoEditListener(PhotoEditListener photoEditListener) {
+        this.photoEditListener = photoEditListener;
     }
 
-    protected void createChangePhotoDialog(final int requestCode, boolean withRemoveItem) {
+    protected void createChangePhotoDialog(final int requestCode) {
+        createChangePhotoDialog(requestCode, false);
+    }
+
+    protected void createChangePhotoDialog(final int requestCode, boolean isFilledWithPhoto) {
         originalRequestCode = requestCode;
-        this.withRemoveItem = withRemoveItem;
         final MaterialDialog dialog = BZDialogBuilder.createChangePhotoDialog(this);
         View rootView = dialog.getCustomView();
         if (rootView == null) {
@@ -63,58 +64,40 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
         TextView removePhoto = (TextView) rootView.findViewById(R.id.removePhoto);
         TextView takePhoto = (TextView) rootView.findViewById(R.id.takePhoto);
         final TextView choosePhoto = (TextView) rootView.findViewById(R.id.choosePhoto);
-        if (withRemoveItem) {
-            if (!isFilledWithPhoto) {
-                removePhoto.setVisibility(View.GONE);
-            } else {
-                removePhoto.setVisibility(View.VISIBLE);
-            }
+        if (isFilledWithPhoto) {
+            removePhoto.setVisibility(View.VISIBLE);
         } else {
             removePhoto.setVisibility(View.GONE);
         }
-        removePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isFilledWithPhoto = false;
-                if (listener != null) {
-                    listener.onRemovedPhotoClicked();
+        removePhoto.setOnClickListener(view -> {
+            dialog.dismiss();
+            if (photoEditListener != null) {
+                photoEditListener.onRemovedPhotoClicked(requestCode);
+            }
+        });
+        takePhoto.setOnClickListener(view -> {
+            isCapturePhoto = true;
+            dialog.dismiss();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.checkSelfPermission(BaseMvpPhotoEditActivity.this,
+                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(BaseMvpPhotoEditActivity.this,
+                        new String[] { Manifest.permission.CAMERA }, REQUEST_CODE_PERMISSIONS);
+                    return;
                 }
-                dialog.dismiss();
             }
+            startCapturePhoto(requestCode);
         });
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isCapturePhoto = true;
+        choosePhoto.setOnClickListener(view -> {
+            isCapturePhoto = false;
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (ActivityCompat.checkSelfPermission(BaseMvpPhotoEditActivity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(BaseMvpPhotoEditActivity.this,
-                            new String[] { Manifest.permission.CAMERA }, REQUEST_CODE_PERMISSIONS);
-                        return;
-                    }
-                }
-                startCapturePhoto(requestCode);
-                dialog.dismiss();
-            }
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/+");
+            startActivityForResult(intent, requestCode);
+            dialog.dismiss();
         });
-        choosePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isCapturePhoto = false;
-
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/+");
-                startActivityForResult(intent, requestCode);
-                dialog.dismiss();
-            }
-        });
-    }
-
-    public void setFilledWithPhoto(boolean filledWithPhoto) {
-        isFilledWithPhoto = filledWithPhoto;
     }
 
     @Override
@@ -127,25 +110,25 @@ public abstract class BaseMvpPhotoEditActivity<V extends MvpView, P extends MvpP
                 uri = data.getData();
             }
             if (uri != null) {
-                CropImage.activity(uri).setGuidelines(CropImageView.Guidelines.ON).start(this);
+                CropImage.activity(uri)
+                    .setOutputCompressFormat(Bitmap.CompressFormat.PNG)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
             }
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK && result != null) {
                 Uri resultUri = result.getUri();
-                if (withRemoveItem) {
-                    isFilledWithPhoto = true;
-                }
-                if (listener != null) {
-                    listener.onResultUriSuccess(resultUri, originalRequestCode);
+                if (photoEditListener != null) {
+                    photoEditListener.onResultUriSuccess(resultUri, originalRequestCode);
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE
                 && result != null) {
                 Exception error = result.getError();
                 Log.e(TAG, error.getLocalizedMessage());
-                if (listener != null) {
-                    listener.onCropError(error.getLocalizedMessage());
+                if (photoEditListener != null) {
+                    photoEditListener.onCropError(error.getLocalizedMessage());
                 }
             }
         }

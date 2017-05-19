@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout"
+<LinearLayout android:id="@+id/layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/imageViewTabItemAvatar"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_owl"
-        android:tint="@color/gray" />
+        android:layout_marginRight="8dp"
+        android:tint="@color/gray"
+        app:progressBarAutoRotateInterval="1000"
+        app:progressBarImage="@drawable/fresco_progressbar"
+        app:progressBarImageScaleType="centerInside" />
 
     <TextView
         android:id="@+id/textViewTabItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/gray"

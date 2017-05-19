@@ -1,6 +1,7 @@
-apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt' //needed for dagger
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
@@ -10,17 +11,40 @@ android {
         applicationId "com.dat.barnaulzoopark"
         minSdkVersion 17
         targetSdkVersion 25
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+
+
+        buildConfigField "String", "NOTIFICATION_SUBSCRIBE_TOPIC", "\"blog_animal\""
+        buildConfigField "String", "FCM_TOKEN",
+            "\"AAAAuKhuaTE:APA91bFLFGAFRFkdqsukEv0GfO9tBP_iTHd4YZjNjLgx98gD_F0SFlacsFXzug0K9MCg6dD9wKuUnSMkUMqk8ekEmlS5eo61bNAU6sZWz8mxu_euI-VakwOiXNPcuSsDb2Nmw9GwR3niN5g_YBSpm7w3FMHxXJT_Wg\""
+    }
+    productFlavors {
+        dev {
+            // Enable pre-dexing to produce an APK that can be tested on
+            // Android 5.0+ without the time-consuming DEX build processes.
+            minSdkVersion 21
+        }
+        prod {
+            // The actual minSdkVersion for the production version.
+            minSdkVersion 14
+        }
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
     packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE'
@@ -29,7 +53,10 @@ android {
 }
 
 dependencies {
-    final SUPPORT_LIBRARY_VERSION = '25.1.0'
+    compile 'com.android.support:multidex:1.0.1'
+
+    final SUPPORT_LIBRARY_VERSION = '25.3.1'
+    final RETROFIT_VERSION = '2.3.0'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/YouTubeAndroidPlayerApi.jar')
@@ -41,26 +68,39 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     testCompile 'junit:junit:4.12'
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:preference-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:preference-v14:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.facebook.fresco:fresco:1.0.1'
+    compile 'com.facebook.fresco:fresco:1.3.0'
+    compile 'com.facebook.fresco:imagepipeline-okhttp3:1.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile('com.github.florent37:materialviewpager:1.2.0@aar') {
         transitive = true
     }
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
     compile 'me.relex:photodraweeview:1.0.0'
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.1'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.3'
     //firebase stuff
     compile 'com.google.firebase:firebase-database:9.8.0'
     compile 'com.google.firebase:firebase-storage:9.8.0'
     compile 'com.google.firebase:firebase-crash:9.8.0'
     compile 'com.google.firebase:firebase-auth:9.8.0'
+    compile 'com.google.firebase:firebase-messaging:9.8.0'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.firebaseui:firebase-ui-database:1.0.0'
     compile 'com.kelvinapps:rxfirebase:0.0.15'
     compile "me.henrytao:smooth-app-bar-layout:25.1.0.0"
+    compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.5@aar') {
+        transitive = true
+    }
+    compile 'com.wdullaer:materialdatetimepicker:3.2.0'
+    compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+    compile "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_VERSION"
+    compile 'com.google.android.gms:play-services-location:9.8.0'
 }

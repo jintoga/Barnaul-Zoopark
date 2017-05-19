@@ -66,23 +66,91 @@
     <string name="choose_photo">Choose photo</string>
     <string name="remove_photo">Remove photo</string>
 
-    <string name="test_text">Амир, наряду с дальневосточным леопардом Елисеем, является одним из первых представителей кошек в нашем зоопарке. Он нелюдим, замкнут, но ночью ведет себя, как маленький кот. В прошлом году к нему привезли самку Миру. У него уже был негативный опыт общения с самками. Но в этот раз они соседствуют уже на протяжении полугода. Амир и Мира привыкли друг к другу, и самое интересное, что общаются только ночью.
-    </string>
-    <string name="test_text2">
-        Амурский лесной кот — разновидность бенгальского кота. От обычной домашней кошки отличается, прежде всего, размерами: тело дальневосточного кота может достигать 90 сантиметров в длину, хвост — 37 сантиметров, а вес — 6 килограммов. Шерсть у такого кота серовато-желтая с темно-рыжими пятнами.
-    </string>
-    <string name="test_text3">
-        - Крепкое тело до 60 сантиметров в длину, шкурка имеет различные окраски.
-    \n- Развитые обоняние и слух при слабоватом зрении.
-    \n- Голос соболя напоминает кошачий.
-    \n- Соболь отлично лазает по деревьям и передвигается прыжками.
-    \n- С легкостью бегает по глубокому снегу.
-\nПитается соболь мышами, бурундуками, зачастую зайцами. Не отказывается и от ягод — голубики, рябины и черемухи. Если зимой соболю повезет наткнуться на бурундука, у которого есть орехи, съедены будут и орехи, и их владелец. Обычно соболь активен в темное время суток, но иногда охотится и днем.
-    </string>
-    <string name="test_text4">
-     - Соболь легко приручается и своим поведением в домашних условиях похож на кошку.
-    \n- Ученые и охотоведы вовремя пришли на помощь зверьку, которого убивали ради шкур в промышленных масштабах. Сейчас соболиной популяции ничто не угрожает.
- </string>
     <string name="discard_your_changes">Discard your changes?</string>
     <string name="discard">Discard</string>
+    <string name="data_control">Data control</string>
+    <string name="data_management_animal_species">Animal species</string>
+    <string name="data_management_animal_categories">Animal categories</string>
+    <string name="data_management_animals">Animals</string>
+    <string name="create_category">Create category</string>
+    <string name="edit_category">Edit category</string>
+    <string name="created_successful">Created successful</string>
+    <string name="remove">Remove</string>
+    <string name="remove_success">Removed successful</string>
+    <string name="edit_species">Edit species</string>
+    <string name="create_species">Create species</string>
+    <string name="select">Select</string>
+    <string name="categories_empty_error">Select or create a category first!</string>
+    <string name="edit_animal">Edit animal</string>
+    <string name="create_animal">Create animal</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="youtube_prefix">youtube.com/watch?v=</string>
+    <string name="habitat">— Habitat</string>
+    <string name="animal_detail_about_animal">About animal</string>
+    <string name="animal_detail_photos">Photos</string>
+    <string name="animal_detail_name">Name:</string>
+    <string name="animal_detail_entry_date">Entry Date:</string>
+    <string name="animal_detail_date_of_birth">Date of birth:</string>
+    <string name="animal_detail_video">Video</string>
+    <string name="species_invalid_error">Select or create a species first!</string>
+    <string name="species_hint_name">name</string>
+    <string name="species_hint_description">description</string>
+    <string name="edit_successful">Edited successfully</string>
+    <string name="species">Species</string>
+    <string name="remove_child_from_category_title">Remove \"%s\" from current category?</string>
+    <string name="animals">Animals</string>
+    <string name="remove_child_from_species_title">Remove \"%s\" from current species?</string>
+    <string name="select_category_hint">Select a category</string>
+    <string name="select_species_hint">Select a species</string>
+    <string name="creating_animal">Creating animal…</string>
+    <string name="updating_animal">Updating animal data…</string>
+    <string name="loading_animal">Loading selected animal…</string>
+    <string name="updating_species">Updating animal species…</string>
+    <string name="creating_species">Creating animal species…</string>
+    <string name="loading_species">Loading selected animal species…</string>
+    <string name="creating_category">Creating animal category…</string>
+    <string name="updating_category">Updating animal category…</string>
+    <string name="loading_category">Loading selected animal category…</string>
+    <string name="removing">Removing…</string>
+    <string name="deleting_news_item">Deleting news item…</string>
+    <string name="creating_news_item">Creating news item…</string>
+    <string name="updating_news_item">Updating news item…</string>
+    <string name="animals_list_empty">List of animals is empty!</string>
+    <string name="admin">Admin</string>
+    <string name="animal_blog">Animal blog</string>
+    <string name="user_profile">My account</string>
+    <string name="favourite_animals">Favourite animals</string>
+    <string name="user_data_empty">User\'s data not found!</string>
+    <string name="admin_privilege_status">(admin)</string>
+    <string name="subscribing_to_animal">Updating user\'s data</string>
+    <string name="subscribed">Subscribed</string>
+    <string name="unsubscribed">Unsubscribed</string>
+    <string name="empty">Empty</string>
+    <string name="loading_favorite_animals">Loading favorite animals…</string>
+    <string name="data_management_blog_animals">Animal blogs</string>
+    <string name="edit_blog_animal">Edit animal blog</string>
+    <string name="create_blog_animal">Create animal blog</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="animal_invalid_error">Select or create an animal first!</string>
+    <string name="select_animal_hint">Select an animal</string>
+    <string name="creating_blog_animal">Creating animal blog…</string>
+    <string name="blog_animal_created_success">Animal blog created successfully</string>
+    <string name="data_management_remove_title" formatted="false">Remove \"%s\" %s?</string>
+    <string name="remove_item_animal">animal</string>
+    <string name="remove_item_species">species</string>
+    <string name="remove_item_category">category</string>
+    <string name="remove_item_blog_animal">animal blog</string>
+    <string name="loading_blogs">Loading blogs of favorite animals…</string>
+    <string name="loading_selected_blog">Loading selected blog…</string>
+    <string name="updating_blog">Updating animal blog…</string>
+    <string name="data_management_news">News</string>
+    <string name="remove_item_news">news item</string>
+    <string name="edit_news_item">Edit news</string>
+    <string name="create_news_item">Create news</string>
+    <string name="push_notification_blog_animal_title">Something new about your favorite animal!</string>
+    <string name="push_notification_blog_animal_text">New blog created</string>
+    <string name="virtual_tour">360° tour</string>
+    <string name="location_updated">Location updated!</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.utils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -9,6 +10,9 @@ import java.util.Locale;
  */
 
 public class ConverterUtils {
+    public static final DateFormat DATE_FORMAT =
+        new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+
     public static String epochToString(long time) {
         Date date = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy", Locale.getDefault());

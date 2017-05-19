@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.model;
 
 import android.support.annotation.Nullable;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import java.util.Map;
  * Created by DAT on 1/8/2017.
  */
 @IgnoreExtraProperties
-public class News {
+public class News extends AbstractData {
     private String uid;
     private String title;
     private String description;
@@ -71,5 +72,23 @@ public class News {
         this.title = title;
         this.description = description;
         this.time = Calendar.getInstance().getTimeInMillis();
+    }
+
+    @Exclude
+    @Override
+    public String getPhotoUrl() {
+        return getThumbnail();
+    }
+
+    @Exclude
+    @Override
+    public String getText() {
+        return getTitle();
+    }
+
+    @Exclude
+    @Override
+    public String getId() {
+        return getUid();
     }
 }

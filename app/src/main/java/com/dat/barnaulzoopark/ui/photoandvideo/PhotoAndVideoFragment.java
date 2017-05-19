@@ -12,13 +12,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.MainActivity;
-import com.dat.barnaulzoopark.ui.TempBaseFragment;
+import com.dat.barnaulzoopark.ui.BaseFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.PhotoAndVideoViewPagerAdapter;
 
 /**
  * Created by DAT on 07-Feb-16.
  */
-public class PhotoAndVideoFragment extends TempBaseFragment {
+public class PhotoAndVideoFragment extends BaseFragment {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;

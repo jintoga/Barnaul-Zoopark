@@ -19,7 +19,6 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
@@ -28,6 +27,7 @@ import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
+import com.dat.barnaulzoopark.ui.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.MultiAttachmentDecoration;
 import com.dat.barnaulzoopark.widget.PrefixEditText;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,9 +46,9 @@ import java.util.Map;
 public class NewsItemEditorActivity extends
     BaseMvpPhotoEditActivity<NewsItemEditorContract.View, NewsItemEditorContract.UserActionListener>
     implements NewsItemEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
-    BaseMvpPhotoEditActivity.Listener {
+    BaseMvpPhotoEditActivity.PhotoEditListener {
 
-    private static final String EXTAR_SELECTED_NEWS_UID = "SELECTED_NEWS_UID";
+    private static final String EXTRA_SELECTED_NEWS_UID = "SELECTED_NEWS_UID";
     private static final String KEY_SAVED_ATTACHMENTS = "SAVED_ATTACHMENTS";
     private static final String KEY_SAVED_THUMBNAIL_URI = "SAVED_THUMBNAIL_URI";
     private static final int REQUEST_BROWSE_IMAGE_THUMBNAIL = 1;
@@ -84,7 +84,7 @@ public class NewsItemEditorActivity extends
         }
         Intent intent = new Intent(context, NewsItemEditorActivity.class);
         if (uid != null) {
-            intent.putExtra(EXTAR_SELECTED_NEWS_UID, uid);
+            intent.putExtra(EXTRA_SELECTED_NEWS_UID, uid);
         }
         context.startActivity(intent);
     }
@@ -100,7 +100,7 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void onRemovedPhotoClicked() {
+    public void onRemovedPhotoClicked(int requestCode) {
         Log.d(TAG, "onRemovedPhotoClicked");
         thumbnailUri = null;
         thumbnail.setImageDrawable(
@@ -130,14 +130,11 @@ public class NewsItemEditorActivity extends
 
     @Override
     public void onCropError(@NonNull String errorMsg) {
-        Log.d(TAG, errorMsg);
+        showSnackBar(errorMsg);
     }
 
     @Override
     public void bindSelectedNews(@NonNull News selectedNews) {
-        if (selectedNews.getThumbnail() != null && !"".equals(selectedNews.getThumbnail())) {
-            setFilledWithPhoto(true);
-        }
         this.selectedNews = selectedNews;
         if (selectedNews.getThumbnail() != null) {
             thumbnailUri = Uri.parse(selectedNews.getThumbnail());
@@ -173,32 +170,6 @@ public class NewsItemEditorActivity extends
     }
 
     @Override
-    public void deletingNewsItem() {
-        Log.d(TAG, "deletingNewsItem");
-        if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Deleting News Item");
-        }
-    }
-
-    @Override
-    public void onDeleteNewsItemFailure(@NonNull String errorMsg) {
-        Log.d(TAG, "onDeleteNewsItemFailure" + errorMsg);
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDeleteNewsItemSuccessful() {
-        Log.d(TAG, "onDeleteNewsItemSuccessful");
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-        finish();
-    }
-
-    @Override
     public void onUpdatingComplete() {
         Log.d(TAG, "onUpdatingComplete");
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -213,7 +184,7 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        showSnackBar(errorMsg);
     }
 
     @Override
@@ -227,7 +198,7 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        showSnackBar(errorMsg);
     }
 
     @Override
@@ -243,8 +214,11 @@ public class NewsItemEditorActivity extends
     public void creatingNewsItemProgress() {
         Log.d(TAG, "creatingNewsItemProgress");
         if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Creating News Item");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.creating_news_item));
         }
+        progressDialog.setContent(getString(R.string.creating_news_item));
+        progressDialog.show();
     }
 
     @Override
@@ -258,15 +232,18 @@ public class NewsItemEditorActivity extends
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+        showSnackBar(errorMsg);
     }
 
     @Override
     public void updatingNewsItemProgress() {
         Log.d(TAG, "updatingNewsItemProgress");
         if (progressDialog == null) {
-            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this, "Updating News Item");
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(this,
+                getString(R.string.updating_news_item));
         }
+        progressDialog.setContent(getString(R.string.updating_news_item));
+        progressDialog.show();
     }
 
     @Override
@@ -291,7 +268,7 @@ public class NewsItemEditorActivity extends
             getSupportActionBar().setHomeButtonEnabled(true);
         }
         init();
-        setListener(this);
+        setPhotoEditListener(this);
     }
 
     private void init() {
@@ -301,15 +278,23 @@ public class NewsItemEditorActivity extends
             (int) getResources().getDimension(R.dimen.item_file_attachment_decoration)));
         attachmentAdapter = new MultiFileAttachmentAdapter(this);
         album.setAdapter(attachmentAdapter);
-        String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
+        String selectedNewsUid = getIntent().getStringExtra(EXTRA_SELECTED_NEWS_UID);
         if (selectedNewsUid != null) {
             loadSelectedNews(selectedNewsUid);
+            updateTitle(getString(R.string.edit_news_item));
             attachmentAdapter.setEditingMode(true);
         } else {
+            updateTitle(getString(R.string.create_news_item));
             attachmentAdapter.addEmptySlot();
         }
 
-        video.setPrefix("https://www.youtube.com/watch?v=");
+        video.setPrefix(getString(R.string.youtube_prefix));
+    }
+
+    private void updateTitle(@NonNull String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     private void loadSelectedNews(@NonNull String selectedNewsUid) {
@@ -344,10 +329,6 @@ public class NewsItemEditorActivity extends
                         finish();
                     }
                 }
-                break;
-            case R.id.delete:
-                String selectedNewsUid = getIntent().getStringExtra(EXTAR_SELECTED_NEWS_UID);
-                presenter.deleteNewsItem(selectedNewsUid);
                 break;
             default:
                 break;
@@ -386,18 +367,13 @@ public class NewsItemEditorActivity extends
 
     private void showDiscardConfirm() {
         BZDialogBuilder.createConfirmDialog(this, getString(R.string.discard_your_changes),
-            getString(R.string.discard)).onNegative(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                dialog.dismiss();
-            }
-        }).onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+            getString(R.string.discard))
+            .onNegative((dialog, which) -> dialog.dismiss())
+            .onPositive((dialog, which) -> {
                 dialog.dismiss();
                 finish();
-            }
-        }).show();
+            })
+            .show();
     }
 
     private void checkDiscardConfirmRequirement() {
@@ -440,12 +416,12 @@ public class NewsItemEditorActivity extends
             return;
         }
         currentAttachmentPosition = position;
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT, false);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_ATTACHMENT);
     }
 
     @OnClick(R.id.thumbnailContainer)
     protected void thumbnailContainerClicked() {
-        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL, true);
+        createChangePhotoDialog(REQUEST_BROWSE_IMAGE_THUMBNAIL, thumbnailUri != null);
     }
 
     @Override

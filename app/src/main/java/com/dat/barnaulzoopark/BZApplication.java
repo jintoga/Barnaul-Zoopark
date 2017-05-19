@@ -1,19 +1,30 @@
 package com.dat.barnaulzoopark;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.multidex.MultiDexApplication;
+import com.dat.barnaulzoopark.model.User;
+import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.listener.RequestListener;
+import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.github.florent37.materialviewpager.MaterialViewPagerAnimator;
+import java.util.HashSet;
+import java.util.Set;
+import javax.inject.Inject;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by DAT on 03-May-16.
  */
-public class BZApplication extends Application {
+public class BZApplication extends MultiDexApplication {
 
-    public static final String BZSharedPreference = "BZSharedPreference";
-    public static final String KEY_IS_LOGGED_IN = "IS_LOGGED_IN";
+    @Inject
+    OkHttpClient okHttpClient;
 
     @NonNull
     private ApplicationComponent applicationComponent;
@@ -31,8 +42,24 @@ public class BZApplication extends Application {
         applicationComponent.inject(this);
         applicationComponent.fireBaseDatabase()
             .setPersistenceEnabled(true); //FireBase offline capabilities
-        Fresco.initialize(this);
+
+        Set<RequestListener> requestListeners = new HashSet<>();
+        requestListeners.add(new RequestLoggingListener());
+        ImagePipelineConfig config =
+            OkHttpImagePipelineConfigFactory.newBuilder(getApplicationContext(), okHttpClient)
+                .setDownsampleEnabled(true)
+                .setRequestListeners(requestListeners)
+                .build();
+        Fresco.initialize(getApplicationContext(), config);
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+
         MaterialViewPagerAnimator.ENABLE_LOG = false;
+    }
+
+    @Override
+    public void onLowMemory() {
+        Fresco.getImagePipeline().clearMemoryCaches();
+        super.onLowMemory();
     }
 
     @NonNull
@@ -40,9 +67,18 @@ public class BZApplication extends Application {
         return applicationComponent;
     }
 
-    public static boolean isTabletLandscape(Context context) {
-        return context.getResources().getBoolean(R.bool.isTablet)
-            && context.getResources().getConfiguration().orientation
+    public boolean isTabletLandscape() {
+        return applicationComponent.context().getResources().getBoolean(R.bool.isTablet)
+            && applicationComponent.context().getResources().getConfiguration().orientation
             == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    public boolean isAdmin() {
+        return applicationComponent.preferencesHelper().isAdmin();
+    }
+
+    @Nullable
+    public User getUser() {
+        return applicationComponent.preferencesHelper().getUser();
     }
 }

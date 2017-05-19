@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.ui.BaseActivity;
+import com.dat.barnaulzoopark.widget.ViewPagerPhotoView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class PhotosDetailActivity extends BaseActivity {
     private final static long interval = 1000;
 
     @Bind(R.id.photo_view_pager)
-    protected ViewPager photoViewPager;
+    protected ViewPagerPhotoView photoViewPager;
     private PhotosDetailViewPagerAdapter photosDetailViewPagerAdapter;
 
     private static final String EXTRA_PHOTO_POSITION = "PHOTO_POSITION";
@@ -73,7 +74,7 @@ public class PhotosDetailActivity extends BaseActivity {
         photosDetailViewPagerAdapter =
             new PhotosDetailViewPagerAdapter(getSupportFragmentManager(), albums, this);
         photoViewPager.setAdapter(photosDetailViewPagerAdapter);
-        photoViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        photoViewPager.addOnPageChangeListener(new ViewPagerPhotoView.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                 int positionOffsetPixels) {

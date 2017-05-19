@@ -7,7 +7,7 @@
     android:background="@color/black"
     tools:context="com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity">
 
-    <android.support.v4.view.ViewPager
+    <com.dat.barnaulzoopark.widget.ViewPagerPhotoView
         android:id="@+id/photo_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

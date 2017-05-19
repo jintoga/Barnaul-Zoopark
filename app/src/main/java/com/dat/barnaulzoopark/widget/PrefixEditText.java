@@ -1,8 +1,12 @@
 package com.dat.barnaulzoopark.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
-import android.graphics.Rect;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 /**
@@ -10,44 +14,58 @@ import android.util.AttributeSet;
  */
 
 public class PrefixEditText extends android.support.v7.widget.AppCompatEditText {
-    private String prefix = "";
-    private Rect prefixRect = new Rect(); // actual prefix size
+    private ColorStateList mPrefixTextColor;
 
     public PrefixEditText(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public PrefixEditText(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, android.R.attr.editTextStyle);
     }
 
-    public PrefixEditText(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        getPaint().getTextBounds(prefix, 0, prefix.length(), prefixRect);
-        prefixRect.right += getPaint().measureText(" "); // add some offset
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawText(prefix, super.getCompoundPaddingLeft(), getBaseline(), getPaint());
-    }
-
-    public String getPrefix() {
-        return prefix;
+    public PrefixEditText(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        mPrefixTextColor = getTextColors();
     }
 
     public void setPrefix(String prefix) {
-        this.prefix = prefix;
+        setCompoundDrawables(new TextDrawable(prefix), null, null, null);
     }
 
-    @Override
-    public int getCompoundPaddingLeft() {
-        return super.getCompoundPaddingLeft() + prefixRect.width();
+    public void setPrefixTextColor(int color) {
+        mPrefixTextColor = ColorStateList.valueOf(color);
+    }
+
+    public void setPrefixTextColor(ColorStateList color) {
+        mPrefixTextColor = color;
+    }
+
+    private class TextDrawable extends Drawable {
+        private String mText = "";
+
+        public TextDrawable(String text) {
+            mText = text;
+            setBounds(0, 0, (int) getPaint().measureText(mText) + 2, (int) getTextSize());
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            Paint paint = getPaint();
+            paint.setColor(mPrefixTextColor.getColorForState(getDrawableState(), 0));
+            int lineBaseline = getLineBounds(0, null);
+            canvas.drawText(mText, 0, canvas.getClipBounds().top + lineBaseline, paint);
+        }
+
+        @Override
+        public void setAlpha(int alpha) {/* Not supported */}
+
+        @Override
+        public void setColorFilter(ColorFilter colorFilter) {/* Not supported */}
+
+        @Override
+        public int getOpacity() {
+            return PixelFormat.UNKNOWN;
+        }
     }
 }

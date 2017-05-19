@@ -51,7 +51,7 @@
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left|bottom"
         android:layout_marginBottom="14dp"
@@ -60,14 +60,31 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/userName"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
-            android:textColor="@color/white"
-            tools:text="Nguyen Quoc Dat" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:maxWidth="120dp"
+                android:textColor="@color/white"
+                tools:text="Nguyen Quoc Dat asfasf" />
+
+            <TextView
+                android:id="@+id/role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_toRightOf="@id/userName"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/white"
+                tools:text="Admin" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/userEmail"

@@ -2,7 +2,6 @@ package com.dat.barnaulzoopark.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +16,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,15 +29,19 @@ import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
+import com.dat.barnaulzoopark.BuildConfig;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.events.LoggedInEvent;
 import com.dat.barnaulzoopark.model.User;
-import com.dat.barnaulzoopark.ui.animals.AnimalsFragment;
+import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
+import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
+import com.dat.barnaulzoopark.ui.bloganimal.BlogAnimalFragment;
+import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfileContract;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfilePresenter;
+import com.dat.barnaulzoopark.ui.virtualtour.VirtualTourFragment;
 import com.dat.barnaulzoopark.ui.zoomap.ZooMapFragment;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -45,7 +50,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity
     extends BaseMvpActivity<UserProfileContract.View, UserProfileContract.UserActionListener>
@@ -53,7 +57,7 @@ public class MainActivity
     DrawerLayout.DrawerListener {
 
     private static final int GALLERY_REQUEST = 1;
-    private static final String KEY_IS_GUEST = "IS_GUEST";
+    private static final String EXTRA_IS_GUEST = "IS_GUEST";
     private static final String TAG = MainActivity.class.getName();
     @Bind(R.id.navigation_view)
     protected NavigationView navigationView;
@@ -62,6 +66,7 @@ public class MainActivity
     protected SimpleDraweeView userPhoto;
     protected ProgressBar loadingPhoto;
     protected TextView userName;
+    protected TextView role;
     protected TextView userEmail;
     protected ImageView logButton;
     private int currentMenuItemID = -1;
@@ -98,48 +103,74 @@ public class MainActivity
             return;
         }
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(KEY_IS_GUEST, true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(EXTRA_IS_GUEST, true);
         context.startActivity(intent);
     }
 
     @Override
     public void bindUserData(@NonNull User user) {
+        BZApplication.get(this).getApplicationComponent().preferencesHelper().setUser(user);
+        BZApplication.get(this)
+            .getApplicationComponent()
+            .firebaseMessaging()
+            .subscribeToTopic(BuildConfig.NOTIFICATION_SUBSCRIBE_TOPIC);
         if (user.getPhoto() != null) {
             Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
         }
-        String name = user.getName();
-        if (user.isAdmin()) {
-            name += "(admin)";
-        }
-        EventBus.getDefault().post(new LoggedInEvent(user.isAdmin()));
-        userName.setText(name);
+        setUserPrivilege(true);
+        setAdminPrivilege(user);
+        BZApplication.get(this)
+            .getApplicationComponent()
+            .preferencesHelper()
+            .setIsAdmin(user.isAdmin());
+        userName.setText(user.getName());
         userEmail.setText(user.getEmail());
         logButton.setImageResource(R.drawable.ic_logout);
-        logButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BZDialogBuilder.createVerifyLogoutDialog(MainActivity.this)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog,
-                            @NonNull DialogAction which) {
-                            FirebaseAuth.getInstance().signOut();
-                            SharedPreferences.Editor editor =
-                                getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE)
-                                    .edit();
-                            editor.putBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
-                            editor.apply();
-                            goToStartUp();
-                        }
-                    })
-                    .show();
-            }
-        });
+        logButton.setOnClickListener(
+            v -> BZDialogBuilder.createVerifyLogoutDialog(MainActivity.this)
+                .onPositive((dialog, which) -> {
+                    FirebaseAuth.getInstance().signOut();
+                    BZApplication.get(MainActivity.this)
+                        .getApplicationComponent()
+                        .preferencesHelper()
+                        .clear();
+                    goToStartUp();
+                })
+                .show());
+    }
+
+    private void setUserPrivilege(boolean showUserMenu) {
+        Menu menu = navigationView.getMenu();
+        MenuItem userProfileMenuItem = menu.findItem(R.id.userProfile);
+        if (userProfileMenuItem != null) {
+            userProfileMenuItem.setVisible(showUserMenu);
+        }
+    }
+
+    private void setAdminPrivilege(@NonNull User user) {
+        if (user.isAdmin()) {
+            role.setText(R.string.admin_privilege_status); //ToDO :// FIXME: 4/26/2017
+            role.setVisibility(View.VISIBLE);
+        } else {
+            role.setVisibility(View.GONE);
+            hideAdminControl();
+        }
+    }
+
+    private void hideAdminControl() {
+        Menu menu = navigationView.getMenu();
+        MenuItem adminMenuItem = menu.findItem(R.id.admin);
+        if (adminMenuItem != null) {
+            adminMenuItem.setVisible(false);
+        }
     }
 
     @Override
     public void bindUserDataAsGuest() {
+        hideAdminControl();
+        setUserPrivilege(false);
         Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
             .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
         userPhoto.setImageURI(uri);
@@ -186,7 +217,11 @@ public class MainActivity
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.loadUserData();
+        if (BZApplication.get(this).getApplicationComponent().preferencesHelper().isLoggedIn()) {
+            presenter.loadUserData();
+        } else {
+            bindUserDataAsGuest();
+        }
     }
 
     @NonNull
@@ -201,13 +236,12 @@ public class MainActivity
     }
 
     private void authenticate() {
-        SharedPreferences sharedPreferences =
-            getSharedPreferences(BZApplication.BZSharedPreference, MODE_PRIVATE);
-        isLoggedIn = sharedPreferences.getBoolean(BZApplication.KEY_IS_LOGGED_IN, false);
+        isLoggedIn =
+            BZApplication.get(this).getApplicationComponent().preferencesHelper().isLoggedIn();
         if (isLoggedIn) {
             return;
         }
-        boolean isGuest = getIntent().getBooleanExtra(KEY_IS_GUEST, false);
+        boolean isGuest = getIntent().getBooleanExtra(EXTRA_IS_GUEST, false);
         if (!isGuest) {
             goToStartUp();
         }
@@ -220,42 +254,36 @@ public class MainActivity
         userPhoto = (SimpleDraweeView) navigationView.getHeaderView(0).findViewById(R.id.userPhoto);
         loadingPhoto =
             (ProgressBar) navigationView.getHeaderView(0).findViewById(R.id.loadingPhoto);
-        userPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLoggedIn) {
-                    presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
-                }
+        userPhoto.setOnClickListener(v -> {
+            if (isLoggedIn) {
+                presenter.browseProfilePicture(MainActivity.this, GALLERY_REQUEST);
             }
         });
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userName);
-        userName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLoggedIn) {
-                    //Edit userName
-                    MaterialDialog dialog =
-                        BZDialogBuilder.createEditUserNameDialog(MainActivity.this,
-                            userName.getText().toString())
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog,
-                                    @NonNull DialogAction which) {
-                                    if (dialog.getInputEditText() != null) {
-                                        presenter.updateUserName(
-                                            dialog.getInputEditText().getText().toString());
-                                    }
-                                }
-                            })
-                            .build();
-                    View positive = dialog.getActionButton(DialogAction.POSITIVE);
-                    positive.setEnabled(false);
-                    dialog.show();
-                }
+        userName.setOnClickListener(v -> {
+            if (isLoggedIn) {
+                showEditUserNameDialog();
             }
         });
+        role = (TextView) navigationView.getHeaderView(0).findViewById(R.id.role);
         userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
         logButton = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.logButton);
+    }
+
+    private void showEditUserNameDialog() {
+        //Edit userName
+        MaterialDialog dialog = BZDialogBuilder.createEditUserNameDialog(MainActivity.this,
+            userName.getText().toString()).onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                if (dialog.getInputEditText() != null) {
+                    presenter.updateUserName(dialog.getInputEditText().getText().toString());
+                }
+            }
+        }).build();
+        View positive = dialog.getActionButton(DialogAction.POSITIVE);
+        positive.setEnabled(false);
+        dialog.show();
     }
 
     private void goToStartUp() {
@@ -307,6 +335,18 @@ public class MainActivity
             case R.id.zooMap:
                 Log.d(TAG, "ZOO MAP");
                 fragment = new ZooMapFragment();
+                break;
+            case R.id.virtualTour:
+                fragment = new VirtualTourFragment();
+                break;
+            case R.id.favouriteAnimals:
+                fragment = new FavoriteAnimalsFragment();
+                break;
+            case R.id.blogAnimal:
+                fragment = new BlogAnimalFragment();
+                break;
+            case R.id.dataControl:
+                fragment = new DataManagementPreferenceFragment();
                 break;
         }
         if (fragment != null) {
@@ -402,5 +442,24 @@ public class MainActivity
                 Log.e(TAG, error.getLocalizedMessage());
             }
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (dispatchTouchEventListener != null) {
+            dispatchTouchEventListener.dispatchTouchEvent(event);
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    private DispatchTouchEventListener dispatchTouchEventListener;
+
+    public void setDispatchTouchEventListener(
+        DispatchTouchEventListener dispatchTouchEventListener) {
+        this.dispatchTouchEventListener = dispatchTouchEventListener;
+    }
+
+    public interface DispatchTouchEventListener {
+        void dispatchTouchEvent(MotionEvent ev);
     }
 }

@@ -2,7 +2,6 @@ package com.dat.barnaulzoopark.ui.news;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -53,8 +52,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
     protected void populateViewHolder(final ViewHolder viewHolder, final News model, int position) {
 
         boolean isSelectedItem = false;
-        if (position == getSelectedPosition() && BZApplication.isTabletLandscape(
-            viewHolder.itemView.getContext())) {
+        if (position == getSelectedPosition() && BZApplication.get(viewHolder.itemView.getContext())
+            .isTabletLandscape()) {
             isSelectedItem = true;
         }
         if (isSelectedItem) {
@@ -74,19 +73,8 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
                     .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
             }
             viewHolder.thumbnail.setImageURI(uri);
-            viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    listener.onNewsLongClicked(model.getUid());
-                    return false;
-                }
-            });
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClicked(model.getUid(), viewHolder.getAdapterPosition());
-                }
-            });
+            viewHolder.itemView.setOnClickListener(
+                view -> listener.onItemClicked(model.getUid(), viewHolder.getAdapterPosition()));
         }
     }
 
@@ -95,19 +83,19 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         return position;
     }
 
-    public int getSelectedPosition() {
+    int getSelectedPosition() {
         return selectedPosition < getItemCount() ? selectedPosition : 0;
     }
 
-    public void setSelectedPosition(int selectedPosition) {
+    void setSelectedPosition(int selectedPosition) {
         this.selectedPosition = selectedPosition;
     }
 
-    public News getSelectedItem() {
+    News getSelectedItem() {
         return getItem(getSelectedPosition());
     }
 
-    public void notifySelectedItem() {
+    void notifySelectedItem() {
         //1st notify for only Selected Item to keep ripple effect
         notifyItemChanged(selectedPosition);
         //then notify all other items to hide Indicator
@@ -120,8 +108,6 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.cardView)
-        CardView cardView;
         @Bind(R.id.title)
         TextView title;
         @Bind(R.id.description)
@@ -140,19 +126,10 @@ public class NewsAdapter extends FirebaseRecyclerAdapter<News, NewsAdapter.ViewH
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            RecyclerView.LayoutParams layoutParams =
-                (RecyclerView.LayoutParams) itemView.getLayoutParams();
-            int insetShadow = (int) itemView.getResources()
-                .getDimension(android.support.v7.cardview.R.dimen.cardview_compat_inset_shadow);
-            layoutParams.topMargin = (int) -((cardView.getContentPaddingTop()
-                + cardView.getContentPaddingBottom()
-                + 2 * cardView.getCardElevation()) + insetShadow);
         }
     }
 
     interface NewsAdapterListener {
         void onItemClicked(@NonNull String uid, int selectedPosition);
-
-        void onNewsLongClicked(String uid);
     }
 }
