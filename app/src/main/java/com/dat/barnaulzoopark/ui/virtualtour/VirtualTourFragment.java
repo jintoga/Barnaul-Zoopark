@@ -59,4 +59,10 @@ public class VirtualTourFragment extends BaseFragment {
         });
         webViewTour.loadUrl("file:///android_asset/virtualtour.html");
     }
+
+    @Override
+    public void onStop() {
+        webViewTour.loadUrl("about:blank"); //clear view's state
+        super.onStop();
+    }
 }
