@@ -31,8 +31,9 @@
                     android:icon="@drawable/ic_calendar_schedule"
                     android:title="@string/schedule" />
                 <item
+                    android:id="@+id/ticketPrices"
                     android:icon="@drawable/ic_currency_ruble"
-                    android:title="@string/price" />
+                    android:title="@string/ticket_price" />
             </group>
         </menu>
     </item>

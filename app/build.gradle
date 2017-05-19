@@ -29,7 +29,7 @@ android {
         }
         prod {
             // The actual minSdkVersion for the production version.
-            minSdkVersion 14
+            minSdkVersion 17
         }
     }
     buildTypes {

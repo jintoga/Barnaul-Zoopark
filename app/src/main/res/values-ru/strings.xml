@@ -11,7 +11,7 @@
     <string name="cage_location">Местоположение клетки</string>
     <string name="information">Информация</string>
     <string name="schedule">Расписание зоопарка</string>
-    <string name="price">Цена билетов</string>
+    <string name="ticket_price">Цена билетов</string>
     <string name="about_zoopark">О зоопарке</string>
     <!--authorize-->
     <string name="login_with">Вход через</string>
