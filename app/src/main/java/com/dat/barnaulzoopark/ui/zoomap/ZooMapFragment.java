@@ -40,6 +40,7 @@ public class ZooMapFragment extends BaseFragment {
         return view;
     }
 
+    @SuppressLint("AddJavascriptInterface")
     private void init() {
         webViewMap.getSettings().setLoadsImagesAutomatically(true);
         webViewMap.getSettings().setJavaScriptEnabled(true);
@@ -51,5 +52,11 @@ public class ZooMapFragment extends BaseFragment {
 
         webViewMap.addJavascriptInterface(new WebAppInterface(container), "Android");
         webViewMap.loadUrl("file:///android_asset/map.html");
+    }
+
+    @Override
+    public void onStop() {
+        webViewMap.loadUrl("about:blank"); //clear view's state
+        super.onStop();
     }
 }
