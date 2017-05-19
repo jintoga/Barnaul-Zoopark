@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui.animaleditor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,7 +53,7 @@ import java.util.Map;
 public class AnimalEditorActivity extends
     BaseMvpPhotoEditActivity<AnimalEditorContract.View, AnimalEditorContract.UserActionListener>
     implements AnimalEditorContract.View, MultiFileAttachmentAdapter.AttachmentListener,
-    BaseMvpPhotoEditActivity.PhotoEditListener {
+    BaseMvpPhotoEditActivity.PhotoEditListener, LocationDetectHelper.LocationDetectListener {
 
     private static final String EXTRA_SELECTED_ANIMAL_UID = "EXTRA_SELECTED_ANIMAL_UID";
     private static final String TAG = AnimalEditorActivity.class.getName();
@@ -92,6 +93,8 @@ public class AnimalEditorActivity extends
     protected PrefixEditText video;
     @Bind(R.id.habitatMapImage)
     protected ImageView habitatMapImage;
+    @Bind(R.id.latLng)
+    protected EditText latLng;
 
     private Uri bannerImageUri;
     private Uri iconUri;
@@ -99,12 +102,15 @@ public class AnimalEditorActivity extends
 
     private int filledAttachmentCounter = 0;
     private int currentAttachmentPosition = 0;
+    private Double lat, lng;
 
     private Date selectedDateOfBirth;
 
     private MaterialDialog progressDialog;
 
     private Animal selectedAnimal;
+
+    private LocationDetectHelper locationDetectHelper;
 
     public static void start(@NonNull Context context, @Nullable String animalUid) {
         if (context instanceof AnimalEditorActivity) {
@@ -251,6 +257,9 @@ public class AnimalEditorActivity extends
             selectedDateOfBirth = new Date(selectedAnimal.getDateOfBirth());
             dateOfBirth.setText(ConverterUtils.DATE_FORMAT.format(selectedDateOfBirth));
         }
+        if (selectedAnimal.getLat() != null && selectedAnimal.getLng() != null) {
+            bindLatLng(selectedAnimal.getLat(), selectedAnimal.getLng());
+        }
         if (selectedAnimal.getVideo() != null) {
             video.setText(selectedAnimal.getVideo());
         }
@@ -291,6 +300,62 @@ public class AnimalEditorActivity extends
         }
         init();
         setPhotoEditListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (locationDetectHelper != null) {
+            locationDetectHelper.disconnectGoogleApiClient();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, @NonNull String[] permissions,
+        @NonNull int[] grantResults) {
+        switch (permsRequestCode) {
+            case LocationDetectHelper.REQUEST_LOCATION_PERMISSIONS:
+                if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (locationDetectHelper != null) {
+                        locationDetectHelper.startDetecting();
+                    }
+                } else {
+                    if (locationDetectHelper != null) {
+                        locationDetectHelper.disconnectGoogleApiClient();
+                    }
+                    showSnackBar("Permission was not granted");
+                }
+                break;
+        }
+    }
+
+    @OnClick(R.id.latLng)
+    protected void latLngClicked() {
+        if (locationDetectHelper == null) {
+            locationDetectHelper = new LocationDetectHelper(this, this);
+            locationDetectHelper.connectGoogleApiClient();
+            return;
+        }
+        locationDetectHelper.reconnectGoogleApiClient();
+    }
+
+    @Override
+    public void onLocationChanged(double currentLatitude, double currentLongitude) {
+        bindLatLng(currentLatitude, currentLongitude);
+        showSnackBar(getString(R.string.location_updated));
+    }
+
+    private void bindLatLng(double currentLatitude, double currentLongitude) {
+        this.lat = currentLatitude;
+        this.lng = currentLongitude;
+        String currentLocation = String.format("%s — %s", currentLatitude, currentLongitude);
+        latLng.setText(currentLocation);
+    }
+
+    @Override
+    public void onNoResolutionForConnectionFailed(@NonNull String msg) {
+        showSnackBar(msg);
     }
 
     private void init() {
@@ -504,7 +569,7 @@ public class AnimalEditorActivity extends
                 aboutOurAnimal.getText().toString(), getSpeciesUid(), isMale.isChecked(),
                 selectedDateOfBirth, iconUri, bannerImageUri, habitatMapImageUri,
                 attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete(),
-                video.getText().toString());
+                video.getText().toString(), lat, lng);
         } else {
             onEditError(getString(R.string.species_invalid_error));
         }
@@ -514,7 +579,8 @@ public class AnimalEditorActivity extends
         if (getSpeciesUid() != null) {
             presenter.createAnimal(name.getText().toString(), aboutOurAnimal.getText().toString(),
                 getSpeciesUid(), isMale.isChecked(), selectedDateOfBirth, iconUri, bannerImageUri,
-                habitatMapImageUri, attachmentAdapter.getData(), video.getText().toString());
+                habitatMapImageUri, attachmentAdapter.getData(), video.getText().toString(), lat,
+                lng);
         } else {
             onCreatingFailure(getString(R.string.species_invalid_error));
         }

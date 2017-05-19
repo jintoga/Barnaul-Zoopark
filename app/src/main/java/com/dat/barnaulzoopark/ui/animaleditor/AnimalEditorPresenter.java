@@ -42,10 +42,11 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     public void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
         @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
         @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
-        @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
+        @NonNull List<Attachment> attachments, @NonNull String videoUrl, @Nullable Double lat,
+        @Nullable Double lng) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             create(name, aboutAnimal, speciesUid, gender, dateOfBirth, iconUri, bannerImageUri,
-                habitatMapImageUri, attachments, videoUrl);
+                habitatMapImageUri, attachments, videoUrl, lat, lng);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -58,11 +59,12 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         @NonNull String aboutAnimal, @NonNull String speciesUid, boolean gender,
         @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
         @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
-        @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl) {
+        @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl,
+        @Nullable Double lat, @Nullable Double lng) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             edit(selectedAnimal, name, aboutAnimal, speciesUid, gender, dateOfBirth, iconUri,
-                bannerImageUri, habitatMapImageUri, attachmentsToAdd, attachmentsToDelete,
-                videoUrl);
+                bannerImageUri, habitatMapImageUri, attachmentsToAdd, attachmentsToDelete, videoUrl,
+                lat, lng);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -74,7 +76,8 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         @NonNull String aboutAnimal, @NonNull String speciesUid, boolean gender,
         @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
         @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
-        @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl) {
+        @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl,
+        @Nullable Double lat, @Nullable Double lng) {
         DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.animal);
         final DatabaseReference animalItemReference =
             databaseReference.child(selectedAnimal.getUid());
@@ -84,6 +87,9 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         }
         if (dateOfBirth != null) {
             selectedAnimal.setDateOfBirth(dateOfBirth.getTime());
+        }
+        if (lat != null && lng != null) {
+            selectedAnimal.setLatLng(lat, lng);
         }
         animalItemReference.setValue(selectedAnimal);
         if (getView() != null) {
@@ -244,7 +250,8 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
     private void create(@NonNull String name, @NonNull String aboutAnimal,
         @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
         @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
-        @NonNull List<Attachment> attachments, @NonNull String videoUrl) {
+        @NonNull List<Attachment> attachments, @NonNull String videoUrl, @Nullable Double lat,
+        @Nullable Double lng) {
         DatabaseReference animalDatabaseReference =
             database.getReference().child(BZFireBaseApi.animal);
         final String uid = animalDatabaseReference.push().getKey();
@@ -256,6 +263,9 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         }
         if (dateOfBirth != null) {
             animal.setDateOfBirth(dateOfBirth.getTime());
+        }
+        if (lat != null && lng != null) {
+            animal.setLatLng(lat, lng);
         }
         animalItemReference.setValue(animal);
         if (getView() != null) {

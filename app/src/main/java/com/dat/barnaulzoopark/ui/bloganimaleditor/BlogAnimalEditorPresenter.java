@@ -7,6 +7,7 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.pushnotification.NotificationApi;
 import com.dat.barnaulzoopark.utils.UriUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +22,10 @@ import com.kelvinapps.rxfirebase.RxFirebaseStorage;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by DAT on 5/13/2017.
@@ -31,8 +35,11 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
     implements BlogAnimalEditorContract.UserActionListener {
     private FirebaseDatabase database;
     private FirebaseStorage storage;
+    private NotificationApi notificationApi;
 
-    BlogAnimalEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
+    BlogAnimalEditorPresenter(NotificationApi notificationApi, FirebaseDatabase database,
+        FirebaseStorage storage) {
+        this.notificationApi = notificationApi;
         this.database = database;
         this.storage = storage;
     }
@@ -196,7 +203,7 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
                 }
             }, () -> {
                 if (getView() != null) {
-                    getView().onCreatingSuccess();
+                    getView().onCreatingSuccess(blogAnimal);
                 }
             });
     }
@@ -314,5 +321,11 @@ class BlogAnimalEditorPresenter extends MvpBasePresenter<BlogAnimalEditorContrac
                     getView().onLoadBlogSuccess();
                 }
             });
+    }
+
+    @Override
+    public void sendPushNotification(@NonNull String json) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
+        notificationApi.sendNotification(body).subscribeOn(Schedulers.io()).subscribe();
     }
 }

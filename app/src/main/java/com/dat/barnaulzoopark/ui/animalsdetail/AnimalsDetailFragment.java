@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -95,6 +96,7 @@ public class AnimalsDetailFragment extends
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         View view = inflater.inflate(R.layout.fragment_animals_detail, container, false);
         ButterKnife.bind(this, view);
         init();

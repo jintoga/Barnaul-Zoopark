@@ -51,13 +51,15 @@ interface AnimalEditorContract {
         void createAnimal(@NonNull String name, @NonNull String aboutAnimal,
             @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
             @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
-            @NonNull List<Attachment> attachments, @NonNull String videoUrl);
+            @NonNull List<Attachment> attachments, @NonNull String videoUrl, @Nullable Double lat,
+            @Nullable Double lng);
 
         void editAnimal(@NonNull Animal selectedAnimal, @NonNull String name,
             @NonNull String aboutAnimal, @NonNull String speciesUid, boolean gender,
             @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
             @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
-            @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl);
+            @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl,
+            @Nullable Double lat, @Nullable Double lng);
 
         @NonNull
         DatabaseReference getSpeciesReference();

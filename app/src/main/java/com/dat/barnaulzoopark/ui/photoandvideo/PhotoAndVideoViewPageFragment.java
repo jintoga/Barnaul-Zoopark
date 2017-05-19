@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
-import com.dat.barnaulzoopark.ui.TempBaseFragment;
+import com.dat.barnaulzoopark.ui.BaseFragment;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.PhotoAlbumsAdapter;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.VideoAlbumsAdapter;
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Nguyen on 7/13/2016.
  */
-public class PhotoAndVideoViewPageFragment extends TempBaseFragment {
+public class PhotoAndVideoViewPageFragment extends BaseFragment {
 
     @Bind(R.id.photoAlbums)
     protected RecyclerView multiMediaList;

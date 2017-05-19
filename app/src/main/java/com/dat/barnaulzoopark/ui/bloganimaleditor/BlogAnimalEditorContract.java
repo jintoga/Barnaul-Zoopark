@@ -26,7 +26,7 @@ public interface BlogAnimalEditorContract {
 
         void onCreatingFailure(@NonNull String msg);
 
-        void onCreatingSuccess();
+        void onCreatingSuccess(@NonNull BlogAnimal blogAnimal);
 
         void onLoadAnimalsError(@NonNull String msg);
 
@@ -56,5 +56,7 @@ public interface BlogAnimalEditorContract {
         void loadAnimals();
 
         void loadSelectedBlog(@NonNull String selectedBlogUid);
+
+        void sendPushNotification(@NonNull String json);
     }
 }

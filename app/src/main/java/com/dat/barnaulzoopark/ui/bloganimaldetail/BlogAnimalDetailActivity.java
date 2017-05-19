@@ -43,7 +43,7 @@ public class BlogAnimalDetailActivity extends
     BaseActivityWithAnimation<BlogAnimalDetailContract.View, BlogAnimalDetailContract.UserActionListener>
     implements BlogAnimalDetailContract.View, AttachmentImagesHorizontalAdapter.ItemClickListener {
 
-    private static final String EXTRA_BLOG_ANIMAL_UID = "EXTRA_BLOG_ANIMAL_UID";
+    public static final String EXTRA_BLOG_ANIMAL_UID = "EXTRA_BLOG_ANIMAL_UID";
 
     @Bind(R.id.app_bar_layout)
     protected SmoothAppBarLayout appBarLayout;
@@ -137,7 +137,11 @@ public class BlogAnimalDetailActivity extends
     }
 
     @Override
-    public void showBlogAnimal(@NonNull BlogAnimal blogAnimal) {
+    public void showBlogAnimal(@Nullable BlogAnimal blogAnimal) {
+        if (blogAnimal == null) {
+            finish();
+            return;
+        }
         this.selectedBlogAnimal = blogAnimal;
         nestedScrollView.scrollTo(0, 0);
         if (blogAnimal.getThumbnail() != null) {

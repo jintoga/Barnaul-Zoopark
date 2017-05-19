@@ -23,10 +23,13 @@ import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
+import com.dat.barnaulzoopark.BuildConfig;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.BlogAnimal;
+import com.dat.barnaulzoopark.model.Push;
 import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.pushnotification.NotificationApi;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.adapters.BaseHintSpinnerAdapter;
@@ -145,11 +148,13 @@ public class BlogAnimalEditorActivity extends
     @NonNull
     @Override
     public BlogAnimalEditorContract.UserActionListener createPresenter() {
+        NotificationApi notificationApi =
+            BZApplication.get(this).getApplicationComponent().notificationApi();
         FirebaseDatabase database =
             BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
         FirebaseStorage storage =
             BZApplication.get(this).getApplicationComponent().fireBaseStorage();
-        return new BlogAnimalEditorPresenter(database, storage);
+        return new BlogAnimalEditorPresenter(notificationApi, database, storage);
     }
 
     @OnClick(R.id.thumbnailContainer)
@@ -343,13 +348,23 @@ public class BlogAnimalEditorActivity extends
     }
 
     @Override
-    public void onCreatingSuccess() {
+    public void onCreatingSuccess(@NonNull BlogAnimal blogAnimal) {
         Log.d(TAG, "onCreatingSuccess");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+        sendPushNotification(blogAnimal);
         showToast(getString(R.string.blog_animal_created_success));
         finish();
+    }
+
+    private void sendPushNotification(@NonNull BlogAnimal blogAnimal) {
+        Push push = new Push("/topics/" + BuildConfig.NOTIFICATION_SUBSCRIBE_TOPIC,
+            new Push.Data(blogAnimal.getAnimalUid(), blogAnimal.getUid()),
+            new Push.Notification(getString(R.string.push_notification_blog_animal_title),
+                getString(R.string.push_notification_blog_animal_text)));
+        String json = new Gson().toJson(push);
+        presenter.sendPushNotification(json);
     }
 
     @Override

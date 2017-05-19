@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.TempBaseFragment;
+import com.dat.barnaulzoopark.ui.BaseFragment;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -19,7 +19,7 @@ import me.relex.photodraweeview.PhotoDraweeView;
 /**
  * Created by Dat on 10-Aug-16.
  */
-public class PhotosDetailPageFragment extends TempBaseFragment {
+public class PhotosDetailPageFragment extends BaseFragment {
 
     @Bind(R.id.photo_drawee_view)
     protected PhotoDraweeView photoDraweeView;

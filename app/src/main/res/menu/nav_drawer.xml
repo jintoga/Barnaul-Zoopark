@@ -46,6 +46,10 @@
                 <item
                     android:icon="@drawable/ic_search_pet"
                     android:title="@string/cage_location" />
+                <item
+                    android:id="@+id/virtualTour"
+                    android:icon="@drawable/ic_sphere_pano"
+                    android:title="@string/virtual_tour" />
             </group>
         </menu>
     </item>

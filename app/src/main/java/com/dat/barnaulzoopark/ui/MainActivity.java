@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
+import com.dat.barnaulzoopark.BuildConfig;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
@@ -40,6 +41,7 @@ import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfileContract;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfilePresenter;
+import com.dat.barnaulzoopark.ui.virtualtour.VirtualTourFragment;
 import com.dat.barnaulzoopark.ui.zoomap.ZooMapFragment;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -109,6 +111,10 @@ public class MainActivity
     @Override
     public void bindUserData(@NonNull User user) {
         BZApplication.get(this).getApplicationComponent().preferencesHelper().setUser(user);
+        BZApplication.get(this)
+            .getApplicationComponent()
+            .firebaseMessaging()
+            .subscribeToTopic(BuildConfig.NOTIFICATION_SUBSCRIBE_TOPIC);
         if (user.getPhoto() != null) {
             Uri photoUri = Uri.parse(user.getPhoto());
             userPhoto.setImageURI(photoUri);
@@ -329,6 +335,9 @@ public class MainActivity
             case R.id.zooMap:
                 Log.d(TAG, "ZOO MAP");
                 fragment = new ZooMapFragment();
+                break;
+            case R.id.virtualTour:
+                fragment = new VirtualTourFragment();
                 break;
             case R.id.favouriteAnimals:
                 fragment = new FavoriteAnimalsFragment();

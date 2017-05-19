@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
  * Created by Nguyen on 6/10/2016.
  */
 //In future this class should extend BaseMvpFragment
-public class TempBaseFragment extends Fragment {
+public class BaseFragment extends Fragment {
     protected int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");

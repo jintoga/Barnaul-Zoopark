@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.ui.bloganimaldetail;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
@@ -11,7 +12,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 interface BlogAnimalDetailContract {
     interface View extends MvpView {
-        void showBlogAnimal(@NonNull BlogAnimal blogAnimal);
+        void showBlogAnimal(@Nullable BlogAnimal blogAnimal);
     }
 
     interface UserActionListener extends MvpPresenter<BlogAnimalDetailContract.View> {
