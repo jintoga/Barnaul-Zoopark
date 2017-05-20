@@ -56,12 +56,12 @@ public class TicketPrice extends AbstractData {
     @Exclude
     @Override
     public String getText() {
-        return null;
+        return getName();
     }
 
     @Exclude
     @Override
     public String getId() {
-        return null;
+        return getUid();
     }
 }

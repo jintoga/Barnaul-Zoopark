@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:hint="name"
+                android:hint="@string/name_hint"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/black" />
@@ -75,7 +75,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:gravity="top"
-                    android:hint="price"
+                    android:hint="@string/price_hint"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:textColor="@color/black" />

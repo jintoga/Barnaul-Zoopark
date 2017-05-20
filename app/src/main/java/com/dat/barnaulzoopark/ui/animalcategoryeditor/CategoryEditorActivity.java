@@ -83,7 +83,7 @@ public class CategoryEditorActivity extends
 
     @Override
     public void onCreatingCategoryFailure(@NonNull String msg) {
-        Log.d(TAG, "onCreatingCategoryFailure");
+        Log.d(TAG, "onCreatingFailure");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }

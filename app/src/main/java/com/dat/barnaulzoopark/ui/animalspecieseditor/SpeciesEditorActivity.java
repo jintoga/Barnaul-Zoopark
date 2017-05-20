@@ -111,7 +111,7 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onCreatingSpeciesFailure(@NonNull String msg) {
-        Log.d(TAG, "onCreatingCategoryFailure");
+        Log.d(TAG, "onCreatingFailure");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }

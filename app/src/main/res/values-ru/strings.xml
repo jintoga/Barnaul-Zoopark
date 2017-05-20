@@ -119,4 +119,7 @@
     <string name="push_notification_blog_animal_text">Новый блог о любимом животном создан</string>
     <string name="virtual_tour">360° тур</string>
     <string name="location_updated">Местоположение обновлено!</string>
+    <string name="name_hint">название</string>
+    <string name="price_hint">цена</string>
+    <string name="creating">Идет создание…</string>
 </resources>

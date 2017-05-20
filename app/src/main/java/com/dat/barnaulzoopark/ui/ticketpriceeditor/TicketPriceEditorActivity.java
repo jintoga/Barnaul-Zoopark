@@ -13,13 +13,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.TicketPrice;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -52,6 +55,8 @@ public class TicketPriceEditorActivity extends
 
     private TicketPrice selectedTicketPrice;
 
+    private MaterialDialog progressDialog;
+
     public static void start(Context context, @Nullable String categoryUid) {
         if (context instanceof TicketPriceEditorActivity) {
             return;
@@ -61,6 +66,43 @@ public class TicketPriceEditorActivity extends
             intent.putExtra(EXTRA_SELECTED_TICKET_PRICE_UID, categoryUid);
         }
         context.startActivity(intent);
+    }
+
+    @Override
+    public void highlightRequiredFields() {
+        if (name.getText().toString().isEmpty()) {
+            name.setError("Input required");
+        }
+        if (price.getText().toString().isEmpty()) {
+            price.setError("Input required");
+        }
+    }
+
+    @Override
+    public void onCreatingFailure(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onCreatingSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.created_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void showCreatingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.creating));
+        }
+        progressDialog.setContent(getString(R.string.creating));
+        progressDialog.show();
     }
 
     @Override
@@ -161,7 +203,7 @@ public class TicketPriceEditorActivity extends
     }
 
     private void createTicketPrice() {
-
+        presenter.createTicketPrice(name.getText().toString(), price.getText().toString(), iconUri);
     }
 
     private void editTicketPrice() {

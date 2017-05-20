@@ -153,4 +153,7 @@
     <string name="push_notification_blog_animal_text">New blog created</string>
     <string name="virtual_tour">360° tour</string>
     <string name="location_updated">Location updated!</string>
+    <string name="name_hint">name</string>
+    <string name="price_hint">price</string>
+    <string name="creating">Creating…</string>
 </resources>
