@@ -156,4 +156,5 @@
     <string name="name_hint">name</string>
     <string name="price_hint">price</string>
     <string name="creating">Creating…</string>
+    <string name="remove_item_ticket_price">ticket price</string>
 </resources>

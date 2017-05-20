@@ -6,6 +6,7 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.News;
+import com.dat.barnaulzoopark.model.TicketPrice;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
@@ -71,7 +72,10 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             clazz = Category.class;
         } else if (data instanceof News) {
             databaseReference = database.getReference(BZFireBaseApi.news);
-            clazz = Category.class;
+            clazz = News.class;
+        } else if (data instanceof TicketPrice) {
+            databaseReference = database.getReference(BZFireBaseApi.ticket_price);
+            clazz = TicketPrice.class;
         } else {
             return;
         }
@@ -195,8 +199,10 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             return getDeleteAnimalImagesObservable((Animal) data);
         } else if (data instanceof Species) {
             prefix = BZFireBaseApi.animal_species;
-        } else {
+        } else if (data instanceof Category) {
             prefix = BZFireBaseApi.animal_categories;
+        } else {
+            prefix = BZFireBaseApi.ticket_price;
         }
         String filePath = prefix + "/" + data.getId() + "/" + "icon";
 
