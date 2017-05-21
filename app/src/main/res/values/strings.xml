@@ -161,4 +161,5 @@
     <string name="edit_ticket_price">Edit ticket price</string>
     <string name="create_ticket_price">Create ticket price</string>
     <string name="loading">Loading…</string>
+    <string name="data_management_photo_album">Photo albums</string>
 </resources>

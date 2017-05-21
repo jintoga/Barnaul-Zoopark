@@ -127,4 +127,5 @@
     <string name="edit_ticket_price">Редактировать цену билета</string>
     <string name="create_ticket_price">Создать цену билета</string>
     <string name="loading">Идет загрузка…</string>
+    <string name="data_management_photo_album">Фото альбомы</string>
 </resources>
