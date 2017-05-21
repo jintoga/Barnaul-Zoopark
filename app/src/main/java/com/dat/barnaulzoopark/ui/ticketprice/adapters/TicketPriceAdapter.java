@@ -9,6 +9,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.TicketPrice;
+import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -52,8 +53,8 @@ public class TicketPriceAdapter
         TextView name;
         @Bind(R.id.price)
         TextView price;
-        @Bind(R.id.photo)
-        SimpleDraweeView photo;
+        @Bind(R.id.icon)
+        SimpleDraweeView icon;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,14 +63,13 @@ public class TicketPriceAdapter
 
         void bindData(@NonNull final TicketPrice ticketPrice) {
             name.setText(ticketPrice.getName());
-            String priceWithSign = String.format("%s \u20BD", ticketPrice.getPrice());
-            price.setText(priceWithSign);
+            price.setText(ConverterUtils.getPriceWithCurrency(ticketPrice.getPrice()));
             if (ticketPrice.getIcon() != null) {
-                photo.setImageURI(ticketPrice.getIcon());
+                icon.setImageURI(ticketPrice.getIcon());
             } else {
                 Uri uri = new Uri.Builder().scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
                     .path(String.valueOf(R.drawable.img_photo_gallery_placeholder)).build();
-                photo.setImageURI(uri);
+                icon.setImageURI(uri);
             }
         }
     }

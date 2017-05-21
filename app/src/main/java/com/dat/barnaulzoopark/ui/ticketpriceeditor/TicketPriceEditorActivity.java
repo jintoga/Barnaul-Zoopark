@@ -106,6 +106,71 @@ public class TicketPriceEditorActivity extends
     }
 
     @Override
+    public void showEditingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.updating));
+        }
+        progressDialog.setContent(getString(R.string.updating));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onEditSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onEditError(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void showLoadingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.loading));
+        }
+        progressDialog.setContent(getString(R.string.loading));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onLoadTicketPriceError(@NonNull String localizedMessage) {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onLoadTicketPriceSuccess() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void bindSelectedTicketPrice(@NonNull TicketPrice ticketPrice) {
+        this.selectedTicketPrice = ticketPrice;
+        name.setText(ticketPrice.getName());
+        price.setText(String.valueOf(ticketPrice.getPrice()));
+        if (ticketPrice.getIcon() != null) {
+            this.iconUri = Uri.parse(ticketPrice.getIcon());
+            this.icon.setVisibility(View.VISIBLE);
+            Glide.with(this).load(ticketPrice.getIcon()).into(icon);
+            updateButtons(true);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket_price_editor);
@@ -121,7 +186,19 @@ public class TicketPriceEditorActivity extends
     }
 
     private void init() {
+        String selectedTicketPriceUid = getIntent().getStringExtra(EXTRA_SELECTED_TICKET_PRICE_UID);
+        if (selectedTicketPriceUid != null) {
+            presenter.loadSelectedTicketPrice(selectedTicketPriceUid);
+            updateTitle(getString(R.string.edit_ticket_price));
+        } else {
+            updateTitle(getString(R.string.create_ticket_price));
+        }
+    }
 
+    private void updateTitle(@NonNull String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     @NonNull
@@ -207,5 +284,7 @@ public class TicketPriceEditorActivity extends
     }
 
     private void editTicketPrice() {
+        presenter.editTicketPrice(selectedTicketPrice, name.getText().toString(),
+            price.getText().toString(), iconUri);
     }
 }

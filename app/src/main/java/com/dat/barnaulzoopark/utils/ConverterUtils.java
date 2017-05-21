@@ -18,4 +18,8 @@ public class ConverterUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy", Locale.getDefault());
         return sdf.format(date);
     }
+
+    public static String getPriceWithCurrency(double price) {
+        return String.format("%s \u20BD", price);
+    }
 }

@@ -1,8 +1,10 @@
 package com.dat.barnaulzoopark.ui.ticketprice;
 
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,8 @@ import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.dat.barnaulzoopark.ui.ticketprice.adapters.TicketPriceAdapter;
 import com.google.firebase.database.FirebaseDatabase;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 
 /**
  * Created by DAT on 5/20/2017.
@@ -60,6 +64,10 @@ public class TicketPriceFragment
         TicketPriceAdapter ticketPriceAdapter =
             new TicketPriceAdapter(TicketPrice.class, R.layout.item_ticket_price,
                 TicketPriceAdapter.ViewHolder.class, presenter.getTicketPricesReference());
+        ticketPrices.addItemDecoration(new SimpleListDividerDecorator(
+            ContextCompat.getDrawable(getContext(), R.drawable.preference_list_divider_material), true));
+        ticketPrices.addItemDecoration(new ItemShadowDecorator(
+            (NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.material_shadow_z1)));
         ticketPrices.setAdapter(ticketPriceAdapter);
     }
 

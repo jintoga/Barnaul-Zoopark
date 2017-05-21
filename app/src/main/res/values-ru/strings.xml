@@ -123,4 +123,8 @@
     <string name="price_hint">цена</string>
     <string name="creating">Идет создание…</string>
     <string name="remove_item_ticket_price">цену билета</string>
+    <string name="updating">Идет редактирование…</string>
+    <string name="edit_ticket_price">Редактировать цену билета</string>
+    <string name="create_ticket_price">Создать цену билета</string>
+    <string name="loading">Идет загрузка…</string>
 </resources>

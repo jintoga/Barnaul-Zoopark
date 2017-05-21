@@ -74,6 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:digits="0123456789."
                     android:gravity="top"
                     android:hint="@string/price_hint"
                     android:inputType="numberDecimal"

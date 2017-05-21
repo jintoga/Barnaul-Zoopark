@@ -157,4 +157,8 @@
     <string name="price_hint">price</string>
     <string name="creating">Creating…</string>
     <string name="remove_item_ticket_price">ticket price</string>
+    <string name="updating">Updating…</string>
+    <string name="edit_ticket_price">Edit ticket price</string>
+    <string name="create_ticket_price">Create ticket price</string>
+    <string name="loading">Loading…</string>
 </resources>
