@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.TempPhotoAlbum;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
  */
 public class VideoAlbumsAdapter extends RecyclerView.Adapter<VideoAlbumsAdapter.ViewHolder> {
 
-    private List<PhotoAlbum> data;
+    private List<TempPhotoAlbum> data;
     private Context context;
 
-    public VideoAlbumsAdapter(List<PhotoAlbum> data, Context context) {
+    public VideoAlbumsAdapter(List<TempPhotoAlbum> data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -36,7 +36,7 @@ public class VideoAlbumsAdapter extends RecyclerView.Adapter<VideoAlbumsAdapter.
         return viewHolder;
     }
 
-    public void setData(List<PhotoAlbum> data) {
+    public void setData(List<TempPhotoAlbum> data) {
         if (this.data == null) {
             this.data = new ArrayList<>();
         }
@@ -48,7 +48,7 @@ public class VideoAlbumsAdapter extends RecyclerView.Adapter<VideoAlbumsAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (data != null && data.size() > 0) {
-            final PhotoAlbum photoAlbum = data.get(position);
+            final TempPhotoAlbum photoAlbum = data.get(position);
             if (photoAlbum != null) {
                 Uri imgThumbnail = Uri.parse(photoAlbum.getUrls()[0]);
                 holder.thumbnail.setImageURI(imgThumbnail);

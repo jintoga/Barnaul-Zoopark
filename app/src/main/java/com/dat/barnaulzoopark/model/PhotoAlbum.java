@@ -1,54 +1,61 @@
 package com.dat.barnaulzoopark.model;
 
-/**
- * Created by DAT on 07-Feb-16.
- */
-public class PhotoAlbum {
+import android.support.annotation.NonNull;
+import com.google.firebase.database.Exclude;
+import java.util.HashMap;
+import java.util.Map;
 
-    private String id;
+/**
+ * Created by DAT on 5/21/2017.
+ */
+
+public class PhotoAlbum extends AbstractData {
+    private String uid;
     private String name;
-    private String date;
-    private String[] urls;
+    private Long time;
+    private Map<String, String> photos;
 
     public PhotoAlbum() {
     }
 
-    public PhotoAlbum(String name, String date, String[] urls) {
+    public PhotoAlbum(String uid, String name, Long time) {
+        this.uid = uid;
         this.name = name;
-        this.date = date;
-        this.urls = urls;
+        this.time = time;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public String getUid() {
+        return uid;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Long getTime() {
+        return time;
     }
 
-    public String getDate() {
-        return date;
+    @NonNull
+    public Map<String, String> getPhotos() {
+        return photos == null ? photos = new HashMap<>() : photos;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    @Exclude
+    @Override
+    public String getPhotoUrl() {
+        return null;
     }
 
-    public String[] getUrls() {
-        return urls;
+    @Exclude
+    @Override
+    public String getText() {
+        return getName();
     }
 
-    public void setUrls(String[] urls) {
-        this.urls = urls;
+    @Exclude
+    @Override
+    public String getId() {
+        return getUid();
     }
-
 }

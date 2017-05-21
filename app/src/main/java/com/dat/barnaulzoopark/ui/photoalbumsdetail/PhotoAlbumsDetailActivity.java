@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.TempPhotoAlbum;
 import com.dat.barnaulzoopark.ui.BaseActivity;
 
 public class PhotoAlbumsDetailActivity extends BaseActivity {
@@ -18,7 +18,7 @@ public class PhotoAlbumsDetailActivity extends BaseActivity {
     private static final String KEY_PHOTO_ALBUM = "PHOTO_ALBUM";
     private static final String KEY_PHOTO_ALBUM_NAME = "PHOTO_ALBUM_NAME";
 
-    public static void startActivity(Activity activity, PhotoAlbum albumId) {
+    public static void startActivity(Activity activity, TempPhotoAlbum albumId) {
         Intent intent = new Intent(activity, PhotoAlbumsDetailActivity.class);
         intent.putExtra(KEY_PHOTO_ALBUM, albumId.getId());
         intent.putExtra(KEY_PHOTO_ALBUM_NAME, albumId.getName());

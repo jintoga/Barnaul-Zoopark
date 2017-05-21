@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.DummyGenerator;
-import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.TempPhotoAlbum;
 import com.dat.barnaulzoopark.ui.BaseFragment;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
 import com.dat.barnaulzoopark.ui.photoandvideo.adapters.PhotoAlbumsAdapter;
@@ -79,7 +79,7 @@ public class PhotoAndVideoViewPageFragment extends BaseFragment {
             videoAlbumsAdapter = new VideoAlbumsAdapter(null, getContext());
             multiMediaList.setAdapter(videoAlbumsAdapter);
         }
-        List<PhotoAlbum> data = DummyGenerator.getDummyData();
+        List<TempPhotoAlbum> data = DummyGenerator.getDummyData();
         if (photoAlbumsAdapter != null) {
             photoAlbumsAdapter.setData(data);
         }
