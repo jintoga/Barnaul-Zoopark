@@ -9,6 +9,7 @@ import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.model.TicketPrice;
 import com.dat.barnaulzoopark.model.User;
+import com.dat.barnaulzoopark.model.VideoAlbum;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -80,6 +81,9 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         } else if (data instanceof PhotoAlbum) {
             databaseReference = database.getReference(BZFireBaseApi.photo_album);
             clazz = PhotoAlbum.class;
+        } else if (data instanceof VideoAlbum) {
+            databaseReference = database.getReference(BZFireBaseApi.video_album);
+            clazz = VideoAlbum.class;
         } else {
             return;
         }
@@ -207,6 +211,8 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             prefix = BZFireBaseApi.animal_categories;
         } else if (data instanceof PhotoAlbum) {
             return getDeletePhotoAlbumImagesObservable((PhotoAlbum) data);
+        } else if (data instanceof VideoAlbum) {
+            return Observable.just(data);
         } else {
             prefix = BZFireBaseApi.ticket_price;
         }

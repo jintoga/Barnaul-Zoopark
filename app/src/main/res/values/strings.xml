@@ -168,4 +168,5 @@
     <string name="data_management_video_album">Video albums</string>
     <string name="create_video_album">Create video album</string>
     <string name="edit_video_album">Edit video album</string>
+    <string name="remove_item_video_album">video album</string>
 </resources>

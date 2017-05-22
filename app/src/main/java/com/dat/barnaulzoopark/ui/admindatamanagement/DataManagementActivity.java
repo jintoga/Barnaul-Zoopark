@@ -218,6 +218,8 @@ public class DataManagementActivity
             itemToDelete = getString(R.string.remove_item_ticket_price);
         } else if (data instanceof PhotoAlbum) {
             itemToDelete = getString(R.string.remove_item_photo_album);
+        } else if (data instanceof VideoAlbum) {
+            itemToDelete = getString(R.string.remove_item_video_album);
         }
         String title =
             String.format(getString(R.string.data_management_remove_title), data.getText(),
