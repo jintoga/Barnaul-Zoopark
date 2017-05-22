@@ -17,7 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
-import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.VideoAlbum;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.dat.barnaulzoopark.widget.PrefixEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -254,9 +254,9 @@ public class VideoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
             });
         }
 
-        public void bindSelectedPhotoAlbum(@NonNull PhotoAlbum photoAlbum) {
-            name.setText(photoAlbum.getName());
-            selectedDateCreated = new Date(photoAlbum.getTime());
+        public void bindSelectedPhotoAlbum(@NonNull VideoAlbum videoAlbum) {
+            name.setText(videoAlbum.getName());
+            selectedDateCreated = new Date(videoAlbum.getTime());
             timeCreated.setText(ConverterUtils.DATE_FORMAT.format(selectedDateCreated));
         }
 

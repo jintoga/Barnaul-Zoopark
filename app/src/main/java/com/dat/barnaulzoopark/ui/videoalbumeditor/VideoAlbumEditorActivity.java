@@ -8,17 +8,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
-import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.model.VideoAlbum;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpActivity;
 import com.dat.barnaulzoopark.ui.videoalbumeditor.adapters.VideoAlbumEditorAdapter;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by DAT on 5/23/2017.
@@ -36,7 +41,7 @@ public class VideoAlbumEditorActivity extends
     protected RecyclerView videoAlbumEditorContent;
     private VideoAlbumEditorAdapter attachmentAdapter;
 
-    private PhotoAlbum selectedPhotoAlbum;
+    private VideoAlbum selectedVideoAlbum;
 
     private MaterialDialog progressDialog;
 
@@ -119,56 +124,154 @@ public class VideoAlbumEditorActivity extends
 
     @Override
     public void highlightRequiredFields() {
-
+        RecyclerView.ViewHolder viewHolder =
+            videoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof VideoAlbumEditorAdapter.HeaderViewHolder) {
+            ((VideoAlbumEditorAdapter.HeaderViewHolder) viewHolder).highlightRequiredFields();
+        }
     }
 
     @Override
     public void onCreatingFailure(@NonNull String localizedMessage) {
-
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
     }
 
     @Override
     public void onCreatingSuccess() {
-
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.created_successful, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
     public void onEditError(@NonNull String localizedMessage) {
-
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
     }
 
     @Override
     public void onEditSuccess() {
-
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
     public void showCreatingProgress() {
-
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.creating));
+        }
+        progressDialog.setContent(getString(R.string.creating));
+        progressDialog.show();
     }
 
     @Override
     public void showEditingProgress() {
-
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.updating));
+        }
+        progressDialog.setContent(getString(R.string.updating));
+        progressDialog.show();
     }
 
     @Override
     public void showLoadingProgress() {
-
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.loading));
+        }
+        progressDialog.setContent(getString(R.string.loading));
+        progressDialog.show();
     }
 
     @Override
     public void bindSelectedPhotoAlbum(@NonNull VideoAlbum videoAlbum) {
-
+        this.selectedVideoAlbum = videoAlbum;
+        RecyclerView.ViewHolder viewHolder =
+            videoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof VideoAlbumEditorAdapter.HeaderViewHolder) {
+            ((VideoAlbumEditorAdapter.HeaderViewHolder) viewHolder).bindSelectedPhotoAlbum(
+                videoAlbum);
+        }
+        attachmentAdapter.setEditingMode(true);
+        for (Map.Entry<String, String> entry : videoAlbum.getVideos().entrySet()) {
+            filledAttachmentCounter++;
+            Attachment attachment = new Attachment(true, entry.getValue());
+            attachment.setAttachmentUid(entry.getKey());
+            attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
+            attachmentAdapter.addEmptySlot();
+            videoAlbumEditorContent.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
+            currentAttachmentPosition++;
+        }
     }
 
     @Override
     public void onLoadError(@NonNull String localizedMessage) {
-
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
     }
 
     @Override
     public void onLoadSuccess() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.video_album_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //ToDO: implement discard changes
+                finish();
+                break;
+            case R.id.save:
+                if (selectedVideoAlbum == null) {
+                    createVideoAlbum();
+                } else {
+                    editVideoAlbum();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void editVideoAlbum() {
+
+    }
+
+    private void createVideoAlbum() {
+        if (attachmentAdapter.getFilledData().isEmpty()) {
+            showSnackBar("No video attached!");
+            return;
+        }
+        RecyclerView.ViewHolder viewHolder =
+            videoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof VideoAlbumEditorAdapter.HeaderViewHolder) {
+            String name = ((VideoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getName();
+            Date date = ((VideoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getDate();
+            presenter.createVideoAlbum(name, date, attachmentAdapter.getFilledData());
+        }
     }
 }

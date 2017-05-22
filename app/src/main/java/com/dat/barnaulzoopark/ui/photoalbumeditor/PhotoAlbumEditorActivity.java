@@ -276,9 +276,9 @@ public class PhotoAlbumEditorActivity extends
                 break;
             case R.id.save:
                 if (selectedPhotoAlbum == null) {
-                    createCategory();
+                    create();
                 } else {
-                    editCategory();
+                    edit();
                 }
                 break;
             default:
@@ -287,7 +287,7 @@ public class PhotoAlbumEditorActivity extends
         return super.onOptionsItemSelected(item);
     }
 
-    private void createCategory() {
+    private void create() {
         if (attachmentAdapter.getFilledData().isEmpty()) {
             showSnackBar("No photo attached!");
             return;
@@ -301,7 +301,7 @@ public class PhotoAlbumEditorActivity extends
         }
     }
 
-    private void editCategory() {
+    private void edit() {
         if (attachmentAdapter.getFilledData().isEmpty()) {
             showSnackBar("No photo attached!");
             return;
