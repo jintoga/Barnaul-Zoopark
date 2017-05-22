@@ -1,12 +1,10 @@
-package com.dat.barnaulzoopark.ui.photoalbumeditor.adapters;
+package com.dat.barnaulzoopark.ui.videoalbumeditor.adapters;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,14 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
+import com.dat.barnaulzoopark.widget.PrefixEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,11 +27,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by DAT on 5/21/2017.
+ * Created by DAT on 5/23/2017.
  */
 
-public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+public class VideoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_FIRST_ITEM = 0;
     private static final int TYPE_ITEM = 1;
 
@@ -46,7 +42,7 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private Activity activity;
 
-    public PhotoAlbumEditorAdapter(Activity activity, AttachmentListener listener) {
+    public VideoAlbumEditorAdapter(Activity activity, AttachmentListener listener) {
         this.activity = activity;
         this.listener = listener;
     }
@@ -76,7 +72,7 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
     public interface AttachmentListener {
         void onRemoved(int position);
 
-        void onSlotSelected(int position);
+        void onSlotSelected(String videoId, int position);
     }
 
     private AttachmentListener listener;
@@ -89,7 +85,7 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
             return new HeaderViewHolder(view);
         }
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_photo_album_editor_attachment, parent, false);
+            .inflate(R.layout.item_video_album_editor_attachment, parent, false);
         return new ItemViewHolder(view);
     }
 
@@ -106,28 +102,28 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
-            StaggeredGridLayoutManager.LayoutParams layoutParams =
-                (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
-
             headerViewHolder.timeCreated.setOnClickListener(v -> setTime(headerViewHolder));
             return;
         }
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
         Attachment attachment = data.get(getAttachItemPosition(position));
         if (attachment != null) {
-            itemViewHolder.thumbnail.setImageDrawable(null);
             if (attachment.isFilled()) {
-                Uri uri = Uri.parse(attachment.getUrl());
-                itemViewHolder.bindData(uri);
+                itemViewHolder.bindData(attachment.getUrl());
                 itemViewHolder.hideAddBtnAndShowRemoveBtn(true);
             } else {
                 itemViewHolder.bindEmptyData();
                 itemViewHolder.hideAddBtnAndShowRemoveBtn(false);
             }
 
-            itemViewHolder.attach.setOnClickListener(
-                v -> listener.onSlotSelected(getAttachItemPosition(holder.getAdapterPosition())));
+            itemViewHolder.attach.setOnClickListener(v -> {
+                if (itemViewHolder.video.getText().length() == 0) {
+                    itemViewHolder.video.setError("Input required");
+                    return;
+                }
+                listener.onSlotSelected(itemViewHolder.video.getText().toString(),
+                    getAttachItemPosition(holder.getAdapterPosition()));
+            });
             itemViewHolder.remove.setOnClickListener(
                 v -> listener.onRemoved(getAttachItemPosition(holder.getAdapterPosition())));
         }
@@ -289,13 +285,22 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
         ImageButton attach;
         @Bind(R.id.remove)
         ImageButton remove;
-        @Bind(R.id.thumbnail)
-        ImageView thumbnail;
+        @Bind(R.id.video)
+        PrefixEditText video;
 
         ItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             remove.setVisibility(View.GONE);
+            video.setPrefix(itemView.getContext().getString(R.string.youtube_prefix));
+        }
+
+        public void bindData(String videoId) {
+            video.setText(videoId);
+        }
+
+        void bindEmptyData() {
+            video.setText("");
         }
 
         private void updateButtons(boolean isFilled) {
@@ -306,15 +311,6 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
                 attach.setVisibility(View.VISIBLE);
                 remove.setVisibility(View.GONE);
             }
-        }
-
-        void bindData(Uri uri) {
-            Glide.with(thumbnail.getContext()).load(uri).into(thumbnail);
-            thumbnail.setVisibility(View.VISIBLE);
-        }
-
-        void bindEmptyData() {
-            thumbnail.setVisibility(View.GONE);
         }
 
         void hideAddBtnAndShowRemoveBtn(boolean isFilled) {

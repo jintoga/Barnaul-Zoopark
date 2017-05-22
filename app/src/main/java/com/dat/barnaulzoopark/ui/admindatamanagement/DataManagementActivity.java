@@ -24,6 +24,7 @@ import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.model.TicketPrice;
+import com.dat.barnaulzoopark.model.VideoAlbum;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -37,6 +38,7 @@ import com.dat.barnaulzoopark.ui.bloganimaleditor.BlogAnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
 import com.dat.barnaulzoopark.ui.photoalbumeditor.PhotoAlbumEditorActivity;
 import com.dat.barnaulzoopark.ui.ticketpriceeditor.TicketPriceEditorActivity;
+import com.dat.barnaulzoopark.ui.videoalbumeditor.VideoAlbumEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -258,6 +260,10 @@ public class DataManagementActivity
                 title = getString(R.string.data_management_photo_album);
                 adapter = getAdapter(PhotoAlbum.class, referenceName);
                 break;
+            case BZFireBaseApi.video_album:
+                title = getString(R.string.data_management_video_album);
+                adapter = getAdapter(VideoAlbum.class, referenceName);
+                break;
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
@@ -308,6 +314,9 @@ public class DataManagementActivity
                     break;
                 case BZFireBaseApi.photo_album:
                     PhotoAlbumEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.video_album:
+                    VideoAlbumEditorActivity.start(this, null);
                     break;
             }
         }
