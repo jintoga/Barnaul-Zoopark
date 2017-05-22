@@ -164,4 +164,5 @@
     <string name="data_management_photo_album">Photo albums</string>
     <string name="edit_photo_album">Edit photo album</string>
     <string name="create_photo_album">Create photo album</string>
+    <string name="remove_item_photo_album">photo album</string>
 </resources>

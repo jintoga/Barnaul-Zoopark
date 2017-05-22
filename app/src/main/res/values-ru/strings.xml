@@ -130,4 +130,5 @@
     <string name="data_management_photo_album">Фото альбомы</string>
     <string name="edit_photo_album">Редактировать фото альбом</string>
     <string name="create_photo_album">Создать фото альбом</string>
+    <string name="remove_item_photo_album">photo album</string>
 </resources>
