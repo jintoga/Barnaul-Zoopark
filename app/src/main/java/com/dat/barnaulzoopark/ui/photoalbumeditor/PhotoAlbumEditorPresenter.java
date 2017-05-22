@@ -33,9 +33,9 @@ class PhotoAlbumEditorPresenter extends MvpBasePresenter<PhotoAlbumEditorContrac
 
     @Override
     public void createPhotoAlbum(@NonNull String name, @Nullable Date dateCreated,
-        @NonNull List<Attachment> attachments) {
+        @NonNull List<Attachment> filledAttachments) {
         if (!"".equals(name) && dateCreated != null) {
-            create(name, dateCreated, attachments);
+            create(name, dateCreated, filledAttachments);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();

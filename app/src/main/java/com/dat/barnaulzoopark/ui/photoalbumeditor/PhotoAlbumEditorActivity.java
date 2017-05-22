@@ -214,12 +214,16 @@ public class PhotoAlbumEditorActivity extends
     }
 
     private void createCategory() {
+        if (attachmentAdapter.getFilledData().isEmpty()) {
+            showSnackBar("No photo attached!");
+            return;
+        }
         RecyclerView.ViewHolder viewHolder =
             photoAlbumEditorContent.findViewHolderForAdapterPosition(0);
         if (viewHolder instanceof PhotoAlbumEditorAdapter.HeaderViewHolder) {
             String name = ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getName();
             Date date = ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getDate();
-            presenter.createPhotoAlbum(name, date, attachmentAdapter.getData());
+            presenter.createPhotoAlbum(name, date, attachmentAdapter.getFilledData());
         }
     }
 

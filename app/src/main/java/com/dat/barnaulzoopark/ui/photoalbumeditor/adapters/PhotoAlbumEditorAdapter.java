@@ -193,6 +193,17 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
         return data;
     }
 
+    @NonNull
+    public List<Attachment> getFilledData() {
+        List<Attachment> res = new ArrayList<>();
+        for (Attachment attachment : data) {
+            if (attachment.isFilled()) {
+                res.add(attachment);
+            }
+        }
+        return res;
+    }
+
     public List<Attachment> getItemsToDelete() {
         return itemsToDelete;
     }
