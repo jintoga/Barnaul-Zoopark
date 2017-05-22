@@ -1,37 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:padding="16dp">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|center"
+            android:layout_marginRight="16dp"
+            app:srcCompat="@drawable/ic_title" />
 
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
             android:gravity="top"
-            android:hint="name"
+            android:hint="title"
             android:inputType="text"
+            android:lineSpacingExtra="6dp"
             android:maxLines="1"
             android:textColor="@color/black" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:layout_marginRight="16dp"
+            app:srcCompat="@drawable/ic_calendar" />
+
         <EditText
-            android:id="@+id/description"
+            android:id="@+id/timeCreated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="top"
-            android:hint="description"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@color/black" />
+            android:clickable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="date"
+            android:inputType="date"
+            android:lines="1" />
+
     </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"

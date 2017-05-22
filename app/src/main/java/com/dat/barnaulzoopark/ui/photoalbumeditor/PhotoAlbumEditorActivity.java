@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,10 +19,12 @@ import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.dat.barnaulzoopark.ui.photoalbumeditor.adapters.PhotoAlbumEditorAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import java.util.Date;
 
 /**
  * Created by DAT on 5/21/2017.
@@ -89,7 +93,7 @@ public class PhotoAlbumEditorActivity extends
         StaggeredGridLayoutManager layoutManager =
             new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         photoAlbumEditorContent.setLayoutManager(layoutManager);
-        attachmentAdapter = new PhotoAlbumEditorAdapter(this);
+        attachmentAdapter = new PhotoAlbumEditorAdapter(this, this);
         photoAlbumEditorContent.setAdapter(attachmentAdapter);
         attachmentAdapter.addEmptySlot();
     }
@@ -145,5 +149,81 @@ public class PhotoAlbumEditorActivity extends
     @Override
     public void onCropError(@NonNull String errorMsg) {
         showSnackBar(errorMsg);
+    }
+
+    @Override
+    public void highlightRequiredFields() {
+        RecyclerView.ViewHolder viewHolder =
+            photoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof PhotoAlbumEditorAdapter.HeaderViewHolder) {
+            ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).highlightRequiredFields();
+        }
+    }
+
+    @Override
+    public void onCreatingFailure(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onCreatingSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.created_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void showCreatingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.creating));
+        }
+        progressDialog.setContent(getString(R.string.creating));
+        progressDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.photo_album_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //ToDO: implement discard changes
+                finish();
+                break;
+            case R.id.save:
+                if (selectedPhotoAlbum == null) {
+                    createCategory();
+                } else {
+                    editCategory();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void createCategory() {
+        RecyclerView.ViewHolder viewHolder =
+            photoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof PhotoAlbumEditorAdapter.HeaderViewHolder) {
+            String name = ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getName();
+            Date date = ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getDate();
+            presenter.createPhotoAlbum(name, date, attachmentAdapter.getData());
+        }
+    }
+
+    private void editCategory() {
+
     }
 }

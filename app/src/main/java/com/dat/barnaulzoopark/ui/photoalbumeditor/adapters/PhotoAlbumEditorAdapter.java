@@ -1,13 +1,19 @@
 package com.dat.barnaulzoopark.ui.photoalbumeditor.adapters;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import butterknife.Bind;
@@ -15,7 +21,11 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.utils.ConverterUtils;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +42,13 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private List<Attachment> itemsToDelete = new ArrayList<>();
     private List<Attachment> itemsToAdd = new ArrayList<>();
+
+    private Activity activity;
+
+    public PhotoAlbumEditorAdapter(Activity activity, AttachmentListener listener) {
+        this.activity = activity;
+        this.listener = listener;
+    }
 
     private boolean isEditingMode = false;
 
@@ -63,10 +80,6 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private AttachmentListener listener;
 
-    public PhotoAlbumEditorAdapter(AttachmentListener listener) {
-        this.listener = listener;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FIRST_ITEM) {
@@ -91,9 +104,12 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             StaggeredGridLayoutManager.LayoutParams layoutParams =
                 (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
+
+            headerViewHolder.timeCreated.setOnClickListener(v -> setTime(headerViewHolder));
             return;
         }
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
@@ -114,6 +130,23 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
             itemViewHolder.remove.setOnClickListener(
                 v -> listener.onRemoved(getAttachItemPosition(holder.getAdapterPosition())));
         }
+    }
+
+    private void setTime(@NonNull HeaderViewHolder headerViewHolder) {
+        final Calendar calendar = Calendar.getInstance();
+        if (headerViewHolder.selectedDateCreated != null) {
+            calendar.setTime(headerViewHolder.selectedDateCreated);
+        }
+        DatePickerDialog datePickerDialog =
+            DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
+                    calendar.set(year, monthOfYear, dayOfMonth);
+                    headerViewHolder.selectedDateCreated = calendar.getTime();
+                    headerViewHolder.timeCreated.setText(
+                        ConverterUtils.DATE_FORMAT.format(headerViewHolder.selectedDateCreated));
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setAccentColor(ContextCompat.getColor(activity, R.color.colorPrimary));
+        datePickerDialog.show(activity.getFragmentManager(), "DatePickerDialog");
     }
 
     private int getAttachItemPosition(int position) {
@@ -183,11 +216,53 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-        private Uri iconUri;
+        @Bind(R.id.name)
+        EditText name;
+        @Bind(R.id.timeCreated)
+        EditText timeCreated;
+
+        Date selectedDateCreated;
 
         HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            timeCreated.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.length() > 0) {
+                        timeCreated.setError(null);
+                    }
+                }
+            });
+        }
+
+        @Nullable
+        public Date getDate() {
+            return selectedDateCreated;
+        }
+
+        @NonNull
+        public String getName() {
+            return name.getText().toString();
+        }
+
+        public void highlightRequiredFields() {
+            if (name.getText().toString().isEmpty()) {
+                name.setError("Input required");
+            }
+            if (timeCreated.getText().toString().isEmpty()) {
+                timeCreated.setError("Input required");
+            }
         }
     }
 
