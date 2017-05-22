@@ -87,10 +87,10 @@ public class PhotoAlbumEditorActivity extends
         } else {
             updateTitle(getString(R.string.create_photo_album));
         }
-        initRecyclerView(selectedPhotoAlbumUid);
+        initRecyclerView();
     }
 
-    private void initRecyclerView(@Nullable String selectedPhotoAlbumUid) {
+    private void initRecyclerView() {
         StaggeredGridLayoutManager layoutManager =
             new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         photoAlbumEditorContent.setLayoutManager(layoutManager);

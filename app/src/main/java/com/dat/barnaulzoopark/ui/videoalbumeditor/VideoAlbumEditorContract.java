@@ -32,7 +32,7 @@ interface VideoAlbumEditorContract {
 
         void showLoadingProgress();
 
-        void bindSelectedPhotoAlbum(@NonNull VideoAlbum videoAlbum);
+        void bindSelectedVideoAlbum(@NonNull VideoAlbum videoAlbum);
 
         void onLoadError(@NonNull String localizedMessage);
 

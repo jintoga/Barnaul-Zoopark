@@ -99,6 +99,24 @@ public class VideoAlbumEditorPresenter extends MvpBasePresenter<VideoAlbumEditor
 
     @Override
     public void loadSelectedVideoAlbum(@NonNull String selectedVideoAlbumUid) {
-
+        DatabaseReference databaseReference =
+            database.getReference(BZFireBaseApi.video_album).child(selectedVideoAlbumUid);
+        if (getView() != null) {
+            getView().showLoadingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(databaseReference, VideoAlbum.class)
+            .subscribe(videoAlbum -> {
+                if (getView() != null) {
+                    getView().bindSelectedVideoAlbum(videoAlbum);
+                }
+            }, throwable -> {
+                if (getView() != null) {
+                    getView().onLoadError(throwable.getLocalizedMessage());
+                }
+            }, () -> {
+                if (getView() != null) {
+                    getView().onLoadSuccess();
+                }
+            });
     }
 }

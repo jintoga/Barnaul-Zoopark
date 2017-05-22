@@ -97,10 +97,10 @@ public class VideoAlbumEditorActivity extends
         } else {
             updateTitle(getString(R.string.create_video_album));
         }
-        initRecyclerView(selectedVideoAlbumUid);
+        initRecyclerView();
     }
 
-    private void initRecyclerView(@Nullable String selectedPhotoAlbumUid) {
+    private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         videoAlbumEditorContent.setLayoutManager(layoutManager);
         attachmentAdapter = new VideoAlbumEditorAdapter(this, this);
@@ -196,7 +196,7 @@ public class VideoAlbumEditorActivity extends
     }
 
     @Override
-    public void bindSelectedPhotoAlbum(@NonNull VideoAlbum videoAlbum) {
+    public void bindSelectedVideoAlbum(@NonNull VideoAlbum videoAlbum) {
         this.selectedVideoAlbum = videoAlbum;
         RecyclerView.ViewHolder viewHolder =
             videoAlbumEditorContent.findViewHolderForAdapterPosition(0);

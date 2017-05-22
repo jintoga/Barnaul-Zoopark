@@ -199,6 +199,8 @@ public class DataManagementActivity
             TicketPriceEditorActivity.start(this, ((TicketPrice) data).getUid());
         } else if (data instanceof PhotoAlbum) {
             PhotoAlbumEditorActivity.start(this, ((PhotoAlbum) data).getUid());
+        } else if (data instanceof VideoAlbum) {
+            VideoAlbumEditorActivity.start(this, ((VideoAlbum) data).getUid());
         }
     }
 
