@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.photoalbumeditor;
 
+import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
@@ -12,5 +13,6 @@ interface PhotoAlbumEditorContract {
     }
 
     interface UserActionListener extends MvpPresenter<PhotoAlbumEditorContract.View> {
+        void loadSelectedPhotoAlbum(@NonNull String selectedPhotAlbumUid);
     }
 }

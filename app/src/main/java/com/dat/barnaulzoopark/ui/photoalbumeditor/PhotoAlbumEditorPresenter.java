@@ -1,5 +1,6 @@
 package com.dat.barnaulzoopark.ui.photoalbumeditor;
 
+import android.support.annotation.NonNull;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
@@ -16,5 +17,10 @@ class PhotoAlbumEditorPresenter extends MvpBasePresenter<PhotoAlbumEditorContrac
     PhotoAlbumEditorPresenter(FirebaseDatabase database, FirebaseStorage storage) {
         this.database = database;
         this.storage = storage;
+    }
+
+    @Override
+    public void loadSelectedPhotoAlbum(@NonNull String selectedPhotAlbumUid) {
+
     }
 }

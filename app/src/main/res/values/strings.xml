@@ -162,4 +162,6 @@
     <string name="create_ticket_price">Create ticket price</string>
     <string name="loading">Loading…</string>
     <string name="data_management_photo_album">Photo albums</string>
+    <string name="edit_photo_album">Edit photo album</string>
+    <string name="create_photo_album">Create photo album</string>
 </resources>

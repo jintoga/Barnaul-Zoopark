@@ -128,4 +128,6 @@
     <string name="create_ticket_price">Создать цену билета</string>
     <string name="loading">Идет загрузка…</string>
     <string name="data_management_photo_album">Фото альбомы</string>
+    <string name="edit_photo_album">Редактировать фото альбом</string>
+    <string name="create_photo_album">Создать фото альбом</string>
 </resources>
