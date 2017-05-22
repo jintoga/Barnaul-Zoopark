@@ -18,7 +18,6 @@ import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
-import com.dat.barnaulzoopark.ui.adapters.MultiFileAttachmentAdapter;
 import com.dat.barnaulzoopark.ui.photoalbumeditor.adapters.PhotoAlbumEditorAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,7 +46,7 @@ public class PhotoAlbumEditorActivity extends
     private MaterialDialog progressDialog;
 
     private int filledAttachmentCounter = 0;
-    private int currentAttachmentPosition = 1;
+    private int currentAttachmentPosition = 0;
 
     public static void start(Context context, @Nullable String photoAlbumUid) {
         if (context instanceof PhotoAlbumEditorActivity) {
@@ -76,17 +75,17 @@ public class PhotoAlbumEditorActivity extends
     }
 
     private void init() {
-        String selectedPhotAlbumUid = getIntent().getStringExtra(EXTRA_SELECTED_PHOTO_ALBUM_UID);
-        if (selectedPhotAlbumUid != null) {
-            presenter.loadSelectedPhotoAlbum(selectedPhotAlbumUid);
+        String selectedPhotoAlbumUid = getIntent().getStringExtra(EXTRA_SELECTED_PHOTO_ALBUM_UID);
+        if (selectedPhotoAlbumUid != null) {
+            presenter.loadSelectedPhotoAlbum(selectedPhotoAlbumUid);
             updateTitle(getString(R.string.edit_photo_album));
         } else {
             updateTitle(getString(R.string.create_photo_album));
         }
-        initRecyclerView(selectedPhotAlbumUid);
+        initRecyclerView(selectedPhotoAlbumUid);
     }
 
-    private void initRecyclerView(@Nullable String selectedPhotAlbumUid) {
+    private void initRecyclerView(@Nullable String selectedPhotoAlbumUid) {
         StaggeredGridLayoutManager layoutManager =
             new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         photoAlbumEditorContent.setLayoutManager(layoutManager);
@@ -113,12 +112,7 @@ public class PhotoAlbumEditorActivity extends
 
     @Override
     public void onRemoved(int position) {
-        if (filledAttachmentCounter == MultiFileAttachmentAdapter.MAX_NUMBER_ATTACHMENT) {
-            attachmentAdapter.emptySlot(position);
-            attachmentAdapter.addEmptySlot();
-        } else {
-            attachmentAdapter.emptySlot(position);
-        }
+        attachmentAdapter.emptySlot(position);
         filledAttachmentCounter--;
     }
 

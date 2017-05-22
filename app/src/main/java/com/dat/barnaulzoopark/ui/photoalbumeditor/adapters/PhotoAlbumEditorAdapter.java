@@ -110,9 +110,9 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             itemViewHolder.attach.setOnClickListener(
-                v -> listener.onSlotSelected(holder.getAdapterPosition()));
+                v -> listener.onSlotSelected(getAttachItemPosition(holder.getAdapterPosition())));
             itemViewHolder.remove.setOnClickListener(
-                v -> listener.onRemoved(holder.getAdapterPosition()));
+                v -> listener.onRemoved(getAttachItemPosition(holder.getAdapterPosition())));
         }
     }
 
@@ -126,7 +126,7 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void addEmptySlot() {
-        if (data.size() < MAX_NUMBER_ATTACHMENT) {
+        if (data.size() + 1 < MAX_NUMBER_ATTACHMENT) {
             Attachment attachment = new Attachment();
             attachment.setUrl(null);
             attachment.setFilled(false);
@@ -136,19 +136,19 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void emptySlot(int position) {
-        Log.d("removed", "removed:" + data.get(getAttachItemPosition(position)).getUrl());
+        Log.d("removed", "removed:" + data.get(position).getUrl());
         if (isEditingMode) {
-            final Attachment attachment = data.get(getAttachItemPosition(position));
+            final Attachment attachment = data.get(position);
             itemsToDelete.add(attachment);
-            itemsToAdd.remove(getAttachItemPosition(position));
+            itemsToAdd.remove(position);
         }
-        data.remove(getAttachItemPosition(position));
+        data.remove(position);
 
         notifyDataSetChanged();
     }
 
     public void fillSlot(int position, Attachment attachment) {
-        data.set(getAttachItemPosition(position), attachment);
+        data.set(position, attachment);
         if (isEditingMode) {
             itemsToAdd.add(attachment);
         }
