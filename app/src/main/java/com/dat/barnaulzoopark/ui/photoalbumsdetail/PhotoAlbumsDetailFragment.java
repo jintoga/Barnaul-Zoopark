@@ -25,8 +25,6 @@ import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecorati
 public class PhotoAlbumsDetailFragment extends Fragment
     implements PhotoAlbumsDetailAdapter.GalleryAdapterListener {
 
-    private View view;
-
     @Bind(R.id.gallery)
     protected RecyclerView gallery;
     private PhotoAlbumsDetailAdapter adapter;
@@ -38,7 +36,7 @@ public class PhotoAlbumsDetailFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_photo_albums_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_photo_albums_detail, container, false);
         ButterKnife.bind(this, view);
         GridLayoutManager layoutManager;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {

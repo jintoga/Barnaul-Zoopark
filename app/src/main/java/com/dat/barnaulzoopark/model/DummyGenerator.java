@@ -179,23 +179,4 @@ public class DummyGenerator {
         }
         return dummyData;
     }
-
-    public static List<Photo> getPhotoAlbumById(String albumId) {
-
-        List<TempPhotoAlbum> dummyData = getDummyData();
-        List<Photo> data = new ArrayList<>();
-        for (TempPhotoAlbum album : dummyData) {
-            if (albumId.equals(album.getId())) {
-                for (int i = 0; i < album.getUrls().length; i++) {
-                    Photo photo = new Photo();
-                    photo.setDate(album.getDate());
-                    photo.setId(String.valueOf(i));
-                    photo.setUrl(album.getUrls()[i]);
-                    data.add(photo);
-                }
-            }
-        }
-        return data;
-    }
-
 }
