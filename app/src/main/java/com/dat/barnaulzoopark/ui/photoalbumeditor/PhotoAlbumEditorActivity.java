@@ -25,6 +25,7 @@ import com.dat.barnaulzoopark.ui.photoalbumeditor.adapters.PhotoAlbumEditorAdapt
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by DAT on 5/21/2017.
@@ -178,6 +179,23 @@ public class PhotoAlbumEditorActivity extends
     }
 
     @Override
+    public void onEditError(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onEditSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
     public void showCreatingProgress() {
         if (progressDialog == null) {
             progressDialog =
@@ -185,6 +203,62 @@ public class PhotoAlbumEditorActivity extends
         }
         progressDialog.setContent(getString(R.string.creating));
         progressDialog.show();
+    }
+
+    @Override
+    public void showEditingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.updating));
+        }
+        progressDialog.setContent(getString(R.string.updating));
+        progressDialog.show();
+    }
+
+    @Override
+    public void showLoadingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.loading));
+        }
+        progressDialog.setContent(getString(R.string.loading));
+        progressDialog.show();
+    }
+
+    @Override
+    public void bindSelectedPhotoAlbum(@NonNull PhotoAlbum photoAlbum) {
+        this.selectedPhotoAlbum = photoAlbum;
+        RecyclerView.ViewHolder viewHolder =
+            photoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof PhotoAlbumEditorAdapter.HeaderViewHolder) {
+            ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).bindSelectedPhotoAlbum(
+                photoAlbum);
+        }
+        attachmentAdapter.setEditingMode(true);
+        for (Map.Entry<String, String> entry : photoAlbum.getPhotos().entrySet()) {
+            filledAttachmentCounter++;
+            Attachment attachment = new Attachment(true, entry.getValue());
+            attachment.setAttachmentUid(entry.getKey());
+            attachmentAdapter.fillSlot(currentAttachmentPosition, attachment);
+            attachmentAdapter.addEmptySlot();
+            photoAlbumEditorContent.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
+            currentAttachmentPosition++;
+        }
+    }
+
+    @Override
+    public void onLoadError(@NonNull String localizedMessage) {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onLoadSuccess() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override
@@ -228,6 +302,17 @@ public class PhotoAlbumEditorActivity extends
     }
 
     private void editCategory() {
-
+        if (attachmentAdapter.getFilledData().isEmpty()) {
+            showSnackBar("No photo attached!");
+            return;
+        }
+        RecyclerView.ViewHolder viewHolder =
+            photoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof PhotoAlbumEditorAdapter.HeaderViewHolder) {
+            String name = ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getName();
+            Date date = ((PhotoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getDate();
+            presenter.editPhotoAlbum(selectedPhotoAlbum, name, date,
+                attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete());
+        }
     }
 }

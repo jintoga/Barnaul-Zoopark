@@ -21,12 +21,14 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by DAT on 5/21/2017.
@@ -255,6 +257,12 @@ public class PhotoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 }
             });
+        }
+
+        public void bindSelectedPhotoAlbum(@NonNull PhotoAlbum photoAlbum) {
+            name.setText(photoAlbum.getName());
+            selectedDateCreated = new Date(photoAlbum.getTime());
+            timeCreated.setText(ConverterUtils.DATE_FORMAT.format(selectedDateCreated));
         }
 
         @Nullable

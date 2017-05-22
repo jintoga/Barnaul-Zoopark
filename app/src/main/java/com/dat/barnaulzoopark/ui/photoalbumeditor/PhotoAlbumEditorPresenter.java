@@ -43,6 +43,81 @@ class PhotoAlbumEditorPresenter extends MvpBasePresenter<PhotoAlbumEditorContrac
         }
     }
 
+    @Override
+    public void editPhotoAlbum(@NonNull PhotoAlbum selectedPhotoAlbum, @NonNull String name,
+        @Nullable Date dateCreated, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        if (!"".equals(name) && dateCreated != null) {
+            edit(selectedPhotoAlbum, name, dateCreated, attachmentsToAdd, attachmentsToDelete);
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
+        }
+    }
+
+    private void edit(@NonNull PhotoAlbum selectedPhotoAlbum, @NonNull String name,
+        @NonNull Date dateCreated, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        DatabaseReference databaseReference =
+            database.getReference().child(BZFireBaseApi.photo_album);
+        final DatabaseReference itemReference =
+            databaseReference.child(selectedPhotoAlbum.getUid());
+        selectedPhotoAlbum.update(name, dateCreated.getTime());
+        itemReference.setValue(selectedPhotoAlbum);
+        if (getView() != null) {
+            getView().showEditingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(itemReference, PhotoAlbum.class)
+            .flatMap(
+                photoAlbum -> updateAttachments(selectedPhotoAlbum, itemReference, attachmentsToAdd,
+                    attachmentsToDelete))
+            .doOnCompleted(() -> {
+                if (getView() != null) {
+                    getView().onEditSuccess();
+                }
+            })
+            .doOnError(throwable -> {
+                if (getView() != null) {
+                    getView().onEditError(throwable.getLocalizedMessage());
+                }
+            })
+            .subscribe();
+    }
+
+    @NonNull
+    private Observable<PhotoAlbum> updateAttachments(@NonNull PhotoAlbum photoAlbum,
+        @NonNull DatabaseReference reference, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.concat(deleteAttachments(photoAlbum, reference, attachmentsToDelete),
+            uploadAttachments(photoAlbum, attachmentsToAdd));
+    }
+
+    @NonNull
+    private Observable<PhotoAlbum> deleteAttachments(@NonNull PhotoAlbum photoAlbum,
+        @NonNull DatabaseReference itemReference, @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.from(attachmentsToDelete)
+            .filter(attachment -> attachment.getAttachmentUid() != null)
+            .flatMap(attachment -> {
+                final String attachmentPath = BZFireBaseApi.photo_album
+                    + "/"
+                    + photoAlbum.getUid()
+                    + "/photos/"
+                    + attachment.getAttachmentUid();
+                return deleteAttachment(attachmentPath).flatMap(aVoid -> {
+                    photoAlbum.getPhotos().remove(attachment.getAttachmentUid());
+                    itemReference.setValue(photoAlbum);
+                    return Observable.just(photoAlbum);
+                });
+            });
+    }
+
+    @NonNull
+    private Observable<Void> deleteAttachment(@NonNull String filePath) {
+        StorageReference storageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(storageReference);
+    }
+
     private void create(@NonNull String name, @NonNull Date dateCreated,
         @NonNull List<Attachment> attachments) {
         DatabaseReference databaseReference =
@@ -110,7 +185,25 @@ class PhotoAlbumEditorPresenter extends MvpBasePresenter<PhotoAlbumEditorContrac
     }
 
     @Override
-    public void loadSelectedPhotoAlbum(@NonNull String selectedPhotAlbumUid) {
-
+    public void loadSelectedPhotoAlbum(@NonNull String selectedPhotoAlbumUid) {
+        DatabaseReference databaseReference =
+            database.getReference(BZFireBaseApi.photo_album).child(selectedPhotoAlbumUid);
+        if (getView() != null) {
+            getView().showLoadingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(databaseReference, PhotoAlbum.class)
+            .subscribe(photoAlbum -> {
+                if (getView() != null) {
+                    getView().bindSelectedPhotoAlbum(photoAlbum);
+                }
+            }, throwable -> {
+                if (getView() != null) {
+                    getView().onLoadError(throwable.getLocalizedMessage());
+                }
+            }, () -> {
+                if (getView() != null) {
+                    getView().onLoadSuccess();
+                }
+            });
     }
 }

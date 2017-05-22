@@ -58,4 +58,9 @@ public class PhotoAlbum extends AbstractData {
     public String getId() {
         return getUid();
     }
+
+    public void update(String name, long time) {
+        this.name = name;
+        this.time = time;
+    }
 }
