@@ -29,4 +29,8 @@
     <Preference
         android:key="key_photo_album"
         app:title="@string/data_management_photo_album" />
+
+    <Preference
+        android:key="key_video_album"
+        app:title="@string/data_management_video_album" />
 </PreferenceScreen>

@@ -13,4 +13,5 @@ public class BZFireBaseApi {
     public static final String blog_animal = "blog_animal";
     public static final String ticket_price = "ticket_price";
     public static final String photo_album = "photo_album";
+    public static final String video_album = "video_album";
 }
