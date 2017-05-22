@@ -49,7 +49,7 @@ public class VideoAlbumEditorPresenter extends MvpBasePresenter<VideoAlbumEditor
             getView().showCreatingProgress();
         }
         RxFirebaseDatabase.observeSingleValueEvent(itemReference, VideoAlbum.class)
-            .flatMap(photoAlbum1 -> uploadAttachments(photoAlbum1, attachments))
+            .flatMap(videoAlbum1 -> uploadAttachments(videoAlbum1, attachments))
             .doOnCompleted(() -> {
                 if (getView() != null) {
                     getView().onCreatingSuccess();
@@ -85,16 +85,71 @@ public class VideoAlbumEditorPresenter extends MvpBasePresenter<VideoAlbumEditor
         DatabaseReference databaseReference =
             database.getReference().child(BZFireBaseApi.video_album);
         DatabaseReference itemReference = databaseReference.child(videoAlbum.getUid());
-        DatabaseReference animalItemPhotoReference = itemReference.child("videos");
-        animalItemPhotoReference.child(attachmentUid).setValue(videoId);
+        DatabaseReference itemPhotoReference = itemReference.child("videos");
+        itemPhotoReference.child(attachmentUid).setValue(videoId);
         return Observable.just(videoAlbum);
     }
 
     @Override
     public void editVideoAlbum(VideoAlbum selectedVideoAlbum, @NonNull String name,
-        @Nullable Date date, @NonNull List<Attachment> attachmentsToAdd,
+        @Nullable Date dateCreated, @NonNull List<Attachment> attachmentsToAdd,
         @NonNull List<Attachment> attachmentsToDelete) {
+        if (!"".equals(name) && dateCreated != null) {
+            edit(selectedVideoAlbum, name, dateCreated, attachmentsToAdd, attachmentsToDelete);
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
+        }
+    }
 
+    private void edit(@NonNull VideoAlbum selectedVideoAlbum, @NonNull String name,
+        @NonNull Date dateCreated, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        DatabaseReference databaseReference =
+            database.getReference().child(BZFireBaseApi.video_album);
+        final DatabaseReference itemReference =
+            databaseReference.child(selectedVideoAlbum.getUid());
+        selectedVideoAlbum.update(name, dateCreated.getTime());
+        itemReference.setValue(selectedVideoAlbum);
+        if (getView() != null) {
+            getView().showEditingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(itemReference, VideoAlbum.class)
+            .flatMap(
+                videoAlbum -> updateAttachments(selectedVideoAlbum, itemReference, attachmentsToAdd,
+                    attachmentsToDelete))
+            .doOnCompleted(() -> {
+                if (getView() != null) {
+                    getView().onEditSuccess();
+                }
+            })
+            .doOnError(throwable -> {
+                if (getView() != null) {
+                    getView().onEditError(throwable.getLocalizedMessage());
+                }
+            })
+            .subscribe();
+    }
+
+    @NonNull
+    private Observable<VideoAlbum> updateAttachments(@NonNull VideoAlbum videoAlbum,
+        @NonNull DatabaseReference reference, @NonNull List<Attachment> attachmentsToAdd,
+        @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.concat(deleteAttachments(videoAlbum, reference, attachmentsToDelete),
+            uploadAttachments(videoAlbum, attachmentsToAdd));
+    }
+
+    @NonNull
+    private Observable<VideoAlbum> deleteAttachments(@NonNull VideoAlbum videoAlbum,
+        @NonNull DatabaseReference itemReference, @NonNull List<Attachment> attachmentsToDelete) {
+        return Observable.from(attachmentsToDelete)
+            .filter(attachment -> attachment.getAttachmentUid() != null)
+            .flatMap(attachment -> {
+                videoAlbum.getVideos().remove(attachment.getAttachmentUid());
+                itemReference.setValue(videoAlbum);
+                return Observable.just(videoAlbum);
+            });
     }
 
     @Override

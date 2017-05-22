@@ -258,7 +258,18 @@ public class VideoAlbumEditorActivity extends
     }
 
     private void editVideoAlbum() {
-
+        if (attachmentAdapter.getFilledData().isEmpty()) {
+            showSnackBar("No photo attached!");
+            return;
+        }
+        RecyclerView.ViewHolder viewHolder =
+            videoAlbumEditorContent.findViewHolderForAdapterPosition(0);
+        if (viewHolder instanceof VideoAlbumEditorAdapter.HeaderViewHolder) {
+            String name = ((VideoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getName();
+            Date date = ((VideoAlbumEditorAdapter.HeaderViewHolder) viewHolder).getDate();
+            presenter.editVideoAlbum(selectedVideoAlbum, name, date,
+                attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete());
+        }
     }
 
     private void createVideoAlbum() {
