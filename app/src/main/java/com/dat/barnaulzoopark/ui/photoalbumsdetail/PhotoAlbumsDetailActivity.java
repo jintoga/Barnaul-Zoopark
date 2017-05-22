@@ -8,20 +8,21 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.TempPhotoAlbum;
+import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.ui.BaseActivity;
+import com.dat.barnaulzoopark.utils.ConverterUtils;
+import com.google.gson.Gson;
 
 public class PhotoAlbumsDetailActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     private static final String KEY_PHOTO_ALBUM = "PHOTO_ALBUM";
-    private static final String KEY_PHOTO_ALBUM_NAME = "PHOTO_ALBUM_NAME";
 
-    public static void startActivity(Activity activity, TempPhotoAlbum albumId) {
+    public static void startActivity(Activity activity, PhotoAlbum photoAlbum) {
         Intent intent = new Intent(activity, PhotoAlbumsDetailActivity.class);
-        intent.putExtra(KEY_PHOTO_ALBUM, albumId.getId());
-        intent.putExtra(KEY_PHOTO_ALBUM_NAME, albumId.getName());
+        String photoAlbumJson = new Gson().toJson(photoAlbum);
+        intent.putExtra(KEY_PHOTO_ALBUM, photoAlbumJson);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
@@ -32,17 +33,23 @@ public class PhotoAlbumsDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_photo_albums_detail);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        String albumId = getIntent().getStringExtra(KEY_PHOTO_ALBUM);
-        String albumName = getIntent().getStringExtra(KEY_PHOTO_ALBUM_NAME);
+        String albumJson = getIntent().getStringExtra(KEY_PHOTO_ALBUM);
+        if (albumJson == null) {
+            finish();
+            return;
+        }
+        PhotoAlbum photoAlbum = new Gson().fromJson(albumJson, PhotoAlbum.class);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(albumName);
+            String name = String.format("%s\n%s", photoAlbum.getName(),
+                ConverterUtils.getConvertedTime(photoAlbum.getTime()));
+            getSupportActionBar().setTitle(name);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
         PhotoAlbumsDetailFragment fragment =
             (PhotoAlbumsDetailFragment) getSupportFragmentManager().findFragmentById(
                 R.id.fragmentPhotoGallery);
-        fragment.loadData(albumId);
+        fragment.loadData(photoAlbum);
     }
 
     @Override

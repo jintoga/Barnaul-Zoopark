@@ -13,6 +13,11 @@ public class ConverterUtils {
     public static final DateFormat DATE_FORMAT =
         new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
+    public static String getConvertedTime(long time) {
+        Date date = new Date(time);
+        return DATE_FORMAT.format(date);
+    }
+
     public static String epochToString(long time) {
         Date date = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy", Locale.getDefault());
