@@ -6,11 +6,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.NinePatchDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +32,7 @@ import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
+import com.dat.barnaulzoopark.ui.cagelocation.adapters.CageLocationAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -37,6 +42,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.firebase.database.FirebaseDatabase;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +56,7 @@ public class CageLocationFragment
     implements CageLocationContract.View, GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private static final float DISTANCE_TO_CAGE = 20; //20 meters
     private static final int REQUEST_LOCATION_PERMISSIONS = 245;
 
     public static final int REQUEST_CHECK_SETTINGS = 4808;
@@ -74,6 +83,9 @@ public class CageLocationFragment
     protected TextView longitudeText;
     @Bind(R.id.container)
     protected View container;
+    @Bind(R.id.closeAnimals)
+    protected RecyclerView closeAnimals;
+    private CageLocationAdapter locationAdapter;
 
     private List<Animal> animals;
 
@@ -122,11 +134,25 @@ public class CageLocationFragment
     }
 
     private void init() {
+        initRecyclerView();
+
         isRequestingLocationUpdates = false;
 
-        buildGoogleApiClient();
-        createLocationRequest();
-        buildLocationSettingsRequest();
+        initGoogleApiClient();
+        initLocationRequest();
+        initLocationSettingsRequest();
+    }
+
+    private void initRecyclerView() {
+        closeAnimals.setLayoutManager(new LinearLayoutManager(getContext()));
+        closeAnimals.addItemDecoration(new SimpleListDividerDecorator(
+            ContextCompat.getDrawable(getContext(), R.drawable.preference_list_divider_material),
+            true));
+        closeAnimals.addItemDecoration(new ItemShadowDecorator(
+            (NinePatchDrawable) ContextCompat.getDrawable(getContext(),
+                R.drawable.material_shadow_z1)));
+        locationAdapter = new CageLocationAdapter();
+        closeAnimals.setAdapter(locationAdapter);
     }
 
     @Override
@@ -135,21 +161,21 @@ public class CageLocationFragment
         presenter.loadAnimals();
     }
 
-    protected synchronized void buildGoogleApiClient() {
+    protected synchronized void initGoogleApiClient() {
         googleApiClient = new GoogleApiClient.Builder(getContext()).addConnectionCallbacks(this)
             .addOnConnectionFailedListener(this)
             .addApi(LocationServices.API)
             .build();
     }
 
-    protected void createLocationRequest() {
+    protected void initLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         locationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    protected void buildLocationSettingsRequest() {
+    protected void initLocationSettingsRequest() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(locationRequest);
         locationSettingsRequest = builder.build();
@@ -316,12 +342,17 @@ public class CageLocationFragment
         if (animals == null) {
             return;
         }
+        List<Animal> closeAnimals = new ArrayList<>();
         for (Animal animal : animals) {
             float[] result = new float[3];
             Location.distanceBetween(animal.getLat(), animal.getLng(),
                 currentLocation.getLatitude(), currentLocation.getLongitude(), result);
+            if (result[0] < DISTANCE_TO_CAGE) {
+                closeAnimals.add(animal);
+            }
             Log.d("DIST", animal.getName() + " is " + result[0] + " meters away");
         }
+        locationAdapter.setData(closeAnimals, currentLocation);
     }
 
     @OnClick(R.id.startUpdateLocation)

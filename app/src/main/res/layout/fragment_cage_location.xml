@@ -62,4 +62,11 @@
             android:textSize="@dimen/text_size_18" />
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/closeAnimals"
+        style="@style/RecyclerViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="0dp" />
 </LinearLayout>
