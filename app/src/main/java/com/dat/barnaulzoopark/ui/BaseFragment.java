@@ -1,7 +1,10 @@
 package com.dat.barnaulzoopark.ui;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 /**
  * Created by Nguyen on 6/10/2016.
@@ -15,5 +18,10 @@ public class BaseFragment extends Fragment {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    protected void showSnackBar(@NonNull View view, @NonNull String msg) {
+        Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

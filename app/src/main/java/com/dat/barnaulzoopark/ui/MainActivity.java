@@ -35,6 +35,7 @@ import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.ui.admindatamanagement.DataManagementPreferenceFragment;
 import com.dat.barnaulzoopark.ui.animals.animalsfragment.AnimalsFragment;
 import com.dat.barnaulzoopark.ui.bloganimal.BlogAnimalFragment;
+import com.dat.barnaulzoopark.ui.cagelocation.CageLocationFragment;
 import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
@@ -74,6 +75,7 @@ public class MainActivity
     DrawerListener drawerListener;
 
     private static final String TAG_HOME_FRAGMENT = "HOME";
+    private static final String TAG_CAGE_LOCATION_FRAGMENT = "CageLocationFragment";
     private boolean isLoggedIn = false;
 
     @Override
@@ -320,6 +322,7 @@ public class MainActivity
         }
         currentMenuItemID = menuItem.getItemId();
         Fragment fragment = null;
+        String tag = "";
         //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
             case R.id.news:
@@ -337,8 +340,11 @@ public class MainActivity
                 fragment = new TicketPriceFragment();
                 break;
             case R.id.zooMap:
-                Log.d(TAG, "ZOO MAP");
                 fragment = new ZooMapFragment();
+                break;
+            case R.id.cageLocation:
+                fragment = new CageLocationFragment();
+                tag = TAG_CAGE_LOCATION_FRAGMENT;
                 break;
             case R.id.virtualTour:
                 fragment = new VirtualTourFragment();
@@ -361,7 +367,7 @@ public class MainActivity
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, fragment).addToBackStack(null);
+            fragmentTransaction.replace(R.id.container, fragment, tag).addToBackStack(tag);
             fragmentTransaction.commit();
             //return TRUE to Highlight menuItem
             return true;
@@ -444,6 +450,16 @@ public class MainActivity
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Log.e(TAG, error.getLocalizedMessage());
+            }
+        }
+        if (requestCode == CageLocationFragment.REQUEST_CHECK_SETTINGS) {
+            int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
+            FragmentManager.BackStackEntry backEntry =
+                getSupportFragmentManager().getBackStackEntryAt(index);
+            String tag = backEntry.getName();
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+            if (fragment != null) {
+                fragment.onActivityResult(requestCode, resultCode, data);
             }
         }
     }
