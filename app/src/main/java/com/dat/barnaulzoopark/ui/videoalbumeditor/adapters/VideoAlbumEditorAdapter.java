@@ -108,6 +108,7 @@ public class VideoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
         ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
         Attachment attachment = data.get(getAttachItemPosition(position));
         if (attachment != null) {
+            itemViewHolder.video.setEnabled(!attachment.isFilled());
             if (attachment.isFilled()) {
                 itemViewHolder.bindData(attachment.getUrl());
                 itemViewHolder.hideAddBtnAndShowRemoveBtn(true);
@@ -121,6 +122,7 @@ public class VideoAlbumEditorAdapter extends RecyclerView.Adapter<RecyclerView.V
                     itemViewHolder.video.setError("Input required");
                     return;
                 }
+                itemViewHolder.video.setEnabled(false);
                 listener.onSlotSelected(itemViewHolder.video.getText().toString(),
                     getAttachItemPosition(holder.getAdapterPosition()));
             });

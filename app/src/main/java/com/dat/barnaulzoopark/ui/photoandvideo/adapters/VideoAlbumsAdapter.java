@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui.photoandvideo.adapters;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.VideoAlbum;
+import com.dat.barnaulzoopark.ui.videoalbumsdetail.VideoAlbumsDetailActivity;
 import com.dat.barnaulzoopark.utils.ConverterUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -44,17 +46,16 @@ public class VideoAlbumsAdapter
     }
 
     @Override
-    protected void populateViewHolder(ViewHolder viewHolder, VideoAlbum videoAlbum, int position) {
-        if (videoAlbum != null) {
-            Uri imgThumbnail = Uri.parse(videoAlbum.getVideos().values().iterator().next());
-            viewHolder.thumbnail.setImageURI(imgThumbnail);
-            String name = String.format("%s\n%s", videoAlbum.getName(),
-                ConverterUtils.getConvertedTime(videoAlbum.getTime()));
-            viewHolder.albumName.setText(name);
-            viewHolder.count.setText(String.valueOf(videoAlbum.getVideos().size()));
-        }
-        /*viewHolder.itemView.setOnClickListener(
-            v -> PhotoAlbumsDetailActivity.startActivity(activity, photoAlbum));*/
+    protected void populateViewHolder(ViewHolder viewHolder, @NonNull VideoAlbum videoAlbum,
+        int position) {
+        Uri imgThumbnail = Uri.parse(videoAlbum.getVideos().values().iterator().next());
+        viewHolder.thumbnail.setImageURI(imgThumbnail);
+        String name = String.format("%s\n%s", videoAlbum.getName(),
+            ConverterUtils.getConvertedTime(videoAlbum.getTime()));
+        viewHolder.albumName.setText(name);
+        viewHolder.count.setText(String.valueOf(videoAlbum.getVideos().size()));
+        viewHolder.itemView.setOnClickListener(
+            v -> VideoAlbumsDetailActivity.startActivity(activity, videoAlbum));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

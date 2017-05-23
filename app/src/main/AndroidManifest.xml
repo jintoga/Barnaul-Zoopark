@@ -79,6 +79,8 @@
         <activity
             android:name=".ui.videoalbumeditor.VideoAlbumEditorActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.videoalbumsdetail.VideoAlbumsDetailActivity" />
+        <activity android:name=".ui.videoalbumsdetail.VideoDetailActivity" />
     </application>
 
 </manifest>

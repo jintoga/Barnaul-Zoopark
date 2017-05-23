@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.photoalbumsdetail;
+package com.dat.barnaulzoopark.ui.videoalbumsdetail;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +14,19 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.PhotoAlbum;
-import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
+import com.dat.barnaulzoopark.model.VideoAlbum;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
 
 /**
- * Created by DAT on 10-Apr-16.
+ * Created by DAT on 5/23/2017.
  */
-public class PhotoAlbumsDetailFragment extends Fragment
-    implements PhotoAlbumsDetailAdapter.GalleryAdapterListener {
+
+public class VideoAlbumsDetailFragment extends Fragment
+    implements VideoAlbumsDetailAdapter.GalleryAdapterListener {
 
     @Bind(R.id.gallery)
     protected RecyclerView gallery;
-    private PhotoAlbumsDetailAdapter adapter;
+    private VideoAlbumsDetailAdapter adapter;
 
     @Bind(R.id.loading)
     protected ProgressBar loading;
@@ -51,21 +50,20 @@ public class PhotoAlbumsDetailFragment extends Fragment
         gallery.setLayoutManager(layoutManager);
 
         if (adapter == null) {
-            adapter = new PhotoAlbumsDetailAdapter(this);
+            adapter = new VideoAlbumsDetailAdapter(this);
         }
         gallery.setAdapter(adapter);
 
         return view;
     }
 
-    public void loadData(@NonNull PhotoAlbum photoAlbum) {
-        adapter.setData(photoAlbum.getPhotos().values());
+    public void loadData(@NonNull VideoAlbum videoAlbum) {
+        adapter.setData(videoAlbum.getVideos().values());
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onPhotoSelected(int position) {
-        Log.d("Photo", adapter.getData().get(position));
-        PhotosDetailActivity.start(getActivity(), adapter.getData(), position, true);
+    public void onVideoSelected(String videoId) {
+        VideoDetailActivity.start(getActivity(), videoId);
     }
 }
