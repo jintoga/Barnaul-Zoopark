@@ -170,4 +170,6 @@
     <string name="edit_video_album">Edit video album</string>
     <string name="remove_item_video_album">video album</string>
     <string name="youtube_thumbnail">https://img.youtube.com/vi/%s/default.jpg</string>
+    <string name="distance_away">%s meters away</string>
+    <string name="current_location">Current location:</string>
 </resources>

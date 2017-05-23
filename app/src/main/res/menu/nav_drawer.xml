@@ -45,6 +45,7 @@
                     android:icon="@drawable/ic_map_black"
                     android:title="@string/zoo_park_map" />
                 <item
+                    android:id="@+id/cageLocation"
                     android:icon="@drawable/ic_search_pet"
                     android:title="@string/cage_location" />
                 <item

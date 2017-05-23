@@ -134,5 +134,7 @@
     <string name="data_management_video_album">Видео альбомы</string>
     <string name="create_video_album">Создать видео альбом</string>
     <string name="edit_video_album">Редактировать видео альбом</string>
-    <string name="remove_item_video_album">video album</string>
+    <string name="remove_item_video_album">видео альбом</string>
+    <string name="distance_away">%s метров от сюда</string>
+    <string name="current_location">Текущее местоположение:</string>
 </resources>

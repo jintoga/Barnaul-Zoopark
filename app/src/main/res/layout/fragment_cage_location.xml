@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/MVP_AppTheme">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/closeAnimals"
+        style="@style/RecyclerViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="@dimen/status_bar_height"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/startUpdateLocation"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="start updates"
+                    android:theme="@style/ButtonTheme" />
+
+                <Button
+                    android:id="@+id/stopUpdateLocation"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:text="stop updates"
+                    android:theme="@style/ButtonTheme" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginLeft="@dimen/text_size_16"
+                    android:layout_marginStart="@dimen/text_size_16"
+                    android:layout_weight="0.3"
+                    android:text="@string/current_location"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/latitudeText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/text_size_16"
+                    android:layout_marginStart="@dimen/text_size_16"
+                    android:layout_weight="0.35"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_18"
+                    tools:text=" fasfasf" />
+
+                <TextView
+                    android:id="@+id/longitudeText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/text_size_16"
+                    android:layout_marginStart="@dimen/text_size_16"
+                    android:layout_weight="0.35"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_18"
+                    tools:text=" fasfasf" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+</android.support.design.widget.CoordinatorLayout>
