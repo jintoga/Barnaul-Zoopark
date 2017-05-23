@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:orientation="horizontal">
+
+    <com.dat.barnaulzoopark.widget.PrefixEditText
+        android:id="@+id/video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif"
+        android:gravity="top"
+        android:hint="VIDEO_ID"
+        android:inputType="textUri"
+        android:lineSpacingExtra="6dp"
+        android:maxLength="11"
+        android:maxLines="1"
+        android:textColor="@color/black" />
+
+    <ImageButton
+        android:id="@+id/attach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:foreground="?android:selectableItemBackground"
+        android:tint="@color/default_icon_color"
+        app:srcCompat="@drawable/ic_add" />
+
+
+    <ImageButton
+        android:id="@+id/remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:foreground="?android:selectableItemBackground"
+        android:tint="@color/default_icon_color"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_delete" />
+</LinearLayout>

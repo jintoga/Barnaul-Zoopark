@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.Photo;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDetailViewHolder> {
 
-    private List<Photo> data = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
     private GalleryAdapterListener listener;
 
-    public PhotoAlbumsDetailAdapter(GalleryAdapterListener listener) {
+    PhotoAlbumsDetailAdapter(GalleryAdapterListener listener) {
         this.listener = listener;
     }
 
@@ -25,20 +25,14 @@ public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDe
     public PhotoAlbumsDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_photo_gallery, parent, false);
-        PhotoAlbumsDetailViewHolder viewHolder = new PhotoAlbumsDetailViewHolder(view);
-        return viewHolder;
+        return new PhotoAlbumsDetailViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PhotoAlbumsDetailViewHolder holder, final int position) {
+    public void onBindViewHolder(PhotoAlbumsDetailViewHolder holder, int position) {
         if (data.get(position) != null) {
             holder.bindData(data.get(position));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onPhotoSelected(position);
-                }
-            });
+            holder.itemView.setOnClickListener(v -> listener.onPhotoSelected(position));
         }
     }
 
@@ -47,13 +41,13 @@ public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDe
         return position;
     }
 
-    public void setData(List<Photo> photos) {
+    public void setData(Collection<String> photos) {
         data.clear();
         data.addAll(photos);
         notifyDataSetChanged();
     }
 
-    public List<Photo> getData() {
+    public List<String> getData() {
         return data;
     }
 
@@ -62,7 +56,7 @@ public class PhotoAlbumsDetailAdapter extends RecyclerView.Adapter<PhotoAlbumsDe
         return data.size();
     }
 
-    public interface GalleryAdapterListener {
+    interface GalleryAdapterListener {
         void onPhotoSelected(int position);
     }
 }

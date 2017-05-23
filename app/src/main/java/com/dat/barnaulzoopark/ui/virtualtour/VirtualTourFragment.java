@@ -1,6 +1,7 @@
 package com.dat.barnaulzoopark.ui.virtualtour;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,9 @@ public class VirtualTourFragment extends BaseFragment {
     @Bind(R.id.loading)
     protected ProgressBar loading;
 
+    private MediaPlayer mediaPlayer;
+    private boolean pageLoaded = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -45,6 +49,11 @@ public class VirtualTourFragment extends BaseFragment {
         initWebView();
     }
 
+    private void initSound() {
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.sound);
+        mediaPlayer.setLooping(true);
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         webViewTour.getSettings().setJavaScriptEnabled(true);
@@ -55,14 +64,47 @@ public class VirtualTourFragment extends BaseFragment {
                 if (loading != null && loading.isShown()) {
                     loading.setVisibility(View.GONE);
                 }
+                pageLoaded = true;
+                playSound();
             }
         });
-        webViewTour.loadUrl("file:///android_asset/virtualtour.html");
+        webViewTour.loadUrl("https://barnaul-zoopark-lab.firebaseapp.com/");
+    }
+
+    private void playSound() {
+        if (pageLoaded && mediaPlayer == null) {
+            initSound();
+        }
+        if (mediaPlayer != null && !mediaPlayer.isPlaying() && pageLoaded) {
+            mediaPlayer.start();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        webViewTour.loadUrl("about:blank"); //clear view's state
+        stopPlayingSound();
+        pageLoaded = false;
+        webViewTour.destroy();
+        super.onDestroyView();
     }
 
     @Override
     public void onStop() {
-        webViewTour.loadUrl("about:blank"); //clear view's state
+        stopPlayingSound();
         super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        playSound();
+    }
+
+    private void stopPlayingSound() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

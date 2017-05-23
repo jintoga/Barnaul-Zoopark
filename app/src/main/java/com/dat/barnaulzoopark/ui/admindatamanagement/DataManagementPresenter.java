@@ -6,7 +6,10 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.News;
+import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.TicketPrice;
 import com.dat.barnaulzoopark.model.User;
+import com.dat.barnaulzoopark.model.VideoAlbum;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -71,7 +74,16 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             clazz = Category.class;
         } else if (data instanceof News) {
             databaseReference = database.getReference(BZFireBaseApi.news);
-            clazz = Category.class;
+            clazz = News.class;
+        } else if (data instanceof TicketPrice) {
+            databaseReference = database.getReference(BZFireBaseApi.ticket_price);
+            clazz = TicketPrice.class;
+        } else if (data instanceof PhotoAlbum) {
+            databaseReference = database.getReference(BZFireBaseApi.photo_album);
+            clazz = PhotoAlbum.class;
+        } else if (data instanceof VideoAlbum) {
+            databaseReference = database.getReference(BZFireBaseApi.video_album);
+            clazz = VideoAlbum.class;
         } else {
             return;
         }
@@ -81,7 +93,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         }
         final DatabaseReference finalDatabaseReference = databaseReference;
         RxFirebaseDatabase.observeSingleValueEvent(childDatabaseReference, clazz)
-            .flatMap(o -> getDeleteIconObservable(data))
+            .flatMap(o -> getDeleteImagesObservable(data))
             .doOnNext((Action1<T>) this::deleteUidInChild)
             .subscribe(new Observer<T>() {
                 @Override
@@ -181,7 +193,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         }
     }
 
-    private <T extends AbstractData> Observable getDeleteIconObservable(@NonNull final T data) {
+    private <T extends AbstractData> Observable getDeleteImagesObservable(@NonNull final T data) {
         String prefix;
         if (data instanceof News) {
             News news = (News) data;
@@ -195,8 +207,14 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             return getDeleteAnimalImagesObservable((Animal) data);
         } else if (data instanceof Species) {
             prefix = BZFireBaseApi.animal_species;
-        } else {
+        } else if (data instanceof Category) {
             prefix = BZFireBaseApi.animal_categories;
+        } else if (data instanceof PhotoAlbum) {
+            return getDeletePhotoAlbumImagesObservable((PhotoAlbum) data);
+        } else if (data instanceof VideoAlbum) {
+            return Observable.just(data);
+        } else {
+            prefix = BZFireBaseApi.ticket_price;
         }
         String filePath = prefix + "/" + data.getId() + "/" + "icon";
 
@@ -225,6 +243,14 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         }
         return !observables.isEmpty() ? Observable.concat(observables)
             .flatMap(aVoid -> Observable.just(data)) : Observable.just(data);
+    }
+
+    @NonNull
+    private Observable<PhotoAlbum> getDeletePhotoAlbumImagesObservable(
+        @NonNull PhotoAlbum photoAlbum) {
+        return !photoAlbum.getPhotos().isEmpty() ? deleteAttachmentsObservable(photoAlbum.getUid(),
+            photoAlbum.getPhotos(), BZFireBaseApi.photo_album).flatMap(
+            aVoid -> Observable.just(photoAlbum)) : Observable.just(photoAlbum);
     }
 
     @NonNull

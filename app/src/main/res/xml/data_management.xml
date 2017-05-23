@@ -19,6 +19,18 @@
         app:title="@string/data_management_animals" />
 
     <Preference
+        android:key="key_ticket_price"
+        app:title="@string/ticket_price" />
+
+    <Preference
         android:key="key_blog_animal"
         app:title="@string/data_management_blog_animals" />
+
+    <Preference
+        android:key="key_photo_album"
+        app:title="@string/data_management_photo_album" />
+
+    <Preference
+        android:key="key_video_album"
+        app:title="@string/data_management_video_album" />
 </PreferenceScreen>

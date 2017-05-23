@@ -22,6 +22,9 @@ import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.News;
+import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.TicketPrice;
+import com.dat.barnaulzoopark.model.VideoAlbum;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Category;
 import com.dat.barnaulzoopark.model.animal.Species;
@@ -33,6 +36,9 @@ import com.dat.barnaulzoopark.ui.animaleditor.AnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.animalspecieseditor.SpeciesEditorActivity;
 import com.dat.barnaulzoopark.ui.bloganimaleditor.BlogAnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
+import com.dat.barnaulzoopark.ui.photoalbumeditor.PhotoAlbumEditorActivity;
+import com.dat.barnaulzoopark.ui.ticketpriceeditor.TicketPriceEditorActivity;
+import com.dat.barnaulzoopark.ui.videoalbumeditor.VideoAlbumEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -189,6 +195,12 @@ public class DataManagementActivity
             BlogAnimalEditorActivity.start(this, ((BlogAnimal) data).getUid());
         } else if (data instanceof News) {
             NewsItemEditorActivity.start(this, ((News) data).getUid());
+        } else if (data instanceof TicketPrice) {
+            TicketPriceEditorActivity.start(this, ((TicketPrice) data).getUid());
+        } else if (data instanceof PhotoAlbum) {
+            PhotoAlbumEditorActivity.start(this, ((PhotoAlbum) data).getUid());
+        } else if (data instanceof VideoAlbum) {
+            VideoAlbumEditorActivity.start(this, ((VideoAlbum) data).getUid());
         }
     }
 
@@ -204,6 +216,12 @@ public class DataManagementActivity
             itemToDelete = getString(R.string.remove_item_blog_animal);
         } else if (data instanceof News) {
             itemToDelete = getString(R.string.remove_item_news);
+        } else if (data instanceof TicketPrice) {
+            itemToDelete = getString(R.string.remove_item_ticket_price);
+        } else if (data instanceof PhotoAlbum) {
+            itemToDelete = getString(R.string.remove_item_photo_album);
+        } else if (data instanceof VideoAlbum) {
+            itemToDelete = getString(R.string.remove_item_video_album);
         }
         String title =
             String.format(getString(R.string.data_management_remove_title), data.getText(),
@@ -237,6 +255,18 @@ public class DataManagementActivity
             case BZFireBaseApi.blog_animal:
                 title = getString(R.string.data_management_blog_animals);
                 adapter = getAdapter(BlogAnimal.class, referenceName);
+                break;
+            case BZFireBaseApi.ticket_price:
+                title = getString(R.string.ticket_price);
+                adapter = getAdapter(TicketPrice.class, referenceName);
+                break;
+            case BZFireBaseApi.photo_album:
+                title = getString(R.string.data_management_photo_album);
+                adapter = getAdapter(PhotoAlbum.class, referenceName);
+                break;
+            case BZFireBaseApi.video_album:
+                title = getString(R.string.data_management_video_album);
+                adapter = getAdapter(VideoAlbum.class, referenceName);
                 break;
         }
         if (getSupportActionBar() != null) {
@@ -282,6 +312,15 @@ public class DataManagementActivity
                     break;
                 case BZFireBaseApi.blog_animal:
                     BlogAnimalEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.ticket_price:
+                    TicketPriceEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.photo_album:
+                    PhotoAlbumEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.video_album:
+                    VideoAlbumEditorActivity.start(this, null);
                     break;
             }
         }

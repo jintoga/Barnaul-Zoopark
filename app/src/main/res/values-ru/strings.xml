@@ -11,7 +11,7 @@
     <string name="cage_location">Местоположение клетки</string>
     <string name="information">Информация</string>
     <string name="schedule">Расписание зоопарка</string>
-    <string name="price">Цена билетов</string>
+    <string name="ticket_price">Цена билетов</string>
     <string name="about_zoopark">О зоопарке</string>
     <!--authorize-->
     <string name="login_with">Вход через</string>
@@ -119,4 +119,20 @@
     <string name="push_notification_blog_animal_text">Новый блог о любимом животном создан</string>
     <string name="virtual_tour">360° тур</string>
     <string name="location_updated">Местоположение обновлено!</string>
+    <string name="name_hint">название</string>
+    <string name="price_hint">цена</string>
+    <string name="creating">Идет создание…</string>
+    <string name="remove_item_ticket_price">цену билета</string>
+    <string name="updating">Идет редактирование…</string>
+    <string name="edit_ticket_price">Редактировать цену билета</string>
+    <string name="create_ticket_price">Создать цену билета</string>
+    <string name="loading">Идет загрузка…</string>
+    <string name="data_management_photo_album">Фото альбомы</string>
+    <string name="edit_photo_album">Редактировать фото альбом</string>
+    <string name="create_photo_album">Создать фото альбом</string>
+    <string name="remove_item_photo_album">photo album</string>
+    <string name="data_management_video_album">Видео альбомы</string>
+    <string name="create_video_album">Создать видео альбом</string>
+    <string name="edit_video_album">Редактировать видео альбом</string>
+    <string name="remove_item_video_album">video album</string>
 </resources>

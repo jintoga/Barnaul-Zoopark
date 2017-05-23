@@ -55,8 +55,8 @@ public class ZooMapFragment extends BaseFragment {
     }
 
     @Override
-    public void onStop() {
+    public void onDestroyView() {
         webViewMap.loadUrl("about:blank"); //clear view's state
-        super.onStop();
+        super.onDestroyView();
     }
 }

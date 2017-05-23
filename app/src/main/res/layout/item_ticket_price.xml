@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            app:actualImageScaleType="focusCrop"
+            app:fadeDuration="100"
+            app:failureImage="@android:drawable/stat_notify_error"
+            app:failureImageScaleType="centerInside"
+            app:placeholderImage="@drawable/img_photo_gallery_placeholder"
+            app:placeholderImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="0.7"
+            android:ems="12"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center|start"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14"
+            tools:text="Выставка Пет дневно с 10.00 до 20.00" />
+
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:textColor="@color/black"
+            tools:text="555 Рублей" />
+    </LinearLayout>
+
+
+</FrameLayout>

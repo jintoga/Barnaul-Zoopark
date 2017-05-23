@@ -2,6 +2,7 @@ package com.dat.barnaulzoopark.ui.photoalbumsdetail;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,12 +15,9 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.DummyGenerator;
-import com.dat.barnaulzoopark.model.Photo;
+import com.dat.barnaulzoopark.model.PhotoAlbum;
 import com.dat.barnaulzoopark.ui.photosdetail.PhotosDetailActivity;
 import com.dat.barnaulzoopark.ui.recyclerviewdecorations.GridSpacingItemDecoration;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by DAT on 10-Apr-16.
@@ -27,12 +25,9 @@ import java.util.List;
 public class PhotoAlbumsDetailFragment extends Fragment
     implements PhotoAlbumsDetailAdapter.GalleryAdapterListener {
 
-    private View view;
-
     @Bind(R.id.gallery)
     protected RecyclerView gallery;
     private PhotoAlbumsDetailAdapter adapter;
-    private GridLayoutManager layoutManager;
 
     @Bind(R.id.loading)
     protected ProgressBar loading;
@@ -41,8 +36,9 @@ public class PhotoAlbumsDetailFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_photo_albums_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_albums_detail, container, false);
         ButterKnife.bind(this, view);
+        GridLayoutManager layoutManager;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new GridLayoutManager(getContext(), 4);
             gallery.addItemDecoration(new GridSpacingItemDecoration(4, getContext().getResources()
@@ -62,20 +58,14 @@ public class PhotoAlbumsDetailFragment extends Fragment
         return view;
     }
 
-    public void loadData(String albumId) {
-        if (albumId != null) {
-            adapter.setData(DummyGenerator.getPhotoAlbumById(albumId));
-            adapter.notifyDataSetChanged();
-        }
+    public void loadData(@NonNull PhotoAlbum photoAlbum) {
+        adapter.setData(photoAlbum.getPhotos().values());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onPhotoSelected(int position) {
-        Log.d("Photo", adapter.getData().get(position).getUrl());
-        List<String> urls = new ArrayList<>();
-        for (Photo photo : adapter.getData()) {
-            urls.add(photo.getUrl());
-        }
-        PhotosDetailActivity.start(getActivity(), urls, position,true);
+        Log.d("Photo", adapter.getData().get(position));
+        PhotosDetailActivity.start(getActivity(), adapter.getData(), position, true);
     }
 }
