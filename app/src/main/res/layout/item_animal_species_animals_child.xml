@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
     android:background="@android:color/transparent">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_species_animals_child_height"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:background="@color/white"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
