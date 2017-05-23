@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,12 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.ui.BaseFragment;
+import com.dat.barnaulzoopark.model.animal.Animal;
+import com.dat.barnaulzoopark.ui.BZDialogBuilder;
+import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,14 +36,17 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.firebase.database.FirebaseDatabase;
+import java.util.List;
 
 /**
  * Created by DAT on 5/23/2017.
  */
 
-public class CageLocationFragment extends BaseFragment
-    implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-    LocationListener {
+public class CageLocationFragment
+    extends BaseMvpFragment<CageLocationContract.View, CageLocationContract.UserActionListener>
+    implements CageLocationContract.View, GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final int REQUEST_LOCATION_PERMISSIONS = 245;
 
@@ -67,6 +75,10 @@ public class CageLocationFragment extends BaseFragment
     @Bind(R.id.container)
     protected View container;
 
+    private List<Animal> animals;
+
+    private MaterialDialog progressDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,12 +91,48 @@ public class CageLocationFragment extends BaseFragment
         return view;
     }
 
+    @Override
+    public void onLoadAnimalsError(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(container, localizedMessage);
+    }
+
+    @Override
+    public void onLoadAnimalsSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showLoadingProgress() {
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(),
+                getString(R.string.loading));
+        }
+        progressDialog.setContent(getString(R.string.loading));
+        progressDialog.show();
+    }
+
+    @Override
+    public void bindAnimals(@NonNull List<Animal> animals) {
+        this.animals = animals;
+    }
+
     private void init() {
         isRequestingLocationUpdates = false;
 
         buildGoogleApiClient();
         createLocationRequest();
         buildLocationSettingsRequest();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter.loadAnimals();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -159,12 +207,10 @@ public class CageLocationFragment extends BaseFragment
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
@@ -180,6 +226,14 @@ public class CageLocationFragment extends BaseFragment
             startLocationUpdates();
         }
         updateUI();
+    }
+
+    @NonNull
+    @Override
+    public CageLocationContract.UserActionListener createPresenter() {
+        FirebaseDatabase database =
+            BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
+        return new CageLocationPresenter(database);
     }
 
     @Override
@@ -254,6 +308,19 @@ public class CageLocationFragment extends BaseFragment
         if (currentLocation != null) {
             latitudeText.setText(String.format("%s: %f", "Lat", currentLocation.getLatitude()));
             longitudeText.setText(String.format("%s: %f", "Lng", currentLocation.getLongitude()));
+            filterAnimalsLocation(currentLocation);
+        }
+    }
+
+    private void filterAnimalsLocation(@NonNull Location currentLocation) {
+        if (animals == null) {
+            return;
+        }
+        for (Animal animal : animals) {
+            float[] result = new float[3];
+            Location.distanceBetween(animal.getLat(), animal.getLng(),
+                currentLocation.getLatitude(), currentLocation.getLongitude(), result);
+            Log.d("DIST", animal.getName() + " is " + result[0] + " meters away");
         }
     }
 

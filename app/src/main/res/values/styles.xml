@@ -66,4 +66,9 @@
     <style name="AppTheme.WhiteText" parent="AppTheme">
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
+
+    <style name="ButtonTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>
