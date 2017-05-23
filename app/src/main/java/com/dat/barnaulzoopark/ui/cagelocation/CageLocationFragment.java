@@ -32,6 +32,7 @@ import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
+import com.dat.barnaulzoopark.ui.animalsdetail.AnimalsDetailActivity;
 import com.dat.barnaulzoopark.ui.cagelocation.adapters.CageLocationAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -54,7 +55,8 @@ import java.util.List;
 public class CageLocationFragment
     extends BaseMvpFragment<CageLocationContract.View, CageLocationContract.UserActionListener>
     implements CageLocationContract.View, GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    GoogleApiClient.OnConnectionFailedListener, LocationListener,
+    CageLocationAdapter.AnimalClickListener {
 
     private static final float DISTANCE_TO_CAGE = 20; //20 meters
     private static final int REQUEST_LOCATION_PERMISSIONS = 245;
@@ -90,6 +92,11 @@ public class CageLocationFragment
     private List<Animal> animals;
 
     private MaterialDialog progressDialog;
+
+    @Override
+    public void onAnimalClicked(int position) {
+        AnimalsDetailActivity.start(getActivity(), locationAdapter.getAnimals(), position);
+    }
 
     @Nullable
     @Override
@@ -151,7 +158,7 @@ public class CageLocationFragment
         closeAnimals.addItemDecoration(new ItemShadowDecorator(
             (NinePatchDrawable) ContextCompat.getDrawable(getContext(),
                 R.drawable.material_shadow_z1)));
-        locationAdapter = new CageLocationAdapter();
+        locationAdapter = new CageLocationAdapter(this);
         closeAnimals.setAdapter(locationAdapter);
     }
 

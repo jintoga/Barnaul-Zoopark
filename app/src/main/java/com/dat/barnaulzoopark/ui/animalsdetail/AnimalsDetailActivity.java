@@ -19,13 +19,17 @@ import com.dat.barnaulzoopark.ui.BaseActivityWithAnimation;
 import com.github.florent37.materialviewpager.MaterialViewPager;
 import com.github.florent37.materialviewpager.header.HeaderDesign;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class AnimalsDetailActivity extends
     BaseActivityWithAnimation<AnimalsDetailContract.ViewActivity, AnimalsDetailContract.ActivityUserActionListener>
     implements AnimalsDetailContract.ViewActivity {
-    public static final String KEY_SPECIES_UID = "KEY_SPECIES_UID";
-    private static final String KEY_SELECTED_ANIMAL_POSITION = "KEY_SELECTED_ANIMAL_POSITION";
+    public static final String EXTRA_SPECIES_UID = "EXTRA_SPECIES_UID";
+    private static final String EXTRA_CLOSE_ANIMALS = "EXTRA_CLOSE_ANIMALS";
+    private static final String EXTRA_SELECTED_ANIMAL_POSITION = "EXTRA_SELECTED_ANIMAL_POSITION";
 
     public static void start(Activity activity, @NonNull String speciesUid,
         int selectedAnimalPosition) {
@@ -33,8 +37,21 @@ public class AnimalsDetailActivity extends
             return;
         }
         Intent intent = new Intent(activity, AnimalsDetailActivity.class);
-        intent.putExtra(KEY_SPECIES_UID, speciesUid);
-        intent.putExtra(KEY_SELECTED_ANIMAL_POSITION, selectedAnimalPosition);
+        intent.putExtra(EXTRA_SPECIES_UID, speciesUid);
+        intent.putExtra(EXTRA_SELECTED_ANIMAL_POSITION, selectedAnimalPosition);
+
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+    }
+
+    public static void start(Activity activity,@NonNull List<Animal> animals, int selectedAnimalPosition) {
+        if (activity instanceof AnimalsDetailActivity) {
+            return;
+        }
+        Intent intent = new Intent(activity, AnimalsDetailActivity.class);
+        String jsonCloseAnimalsJson = new Gson().toJson(animals);
+        intent.putExtra(EXTRA_CLOSE_ANIMALS, jsonCloseAnimalsJson);
+        intent.putExtra(EXTRA_SELECTED_ANIMAL_POSITION, selectedAnimalPosition);
 
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
@@ -49,14 +66,19 @@ public class AnimalsDetailActivity extends
         setContentView(R.layout.activity_animals_detail);
         ButterKnife.bind(this);
         init();
-        String speciesUid = getIntent().getStringExtra(KEY_SPECIES_UID);
-        if (speciesUid == null) {
+        String speciesUid = getIntent().getStringExtra(EXTRA_SPECIES_UID);
+        if (speciesUid != null) {
+            presenter.loadAnimals(speciesUid);
+        } else if (getIntent().getStringExtra(EXTRA_CLOSE_ANIMALS) != null) {
+            String closeAnimalsJson = getIntent().getStringExtra(EXTRA_CLOSE_ANIMALS);
+            Type listType = new TypeToken<List<Animal>>() {
+            }.getType();
+            List<Animal> closeAnimals = new Gson().fromJson(closeAnimalsJson, listType);
+            bindAnimals(closeAnimals);
+        } else {
             Toast.makeText(this, "speciesUid NULL", Toast.LENGTH_SHORT).show();
             finish();
-            return;
         }
-
-        presenter.loadAnimals(speciesUid);
     }
 
     @NonNull
@@ -122,7 +144,8 @@ public class AnimalsDetailActivity extends
         materialViewPager.getPagerTitleStrip().setViewPager(materialViewPager.getViewPager());
 
         //Move to selected animal
-        final int selectedAnimalPosition = getIntent().getIntExtra(KEY_SELECTED_ANIMAL_POSITION, 0);
+        final int selectedAnimalPosition =
+            getIntent().getIntExtra(EXTRA_SELECTED_ANIMAL_POSITION, 0);
         materialViewPager.post(() -> {
             if (selectedAnimalPosition >= 0 && selectedAnimalPosition < animals.size()) {
                 materialViewPager.getViewPager().setCurrentItem(selectedAnimalPosition);

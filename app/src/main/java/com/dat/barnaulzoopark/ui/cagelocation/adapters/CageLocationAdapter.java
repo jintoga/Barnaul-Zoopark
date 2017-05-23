@@ -23,9 +23,13 @@ public class CageLocationAdapter extends RecyclerView.Adapter<CageLocationAdapte
 
     private List<Animal> animals = new ArrayList<>();
     private Location currentLocation;
+    private AnimalClickListener animalClickListener;
+
+    public CageLocationAdapter(AnimalClickListener animalClickListener) {
+        this.animalClickListener = animalClickListener;
+    }
 
     @Override
-
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_cage_location, parent, false);
@@ -34,8 +38,10 @@ public class CageLocationAdapter extends RecyclerView.Adapter<CageLocationAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (animals.get(position) != null && currentLocation != null) {
-            holder.bindData(animals.get(position), currentLocation);
+        Animal animal = animals.get(position);
+        if (animal != null && currentLocation != null) {
+            holder.bindData(animal, currentLocation);
+            holder.itemView.setOnClickListener(v -> animalClickListener.onAnimalClicked(position));
         }
     }
 
@@ -49,6 +55,14 @@ public class CageLocationAdapter extends RecyclerView.Adapter<CageLocationAdapte
         this.animals.addAll(data);
         this.currentLocation = currentLocation;
         notifyDataSetChanged();
+    }
+
+    public List<Animal> getAnimals() {
+        return animals;
+    }
+
+    public interface AnimalClickListener {
+        void onAnimalClicked(int position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
