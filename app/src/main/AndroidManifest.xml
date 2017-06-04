@@ -81,6 +81,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.videoalbumsdetail.VideoAlbumsDetailActivity" />
         <activity android:name=".ui.videoalbumsdetail.VideoDetailActivity" />
+        <activity android:name=".ui.sponsoreditor.SponsorEditorActivity" />
     </application>
 
 </manifest>

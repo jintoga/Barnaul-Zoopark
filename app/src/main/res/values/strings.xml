@@ -173,4 +173,7 @@
     <string name="distance_away">%s meters away</string>
     <string name="current_location">Current location:</string>
     <string name="sponsors">Sponsors</string>
+    <string name="edit_sponsor">Edit sponsor</string>
+    <string name="create_sponsor">Create sponsor</string>
+    <string name="website_hint">website</string>
 </resources>
