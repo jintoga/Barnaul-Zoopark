@@ -15,10 +15,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.TicketPrice;
+import com.dat.barnaulzoopark.model.Sponsor;
 import com.dat.barnaulzoopark.ui.BaseMvpFragment;
 import com.dat.barnaulzoopark.ui.MainActivity;
-import com.dat.barnaulzoopark.ui.ticketprice.adapters.TicketPriceAdapter;
+import com.dat.barnaulzoopark.ui.sponsors.adapters.SponsorsAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
@@ -61,16 +61,15 @@ public class SponsorsFragment
 
     private void initRecyclerView() {
         sponsors.setLayoutManager(new LinearLayoutManager(getContext()));
-        TicketPriceAdapter ticketPriceAdapter =
-            new TicketPriceAdapter(TicketPrice.class, R.layout.item_ticket_price,
-                TicketPriceAdapter.ViewHolder.class, presenter.getSponsorsReference());
+        SponsorsAdapter sponsorsAdapter = new SponsorsAdapter(Sponsor.class, R.layout.item_sponsor,
+            SponsorsAdapter.ViewHolder.class, presenter.getSponsorsReference());
         sponsors.addItemDecoration(new SimpleListDividerDecorator(
             ContextCompat.getDrawable(getContext(), R.drawable.preference_list_divider_material),
             true));
         sponsors.addItemDecoration(new ItemShadowDecorator(
             (NinePatchDrawable) ContextCompat.getDrawable(getContext(),
                 R.drawable.material_shadow_z1)));
-        sponsors.setAdapter(ticketPriceAdapter);
+        sponsors.setAdapter(sponsorsAdapter);
     }
 
     @NonNull
