@@ -39,6 +39,7 @@ import com.dat.barnaulzoopark.ui.cagelocation.CageLocationFragment;
 import com.dat.barnaulzoopark.ui.favoriteanimals.FavoriteAnimalsFragment;
 import com.dat.barnaulzoopark.ui.news.NewsFragment;
 import com.dat.barnaulzoopark.ui.photoandvideo.PhotoAndVideoFragment;
+import com.dat.barnaulzoopark.ui.sponsors.SponsorsFragment;
 import com.dat.barnaulzoopark.ui.startup.StartupActivity;
 import com.dat.barnaulzoopark.ui.ticketprice.TicketPriceFragment;
 import com.dat.barnaulzoopark.ui.userprofile.UserProfileContract;
@@ -335,6 +336,9 @@ public class MainActivity
                 break;
             case R.id.photoAndVideo:
                 fragment = new PhotoAndVideoFragment();
+                break;
+            case R.id.sponsors:
+                fragment = new SponsorsFragment();
                 break;
             case R.id.ticketPrices:
                 fragment = new TicketPriceFragment();
