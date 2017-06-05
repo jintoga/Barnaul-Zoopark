@@ -220,6 +220,8 @@ public class DataManagementActivity
             itemToDelete = getString(R.string.remove_item_blog_animal);
         } else if (data instanceof News) {
             itemToDelete = getString(R.string.remove_item_news);
+        } else if (data instanceof Sponsor) {
+            itemToDelete = getString(R.string.remove_item_sponsor);
         } else if (data instanceof TicketPrice) {
             itemToDelete = getString(R.string.remove_item_ticket_price);
         } else if (data instanceof PhotoAlbum) {

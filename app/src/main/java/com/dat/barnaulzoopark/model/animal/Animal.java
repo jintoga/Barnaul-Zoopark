@@ -27,6 +27,7 @@ public class Animal extends AbstractData {
     private String imageHabitatMap;
     private Double lat;
     private Double lng;
+    private Map<String, String> sponsors;
 
     public Animal() {
         // Default constructor required for calls to DataSnapshot.getValue(Animal.class)
@@ -98,6 +99,11 @@ public class Animal extends AbstractData {
     @NonNull
     public Map<String, String> getPhotos() {
         return photos == null ? photos = new HashMap<>() : photos;
+    }
+
+    @NonNull
+    public Map<String, String> getSponsors() {
+        return sponsors == null ? sponsors = new HashMap<>() : sponsors;
     }
 
     public String getVideo() {
