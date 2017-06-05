@@ -86,6 +86,8 @@ public class AnimalEditorActivity extends
     protected EditText dateOfBirth;
     @Bind(R.id.aboutOurAnimal)
     protected EditText aboutOurAnimal;
+    @Bind(R.id.sponsors)
+    protected RecyclerView sponsors;
     @Bind(R.id.album)
     protected RecyclerView album;
     private MultiFileAttachmentAdapter attachmentAdapter;
