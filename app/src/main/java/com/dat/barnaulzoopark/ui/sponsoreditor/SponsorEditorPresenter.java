@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Sponsor;
+import com.dat.barnaulzoopark.utils.UriUtil;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,6 +39,70 @@ class SponsorEditorPresenter extends MvpBasePresenter<SponsorEditorContract.View
                 getView().highlightRequiredFields();
             }
         }
+    }
+
+    @Override
+    public void editSponsor(@NonNull Sponsor selectedSponsor, @NonNull String name,
+        @NonNull String website, @Nullable Uri iconUri) {
+        if (!"".equals(name)) {
+            edit(selectedSponsor, name, website, iconUri);
+        } else {
+            if (getView() != null) {
+                getView().highlightRequiredFields();
+            }
+        }
+    }
+
+    private void edit(@NonNull Sponsor selectedSponsor, @NonNull String name,
+        @NonNull String website, @Nullable Uri iconUri) {
+        DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.sponsors);
+        final DatabaseReference itemReference = databaseReference.child(selectedSponsor.getUid());
+        selectedSponsor.update(name);
+        selectedSponsor.setSite(!website.isEmpty() ? website : null);
+        itemReference.setValue(selectedSponsor);
+        if (getView() != null) {
+            getView().showEditingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(itemReference, Sponsor.class)
+            .flatMap(category -> updateIcon(selectedSponsor, iconUri, itemReference))
+            .doOnCompleted(() -> {
+                if (getView() != null) {
+                    getView().onEditSuccess();
+                }
+            })
+            .doOnError(throwable -> {
+                if (getView() != null) {
+                    getView().onEditError(throwable.getLocalizedMessage());
+                }
+            })
+            .subscribe();
+    }
+
+    @NonNull
+    private Observable<Sponsor> updateIcon(@NonNull Sponsor selectedSponsor, @Nullable Uri iconUri,
+        @NonNull DatabaseReference itemReference) {
+        String filePath = BZFireBaseApi.sponsors + "/" + selectedSponsor.getUid() + "/" + "logo";
+        if (iconUri == null && selectedSponsor.getLogo() != null) {
+            //delete
+            return deleteIcon(selectedSponsor, itemReference, filePath);
+        } else if (iconUri != null && UriUtil.isLocalFile(iconUri)) {
+            //update
+            return uploadIcon(selectedSponsor, iconUri);
+        } else {
+            return Observable.just(selectedSponsor);
+        }
+    }
+
+    @NonNull
+    private Observable<Sponsor> deleteIcon(@NonNull Sponsor selectedSponsor,
+        @NonNull DatabaseReference itemReference, @NonNull String filePath) {
+        StorageReference storageReference = storage.getReference().child(filePath);
+        return RxFirebaseStorage.delete(storageReference).flatMap(aVoid -> {
+            //set logo Value in selectedSponsor to null
+            selectedSponsor.clearLogo();
+            itemReference.setValue(selectedSponsor);
+            return Observable.just(selectedSponsor);
+        });
     }
 
     private void create(@NonNull String name, @NonNull String website, @Nullable Uri iconUri) {
@@ -104,6 +169,24 @@ class SponsorEditorPresenter extends MvpBasePresenter<SponsorEditorContract.View
 
     @Override
     public void loadSelectedSponsor(@NonNull String selectedSponsorUid) {
-
+        DatabaseReference databaseReference =
+            database.getReference(BZFireBaseApi.sponsors).child(selectedSponsorUid);
+        if (getView() != null) {
+            getView().showLoadingProgress();
+        }
+        RxFirebaseDatabase.observeSingleValueEvent(databaseReference, Sponsor.class)
+            .subscribe(sponsor -> {
+                if (getView() != null) {
+                    getView().bindSelectedSponsor(sponsor);
+                }
+            }, throwable -> {
+                if (getView() != null) {
+                    getView().onLoadError(throwable.getLocalizedMessage());
+                }
+            }, () -> {
+                if (getView() != null) {
+                    getView().onLoadSuccess();
+                }
+            });
     }
 }

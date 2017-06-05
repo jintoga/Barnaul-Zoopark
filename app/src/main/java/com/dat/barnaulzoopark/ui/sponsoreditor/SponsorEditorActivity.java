@@ -103,6 +103,71 @@ public class SponsorEditorActivity extends
     }
 
     @Override
+    public void showEditingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.updating));
+        }
+        progressDialog.setContent(getString(R.string.updating));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onEditSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Toast.makeText(this, R.string.edit_successful, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onEditError(@NonNull String localizedMessage) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void showLoadingProgress() {
+        if (progressDialog == null) {
+            progressDialog =
+                BZDialogBuilder.createSimpleProgressDialog(this, getString(R.string.loading));
+        }
+        progressDialog.setContent(getString(R.string.loading));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onLoadError(@NonNull String localizedMessage) {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(localizedMessage);
+    }
+
+    @Override
+    public void onLoadSuccess() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void bindSelectedSponsor(@NonNull Sponsor sponsor) {
+        this.selectedSponsor = sponsor;
+        name.setText(sponsor.getName());
+        website.setText(sponsor.getSite());
+        if (sponsor.getLogo() != null) {
+            this.iconUri = Uri.parse(sponsor.getLogo());
+            this.icon.setVisibility(View.VISIBLE);
+            Glide.with(this).load(sponsor.getLogo()).into(icon);
+            updateButtons(true);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sponsor_editor);
@@ -213,7 +278,10 @@ public class SponsorEditorActivity extends
     }
 
     private void editSponsor() {
-
+        if (selectedSponsor != null) {
+            presenter.editSponsor(selectedSponsor, name.getText().toString(),
+                website.getText().toString(), iconUri);
+        }
     }
 
     private void createSponsor() {

@@ -284,7 +284,9 @@ public class TicketPriceEditorActivity extends
     }
 
     private void editTicketPrice() {
-        presenter.editTicketPrice(selectedTicketPrice, name.getText().toString(),
-            price.getText().toString(), iconUri);
+        if (selectedTicketPrice != null) {
+            presenter.editTicketPrice(selectedTicketPrice, name.getText().toString(),
+                price.getText().toString(), iconUri);
+        }
     }
 }

@@ -40,8 +40,7 @@ public class Sponsor extends AbstractData {
         return site;
     }
 
-    public void update(String uid, String name) {
-        this.uid = uid;
+    public void update(String name) {
         this.name = name;
     }
 

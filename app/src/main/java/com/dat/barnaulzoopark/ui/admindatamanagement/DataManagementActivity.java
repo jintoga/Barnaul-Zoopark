@@ -197,6 +197,8 @@ public class DataManagementActivity
             BlogAnimalEditorActivity.start(this, ((BlogAnimal) data).getUid());
         } else if (data instanceof News) {
             NewsItemEditorActivity.start(this, ((News) data).getUid());
+        } else if (data instanceof Sponsor) {
+            SponsorEditorActivity.start(this, ((Sponsor) data).getUid());
         } else if (data instanceof TicketPrice) {
             TicketPriceEditorActivity.start(this, ((TicketPrice) data).getUid());
         } else if (data instanceof PhotoAlbum) {
