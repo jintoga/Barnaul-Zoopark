@@ -196,7 +196,7 @@
             android:layout_gravity="top"
             android:layout_marginRight="16dp"
             android:tint="@color/colorTextSecondary"
-            app:srcCompat="@drawable/ic_handshake_outline" />
+            app:srcCompat="@drawable/ic_heart_handshake" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/sponsors"
