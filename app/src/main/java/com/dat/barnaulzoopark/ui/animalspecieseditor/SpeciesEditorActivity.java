@@ -175,7 +175,7 @@ public class SpeciesEditorActivity extends
 
     @Override
     public void onLoadSpeciesError(@NonNull String localizedMessage) {
-        Log.d(TAG, "onLoadSpeciesError");
+        Log.d(TAG, "onLoadError");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }

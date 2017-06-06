@@ -142,4 +142,5 @@
     <string name="create_sponsor">Создать спонсора</string>
     <string name="website_hint">веб-сайт</string>
     <string name="remove_item_sponsor">спонсора</string>
+    <string name="action_ok">ОК</string>
 </resources>

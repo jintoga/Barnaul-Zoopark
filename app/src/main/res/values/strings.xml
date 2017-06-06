@@ -177,4 +177,5 @@
     <string name="create_sponsor">Create sponsor</string>
     <string name="website_hint">website</string>
     <string name="remove_item_sponsor">sponsor</string>
+    <string name="action_ok">OK</string>
 </resources>

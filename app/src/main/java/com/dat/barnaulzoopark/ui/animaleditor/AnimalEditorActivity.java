@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.model.Sponsor;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
@@ -41,6 +42,7 @@ import com.dat.barnaulzoopark.widget.PrefixEditText;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -86,8 +88,8 @@ public class AnimalEditorActivity extends
     protected EditText dateOfBirth;
     @Bind(R.id.aboutOurAnimal)
     protected EditText aboutOurAnimal;
-    @Bind(R.id.sponsors)
-    protected RecyclerView sponsors;
+    @Bind(R.id.sponsorNames)
+    protected EditText sponsorNames;
     @Bind(R.id.album)
     protected RecyclerView album;
     private MultiFileAttachmentAdapter attachmentAdapter;
@@ -113,6 +115,10 @@ public class AnimalEditorActivity extends
     private Animal selectedAnimal;
 
     private LocationDetectHelper locationDetectHelper;
+    private List<Sponsor> sponsors = new ArrayList<>();
+
+    private MaterialDialog sponsorsMultiChoiceDialog;
+    private List<String> animalSponsorUids;
 
     public static void start(@NonNull Context context, @Nullable String animalUid) {
         if (context instanceof AnimalEditorActivity) {
@@ -131,8 +137,54 @@ public class AnimalEditorActivity extends
     }
 
     @Override
-    public void onLoadSpeciesError(@NonNull String message) {
-        Log.d(TAG, "onLoadSpeciesError");
+    public void bindSponsors(@NonNull List<Sponsor> sponsors) {
+        this.sponsors.clear();
+        this.sponsors.addAll(sponsors);
+        final CharSequence[] sponsorNames = new CharSequence[sponsors.size()];
+        int i = 0;
+        for (Sponsor s : sponsors) {
+            sponsorNames[i] = s.getName();
+            i++;
+        }
+        sponsorsMultiChoiceDialog = new MaterialDialog.Builder(this).title(R.string.sponsors)
+            .positiveText(R.string.action_ok)
+            .items(sponsorNames)
+            .itemsCallbackMultiChoice(null, (dialog, which, text) -> {
+                addSelectedSponsors(sponsors, which);
+                return true;
+            })
+            .alwaysCallMultiChoiceCallback()
+            .build();
+    }
+
+    private void addSelectedSponsors(@NonNull List<Sponsor> sponsors,
+        @NonNull Integer[] selectedPositions) {
+        if (sponsors.isEmpty()) {
+            return;
+        }
+        if (animalSponsorUids == null) {
+            animalSponsorUids = new ArrayList<>();
+        }
+        animalSponsorUids.clear();
+        String sponsorNames = "";
+        for (int i = 0; i < sponsors.size(); i++) {
+            for (Integer selectedPosition : selectedPositions) {
+                if (selectedPosition == i) {
+                    animalSponsorUids.add(sponsors.get(i).getUid());
+                    sponsorNames += String.format("%s, ", sponsors.get(i).getName());
+                }
+            }
+        }
+        if (!sponsorNames.isEmpty()) {
+            sponsorNames =
+                sponsorNames.substring(0, sponsorNames.length() - 2); //Remove ", " and the end
+        }
+        this.sponsorNames.setText(sponsorNames);
+    }
+
+    @Override
+    public void onLoadError(@NonNull String message) {
+        Log.d(TAG, "onLoadError");
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -287,6 +339,39 @@ public class AnimalEditorActivity extends
             album.smoothScrollToPosition(attachmentAdapter.getItemCount() - 1);
             currentAttachmentPosition++;
         }
+        if (!selectedAnimal.getSponsors().isEmpty()) {
+            bindSelectedAnimalSponsors();
+        }
+    }
+
+    private void bindSelectedAnimalSponsors() {
+        animalSponsorUids = new ArrayList<>(selectedAnimal.getSponsors().values());
+        String sponsorNames = "";
+        int i = 0;
+        List<Integer> selectedIndices = new ArrayList<>();
+        for (Sponsor sponsor : sponsors) {
+            for (String sponsorUid : animalSponsorUids) {
+                if (sponsor.getUid().equals(sponsorUid)) {
+                    selectedIndices.add(i);
+                    sponsorNames += String.format("%s, ", sponsor.getName());
+                }
+            }
+            i++;
+        }
+        if (sponsorsMultiChoiceDialog != null && !sponsorsMultiChoiceDialog.isShowing()) {
+            final Integer[] indices = new Integer[selectedIndices.size()];
+            int j = 0;
+            for (Integer integer : selectedIndices) {
+                indices[j] = integer;
+                j++;
+            }
+            sponsorsMultiChoiceDialog.setSelectedIndices(indices);
+        }
+        if (!sponsorNames.isEmpty()) {
+            sponsorNames =
+                sponsorNames.substring(0, sponsorNames.length() - 2); //Remove ", " and the end
+        }
+        this.sponsorNames.setText(sponsorNames);
     }
 
     @Override
@@ -363,6 +448,7 @@ public class AnimalEditorActivity extends
     private void init() {
         initAttachmentsRecyclerView();
         presenter.loadSpecies();
+        presenter.loadSponsors();
         String selectedAnimalUid = getIntent().getStringExtra(EXTRA_SELECTED_ANIMAL_UID);
         if (selectedAnimalUid != null) {
             presenter.loadSelectedAnimal(selectedAnimalUid);
@@ -571,7 +657,7 @@ public class AnimalEditorActivity extends
                 aboutOurAnimal.getText().toString(), getSpeciesUid(), isMale.isChecked(),
                 selectedDateOfBirth, iconUri, bannerImageUri, habitatMapImageUri,
                 attachmentAdapter.getItemsToAdd(), attachmentAdapter.getItemsToDelete(),
-                video.getText().toString(), lat, lng);
+                video.getText().toString(), lat, lng, animalSponsorUids);
         } else {
             onEditError(getString(R.string.species_invalid_error));
         }
@@ -582,7 +668,7 @@ public class AnimalEditorActivity extends
             presenter.createAnimal(name.getText().toString(), aboutOurAnimal.getText().toString(),
                 getSpeciesUid(), isMale.isChecked(), selectedDateOfBirth, iconUri, bannerImageUri,
                 habitatMapImageUri, attachmentAdapter.getData(), video.getText().toString(), lat,
-                lng);
+                lng, animalSponsorUids);
         } else {
             onCreatingFailure(getString(R.string.species_invalid_error));
         }
@@ -595,5 +681,12 @@ public class AnimalEditorActivity extends
             return selectedSpecies.getUid();
         }
         return null;
+    }
+
+    @OnClick(R.id.sponsorNames)
+    protected void sponsorsClicked() {
+        if (sponsorsMultiChoiceDialog != null && !sponsorsMultiChoiceDialog.isShowing()) {
+            sponsorsMultiChoiceDialog.show();
+        }
     }
 }

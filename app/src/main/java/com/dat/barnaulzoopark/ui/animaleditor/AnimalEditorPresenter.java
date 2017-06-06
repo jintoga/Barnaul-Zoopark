@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.dat.barnaulzoopark.api.BZFireBaseApi;
 import com.dat.barnaulzoopark.model.Attachment;
+import com.dat.barnaulzoopark.model.Sponsor;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.model.animal.Species;
 import com.dat.barnaulzoopark.utils.UriUtil;
@@ -43,10 +44,10 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
         @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
         @NonNull List<Attachment> attachments, @NonNull String videoUrl, @Nullable Double lat,
-        @Nullable Double lng) {
+        @Nullable Double lng, @Nullable List<String> animalSponsorUids) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             create(name, aboutAnimal, speciesUid, gender, dateOfBirth, iconUri, bannerImageUri,
-                habitatMapImageUri, attachments, videoUrl, lat, lng);
+                habitatMapImageUri, attachments, videoUrl, lat, lng, animalSponsorUids);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -60,11 +61,11 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
         @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
         @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl,
-        @Nullable Double lat, @Nullable Double lng) {
+        @Nullable Double lat, @Nullable Double lng, @Nullable List<String> animalSponsorUids) {
         if (!"".equals(name) && !"".equals(aboutAnimal)) {
             edit(selectedAnimal, name, aboutAnimal, speciesUid, gender, dateOfBirth, iconUri,
                 bannerImageUri, habitatMapImageUri, attachmentsToAdd, attachmentsToDelete, videoUrl,
-                lat, lng);
+                lat, lng, animalSponsorUids);
         } else {
             if (getView() != null) {
                 getView().highlightRequiredFields();
@@ -77,7 +78,7 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         @Nullable Date dateOfBirth, @Nullable Uri iconUri, @Nullable Uri bannerImageUri,
         @Nullable Uri habitatMapImageUri, @NonNull List<Attachment> attachmentsToAdd,
         @NonNull List<Attachment> attachmentsToDelete, @NonNull String videoUrl,
-        @Nullable Double lat, @Nullable Double lng) {
+        @Nullable Double lat, @Nullable Double lng, @Nullable List<String> animalSponsorUids) {
         DatabaseReference databaseReference = database.getReference().child(BZFireBaseApi.animal);
         final DatabaseReference animalItemReference =
             databaseReference.child(selectedAnimal.getUid());
@@ -90,6 +91,12 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         }
         if (lat != null && lng != null) {
             selectedAnimal.setLatLng(lat, lng);
+        }
+        selectedAnimal.getSponsors().clear();
+        if (animalSponsorUids != null && !animalSponsorUids.isEmpty()) {
+            for (String sponsorUid : animalSponsorUids) {
+                selectedAnimal.getSponsors().put(sponsorUid, sponsorUid);
+            }
         }
         animalItemReference.setValue(selectedAnimal);
         if (getView() != null) {
@@ -193,12 +200,6 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         });
     }
 
-    @NonNull
-    @Override
-    public DatabaseReference getSpeciesReference() {
-        return database.getReference(BZFireBaseApi.animal_species);
-    }
-
     @Override
     public void loadSelectedAnimal(@NonNull String selectedAnimalUid) {
         DatabaseReference animalReference =
@@ -241,7 +242,32 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     if (getView() != null) {
-                        getView().onLoadSpeciesError(databaseError.getMessage());
+                        getView().onLoadError(databaseError.getMessage());
+                    }
+                }
+            });
+    }
+
+    @Override
+    public void loadSponsors() {
+        database.getReference(BZFireBaseApi.sponsors)
+            .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<Sponsor> sponsors = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Sponsor sponsor = snapshot.getValue(Sponsor.class);
+                        sponsors.add(sponsor);
+                    }
+                    if (getView() != null) {
+                        getView().bindSponsors(sponsors);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    if (getView() != null) {
+                        getView().onLoadError(databaseError.getMessage());
                     }
                 }
             });
@@ -251,7 +277,7 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         @NonNull String speciesUid, boolean gender, @Nullable Date dateOfBirth,
         @Nullable Uri iconUri, @Nullable Uri bannerImageUri, @Nullable Uri habitatMapImageUri,
         @NonNull List<Attachment> attachments, @NonNull String videoUrl, @Nullable Double lat,
-        @Nullable Double lng) {
+        @Nullable Double lng, @Nullable List<String> animalSponsorUids) {
         DatabaseReference animalDatabaseReference =
             database.getReference().child(BZFireBaseApi.animal);
         final String uid = animalDatabaseReference.push().getKey();
@@ -266,6 +292,11 @@ class AnimalEditorPresenter extends MvpBasePresenter<AnimalEditorContract.View>
         }
         if (lat != null && lng != null) {
             animal.setLatLng(lat, lng);
+        }
+        if (animalSponsorUids != null && !animalSponsorUids.isEmpty()) {
+            for (String sponsorUid : animalSponsorUids) {
+                animal.getSponsors().put(sponsorUid, sponsorUid);
+            }
         }
         animalItemReference.setValue(animal);
         if (getView() != null) {
