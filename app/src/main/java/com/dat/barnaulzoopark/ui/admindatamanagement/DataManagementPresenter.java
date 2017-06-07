@@ -7,6 +7,7 @@ import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.Sponsor;
 import com.dat.barnaulzoopark.model.TicketPrice;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.VideoAlbum;
@@ -75,6 +76,9 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         } else if (data instanceof News) {
             databaseReference = database.getReference(BZFireBaseApi.news);
             clazz = News.class;
+        } else if (data instanceof Sponsor) {
+            databaseReference = database.getReference(BZFireBaseApi.sponsors);
+            clazz = Sponsor.class;
         } else if (data instanceof TicketPrice) {
             databaseReference = database.getReference(BZFireBaseApi.ticket_price);
             clazz = TicketPrice.class;
@@ -129,6 +133,9 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
         } else if (data instanceof Category) {
             //Category's child is Species
             databaseReference = database.getReference(BZFireBaseApi.animal_species);
+        } else if (data instanceof Sponsor) {
+            deleteSponsorUidFromAnimals((Sponsor) data);
+            return;
         } else {
             return;
         }
@@ -138,6 +145,28 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     deleteChildUid(data, snapshot, finalDatabaseReference);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void deleteSponsorUidFromAnimals(@NonNull Sponsor sponsor) {
+        //Delete sponsor's uid in animal
+        DatabaseReference databaseReference = database.getReference(BZFireBaseApi.animal);
+        final DatabaseReference finalDatabaseReference = databaseReference;
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Animal animal = snapshot.getValue(Animal.class);
+                    if (animal.getSponsors().containsKey(sponsor.getUid())) {
+                        animal.getSponsors().remove(sponsor.getUid());
+                        finalDatabaseReference.child(animal.getUid()).setValue(animal);
+                    }
                 }
             }
 
@@ -194,7 +223,7 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
     }
 
     private <T extends AbstractData> Observable getDeleteImagesObservable(@NonNull final T data) {
-        String prefix;
+        String prefix, suffix;
         if (data instanceof News) {
             News news = (News) data;
             return getDeleteBlogOrNewsImagesObservable(news, news.getUid(), BZFireBaseApi.news,
@@ -207,16 +236,22 @@ public class DataManagementPresenter extends MvpBasePresenter<DataManagementCont
             return getDeleteAnimalImagesObservable((Animal) data);
         } else if (data instanceof Species) {
             prefix = BZFireBaseApi.animal_species;
+            suffix = "icon";
         } else if (data instanceof Category) {
             prefix = BZFireBaseApi.animal_categories;
+            suffix = "icon";
         } else if (data instanceof PhotoAlbum) {
             return getDeletePhotoAlbumImagesObservable((PhotoAlbum) data);
         } else if (data instanceof VideoAlbum) {
             return Observable.just(data);
+        } else if (data instanceof Sponsor) {
+            prefix = BZFireBaseApi.sponsors;
+            suffix = "logo";
         } else {
             prefix = BZFireBaseApi.ticket_price;
+            suffix = "icon";
         }
-        String filePath = prefix + "/" + data.getId() + "/" + "icon";
+        String filePath = prefix + "/" + data.getId() + "/" + suffix;
 
         if (data.getPhotoUrl() == null || data.getPhotoUrl().isEmpty()) {
             return Observable.just(data);

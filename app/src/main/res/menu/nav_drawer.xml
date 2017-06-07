@@ -28,6 +28,10 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/sponsors"
+                    android:icon="@drawable/ic_heart_handshake"
+                    android:title="@string/sponsors" />
+                <item
                     android:icon="@drawable/ic_calendar_schedule"
                     android:title="@string/schedule" />
                 <item

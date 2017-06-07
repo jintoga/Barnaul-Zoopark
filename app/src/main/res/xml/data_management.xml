@@ -19,6 +19,10 @@
         app:title="@string/data_management_animals" />
 
     <Preference
+        android:key="key_sponsors"
+        app:title="@string/sponsors" />
+
+    <Preference
         android:key="key_ticket_price"
         app:title="@string/ticket_price" />
 

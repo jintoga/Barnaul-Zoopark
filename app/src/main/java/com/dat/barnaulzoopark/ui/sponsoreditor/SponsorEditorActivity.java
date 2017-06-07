@@ -1,4 +1,4 @@
-package com.dat.barnaulzoopark.ui.ticketpriceeditor;
+package com.dat.barnaulzoopark.ui.sponsoreditor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,29 +21,29 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
-import com.dat.barnaulzoopark.model.TicketPrice;
+import com.dat.barnaulzoopark.model.Sponsor;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
 import com.dat.barnaulzoopark.ui.BaseMvpPhotoEditActivity;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
 /**
- * Created by DAT on 5/20/2017.
+ * Created by DAT on 6/4/2017.
  */
 
-public class TicketPriceEditorActivity extends
-    BaseMvpPhotoEditActivity<TicketPriceEditorContract.View, TicketPriceEditorContract.UserActionListener>
-    implements TicketPriceEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener {
+public class SponsorEditorActivity extends
+    BaseMvpPhotoEditActivity<SponsorEditorContract.View, SponsorEditorContract.UserActionListener>
+    implements SponsorEditorContract.View, BaseMvpPhotoEditActivity.PhotoEditListener {
 
-    private static final String EXTRA_SELECTED_TICKET_PRICE_UID = "EXTRA_SELECTED_TICKET_PRICE_UID";
+    private static final String EXTRA_SELECTED_SPONSOR_UID = "EXTRA_SELECTED_SPONSOR_UID";
     private static final int REQUEST_BROWSE_IMAGE = 111;
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.name)
     protected EditText name;
-    @Bind(R.id.price)
-    protected EditText price;
+    @Bind(R.id.website)
+    protected EditText website;
     @Bind(R.id.icon)
     protected ImageView icon;
     @Bind(R.id.remove)
@@ -53,17 +53,17 @@ public class TicketPriceEditorActivity extends
 
     private Uri iconUri;
 
-    private TicketPrice selectedTicketPrice;
+    private Sponsor selectedSponsor;
 
     private MaterialDialog progressDialog;
 
-    public static void start(Context context, @Nullable String categoryUid) {
-        if (context instanceof TicketPriceEditorActivity) {
+    public static void start(Context context, @Nullable String sponsorUid) {
+        if (context instanceof SponsorEditorActivity) {
             return;
         }
-        Intent intent = new Intent(context, TicketPriceEditorActivity.class);
-        if (categoryUid != null) {
-            intent.putExtra(EXTRA_SELECTED_TICKET_PRICE_UID, categoryUid);
+        Intent intent = new Intent(context, SponsorEditorActivity.class);
+        if (sponsorUid != null) {
+            intent.putExtra(EXTRA_SELECTED_SPONSOR_UID, sponsorUid);
         }
         context.startActivity(intent);
     }
@@ -72,9 +72,6 @@ public class TicketPriceEditorActivity extends
     public void highlightRequiredFields() {
         if (name.getText().toString().isEmpty()) {
             name.setError("Input required");
-        }
-        if (price.getText().toString().isEmpty()) {
-            price.setError("Input required");
         }
     }
 
@@ -143,7 +140,7 @@ public class TicketPriceEditorActivity extends
     }
 
     @Override
-    public void onLoadTicketPriceError(@NonNull String localizedMessage) {
+    public void onLoadError(@NonNull String localizedMessage) {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
@@ -151,21 +148,21 @@ public class TicketPriceEditorActivity extends
     }
 
     @Override
-    public void onLoadTicketPriceSuccess() {
+    public void onLoadSuccess() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }
 
     @Override
-    public void bindSelectedTicketPrice(@NonNull TicketPrice ticketPrice) {
-        this.selectedTicketPrice = ticketPrice;
-        name.setText(ticketPrice.getName());
-        price.setText(String.valueOf(ticketPrice.getPrice()));
-        if (ticketPrice.getIcon() != null) {
-            this.iconUri = Uri.parse(ticketPrice.getIcon());
+    public void bindSelectedSponsor(@NonNull Sponsor sponsor) {
+        this.selectedSponsor = sponsor;
+        name.setText(sponsor.getName());
+        website.setText(sponsor.getSite());
+        if (sponsor.getLogo() != null) {
+            this.iconUri = Uri.parse(sponsor.getLogo());
             this.icon.setVisibility(View.VISIBLE);
-            Glide.with(this).load(ticketPrice.getIcon()).into(icon);
+            Glide.with(this).load(sponsor.getLogo()).into(icon);
             updateButtons(true);
         }
     }
@@ -173,7 +170,7 @@ public class TicketPriceEditorActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ticket_price_editor);
+        setContentView(R.layout.activity_sponsor_editor);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -186,12 +183,12 @@ public class TicketPriceEditorActivity extends
     }
 
     private void init() {
-        String selectedTicketPriceUid = getIntent().getStringExtra(EXTRA_SELECTED_TICKET_PRICE_UID);
-        if (selectedTicketPriceUid != null) {
-            presenter.loadSelectedTicketPrice(selectedTicketPriceUid);
-            updateTitle(getString(R.string.edit_ticket_price));
+        String selectedSponsorUid = getIntent().getStringExtra(EXTRA_SELECTED_SPONSOR_UID);
+        if (selectedSponsorUid != null) {
+            presenter.loadSelectedSponsor(selectedSponsorUid);
+            updateTitle(getString(R.string.edit_sponsor));
         } else {
-            updateTitle(getString(R.string.create_ticket_price));
+            updateTitle(getString(R.string.create_sponsor));
         }
     }
 
@@ -203,31 +200,12 @@ public class TicketPriceEditorActivity extends
 
     @NonNull
     @Override
-    public TicketPriceEditorContract.UserActionListener createPresenter() {
+    public SponsorEditorContract.UserActionListener createPresenter() {
         FirebaseDatabase database =
             BZApplication.get(this).getApplicationComponent().fireBaseDatabase();
         FirebaseStorage storage =
             BZApplication.get(this).getApplicationComponent().fireBaseStorage();
-        return new TicketPriceEditorPresenter(database, storage);
-    }
-
-    @Override
-    public void onRemovedPhotoClicked(int requestCode) {
-    }
-
-    @Override
-    public void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode) {
-        if (originalRequestCode == REQUEST_BROWSE_IMAGE) {
-            this.iconUri = uri;
-            this.icon.setVisibility(View.VISIBLE);
-            Glide.with(this).load(iconUri).into(icon);
-            updateButtons(true);
-        }
-    }
-
-    @Override
-    public void onCropError(@NonNull String errorMsg) {
-        showSnackBar(errorMsg);
+        return new SponsorEditorPresenter(database, storage);
     }
 
     @OnClick(R.id.remove)
@@ -254,8 +232,28 @@ public class TicketPriceEditorActivity extends
     }
 
     @Override
+    public void onRemovedPhotoClicked(int requestCode) {
+
+    }
+
+    @Override
+    public void onResultUriSuccess(@NonNull Uri uri, int originalRequestCode) {
+        if (originalRequestCode == REQUEST_BROWSE_IMAGE) {
+            this.iconUri = uri;
+            this.icon.setVisibility(View.VISIBLE);
+            Glide.with(this).load(iconUri).into(icon);
+            updateButtons(true);
+        }
+    }
+
+    @Override
+    public void onCropError(@NonNull String errorMsg) {
+        showSnackBar(errorMsg);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ticket_price_editor, menu);
+        getMenuInflater().inflate(R.menu.sponsor_editor, menu);
         return true;
     }
 
@@ -267,10 +265,10 @@ public class TicketPriceEditorActivity extends
                 finish();
                 break;
             case R.id.save:
-                if (selectedTicketPrice == null) {
-                    createTicketPrice();
+                if (selectedSponsor == null) {
+                    createSponsor();
                 } else {
-                    editTicketPrice();
+                    editSponsor();
                 }
                 break;
             default:
@@ -279,14 +277,14 @@ public class TicketPriceEditorActivity extends
         return super.onOptionsItemSelected(item);
     }
 
-    private void createTicketPrice() {
-        presenter.createTicketPrice(name.getText().toString(), price.getText().toString(), iconUri);
+    private void editSponsor() {
+        if (selectedSponsor != null) {
+            presenter.editSponsor(selectedSponsor, name.getText().toString(),
+                website.getText().toString(), iconUri);
+        }
     }
 
-    private void editTicketPrice() {
-        if (selectedTicketPrice != null) {
-            presenter.editTicketPrice(selectedTicketPrice, name.getText().toString(),
-                price.getText().toString(), iconUri);
-        }
+    private void createSponsor() {
+        presenter.createSponsor(name.getText().toString(), website.getText().toString(), iconUri);
     }
 }

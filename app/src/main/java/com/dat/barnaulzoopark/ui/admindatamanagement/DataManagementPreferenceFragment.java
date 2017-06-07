@@ -20,6 +20,7 @@ public class DataManagementPreferenceFragment extends BasePreferenceFragment {
     private static final String KEY_TICKET_PRICE = "key_ticket_price";
     private static final String KEY_PHOTO_ALBUM = "key_photo_album";
     private static final String KEY_VIDEO_ALBUM = "key_video_album";
+    private static final String KEY_SPONSORS = "key_sponsors";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,9 @@ public class DataManagementPreferenceFragment extends BasePreferenceFragment {
                 break;
             case KEY_BLOG_ANIMAL:
                 DataManagementActivity.start(getContext(), BZFireBaseApi.blog_animal);
+                break;
+            case KEY_SPONSORS:
+                DataManagementActivity.start(getContext(), BZFireBaseApi.sponsors);
                 break;
             case KEY_TICKET_PRICE:
                 DataManagementActivity.start(getContext(), BZFireBaseApi.ticket_price);

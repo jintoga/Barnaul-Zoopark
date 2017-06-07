@@ -23,6 +23,7 @@ import com.dat.barnaulzoopark.model.AbstractData;
 import com.dat.barnaulzoopark.model.BlogAnimal;
 import com.dat.barnaulzoopark.model.News;
 import com.dat.barnaulzoopark.model.PhotoAlbum;
+import com.dat.barnaulzoopark.model.Sponsor;
 import com.dat.barnaulzoopark.model.TicketPrice;
 import com.dat.barnaulzoopark.model.VideoAlbum;
 import com.dat.barnaulzoopark.model.animal.Animal;
@@ -37,6 +38,7 @@ import com.dat.barnaulzoopark.ui.animalspecieseditor.SpeciesEditorActivity;
 import com.dat.barnaulzoopark.ui.bloganimaleditor.BlogAnimalEditorActivity;
 import com.dat.barnaulzoopark.ui.newseditor.NewsItemEditorActivity;
 import com.dat.barnaulzoopark.ui.photoalbumeditor.PhotoAlbumEditorActivity;
+import com.dat.barnaulzoopark.ui.sponsoreditor.SponsorEditorActivity;
 import com.dat.barnaulzoopark.ui.ticketpriceeditor.TicketPriceEditorActivity;
 import com.dat.barnaulzoopark.ui.videoalbumeditor.VideoAlbumEditorActivity;
 import com.google.firebase.database.FirebaseDatabase;
@@ -195,6 +197,8 @@ public class DataManagementActivity
             BlogAnimalEditorActivity.start(this, ((BlogAnimal) data).getUid());
         } else if (data instanceof News) {
             NewsItemEditorActivity.start(this, ((News) data).getUid());
+        } else if (data instanceof Sponsor) {
+            SponsorEditorActivity.start(this, ((Sponsor) data).getUid());
         } else if (data instanceof TicketPrice) {
             TicketPriceEditorActivity.start(this, ((TicketPrice) data).getUid());
         } else if (data instanceof PhotoAlbum) {
@@ -216,6 +220,8 @@ public class DataManagementActivity
             itemToDelete = getString(R.string.remove_item_blog_animal);
         } else if (data instanceof News) {
             itemToDelete = getString(R.string.remove_item_news);
+        } else if (data instanceof Sponsor) {
+            itemToDelete = getString(R.string.remove_item_sponsor);
         } else if (data instanceof TicketPrice) {
             itemToDelete = getString(R.string.remove_item_ticket_price);
         } else if (data instanceof PhotoAlbum) {
@@ -255,6 +261,10 @@ public class DataManagementActivity
             case BZFireBaseApi.blog_animal:
                 title = getString(R.string.data_management_blog_animals);
                 adapter = getAdapter(BlogAnimal.class, referenceName);
+                break;
+            case BZFireBaseApi.sponsors:
+                title = getString(R.string.sponsors);
+                adapter = getAdapter(Sponsor.class, referenceName);
                 break;
             case BZFireBaseApi.ticket_price:
                 title = getString(R.string.ticket_price);
@@ -312,6 +322,9 @@ public class DataManagementActivity
                     break;
                 case BZFireBaseApi.blog_animal:
                     BlogAnimalEditorActivity.start(this, null);
+                    break;
+                case BZFireBaseApi.sponsors:
+                    SponsorEditorActivity.start(this, null);
                     break;
                 case BZFireBaseApi.ticket_price:
                     TicketPriceEditorActivity.start(this, null);

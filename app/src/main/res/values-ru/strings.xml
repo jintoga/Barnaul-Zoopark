@@ -137,4 +137,10 @@
     <string name="remove_item_video_album">видео альбом</string>
     <string name="distance_away">%s метров от сюда</string>
     <string name="current_location">Текущее местоположение:</string>
+    <string name="sponsors">Спонсоры</string>
+    <string name="edit_sponsor">Редактировать спонсора</string>
+    <string name="create_sponsor">Создать спонсора</string>
+    <string name="website_hint">веб-сайт</string>
+    <string name="remove_item_sponsor">спонсора</string>
+    <string name="action_ok">ОК</string>
 </resources>

@@ -85,18 +85,9 @@ public class MultiFileAttachmentAdapter
                 holder.hideAddBtnAndShowRemoveBtn(false);
             }
 
-            holder.attach.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onSlotSelected(holder.getAdapterPosition());
-                }
-            });
-            holder.remove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onRemoved(holder.getAdapterPosition());
-                }
-            });
+            holder.attach.setOnClickListener(
+                v -> listener.onSlotSelected(holder.getAdapterPosition()));
+            holder.remove.setOnClickListener(v -> listener.onRemoved(holder.getAdapterPosition()));
         }
     }
 
