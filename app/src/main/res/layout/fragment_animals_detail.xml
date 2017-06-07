@@ -19,6 +19,7 @@
 
         <include layout="@layout/partial_animals_detail_content_habitat_map" />
 
+        <include layout="@layout/partial_animals_detail_sponsors" />
 
     </LinearLayout>
 </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>

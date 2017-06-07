@@ -1,6 +1,8 @@
 package com.dat.barnaulzoopark.ui.animalsdetail;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +24,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.barnaulzoopark.BZApplication;
 import com.dat.barnaulzoopark.R;
 import com.dat.barnaulzoopark.events.AnimalSubscribeEvent;
+import com.dat.barnaulzoopark.model.Sponsor;
 import com.dat.barnaulzoopark.model.User;
 import com.dat.barnaulzoopark.model.animal.Animal;
 import com.dat.barnaulzoopark.ui.BZDialogBuilder;
@@ -46,7 +49,8 @@ import java.util.List;
 public class AnimalsDetailFragment extends
     BaseMvpFragment<AnimalsDetailContract.ViewFragment, AnimalsDetailContract.FragmentUserActionListener>
     implements AnimalsDetailContract.ViewFragment,
-    AttachmentImagesHorizontalAdapter.ItemClickListener {
+    AttachmentImagesHorizontalAdapter.ItemClickListener,
+    AnimalSponsorsAdapter.SponsorClickListener {
 
     private static final String KEY_ANIMAL = "ANIMAL";
     private static final String TAG = AnimalsDetailFragment.class.getName();
@@ -77,6 +81,11 @@ public class AnimalsDetailFragment extends
     protected View videoContainer;
     @Bind(R.id.subscribeAnimal)
     protected ImageView subscribeAnimal;
+    @Bind(R.id.sponsors)
+    protected RecyclerView sponsors;
+    private AnimalSponsorsAdapter sponsorsAdapter;
+    @Bind(R.id.sponsorsContainer)
+    protected View sponsorsContainer;
 
     private Animal selectedAnimal;
 
@@ -117,6 +126,45 @@ public class AnimalsDetailFragment extends
         FirebaseDatabase database =
             BZApplication.get(getContext()).getApplicationComponent().fireBaseDatabase();
         return new AnimalsDetailFragmentPresenter(database);
+    }
+
+    @Override
+    public void onSponsorClicked(@NonNull Sponsor sponsor) {
+        if (sponsor.getSite() != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(sponsor.getSite()));
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void bindSponsors(@NonNull List<Sponsor> sponsors) {
+        sponsorsAdapter.setData(sponsors);
+    }
+
+    @Override
+    public void onLoadError(@NonNull String message) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        showSnackBar(message);
+    }
+
+    @Override
+    public void onLoadProgress() {
+        if (progressDialog == null) {
+            progressDialog = BZDialogBuilder.createSimpleProgressDialog(getContext(),
+                getString(R.string.loading));
+        }
+        progressDialog.setContent(getString(R.string.loading));
+        progressDialog.show();
+    }
+
+    @Override
+    public void onLoadSuccess() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override
@@ -223,6 +271,12 @@ public class AnimalsDetailFragment extends
         } else {
             subscribeAnimal.setVisibility(View.GONE);
         }
+        if (!selectedAnimal.getSponsors().isEmpty()) {
+            presenter.loadSponsors(selectedAnimal.getSponsors().keySet());
+            sponsorsContainer.setVisibility(View.VISIBLE);
+        } else {
+            sponsorsContainer.setVisibility(View.GONE);
+        }
     }
 
     private void init() {
@@ -235,6 +289,13 @@ public class AnimalsDetailFragment extends
             animalsImagesAdapter.setItemClickListener(this);
         }
         animalsImages.setAdapter(animalsImagesAdapter);
+
+        LinearLayoutManager sponsorsLayoutManager = new LinearLayoutManager(getContext());
+        sponsorsLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        sponsors.setLayoutManager(sponsorsLayoutManager);
+        sponsors.addItemDecoration(new AnimalsImagesHorizontalSpaceDecoration(6));
+        sponsorsAdapter = new AnimalSponsorsAdapter(this);
+        sponsors.setAdapter(sponsorsAdapter);
     }
 
     @Override
